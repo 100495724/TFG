@@ -1,0 +1,89 @@
+Configuración de RunPod (La Infraestructura)
+1.1 Crear cuenta y añadir crédito
+
+Ve a runpod.io y crea una cuenta.
+En el menú lateral, ve a Billing y añade crédito. Con $10–$25 USD tienes de sobra para varias semanas de pruebas (los pods se cobran por hora y los pagas solo mientras están encendidos).
+Genera una SSH Key en tu ordenador si no tienes una:
+
+bashssh-keygen -t ed25519 -C "tu_email@ejemplo.com"
+cat ~/.ssh/id_ed25519.pub
+
+Ve a Settings → SSH Keys en RunPod y pega tu clave pública.
+
+1.2 Qué GPU alquilar
+Para correr Llama-3.1-8B-Instruct necesitas una GPU con ≥24 GB de VRAM. Aquí tienes las opciones ordenadas de más barata a más cara:
+GPUVRAMPrecio aprox. (Community)¿Sirve para Llama-3.1-8B?RTX 309024 GB~$0.22/hr✅ Sí — la opción más barataRTX 409024 GB~$0.44/hr✅ Sí — más rápidaA500024 GB~$0.22/hr✅ Sí — buena alternativaA4048 GB~$0.39/hr✅ SobradaA100 (40GB)40 GB~$0.79/hr✅ Sobrada pero cara para un TFG
+Recomendación concreta: busca una RTX 3090 o A5000 en la pestaña Community Cloud (más barato que Secure Cloud). Es suficiente para un modelo de 8B parámetros con cuantización.
+
+⚠️ Consejo de ahorro: Cuando no estés trabajando, para el Pod (botón "Stop"). Solo se cobra almacenamiento en disco (~$0.10/GB/mes) mientras está parado. No borres el Pod, solo páralo.
+
+1.3 Qué Template elegir
+Cuando creas un pod, RunPod te pide elegir un Template (una imagen Docker preconfigurada). Tienes tres buenas opciones:
+TemplateVentajaDesventajaRunPod vLLMServidor OpenAI-compatible listo. Muy rápido.Menos flexible para experimentarRunPod PyTorchEntorno limpio con CUDA + Python. Tú instalas lo que quieras.Requiere setup manualRunPod OllamaFacilísimo de usar (ollama run llama3.1)Menos control fino sobre parámetros
+Mi recomendación para tu caso: usa el template "RunPod PyTorch 2.x" y luego instala vLLM manualmente. Así aprendes qué hay "debajo del capó" y tienes control total.
+1.4 Crear el Pod paso a paso
+
+En el dashboard, haz clic en "+ GPU Pod".
+Selecciona Community Cloud.
+Filtra por la GPU que quieras (ej. RTX 3090, 24 GB).
+Haz clic en Deploy en una de las máquinas disponibles.
+En la pantalla de configuración:
+
+Template: selecciona RunPod Pytorch 2.x (o busca "pytorch").
+Container Disk: 20 GB (para el sistema).
+Volume Disk: 50 GB (para almacenar el modelo — Llama-3.1-8B ocupa ~16 GB).
+Expose HTTP Ports: 8888, 8000 (JupyterLab + vLLM API).
+
+
+Haz clic en Deploy On-Demand.
+Espera ~2 minutos a que el Pod arranque (estado: "Running").
+
+1.5 Conectarte al Pod
+Tienes dos formas:
+Opción A — JupyterLab (recomendada para empezar):
+
+En tu Pod, haz clic en "Connect" → "Connect to Jupyter Lab [Port 8888]".
+Se abre un entorno de notebooks en el navegador.
+Abre un Terminal desde JupyterLab para ejecutar comandos.
+
+Opción B — SSH (para usuarios más avanzados):
+
+En tu Pod, haz clic en "Connect" → verás las instrucciones SSH.
+El comando tendrá esta forma:
+
+bashssh root@{IP_PUBLICA} -p {PUERTO} -i ~/.ssh/id_ed25519
+
+PASO 2 — El "Motor" (Inference Server con vLLM)
+2.1 Instalar vLLM
+Abre un terminal en tu Pod (via JupyterLab o SSH) y ejecuta:
+bashpip install vllm --upgrade
+Esto tarda unos 3–5 minutos. vLLM es un servidor de inferencia que expone una API compatible con OpenAI, lo que significa que puedes usar la librería openai de Python para hablar con tu modelo local exactamente como si fuera ChatGPT.
+2.2 Descargar y arrancar el modelo
+Ejecuta este comando para levantar el servidor:
+bashvllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --max-model-len 4096 \
+  --dtype auto \
+  --gpu-memory-utilization 0.90
+Explicación de cada flag:
+FlagQué hacemeta-llama/Llama-3.1-8B-InstructID del modelo en HuggingFace. Se descarga automáticamente (~16 GB).--host 0.0.0.0Acepta conexiones desde cualquier IP (necesario dentro del Pod).--port 8000Puerto donde escucha la API.--max-model-len 4096Longitud máxima del contexto. 4096 es suficiente para tu experimento.--dtype autoUsa la precisión óptima para tu GPU (float16 en la mayoría).--gpu-memory-utilization 0.90Usa hasta el 90% de la VRAM.
+
+Nota sobre HuggingFace: Llama 3.1 requiere aceptar la licencia de Meta. Ve a huggingface.co/meta-llama/Llama-3.1-8B-Instruct, acepta los términos, y luego genera un token en Settings → Access Tokens. Antes de lanzar vLLM, haz login:
+
+bashpip install huggingface_hub
+huggingface-cli login
+# Pega tu token cuando te lo pida
+2.3 Verificar que funciona
+La descarga del modelo tarda ~10 minutos la primera vez. Cuando veas en la terminal:
+INFO:     Uvicorn running on http://0.0.0.0:8000
+Abre otra terminal (o una nueva pestaña en JupyterLab) y prueba:
+bashcurl http://localhost:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "messages": [{"role": "user", "content": "Dime hola en español"}],
+    "temperature": 0.7,
+    "max_tokens": 100
+  }'
+Si recibes una respuesta JSON con el modelo hablando, ¡tu servidor de inferencia está listo!
