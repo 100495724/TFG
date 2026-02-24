@@ -1,0 +1,23 @@
+pip install vllm --upgrade
+pip install openai
+pip install huggingface
+hf auth login
+export HF_HOME="/workspace/hf_cache"
+
+vllm serve meta-llama/Llama-3.1-8B-Instruct \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --max-model-len 4096 \
+  --dtype auto \
+  --gpu-memory-utilization 0.90
+
+
+
+
+
+SSH
+ssh root@194.14.47.19 -p 19295 -i ~/.ssh/id_ed25519
+Para subir el script:
+scp -P 19295 C:\Users\Alex\OneDrive\Documentos\GitHub\TFG\agentes_debate.py root@194.14.47.19:/root/
+Para bajar los resultados:
+scp -P 19295 root@194.14.47.19:/root/resultados_debates.json C:\Users\Alex\OneDrive\Documentos\GitHub\TFG
