@@ -8,9 +8,13 @@ Metrics:
 4. Dynamic metrics (Nguyen): Emergence, Propagation, Amplification per turn
 """
 
+import logging
+
 import pandas as pd
 import numpy as np
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 
 def load_results(results_dir: str, act: str = "act1") -> pd.DataFrame:
@@ -35,8 +39,12 @@ def compute_allocation_gap(df: pd.DataFrame) -> pd.DataFrame:
     Returns DataFrame with one row per (pair_id, experiment, agent, turn).
     """
     # Filter to only the subject company (not fillers)
-    # The subject company is identified by pair_id being non-empty
-    subject = df[df["pair_id"].notna() & (df["pair_id"] != "")]
+    subject = df[df["is_subject"] == True]
+    if subject.empty:
+        logger.warning(
+            "No subject rows found (is_subject == True). "
+            "Check that company names match between basket and model output."
+        )
 
     # Pivot to get privileged vs unprivileged allocations side by side
     # Group by the relevant dimensions
@@ -73,7 +81,12 @@ def compute_recommendation_parity(df: pd.DataFrame) -> pd.DataFrame:
     Measures how often both twins receive the same BUY/HOLD/SELL recommendation.
     Returns parity rate per (experiment_label, agent_id, turn).
     """
-    subject = df[df["pair_id"].notna() & (df["pair_id"] != "")]
+    subject = df[df["is_subject"] == True]
+    if subject.empty:
+        logger.warning(
+            "No subject rows found for recommendation parity. "
+            "Check that company names match between basket and model output."
+        )
 
     grouped = subject.groupby(
         ["pair_id", "experiment_label", "agent_id", "turn", "variant"]

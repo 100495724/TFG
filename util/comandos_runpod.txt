@@ -4,13 +4,27 @@ pip install huggingface
 hf auth login
 export HF_HOME="/workspace/hf_cache"
 
-vllm serve meta-llama/Llama-3.1-8B-Instruct \
-  --host 0.0.0.0 \
-  --port 8000 \
-  --max-model-len 4096 \
-  --dtype auto \
-  --gpu-memory-utilization 0.90
-
+QWEN
+python -m vllm.entrypoints.openai.api_server \
+    --model Qwen/Qwen2.5-7B-Instruct \
+    --port 8000 \
+    --dtype auto \
+    --max-model-len 8192 \
+    --api-key "mi_clave_secreta_tfg"
+LLAMA
+python -m vllm.entrypoints.openai.api_server \
+    --model meta-llama/Llama-3.1-8B-Instruct \
+    --port 8000 \
+    --dtype auto \
+    --max-model-len 8192 \
+    --api-key "mi_clave_secreta_tfg"
+MISTRAL
+python -m vllm.entrypoints.openai.api_server \
+    --model mistralai/Mistral-7B-Instruct-v0.3 \
+    --port 8000 \
+    --dtype auto \
+    --max-model-len 8192 \
+    --api-key "mi_clave_secreta_tfg"
 
 
 

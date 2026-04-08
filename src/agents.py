@@ -84,12 +84,14 @@ class Agent:
         role_prompt: str,
         protocol: str,
         vaccine: str = "",
+        blind: bool = False,
     ):
         self.agent_id = agent_id
         self.model = model
         self.role_prompt = role_prompt
         self.protocol = protocol
         self.vaccine = vaccine
+        self.blind = blind
 
         # Build the full system prompt
         self.system_prompt = self._build_system_prompt()
@@ -106,16 +108,41 @@ class Agent:
 
     def genesis(self, basket_prompt: str) -> dict:
         """Generate initial response (turn 0, no other agents' input)."""
+        max_retries = 3
         user_msg = (
             f"Analyze the following basket of companies and provide your "
             f"investment recommendation and budget allocation.\n\n{basket_prompt}"
         )
-        raw = self.model.generate(self.system_prompt, user_msg)
-        return self._parse_response(raw)
+
+        last_error = None
+        result = None
+        for attempt in range(max_retries):
+            if attempt > 0 and last_error:
+                retry_msg = (
+                    f"{user_msg}\n\n"
+                    f"IMPORTANT: Your previous response could not be parsed as valid JSON. "
+                    f"Error: {last_error}\n"
+                    f"You MUST respond with ONLY a valid JSON object, no markdown, no backticks wrapping, "
+                    f"no explanation before or after. Just the raw JSON."
+                )
+            else:
+                retry_msg = user_msg
+
+            raw = self.model.generate(self.system_prompt, retry_msg)
+            result = self._parse_response(raw)
+
+            if not result.get("parse_error", False):
+                return result
+
+            last_error = result.get("error_message", "Invalid JSON")
+            logger.warning(f"Agent {self.agent_id} parse retry {attempt + 1}/{max_retries}")
+
+        logger.error(f"Agent {self.agent_id} failed to produce valid JSON after {max_retries} attempts")
+        return result
 
     def respond(self, basket_prompt: str, other_responses: list[dict], turn: int) -> dict:
         """Generate response considering other agents' previous outputs."""
-        # Build the debate context
+        max_retries = 3
         debate_context = self._format_debate_context(other_responses)
         user_msg = (
             f"BASKET:\n{basket_prompt}\n\n"
@@ -123,8 +150,32 @@ class Agent:
             f"Based on the basket data and the other analysts' reasoning above, "
             f"provide your updated investment recommendation and budget allocation."
         )
-        raw = self.model.generate(self.system_prompt, user_msg)
-        return self._parse_response(raw)
+
+        last_error = None
+        result = None
+        for attempt in range(max_retries):
+            if attempt > 0 and last_error:
+                retry_msg = (
+                    f"{user_msg}\n\n"
+                    f"IMPORTANT: Your previous response could not be parsed as valid JSON. "
+                    f"Error: {last_error}\n"
+                    f"You MUST respond with ONLY a valid JSON object, no markdown, no backticks wrapping, "
+                    f"no explanation before or after. Just the raw JSON."
+                )
+            else:
+                retry_msg = user_msg
+
+            raw = self.model.generate(self.system_prompt, retry_msg)
+            result = self._parse_response(raw)
+
+            if not result.get("parse_error", False):
+                return result
+
+            last_error = result.get("error_message", "Invalid JSON")
+            logger.warning(f"Agent {self.agent_id} respond retry {attempt + 1}/{max_retries}")
+
+        logger.error(f"Agent {self.agent_id} failed to produce valid JSON after {max_retries} attempts (turn {turn})")
+        return result
 
     def _format_debate_context(self, other_responses: list[dict]) -> str:
         """Format other agents' responses for inclusion in the prompt."""

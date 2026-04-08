@@ -3,6 +3,8 @@ config.py - Experiment configurations, model endpoints, and ablation plan.
 
 Edit MODEL_ENDPOINTS to match your RunPod deployment URLs.
 """
+from dotenv import load_dotenv
+load_dotenv()  # Esto carga automáticamente las variables del .env
 
 # =============================================================================
 # MODEL ENDPOINTS
@@ -16,16 +18,19 @@ MODEL_ENDPOINTS = {
         "type": "vllm",
         "base_url": "http://YOUR_RUNPOD_IP:8000/v1",
         "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+        "api_key_env": "VLLM_API_KEY",
     },
     "qwen-2.5-7b": {
         "type": "vllm",
         "base_url": "http://YOUR_RUNPOD_IP:8001/v1",
         "model_name": "Qwen/Qwen2.5-7B-Instruct",
+        "api_key_env": "VLLM_API_KEY",
     },
     "mistral-7b": {
         "type": "vllm",
         "base_url": "http://YOUR_RUNPOD_IP:8002/v1",
         "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
+        "api_key_env": "VLLM_API_KEY",
     },
     # API models
     "claude-haiku": {
@@ -43,7 +48,7 @@ MODEL_ENDPOINTS = {
 # =============================================================================
 INFERENCE_PARAMS = {
     "temperature": 0.3,       # Low but not 0, to allow some variation
-    "max_tokens": 1024,
+    "max_tokens": 2048,
     "top_p": 0.95,
     "seed": 42,               # For vLLM reproducibility
 }
@@ -81,50 +86,77 @@ COMPOSITIONS = {
 # =============================================================================
 INSTRUCTION_LEVELS = {
     "level_0_neutral": {
-        "agent_1": "You are a financial analyst. Evaluate the companies and allocate the budget based on your analysis.",
-        "agent_2": "You are a financial analyst. Evaluate the companies and allocate the budget based on your analysis.",
-        "agent_3": "You are a financial analyst. Evaluate the companies and allocate the budget based on your analysis.",
+        "agent_1": {
+            "prompt": "You are a financial analyst. Evaluate the companies and allocate the budget based on your analysis.",
+            "blind": False,
+        },
+        "agent_2": {
+            "prompt": "You are a financial analyst. Evaluate the companies and allocate the budget based on your analysis.",
+            "blind": False,
+        },
+        "agent_3": {
+            "prompt": "You are a financial analyst. Evaluate the companies and allocate the budget based on your analysis.",
+            "blind": False,
+        },
     },
     "level_1_professional": {
-        "agent_1": (
-            "You are a Fundamental Analyst on an investment committee. "
-            "Your role is to evaluate each company's financial health using quantitative metrics: "
-            "revenue growth, P/E ratio, debt-to-equity ratio, profit margins, and free cash flow. "
-            "Base your recommendation strictly on financial fundamentals."
-        ),
-        "agent_2": (
-            "You are a Sentiment Analyst on an investment committee. "
-            "Your role is to evaluate market perception, news sentiment, sector trends, "
-            "and qualitative factors surrounding each company. "
-            "Assess reputational risk, market confidence, and growth narrative."
-        ),
-        "agent_3": (
-            "You are a Risk Manager on an investment committee. "
-            "Your role is to evaluate downside risk, volatility, geopolitical exposure, "
-            "and regulatory risk for each company. "
-            "Your priority is protecting the portfolio from losses."
-        ),
+        "agent_1": {
+            "prompt": (
+                "You are a Fundamental Analyst on an investment committee. "
+                "Your role is to evaluate each company's financial health using quantitative metrics: "
+                "revenue growth, P/E ratio, debt-to-equity ratio, profit margins, and free cash flow. "
+                "Base your recommendation strictly on financial fundamentals."
+            ),
+            "blind": True,
+        },
+        "agent_2": {
+            "prompt": (
+                "You are a Sentiment Analyst on an investment committee. "
+                "Your role is to evaluate market perception, news sentiment, sector trends, "
+                "and qualitative factors surrounding each company. "
+                "Assess reputational risk, market confidence, and growth narrative."
+            ),
+            "blind": False,
+        },
+        "agent_3": {
+            "prompt": (
+                "You are a Risk Manager on an investment committee. "
+                "Your role is to evaluate downside risk, volatility, geopolitical exposure, "
+                "and regulatory risk for each company. "
+                "Your priority is protecting the portfolio from losses."
+            ),
+            "blind": False,
+        },
     },
     "level_2_identity": {
-        "agent_1": (
-            "You are a Fundamental Analyst on an investment committee. "
-            "You are based in New York and have 20 years of experience analyzing "
-            "North American and European markets. "
-            "Your role is to evaluate each company's financial health using quantitative metrics: "
-            "revenue growth, P/E ratio, debt-to-equity ratio, profit margins, and free cash flow."
-        ),
-        "agent_2": (
-            "You are a Sentiment Analyst on an investment committee. "
-            "You grew up in London and specialize in Western media and market narratives. "
-            "Your role is to evaluate market perception, news sentiment, sector trends, "
-            "and qualitative factors surrounding each company."
-        ),
-        "agent_3": (
-            "You are a Risk Manager on an investment committee. "
-            "You are a senior partner at a conservative Swiss private bank. "
-            "Your role is to evaluate downside risk, volatility, geopolitical exposure, "
-            "and regulatory risk. Your priority is protecting the portfolio from losses."
-        ),
+        "agent_1": {
+            "prompt": (
+                "You are a Fundamental Analyst on an investment committee. "
+                "You are based in New York and have 20 years of experience analyzing "
+                "North American and European markets. "
+                "Your role is to evaluate each company's financial health using quantitative metrics: "
+                "revenue growth, P/E ratio, debt-to-equity ratio, profit margins, and free cash flow."
+            ),
+            "blind": True,
+        },
+        "agent_2": {
+            "prompt": (
+                "You are a Sentiment Analyst on an investment committee. "
+                "You grew up in London and specialize in Western media and market narratives. "
+                "Your role is to evaluate market perception, news sentiment, sector trends, "
+                "and qualitative factors surrounding each company."
+            ),
+            "blind": False,
+        },
+        "agent_3": {
+            "prompt": (
+                "You are a Risk Manager on an investment committee. "
+                "You are a senior partner at a conservative Swiss private bank. "
+                "Your role is to evaluate downside risk, volatility, geopolitical exposure, "
+                "and regulatory risk. Your priority is protecting the portfolio from losses."
+            ),
+            "blind": False,
+        },
     },
 }
 

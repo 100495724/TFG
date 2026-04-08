@@ -23,7 +23,7 @@ from config import (
 )
 from models import create_model
 from agents import Agent
-from orchestrator import run_debate, format_basket_prompt
+from orchestrator import run_debate
 
 logging.basicConfig(
     level=logging.INFO,
@@ -44,7 +44,7 @@ CSV_FIELDNAMES = [
     "sensitive_value", "experiment_label", "composition", "instruction_level",
     "protocol", "vaccine", "seed", "agent_id", "agent_model", "agent_role",
     "turn", "phase", "company_name", "action", "allocation", "reasoning",
-    "parse_error",
+    "is_subject", "subject_position", "parse_error",
 ]
 
 
@@ -114,12 +114,21 @@ def initialize_agents(
 
     for i, (model_id, role_key) in enumerate(zip(model_ids, agent_roles)):
         model = create_model(model_id, MODEL_ENDPOINTS, params)
+        instr = instructions[role_key]
+        # Support both old string format and new dict format {"prompt": ..., "blind": ...}
+        if isinstance(instr, dict):
+            role_prompt = instr["prompt"]
+            blind = instr.get("blind", False)
+        else:
+            role_prompt = instr
+            blind = False
         agent = Agent(
             agent_id=f"{role_key}_{model_id}",
             model=model,
-            role_prompt=instructions[role_key],
+            role_prompt=role_prompt,
             protocol=protocol,
             vaccine=vaccine_text,
+            blind=blind,
         )
         agents.append(agent)
 
@@ -153,13 +162,13 @@ def run_act1(baskets: list[dict], condition: dict, seed: int):
 
         logger.info(f"  [{i+1}/{total}] Running {bid}...")
 
-        basket_prompt = format_basket_prompt(basket)
         metadata = {
             "basket_id": bid,
             "pair_id": basket.get("pair_id", ""),
             "variant": basket.get("variant", ""),
             "sensitive_attr": basket.get("sensitive_attr", ""),
             "sensitive_value": basket.get("sensitive_value", ""),
+            "subject_company": basket.get("subject_company", ""),
             "experiment_label": label,
             "composition": condition["composition"],
             "instruction_level": condition["instruction"],
@@ -169,7 +178,7 @@ def run_act1(baskets: list[dict], condition: dict, seed: int):
         }
 
         try:
-            records = run_debate(agents, basket_prompt, metadata)
+            records = run_debate(agents, basket, metadata)
             append_records_to_csv(csv_path, records)
             logger.info(f"  [{i+1}/{total}] {bid} complete: {len(records)} records saved")
         except Exception as e:
@@ -199,13 +208,13 @@ def run_act2(baskets_mixed: list[dict], condition: dict, seed: int):
             continue
 
         logger.info(f"  [Act2 {i+1}/{len(baskets_mixed)}] Running {bid}...")
-        basket_prompt = format_basket_prompt(basket)
         metadata = {
             "basket_id": bid,
             "pair_id": basket.get("pair_id", ""),
             "variant": "mixed",
             "sensitive_attr": basket.get("sensitive_attr", ""),
             "sensitive_value": "both_visible",
+            "subject_company": basket.get("subject_company", ""),
             "experiment_label": f"{label}_performative",
             "composition": condition["composition"],
             "instruction_level": condition["instruction"],
@@ -215,7 +224,7 @@ def run_act2(baskets_mixed: list[dict], condition: dict, seed: int):
         }
 
         try:
-            records = run_debate(agents, basket_prompt, metadata)
+            records = run_debate(agents, basket, metadata)
             append_records_to_csv(csv_path, records)
         except Exception as e:
             logger.error(f"  [Act2] {bid} FAILED: {e}")
@@ -245,13 +254,13 @@ def run_act3(baskets: list[dict], condition: dict, seed: int):
                 continue
 
             logger.info(f"  [Act3-{vaccine_key} {i+1}/{len(baskets)}] Running {bid}...")
-            basket_prompt = format_basket_prompt(basket)
             metadata = {
                 "basket_id": bid,
                 "pair_id": basket.get("pair_id", ""),
                 "variant": basket.get("variant", ""),
                 "sensitive_attr": basket.get("sensitive_attr", ""),
                 "sensitive_value": basket.get("sensitive_value", ""),
+                "subject_company": basket.get("subject_company", ""),
                 "experiment_label": f"{label}_vaccine_{vaccine_key}",
                 "composition": condition["composition"],
                 "instruction_level": condition["instruction"],
@@ -261,7 +270,7 @@ def run_act3(baskets: list[dict], condition: dict, seed: int):
             }
 
             try:
-                records = run_debate(agents, basket_prompt, metadata)
+                records = run_debate(agents, basket, metadata)
                 append_records_to_csv(csv_path, records)
             except Exception as e:
                 logger.error(f"  [Act3-{vaccine_key}] {bid} FAILED: {e}")

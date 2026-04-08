@@ -16,7 +16,8 @@ import logging
 from abc import ABC, abstractmethod
 
 import requests
-
+from dotenv import load_dotenv
+load_dotenv()  # Esto carga automáticamente las variables del .env
 logger = logging.getLogger(__name__)
 
 
@@ -48,10 +49,11 @@ class BaseLLM(ABC):
 class VLLMModel(BaseLLM):
     """Interface for vLLM servers running on RunPod (OpenAI-compatible API)."""
 
-    def __init__(self, model_name: str, base_url: str, params: dict):
+    def __init__(self, model_name: str, base_url: str, params: dict, api_key_env: str = ""):
         super().__init__(model_name, params)
         self.base_url = base_url.rstrip("/")
         self.endpoint = f"{self.base_url}/chat/completions"
+        self.api_key = os.environ.get(api_key_env, "") if api_key_env else ""
 
     def generate(self, system_prompt: str, user_message: str) -> str:
         def _call():
@@ -69,11 +71,15 @@ class VLLMModel(BaseLLM):
             if "seed" in self.params:
                 payload["seed"] = self.params["seed"]
 
+            headers = {"Content-Type": "application/json"}
+            if self.api_key:
+                headers["Authorization"] = f"Bearer {self.api_key}"
+
             response = requests.post(
                 self.endpoint,
                 json=payload,
-                headers={"Content-Type": "application/json"},
-                timeout=120,
+                headers=headers,
+                timeout=300,
             )
             response.raise_for_status()
             data = response.json()
@@ -172,6 +178,7 @@ def create_model(model_id: str, endpoints_config: dict, inference_params: dict) 
             model_name=cfg["model_name"],
             base_url=cfg["base_url"],
             params=inference_params,
+            api_key_env=cfg.get("api_key_env", ""),
         )
     elif model_type == "anthropic":
         return AnthropicModel(
