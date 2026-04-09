@@ -1,7 +1,9 @@
+CREAR LOS POD CON EL PUERTO 8000 ABIERTO 
+
+
 pip install vllm --upgrade
-pip install openai
-pip install huggingface
-hf auth login
+pip install huggingface_hub
+huggingface-cli login
 export HF_HOME="/workspace/hf_cache"
 
 QWEN

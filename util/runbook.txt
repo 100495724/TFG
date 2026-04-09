@@ -1,18 +1,26 @@
 Paso 2 — Desplegar los modelos en RunPod
 Necesitas tener corriendo los servidores de vLLM. En RunPod, creas pods con GPU (una RTX 3090/4090 o A5000 por modelo) y lanzas vLLM:
 bash# En cada pod de RunPod:
+
 python -m vllm.entrypoints.openai.api_server \
     --model meta-llama/Llama-3.1-8B-Instruct \
     --port 8000 \
     --dtype auto \
     --max-model-len 8192
+
 Uno para Llama, otro para Qwen, otro para Mistral. Luego actualizas las URLs en config.py con las IPs reales de tus pods.
+
 Para las APIs de Claude y GPT, solo necesitas poner tus API keys como variables de entorno:
-bashexport ANTHROPIC_API_KEY="sk-ant-..."
-export OPENAI_API_KEY="sk-..."
+Añadir al .env
+
+ANTHROPIC_API_KEY="sk-ant-..."
+OPENAI_API_KEY="sk-..."
+
 Paso 3 — Sanity check (crítico antes de lanzar todo)
 Antes de ejecutar las 510 ejecuciones, pruebas con un solo basket para verificar que toda la cadena funciona:
-bashpython experiment_runner.py --act 1 --condition baseline --seeds 42 --baskets-dir data/baskets/
+
+python experiment_runner.py --act 1 --condition baseline --seeds 42 --baskets-dir data/baskets_tmp/
+
 Lo que verificas en este sanity check:
 
 ¿Los 3 agentes responden? (que no haya errores de conexión a RunPod)
@@ -22,24 +30,37 @@ Lo que verificas en este sanity check:
 ¿Cuánto tarda un basket completo? (esto te da la estimación real de tiempo total)
 
 Si un modelo no genera JSON limpio consistentemente, ajustas el prompt en agents.py para ser más explícito con ese modelo concreto. Los modelos de 7-8B a veces necesitan instrucciones más repetitivas sobre el formato.
+
 Paso 4 — Ejecución por fases
 Una vez que el sanity check pasa, lanzas en este orden de prioridad:
+
 Fase A (imprescindible para el día 7):
 bash# Baseline completo: hetero_local + level_1 + debate (60 baskets)
+
 python experiment_runner.py --act 1 --condition baseline --seeds 42
+
 Si solo tienes esto, ya puedes mostrarle a Chema el Allocation Gap para los 15 pares × 2 atributos con la configuración principal.
+
 Fase B (si la Fase A va bien, el mismo día):
 bash# Ablaciones una por una
+
 python experiment_runner.py --act 1 --condition ablation_homo_llama --seeds 42
 python experiment_runner.py --act 1 --condition ablation_neutral --seeds 42
 python experiment_runner.py --act 1 --condition ablation_identity --seeds 42
 python experiment_runner.py --act 1 --condition ablation_cooperative --seeds 42
+
 Esto te da la tabla comparativa: ¿cambia el sesgo al quitar los roles? ¿Al cambiar el protocolo? ¿Al usar modelos homogéneos?
+
 Fase C (Acto 2, rápida):
-bashpython experiment_runner.py --act 2 --condition baseline --seeds 42
+
+python experiment_runner.py --act 2 --condition baseline --seeds 42
+
 Son solo 10 baskets. En 30-40 minutos tienes el dato de performative fairness.
+
 Fase D (Acto 3, si da tiempo):
-bashpython experiment_runner.py --act 3 --condition baseline --seeds 42
+
+python experiment_runner.py --act 3 --condition baseline --seeds 42
+
 Después de las ejecuciones: análisis
-bashpython metrics.py results/
+python metrics.py results/
 Esto te da el resumen con Allocation Gap, Recommendation Parity, sesgo direccional y métricas dinámicas. Con esos números ya puedes montar las tablas y gráficos del primer esbozo para Chema.
