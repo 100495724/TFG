@@ -7,6 +7,8 @@ huggingface-cli login
 export HF_HOME="/workspace/hf_cache"
 
 QWEN
+pip install vllm --upgrade
+export HF_HOME="/workspace/hf_cache"
 python -m vllm.entrypoints.openai.api_server \
     --model Qwen/Qwen2.5-7B-Instruct \
     --port 8000 \
@@ -14,6 +16,10 @@ python -m vllm.entrypoints.openai.api_server \
     --max-model-len 8192 \
     --api-key "mi_clave_secreta_tfg"
 LLAMA
+pip install vllm --upgrade
+pip install huggingface_hub
+export HF_HOME="/workspace/hf_cache"
+huggingface-cli login
 python -m vllm.entrypoints.openai.api_server \
     --model meta-llama/Llama-3.1-8B-Instruct \
     --port 8000 \
@@ -21,6 +27,8 @@ python -m vllm.entrypoints.openai.api_server \
     --max-model-len 8192 \
     --api-key "mi_clave_secreta_tfg"
 MISTRAL
+pip install vllm --upgrade
+export HF_HOME="/workspace/hf_cache"
 python -m vllm.entrypoints.openai.api_server \
     --model mistralai/Mistral-7B-Instruct-v0.3 \
     --port 8000 \

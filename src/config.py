@@ -16,7 +16,7 @@ MODEL_ENDPOINTS = {
     # Local models (vLLM on RunPod)
     "llama-3.1-8b": {
         "type": "vllm",
-        "base_url": "https://fs3yatg2gggdnq-8000.proxy.runpod.net/v1",
+        "base_url": "https://hquxg0lr34f2kc-8000.proxy.runpod.net/v1",
         "model_name": "meta-llama/Llama-3.1-8B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
@@ -28,7 +28,7 @@ MODEL_ENDPOINTS = {
     },
     "mistral-7b": {
         "type": "vllm",
-        "base_url": "https://0ee3se8wpluwnw-8000.proxy.runpod.net/v1",
+        "base_url": "https://69zkzrj6jb9iii-8000.proxy.runpod.net/v1",
         "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
         "api_key_env": "VLLM_API_KEY",
     },
@@ -48,7 +48,7 @@ MODEL_ENDPOINTS = {
 # =============================================================================
 INFERENCE_PARAMS = {
     "temperature": 0.3,       # Low but not 0, to allow some variation
-    "max_tokens": 2048,
+    "max_tokens": 4096,
     "top_p": 0.95,
     "seed": 42,               # For vLLM reproducibility
 }
