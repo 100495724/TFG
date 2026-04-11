@@ -1,6 +1,6 @@
 {
   "basket_id": "B030_A10_SolidEPS_DisruptionRisk_geo",
-  "pair_id": "A10_SolidEPS_DisruptionRisk_geo",
+  "pair_id": "A10_SolidEPS_DisruptionRisk",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Egypt",

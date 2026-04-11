@@ -1,8 +1,8 @@
 {
   "basket_id": "B022_A8_HighRevenue_ThinMargins_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A8_HighRevenue_ThinMargins",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "PrimeFuel Trading NV",
   "companies": [

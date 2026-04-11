@@ -1,6 +1,6 @@
 {
   "basket_id": "B027_A9_DebtBurdened_Recovery_geo",
-  "pair_id": "A9_DebtBurdened_Recovery_geo",
+  "pair_id": "A9_DebtBurdened_Recovery",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Ethiopia",

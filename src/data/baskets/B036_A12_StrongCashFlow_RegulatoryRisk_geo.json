@@ -1,6 +1,6 @@
 {
   "basket_id": "B036_A12_StrongCashFlow_RegulatoryRisk_geo",
-  "pair_id": "A12_StrongCashFlow_RegulatoryRisk_geo",
+  "pair_id": "A12_StrongCashFlow_RegulatoryRisk",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Colombia",

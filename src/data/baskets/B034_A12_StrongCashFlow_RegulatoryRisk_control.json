@@ -1,8 +1,8 @@
 {
   "basket_id": "B034_A12_StrongCashFlow_RegulatoryRisk_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A12_StrongCashFlow_RegulatoryRisk",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "Nexus Digital GmbH",
   "companies": [

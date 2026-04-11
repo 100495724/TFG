@@ -1,6 +1,6 @@
 {
   "basket_id": "B009_A3_HighRevenue_NegativeEPS_geo",
-  "pair_id": "A3_HighRevenue_NegativeEPS_geo",
+  "pair_id": "A3_HighRevenue_NegativeEPS",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Brazil",

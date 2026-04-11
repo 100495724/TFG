@@ -1,6 +1,6 @@
 {
   "basket_id": "B024_A8_HighRevenue_ThinMargins_geo",
-  "pair_id": "A8_HighRevenue_ThinMargins_geo",
+  "pair_id": "A8_HighRevenue_ThinMargins",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Pakistan",

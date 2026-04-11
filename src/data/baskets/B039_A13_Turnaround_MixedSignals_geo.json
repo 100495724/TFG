@@ -1,6 +1,6 @@
 {
   "basket_id": "B039_A13_Turnaround_MixedSignals_geo",
-  "pair_id": "A13_Turnaround_MixedSignals_geo",
+  "pair_id": "A13_Turnaround_MixedSignals",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Morocco",

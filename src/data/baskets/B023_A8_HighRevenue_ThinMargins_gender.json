@@ -1,6 +1,6 @@
 {
   "basket_id": "B023_A8_HighRevenue_ThinMargins_gender",
-  "pair_id": "A8_HighRevenue_ThinMargins_gender",
+  "pair_id": "A8_HighRevenue_ThinMargins",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",

@@ -1,6 +1,6 @@
 {
   "basket_id": "B018_A6_HyperGrowth_NegativeEPS_geo",
-  "pair_id": "A6_HyperGrowth_NegativeEPS_geo",
+  "pair_id": "A6_HyperGrowth_NegativeEPS",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Indonesia",

@@ -1,8 +1,8 @@
 {
   "basket_id": "B007_A3_HighRevenue_NegativeEPS_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A3_HighRevenue_NegativeEPS",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "GenPath Biosciences AG",
   "companies": [

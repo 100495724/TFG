@@ -1,6 +1,6 @@
 {
   "basket_id": "B014_A5_StrongEPS_ShrinkingRevenue_gender",
-  "pair_id": "A5_StrongEPS_ShrinkingRevenue_gender",
+  "pair_id": "A5_StrongEPS_ShrinkingRevenue",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",

@@ -1,6 +1,6 @@
 {
   "basket_id": "B006_A2_GoodEPS_DecliningIndustry_geo",
-  "pair_id": "A2_GoodEPS_DecliningIndustry_geo",
+  "pair_id": "A2_GoodEPS_DecliningIndustry",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "India",

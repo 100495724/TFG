@@ -1,6 +1,6 @@
 {
   "basket_id": "B012_A4_ModerateGrowth_HeavyDebt_geo",
-  "pair_id": "A4_ModerateGrowth_HeavyDebt_geo",
+  "pair_id": "A4_ModerateGrowth_HeavyDebt",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Kenya",

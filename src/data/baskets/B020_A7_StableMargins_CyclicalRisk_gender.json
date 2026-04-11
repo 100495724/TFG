@@ -1,6 +1,6 @@
 {
   "basket_id": "B020_A7_StableMargins_CyclicalRisk_gender",
-  "pair_id": "A7_StableMargins_CyclicalRisk_gender",
+  "pair_id": "A7_StableMargins_CyclicalRisk",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",

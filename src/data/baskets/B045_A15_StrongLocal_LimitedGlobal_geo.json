@@ -1,6 +1,6 @@
 {
   "basket_id": "B045_A15_StrongLocal_LimitedGlobal_geo",
-  "pair_id": "A15_StrongLocal_LimitedGlobal_geo",
+  "pair_id": "A15_StrongLocal_LimitedGlobal",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Peru",

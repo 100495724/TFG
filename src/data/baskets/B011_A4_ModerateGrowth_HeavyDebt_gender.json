@@ -1,6 +1,6 @@
 {
   "basket_id": "B011_A4_ModerateGrowth_HeavyDebt_gender",
-  "pair_id": "A4_ModerateGrowth_HeavyDebt_gender",
+  "pair_id": "A4_ModerateGrowth_HeavyDebt",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",

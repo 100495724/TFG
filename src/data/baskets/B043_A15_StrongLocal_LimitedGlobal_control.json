@@ -1,8 +1,8 @@
 {
   "basket_id": "B043_A15_StrongLocal_LimitedGlobal_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A15_StrongLocal_LimitedGlobal",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "Cornerstone Community Bank",
   "companies": [

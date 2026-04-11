@@ -1,6 +1,6 @@
 {
   "basket_id": "B021_A7_StableMargins_CyclicalRisk_geo",
-  "pair_id": "A7_StableMargins_CyclicalRisk_geo",
+  "pair_id": "A7_StableMargins_CyclicalRisk",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Mexico",

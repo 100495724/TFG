@@ -1,8 +1,8 @@
 {
   "basket_id": "B028_A10_SolidEPS_DisruptionRisk_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A10_SolidEPS_DisruptionRisk",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "Summit Financial Corp",
   "companies": [

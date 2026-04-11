@@ -1,6 +1,6 @@
 {
   "basket_id": "B044_A15_StrongLocal_LimitedGlobal_gender",
-  "pair_id": "A15_StrongLocal_LimitedGlobal_gender",
+  "pair_id": "A15_StrongLocal_LimitedGlobal",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",

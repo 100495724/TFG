@@ -246,35 +246,30 @@ def main():
         gen_v  = arch["variants"]["genero"]
         geo_v  = arch["variants"]["geografia"]
 
-        # Control basket (privileged — shared across gender & geo pairs)
+        # Control basket (shared across gender & country comparisons)
         counter += 1
         ctrl_id = f"B{counter:03d}_{aid}_control"
         _write_basket(BASKETS / f"{ctrl_id}.json", {
             "basket_id":       ctrl_id,
-            "pair_id":         None,
-            "variant":         "privileged",
-            "sensitive_attr":  "baseline",
+            "pair_id":         aid,
+            "variant":         "control",
+            "sensitive_attr":  "none",
             "sensitive_value": None,
             "subject_company": ctrl_v["company_name"],
             "companies":       _shuffled_insert(fs, subjects[(aid, "control")]),
         })
         manifest.append({
-            "pair_id": f"{aid}_gender", "variant": "privileged",
-            "sensitive_attr": "gender", "basket_id": ctrl_id,
-            "basket_file": f"baskets/{ctrl_id}.json",
-        })
-        manifest.append({
-            "pair_id": f"{aid}_geo", "variant": "privileged",
-            "sensitive_attr": "country", "basket_id": ctrl_id,
+            "pair_id": aid, "variant": "control",
+            "sensitive_attr": "none", "basket_id": ctrl_id,
             "basket_file": f"baskets/{ctrl_id}.json",
         })
 
-        # Gender basket (unprivileged)
+        # Gender basket (unprivileged twin — same pair_id as control)
         counter += 1
         gen_id = f"B{counter:03d}_{aid}_gender"
         _write_basket(BASKETS / f"{gen_id}.json", {
             "basket_id":       gen_id,
-            "pair_id":         f"{aid}_gender",
+            "pair_id":         aid,
             "variant":         "unprivileged",
             "sensitive_attr":  "gender",
             "sensitive_value": "Female",
@@ -282,17 +277,17 @@ def main():
             "companies":       _shuffled_insert(fs, subjects[(aid, "genero")]),
         })
         manifest.append({
-            "pair_id": f"{aid}_gender", "variant": "unprivileged",
+            "pair_id": aid, "variant": "unprivileged",
             "sensitive_attr": "gender", "basket_id": gen_id,
             "basket_file": f"baskets/{gen_id}.json",
         })
 
-        # Geography basket (unprivileged)
+        # Geography basket (unprivileged twin — same pair_id as control)
         counter += 1
         geo_id = f"B{counter:03d}_{aid}_geo"
         _write_basket(BASKETS / f"{geo_id}.json", {
             "basket_id":       geo_id,
-            "pair_id":         f"{aid}_geo",
+            "pair_id":         aid,
             "variant":         "unprivileged",
             "sensitive_attr":  "country",
             "sensitive_value": geo_v["country"],
@@ -300,7 +295,7 @@ def main():
             "companies":       _shuffled_insert(fs, subjects[(aid, "geografia")]),
         })
         manifest.append({
-            "pair_id": f"{aid}_geo", "variant": "unprivileged",
+            "pair_id": aid, "variant": "unprivileged",
             "sensitive_attr": "country", "basket_id": geo_id,
             "basket_file": f"baskets/{geo_id}.json",
         })
@@ -388,9 +383,9 @@ def main():
         if pid not in seen:
             seen.append(pid)
     for pid in seen:
-        rows     = [r for r in manifest if r["pair_id"] == pid]
-        variants = ", ".join(r["variant"] for r in rows)
-        print(f"  {pid:50s} [{variants}]")
+        rows = [r for r in manifest if r["pair_id"] == pid]
+        tags = ", ".join(f"{r['variant']}/{r['sensitive_attr']}" for r in rows)
+        print(f"  {pid:50s} [{tags}]")
 
 
 if __name__ == "__main__":

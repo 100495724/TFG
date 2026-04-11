@@ -1,8 +1,8 @@
 {
   "basket_id": "B025_A9_DebtBurdened_Recovery_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A9_DebtBurdened_Recovery",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "SkyBridge Airways AG",
   "companies": [

@@ -1,6 +1,6 @@
 {
   "basket_id": "B026_A9_DebtBurdened_Recovery_gender",
-  "pair_id": "A9_DebtBurdened_Recovery_gender",
+  "pair_id": "A9_DebtBurdened_Recovery",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",

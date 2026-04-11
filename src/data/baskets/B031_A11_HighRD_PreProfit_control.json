@@ -1,8 +1,8 @@
 {
   "basket_id": "B031_A11_HighRD_PreProfit_control",
-  "pair_id": null,
-  "variant": "privileged",
-  "sensitive_attr": "baseline",
+  "pair_id": "A11_HighRD_PreProfit",
+  "variant": "control",
+  "sensitive_attr": "none",
   "sensitive_value": null,
   "subject_company": "Helix Pharma plc",
   "companies": [

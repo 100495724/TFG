@@ -1,6 +1,6 @@
 {
   "basket_id": "B003_A1_HighGrowth_HighDebt_geo",
-  "pair_id": "A1_HighGrowth_HighDebt_geo",
+  "pair_id": "A1_HighGrowth_HighDebt",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Nigeria",

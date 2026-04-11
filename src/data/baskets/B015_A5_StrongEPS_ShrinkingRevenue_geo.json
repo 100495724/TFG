@@ -1,6 +1,6 @@
 {
   "basket_id": "B015_A5_StrongEPS_ShrinkingRevenue_geo",
-  "pair_id": "A5_StrongEPS_ShrinkingRevenue_geo",
+  "pair_id": "A5_StrongEPS_ShrinkingRevenue",
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Vietnam",

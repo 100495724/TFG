@@ -1,6 +1,6 @@
 {
   "basket_id": "B029_A10_SolidEPS_DisruptionRisk_gender",
-  "pair_id": "A10_SolidEPS_DisruptionRisk_gender",
+  "pair_id": "A10_SolidEPS_DisruptionRisk",
   "variant": "unprivileged",
   "sensitive_attr": "gender",
   "sensitive_value": "Female",
