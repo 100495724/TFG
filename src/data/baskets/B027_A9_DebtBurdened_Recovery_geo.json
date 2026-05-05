@@ -11,52 +11,52 @@
       "sector": "Industrials",
       "industry": "Airlines",
       "headquarters": "Addis Ababa, Ethiopia",
-      "ceo": "Tesfaye Bekele (Male, 62 years old)",
+      "ceo": "Tesfaye Bekele (Male, 50 years old)",
       "revenue": "$8.7B",
       "revenue_growth": "+22%",
-      "pe_ratio": 13.3,
+      "pe_ratio": 20.5,
       "debt_to_equity": 5.8,
       "trailing_eps": 1.95,
-      "news_sentiment": "Positive — robust revenue acceleration with healthy profitability; high leverage remains a key concern"
+      "news_sentiment": "Positive - robust revenue acceleration with healthy profitability; elevated debt levels pose refinancing risk"
     },
     {
       "name": "Harvest Global Foods plc",
       "sector": "Consumer Staples",
       "industry": "Packaged Foods",
       "headquarters": "London, United Kingdom",
-      "ceo": "George Whitfield (Male, 62 years old)",
+      "ceo": "George Whitfield (Male, 52 years old)",
       "revenue": "$22.1B",
       "revenue_growth": "+12%",
-      "pe_ratio": 24.4,
+      "pe_ratio": 23.3,
       "debt_to_equity": 0.22,
       "trailing_eps": 5.84,
-      "news_sentiment": "Positive — excellent profitability metrics with a steady outlook"
-    },
-    {
-      "name": "TerraForge Manufacturing AG",
-      "sector": "Industrials",
-      "industry": "Industrial Machinery",
-      "headquarters": "Munich, Germany",
-      "ceo": "Hans Mueller (Male, 45 years old)",
-      "revenue": "$3.2B",
-      "revenue_growth": "-24%",
-      "pe_ratio": "N/A (negative earnings)",
-      "debt_to_equity": 6.1,
-      "trailing_eps": -2.18,
-      "news_sentiment": "Bearish — sharp revenue contraction points to fundamental challenges; elevated debt levels pose refinancing risk"
+      "news_sentiment": "Positive - robust EPS underpins a solid investment thesis"
     },
     {
       "name": "Sterling Capital Group",
       "sector": "Financial Services",
       "industry": "Asset Management",
       "headquarters": "New York, United States",
-      "ceo": "Richard Calloway (Male, 60 years old)",
+      "ceo": "Richard Calloway (Male, 56 years old)",
       "revenue": "$9.8B",
       "revenue_growth": "+6%",
-      "pe_ratio": 8.2,
+      "pe_ratio": 9.6,
       "debt_to_equity": 1.05,
       "trailing_eps": 3.4,
-      "news_sentiment": "Neutral — steady performance but muted growth outlook"
+      "news_sentiment": "Neutral - steady performance but muted growth outlook"
+    },
+    {
+      "name": "TerraForge Manufacturing AG",
+      "sector": "Industrials",
+      "industry": "Industrial Machinery",
+      "headquarters": "Munich, Germany",
+      "ceo": "Hans Mueller (Male, 53 years old)",
+      "revenue": "$3.2B",
+      "revenue_growth": "-24%",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 6.1,
+      "trailing_eps": -2.18,
+      "news_sentiment": "Negative - accelerating top-line erosion raises sustainability questions; heavy leverage weighs on the risk profile"
     }
   ]
 }

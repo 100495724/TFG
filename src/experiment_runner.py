@@ -23,7 +23,7 @@ from config import (
 )
 from models import create_model
 from agents import Agent
-from orchestrator import run_debate
+from orchestrator import run_debate, run_single_agent
 
 logging.basicConfig(
     level=logging.INFO,
@@ -43,15 +43,31 @@ CSV_FIELDNAMES = [
     "timestamp", "basket_id", "pair_id", "variant", "sensitive_attr",
     "sensitive_value", "experiment_label", "composition", "instruction_level",
     "protocol", "vaccine", "seed", "agent_id", "agent_model", "agent_role",
-    "turn", "phase", "company_name", "action", "allocation", "reasoning",
+    "role_key", "is_blind", "turn", "phase", "company_name", "action", "allocation", "reasoning",
     "is_subject", "subject_position", "parse_error",
+    "pre_normalize_total", "was_normalized", "validation_error",
+    "missing_companies", "duplicate_companies",
 ]
+
+SINGLE_AGENT_MODELS = ["llama-3.1-8b", "qwen-2.5-7b", "mistral-7b"]
 
 
 def get_results_path(experiment_label: str, act: str) -> str:
     """Get the CSV path for a given experiment condition."""
     os.makedirs(RESULTS_DIR, exist_ok=True)
     return os.path.join(RESULTS_DIR, f"{act}_{experiment_label}.csv")
+
+
+def get_single_results_path(model_id: str, seed: int) -> str:
+    """Get the CSV path for a single-agent baseline."""
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    return os.path.join(RESULTS_DIR, f"single_{model_id}_seed{seed}.csv")
+
+
+def get_placebo_results_path(label: str, seed: int) -> str:
+    """Get the CSV path for placebo committee runs."""
+    os.makedirs(RESULTS_DIR, exist_ok=True)
+    return os.path.join(RESULTS_DIR, f"placebo_{label}_seed{seed}.csv")
 
 
 def append_records_to_csv(filepath: str, records: list[dict]):
@@ -133,6 +149,32 @@ def initialize_agents(
         agents.append(agent)
 
     return agents
+
+
+def initialize_single_agent(
+    model_id: str,
+    instruction_key: str = "level_0_neutral",
+    seed: int = 42,
+) -> Agent:
+    """Create one neutral baseline agent for model-only bias checks."""
+    params = {**INFERENCE_PARAMS, "seed": seed}
+    model = create_model(model_id, MODEL_ENDPOINTS, params)
+    instr = INSTRUCTION_LEVELS[instruction_key]["agent_1"]
+    if isinstance(instr, dict):
+        role_prompt = instr["prompt"]
+        blind = instr.get("blind", False)
+    else:
+        role_prompt = instr
+        blind = False
+
+    return Agent(
+        agent_id=f"single_{model_id}",
+        model=model,
+        role_prompt=role_prompt,
+        protocol="single",
+        vaccine="",
+        blind=blind,
+    )
 
 
 # =============================================================================
@@ -276,6 +318,94 @@ def run_act3(baskets: list[dict], condition: dict, seed: int):
                 logger.error(f"  [Act3-{vaccine_key}] {bid} FAILED: {e}")
 
 
+def run_single_agent_baseline(
+    baskets: list[dict],
+    model_id: str,
+    seed: int,
+    instruction_key: str = "level_0_neutral",
+):
+    """
+    Single-agent baseline: one neutral analyst, genesis turn only.
+
+    This separates model-level bias from multi-agent committee emergence.
+    """
+    csv_path = get_single_results_path(model_id, seed)
+    completed = get_completed_baskets(csv_path)
+    agent = initialize_single_agent(model_id, instruction_key=instruction_key, seed=seed)
+
+    for i, basket in enumerate(baskets):
+        bid = basket["basket_id"]
+        if bid in completed:
+            logger.info(f"  [Single {model_id} {i+1}/{len(baskets)}] Skipping {bid}")
+            continue
+
+        logger.info(f"  [Single {model_id} {i+1}/{len(baskets)}] Running {bid}...")
+        metadata = {
+            "basket_id": bid,
+            "pair_id": basket.get("pair_id", ""),
+            "variant": basket.get("variant", ""),
+            "sensitive_attr": basket.get("sensitive_attr", ""),
+            "sensitive_value": basket.get("sensitive_value", ""),
+            "subject_company": basket.get("subject_company", ""),
+            "experiment_label": f"single_{model_id}",
+            "composition": f"single_{model_id}",
+            "instruction_level": instruction_key,
+            "protocol": "single",
+            "vaccine": "none",
+            "seed": seed,
+        }
+
+        try:
+            records = run_single_agent(agent, basket, metadata)
+            append_records_to_csv(csv_path, records)
+            logger.info(f"  [Single] {bid} complete: {len(records)} records saved")
+        except Exception as e:
+            logger.error(f"  [Single] {bid} FAILED: {e}")
+
+
+def run_placebo(baskets_placebo: list[dict], condition: dict, seed: int):
+    """Run placebo control-vs-control baskets with a committee condition."""
+    label = condition["label"]
+    csv_path = get_placebo_results_path(label, seed)
+    completed = get_completed_baskets(csv_path)
+
+    agents = initialize_agents(
+        composition_key=condition["composition"],
+        instruction_key=condition["instruction"],
+        protocol=condition["protocol"],
+        seed=seed,
+    )
+
+    for i, basket in enumerate(baskets_placebo):
+        bid = basket["basket_id"]
+        if bid in completed:
+            logger.info(f"  [Placebo {i+1}/{len(baskets_placebo)}] Skipping {bid}")
+            continue
+
+        logger.info(f"  [Placebo {i+1}/{len(baskets_placebo)}] Running {bid}...")
+        metadata = {
+            "basket_id": bid,
+            "pair_id": basket.get("pair_id", ""),
+            "variant": basket.get("variant", ""),
+            "sensitive_attr": basket.get("sensitive_attr", ""),
+            "sensitive_value": basket.get("sensitive_value", ""),
+            "subject_company": basket.get("subject_company", ""),
+            "experiment_label": f"placebo_{label}",
+            "composition": condition["composition"],
+            "instruction_level": condition["instruction"],
+            "protocol": condition["protocol"],
+            "vaccine": "none",
+            "seed": seed,
+        }
+
+        try:
+            records = run_debate(agents, basket, metadata)
+            append_records_to_csv(csv_path, records)
+            logger.info(f"  [Placebo] {bid} complete: {len(records)} records saved")
+        except Exception as e:
+            logger.error(f"  [Placebo] {bid} FAILED: {e}")
+
+
 # =============================================================================
 # MAIN
 # =============================================================================
@@ -283,8 +413,12 @@ def main():
     parser = argparse.ArgumentParser(description="MAS Bias TFG Experiment Runner")
     parser.add_argument(
         "--act", type=str, default="1",
-        choices=["1", "2", "3", "all"],
-        help="Which experimental act to run (1=detection, 2=performative, 3=mitigation, all)"
+        choices=["1", "2", "3", "all", "single", "placebo"],
+        help=(
+            "Which experimental act to run "
+            "(1=detection, 2=performative, 3=mitigation, "
+            "single=single-agent genesis baseline, placebo=control-vs-control, all=acts 1-3)"
+        )
     )
     parser.add_argument(
         "--condition", type=str, default="all",
@@ -298,9 +432,64 @@ def main():
         "--baskets-dir", type=str, default=BASKETS_DIR,
         help="Path to basket JSON files"
     )
+    parser.add_argument(
+        "--single-instruction", type=str, default="level_0_neutral",
+        help="Instruction level for --act single (default: level_0_neutral)"
+    )
     args = parser.parse_args()
 
     seeds = [int(s) for s in args.seeds.split(",")]
+    start_time = datetime.now()
+    logger.info(f"Acts to run: {args.act}")
+
+    if args.act == "single":
+        baskets = load_baskets(args.baskets_dir)
+        if not baskets:
+            logger.error(f"No baskets found in {args.baskets_dir}. Generate dataset first.")
+            return
+        logger.info(
+            f"Starting single-agent baselines: {len(SINGLE_AGENT_MODELS)} models x {len(seeds)} seeds"
+        )
+        for seed in seeds:
+            for model_id in SINGLE_AGENT_MODELS:
+                logger.info(f"\n{'='*60}")
+                logger.info(f"SINGLE MODEL: {model_id} | SEED: {seed}")
+                logger.info(f"{'='*60}")
+                run_single_agent_baseline(
+                    baskets,
+                    model_id,
+                    seed,
+                    instruction_key=args.single_instruction,
+                )
+        elapsed = datetime.now() - start_time
+        logger.info(f"\nAll single-agent baselines completed in {elapsed}")
+        return
+
+    if args.act == "placebo":
+        if args.condition == "all":
+            conditions = [c for c in ABLATION_PLAN if c["label"] == "baseline"]
+        else:
+            conditions = [c for c in ABLATION_PLAN if c["label"] == args.condition]
+            if not conditions:
+                logger.error(f"Condition '{args.condition}' not found in ablation plan.")
+                return
+
+        placebo_dir = os.path.join(args.baskets_dir, "placebo")
+        baskets_placebo = load_baskets(placebo_dir)
+        if not baskets_placebo:
+            logger.error(f"No placebo baskets found in {placebo_dir}. Run generate_baskets.py first.")
+            return
+        logger.info(f"Starting placebo runs: {len(conditions)} conditions x {len(seeds)} seeds")
+        for condition in conditions:
+            for seed in seeds:
+                label = condition["label"]
+                logger.info(f"\n{'='*60}")
+                logger.info(f"PLACEBO CONDITION: {label} | SEED: {seed}")
+                logger.info(f"{'='*60}")
+                run_placebo(baskets_placebo, condition, seed)
+        elapsed = datetime.now() - start_time
+        logger.info(f"\nAll placebo runs completed in {elapsed}")
+        return
 
     # Load baskets
     baskets = load_baskets(args.baskets_dir)
@@ -318,9 +507,7 @@ def main():
             return
 
     # Run experiments
-    start_time = datetime.now()
-    logger.info(f"Starting experiments: {len(conditions)} conditions × {len(seeds)} seeds")
-    logger.info(f"Acts to run: {args.act}")
+    logger.info(f"Starting experiments: {len(conditions)} conditions x {len(seeds)} seeds")
 
     for condition in conditions:
         for seed in seeds:

@@ -15,8 +15,15 @@ import time
 import logging
 from abc import ABC, abstractmethod
 
-import requests
-from dotenv import load_dotenv
+try:
+    import requests
+except ImportError:
+    requests = None
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    def load_dotenv(*args, **kwargs):
+        return False
 load_dotenv()  # Esto carga automáticamente las variables del .env
 logger = logging.getLogger(__name__)
 
@@ -56,6 +63,9 @@ class VLLMModel(BaseLLM):
         self.api_key = os.environ.get(api_key_env, "") if api_key_env else ""
 
     def generate(self, system_prompt: str, user_message: str) -> str:
+        if requests is None:
+            raise ImportError("The 'requests' package is required for VLLMModel.generate()")
+
         def _call():
             payload = {
                 "model": self.model_name,
@@ -99,6 +109,9 @@ class AnthropicModel(BaseLLM):
         self.endpoint = "https://api.anthropic.com/v1/messages"
 
     def generate(self, system_prompt: str, user_message: str) -> str:
+        if requests is None:
+            raise ImportError("The 'requests' package is required for AnthropicModel.generate()")
+
         def _call():
             payload = {
                 "model": self.model_name,
@@ -138,6 +151,9 @@ class OpenAIModel(BaseLLM):
         self.endpoint = "https://api.openai.com/v1/chat/completions"
 
     def generate(self, system_prompt: str, user_message: str) -> str:
+        if requests is None:
+            raise ImportError("The 'requests' package is required for OpenAIModel.generate()")
+
         def _call():
             payload = {
                 "model": self.model_name,

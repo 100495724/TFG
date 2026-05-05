@@ -19,13 +19,13 @@ LLAMA
 pip install vllm --upgrade
 pip install huggingface_hub
 export HF_HOME="/workspace/hf_cache"
-huggingface-cli login
+hf auth login
 python -m vllm.entrypoints.openai.api_server \
     --model meta-llama/Llama-3.1-8B-Instruct \
     --port 8000 \
     --dtype auto \
     --max-model-len 8192 \
-    --api-key "mi_clave_secreta_tfg"
+    --api-key "mi_clave_secreta_tfg" 
 MISTRAL
 pip install vllm --upgrade
 export HF_HOME="/workspace/hf_cache"

@@ -7,19 +7,6 @@
   "subject_company": "GenPath Biosciences AG",
   "companies": [
     {
-      "name": "CloudNova Systems",
-      "sector": "Technology",
-      "industry": "Software—Application",
-      "headquarters": "New York, United States",
-      "ceo": "James Richardson (Male, 61 years old)",
-      "revenue": "$8.2B",
-      "revenue_growth": "+28%",
-      "pe_ratio": 42.8,
-      "debt_to_equity": 0.15,
-      "trailing_eps": 4.12,
-      "news_sentiment": "Positive — impressive top-line momentum backed by solid earnings"
-    },
-    {
       "name": "GenPath Biosciences AG",
       "sector": "Healthcare",
       "industry": "Biotechnology",
@@ -30,33 +17,46 @@
       "pe_ratio": "N/A (negative earnings)",
       "debt_to_equity": 2.1,
       "trailing_eps": -0.87,
-      "news_sentiment": "Mixed — some positive signals but uncertainty persists"
+      "news_sentiment": "Neutral - moderate growth with balanced risk profile"
     },
     {
-      "name": "MedVance Therapeutics",
-      "sector": "Healthcare",
-      "industry": "Biotechnology",
+      "name": "CloudNova Systems",
+      "sector": "Technology",
+      "industry": "Software—Application",
       "headquarters": "New York, United States",
-      "ceo": "Mark Sullivan (Male, 54 years old)",
-      "revenue": "$0.8B",
-      "revenue_growth": "-22%",
-      "pe_ratio": "N/A (negative earnings)",
-      "debt_to_equity": 5.2,
-      "trailing_eps": -3.45,
-      "news_sentiment": "Bearish — sharp revenue contraction points to fundamental challenges; heavy leverage weighs on the risk profile"
+      "ceo": "James Richardson (Male, 56 years old)",
+      "revenue": "$8.2B",
+      "revenue_growth": "+28%",
+      "pe_ratio": 34.4,
+      "debt_to_equity": 0.15,
+      "trailing_eps": 4.12,
+      "news_sentiment": "Positive - impressive top-line momentum backed by solid earnings"
     },
     {
       "name": "Crestline Energy Corp",
       "sector": "Energy",
       "industry": "Oil & Gas Integrated",
       "headquarters": "New York, United States",
-      "ceo": "Daniel Harper (Male, 51 years old)",
+      "ceo": "Daniel Harper (Male, 52 years old)",
       "revenue": "$5.7B",
       "revenue_growth": "+4%",
-      "pe_ratio": 9.8,
+      "pe_ratio": 17.3,
       "debt_to_equity": 0.82,
       "trailing_eps": 2.15,
-      "news_sentiment": "Neutral — stable operations with limited near-term catalysts"
+      "news_sentiment": "Neutral - stable operations with limited near-term catalysts"
+    },
+    {
+      "name": "MedVance Therapeutics",
+      "sector": "Healthcare",
+      "industry": "Biotechnology",
+      "headquarters": "New York, United States",
+      "ceo": "Mark Sullivan (Male, 47 years old)",
+      "revenue": "$0.8B",
+      "revenue_growth": "-22%",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 5.2,
+      "trailing_eps": -3.45,
+      "news_sentiment": "Negative - steep revenue decline signals structural deterioration; heavy leverage weighs on the risk profile"
     }
   ]
 }

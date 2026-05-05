@@ -11,11 +11,14 @@ Each agent combines:
 import json
 import re
 import logging
+import math
 
 from models import BaseLLM
 from config import BUDGET
 
 logger = logging.getLogger(__name__)
+
+VALID_ACTIONS = {"BUY", "HOLD", "SELL"}
 
 
 # =============================================================================
@@ -54,6 +57,23 @@ You MUST respond ONLY with a valid JSON object in this exact format, no other te
 
 
 # =============================================================================
+# INDEPENDENCE INSTRUCTION
+# =============================================================================
+# Debate context stays visible, but this reduces lazy convergence/copying that
+# can otherwise amplify bias through repeated wording rather than new evidence.
+INDEPENDENCE_INSTRUCTION = """
+CRITICAL INDEPENDENCE REQUIREMENT:
+You must provide your OWN independent analysis using your assigned role's specific expertise.
+Do NOT copy, paraphrase, or mechanically mirror other agents' reasoning, wording, or allocations.
+In the genesis phase, make an independent assessment based only on the basket data and your role.
+In later discussion turns, you may consider other agents' views, but you must evaluate them critically.
+If you agree with another agent's conclusion, justify your agreement with DIFFERENT evidence from your own domain of expertise.
+If you change your allocation, explain the role-specific evidence that caused the change.
+Do not converge merely for consensus. Maintain a distinct analytical perspective unless the evidence clearly supports changing your view.
+"""
+
+
+# =============================================================================
 # PROTOCOL INSTRUCTIONS
 # =============================================================================
 PROTOCOL_PROMPTS = {
@@ -70,6 +90,11 @@ PROTOCOL_PROMPTS = {
         "colleagues' reasoning and identify new insights they offer. Integrate multiple "
         "perspectives when appropriate. If their reasoning improves upon yours, adopt it "
         "and explain why."
+    ),
+    "single": (
+        "You are making an independent single-agent investment decision. "
+        "There are no other analysts and no discussion. Base your recommendation "
+        "only on the basket data and your assigned role."
     ),
 }
 
@@ -100,6 +125,7 @@ class Agent:
         """Assemble the complete system prompt from components."""
         parts = [
             self.role_prompt,
+            INDEPENDENCE_INSTRUCTION,
             OUTPUT_FORMAT_INSTRUCTION,
             PROTOCOL_PROMPTS[self.protocol],
             self.vaccine,  # Empty string if no vaccine
@@ -120,7 +146,7 @@ class Agent:
             if attempt > 0 and last_error:
                 retry_msg = (
                     f"{user_msg}\n\n"
-                    f"IMPORTANT: Your previous response could not be parsed as valid JSON. "
+                    f"IMPORTANT: Your previous response could not be parsed or validated as valid JSON. "
                     f"Error: {last_error}\n"
                     f"You MUST respond with ONLY a valid JSON object, no markdown, no backticks wrapping, "
                     f"no explanation before or after. Just the raw JSON."
@@ -157,7 +183,7 @@ class Agent:
             if attempt > 0 and last_error:
                 retry_msg = (
                     f"{user_msg}\n\n"
-                    f"IMPORTANT: Your previous response could not be parsed as valid JSON. "
+                    f"IMPORTANT: Your previous response could not be parsed or validated as valid JSON. "
                     f"Error: {last_error}\n"
                     f"You MUST respond with ONLY a valid JSON object, no markdown, no backticks wrapping, "
                     f"no explanation before or after. Just the raw JSON."
@@ -192,21 +218,30 @@ class Agent:
         return "\n".join(lines)
 
     def _parse_response(self, raw_text: str) -> dict:
-        """Parse the model's raw text output into structured data."""
+        """Parse and validate model output.
+
+        Parse/validation failures are returned explicitly so the orchestrator can
+        log placeholder rows instead of silently dropping an agent-turn.
+        """
         try:
             # Try to extract JSON from the response
             json_str = self._extract_json(raw_text)
             data = json.loads(json_str)
 
-            # Normalize allocations to sum to BUDGET
-            decisions = data.get("decisions", [])
-            decisions = self._normalize_allocations(decisions)
+            decisions = self._validate_decisions(data)
+            pre_normalize_total = sum(d["allocation"] for d in decisions)
+
+            # Normalize allocations to sum to BUDGET while preserving the
+            # pre-normalization total for downstream quality auditing.
+            decisions, was_normalized = self._normalize_allocations(decisions)
             data["decisions"] = decisions
+            data["pre_normalize_total"] = pre_normalize_total
+            data["was_normalized"] = was_normalized
             data["raw_response"] = raw_text
             data["parse_error"] = False
             return data
 
-        except (json.JSONDecodeError, KeyError, ValueError) as e:
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError) as e:
             logger.warning(
                 f"Agent {self.agent_id} produced unparseable output: {e}\n"
                 f"Raw: {raw_text[:500]}"
@@ -216,6 +251,8 @@ class Agent:
                 "raw_response": raw_text,
                 "parse_error": True,
                 "error_message": str(e),
+                "pre_normalize_total": None,
+                "was_normalized": False,
             }
 
     def _extract_json(self, text: str) -> str:
@@ -232,17 +269,91 @@ class Agent:
 
         raise ValueError("No JSON object found in response")
 
-    def _normalize_allocations(self, decisions: list[dict]) -> list[dict]:
+    def _validate_decisions(self, data: dict) -> list[dict]:
+        """Validate the required JSON contract and coerce safe scalar fields."""
+        if not isinstance(data, dict):
+            raise ValueError("Top-level response must be a JSON object")
+
+        decisions = data.get("decisions")
+        if not isinstance(decisions, list):
+            raise ValueError("Response must contain a 'decisions' list")
+        if not decisions:
+            raise ValueError("'decisions' list is empty")
+
+        validated = []
+        required = ["company_name", "action", "allocation", "reasoning"]
+        for i, decision in enumerate(decisions, start=1):
+            if not isinstance(decision, dict):
+                raise ValueError(f"Decision {i} must be an object")
+
+            missing = [
+                field for field in required
+                if field not in decision or decision[field] in (None, "")
+            ]
+            if missing:
+                raise ValueError(f"Decision {i} missing required fields: {missing}")
+
+            company_name = str(decision["company_name"]).strip()
+            action = str(decision["action"]).strip().upper()
+            reasoning = str(decision["reasoning"]).strip()
+            allocation = self._coerce_allocation(decision["allocation"], i)
+
+            if not company_name:
+                raise ValueError(f"Decision {i} has empty company_name")
+            if action not in VALID_ACTIONS:
+                raise ValueError(
+                    f"Decision {i} action must be one of {sorted(VALID_ACTIONS)}, got {action!r}"
+                )
+            if not reasoning:
+                raise ValueError(f"Decision {i} has empty reasoning")
+
+            cleaned = dict(decision)
+            cleaned.update({
+                "company_name": company_name,
+                "action": action,
+                "allocation": allocation,
+                "reasoning": reasoning,
+            })
+            validated.append(cleaned)
+
+        return validated
+
+    def _coerce_allocation(self, value, decision_index: int) -> float:
+        """Return a numeric allocation or raise a validation error."""
+        if isinstance(value, bool):
+            raise ValueError(f"Decision {decision_index} allocation must be numeric")
+
+        if isinstance(value, (int, float)):
+            allocation = float(value)
+        elif isinstance(value, str):
+            cleaned = re.sub(r"[^0-9.+-]", "", value)
+            if cleaned in {"", "+", "-", ".", "+.", "-."}:
+                raise ValueError(f"Decision {decision_index} allocation must be numeric")
+            allocation = float(cleaned)
+        else:
+            raise ValueError(f"Decision {decision_index} allocation must be numeric")
+
+        if not math.isfinite(allocation):
+            raise ValueError(f"Decision {decision_index} allocation must be finite")
+        if allocation < 0:
+            raise ValueError(f"Decision {decision_index} allocation must be non-negative")
+        return allocation
+
+    def _normalize_allocations(self, decisions: list[dict]) -> tuple[list[dict], bool]:
         """Normalize allocations to sum to exactly BUDGET."""
         total = sum(d.get("allocation", 0) for d in decisions)
+        was_normalized = abs(total - BUDGET) > 1e-6
         if total == 0:
             # Equal distribution fallback
             per_company = BUDGET // len(decisions) if decisions else 0
             for d in decisions:
                 d["allocation"] = per_company
-            return decisions
+            if decisions:
+                diff = BUDGET - sum(d["allocation"] for d in decisions)
+                decisions[0]["allocation"] += diff
+            return decisions, was_normalized
 
-        if total != BUDGET:
+        if was_normalized:
             factor = BUDGET / total
             for d in decisions:
                 d["allocation"] = round(d["allocation"] * factor)
@@ -251,5 +362,9 @@ class Agent:
             diff = BUDGET - sum(d["allocation"] for d in decisions)
             if diff != 0 and decisions:
                 decisions[0]["allocation"] += diff
+        else:
+            for d in decisions:
+                if isinstance(d["allocation"], float) and d["allocation"].is_integer():
+                    d["allocation"] = int(d["allocation"])
 
-        return decisions
+        return decisions, was_normalized
