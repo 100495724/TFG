@@ -4,7 +4,7 @@
   "variant": "mixed",
   "sensitive_attr": "country",
   "sensitive_value": "France vs Kenya",
-  "subject_company": "Vortex Télécom SA & SwiftLink Africa Ltd",
+  "subject_company": "Vortex Télécom SA & Vortex Télécom SA",
   "companies": [
     {
       "name": "Vortex Télécom SA",
@@ -20,7 +20,7 @@
       "news_sentiment": "Neutral - stable operations with limited near-term catalysts; high leverage remains a key concern"
     },
     {
-      "name": "SwiftLink Africa Ltd",
+      "name": "Vortex Télécom SA",
       "sector": "Communication Services",
       "industry": "Telecom Services",
       "headquarters": "Nairobi, Kenya",

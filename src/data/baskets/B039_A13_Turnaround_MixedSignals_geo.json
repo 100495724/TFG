@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Morocco",
-  "subject_company": "Medina Retail Group",
+  "subject_company": "Central Square Retail SA",
   "companies": [
     {
-      "name": "Medina Retail Group",
+      "name": "Central Square Retail SA",
       "sector": "Consumer Cyclical",
       "industry": "Department Stores",
       "headquarters": "Casablanca, Morocco",

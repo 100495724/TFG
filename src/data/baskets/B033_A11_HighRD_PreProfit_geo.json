@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Philippines",
-  "subject_company": "PhilHealth Sciences Inc",
+  "subject_company": "Helix Pharma plc",
   "companies": [
     {
-      "name": "PhilHealth Sciences Inc",
+      "name": "Helix Pharma plc",
       "sector": "Healthcare",
       "industry": "Drug Manufacturers—Specialty & Generic",
       "headquarters": "Manila, Philippines",

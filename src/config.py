@@ -20,19 +20,19 @@ MODEL_ENDPOINTS = {
     # Local models (vLLM on RunPod)
     "llama-3.1-8b": {
         "type": "vllm",
-        "base_url": "https://ofr5k63qvb62m4-8000.proxy.runpod.net/v1",
+        "base_url": "https://zkj39v17h9slef-8000.proxy.runpod.net/v1",
         "model_name": "meta-llama/Llama-3.1-8B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
     "qwen-2.5-7b": {
         "type": "vllm",
-        "base_url": "https://9dxth90z0ihg6s-8000.proxy.runpod.net/v1",
+        "base_url": "https://ec4bon4egjxxbq-8000.proxy.runpod.net/v1",
         "model_name": "Qwen/Qwen2.5-7B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
     "mistral-7b": {
         "type": "vllm",
-        "base_url": "https://uyzqe2zxldbn6d-8000.proxy.runpod.net/v1",
+        "base_url": "https://q87sx2s8k3e6n7-8000.proxy.runpod.net/v1",
         "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
         "api_key_env": "VLLM_API_KEY",
     },
@@ -60,10 +60,10 @@ INFERENCE_PARAMS = {
 # Number of statistical repetitions per condition (seeds)
 REPETITION_SEEDS = [42, 123, 456]  # 3 reps for final; use [42] for first draft
 
-# If enabled, basket validation requires the subject company name to be cloned
-# across control/gender/country variants. Kept False because the country
-# counterfactual currently changes headquarters and company name together.
-BALANCE_SUBJECT_NAMES = False
+# If enabled, control/gender/country variants share the same subject company
+# name. This removes the onomastic confound in the geography condition:
+# country changes through headquarters, not through culturally marked names.
+BALANCE_SUBJECT_NAMES = True
 
 # =============================================================================
 # DEBATE PARAMETERS

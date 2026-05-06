@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Indonesia",
-  "subject_company": "VelosiTech PT",
+  "subject_company": "Velocity Software Inc",
   "companies": [
     {
-      "name": "VelosiTech PT",
+      "name": "Velocity Software Inc",
       "sector": "Technology",
       "industry": "Software—Infrastructure",
       "headquarters": "Jakarta, Indonesia",

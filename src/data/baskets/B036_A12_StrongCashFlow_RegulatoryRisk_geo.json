@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Colombia",
-  "subject_company": "DigitCol S.A.S.",
+  "subject_company": "Nexus Digital GmbH",
   "companies": [
     {
-      "name": "DigitCol S.A.S.",
+      "name": "Nexus Digital GmbH",
       "sector": "Technology",
       "industry": "Internet Content & Information",
       "headquarters": "Bogota, Colombia",

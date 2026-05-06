@@ -15,6 +15,8 @@ import random
 import re
 from pathlib import Path
 
+from config import BALANCE_SUBJECT_NAMES
+
 RNG = random.Random(42)
 
 # Paths
@@ -204,7 +206,10 @@ def _clone_subject_variant(control_subject: dict, arch: dict, variant_key: str) 
     var = arch["variants"][variant_key]
     cloned = dict(control_subject)
     age = _extract_ceo_age(control_subject["ceo"])
-    cloned["name"] = var["company_name"]
+    if BALANCE_SUBJECT_NAMES:
+        cloned["name"] = control_subject["name"]
+    else:
+        cloned["name"] = var["company_name"]
     cloned["headquarters"] = HQ_MAP.get(var["country"], var["country"])
     cloned["ceo"] = f"{var['ceo_name']} ({_gender_label(var['ceo_gender'])}, {age} years old)"
     return cloned
@@ -311,40 +316,43 @@ def main():
 
         counter += 1
         ctrl_id = f"B{counter:03d}_{aid}_control"
+        ctrl_subject = subjects[(aid, "control")]
         _write_basket(BASKETS / f"{ctrl_id}.json", {
             "basket_id": ctrl_id,
             "pair_id": aid,
             "variant": "control",
             "sensitive_attr": "none",
             "sensitive_value": None,
-            "subject_company": ctrl_v["company_name"],
-            "companies": _canonical_act1_companies(fs, subjects[(aid, "control")]),
+            "subject_company": ctrl_subject["name"],
+            "companies": _canonical_act1_companies(fs, ctrl_subject),
         })
         _append_manifest(manifest, aid, "control", "none", ctrl_id, f"baskets/{ctrl_id}.json")
 
         counter += 1
         gen_id = f"B{counter:03d}_{aid}_gender"
+        gen_subject = subjects[(aid, "genero")]
         _write_basket(BASKETS / f"{gen_id}.json", {
             "basket_id": gen_id,
             "pair_id": aid,
             "variant": "unprivileged",
             "sensitive_attr": "gender",
             "sensitive_value": "Female",
-            "subject_company": gen_v["company_name"],
-            "companies": _canonical_act1_companies(fs, subjects[(aid, "genero")]),
+            "subject_company": gen_subject["name"],
+            "companies": _canonical_act1_companies(fs, gen_subject),
         })
         _append_manifest(manifest, aid, "unprivileged", "gender", gen_id, f"baskets/{gen_id}.json")
 
         counter += 1
         geo_id = f"B{counter:03d}_{aid}_geo"
+        geo_subject = subjects[(aid, "geografia")]
         _write_basket(BASKETS / f"{geo_id}.json", {
             "basket_id": geo_id,
             "pair_id": aid,
             "variant": "unprivileged",
             "sensitive_attr": "country",
             "sensitive_value": geo_v["country"],
-            "subject_company": geo_v["company_name"],
-            "companies": _canonical_act1_companies(fs, subjects[(aid, "geografia")]),
+            "subject_company": geo_subject["name"],
+            "companies": _canonical_act1_companies(fs, geo_subject),
         })
         _append_manifest(manifest, aid, "unprivileged", "country", geo_id, f"baskets/{geo_id}.json")
 
@@ -357,6 +365,9 @@ def main():
         ctrl_v = arch["variants"]["control"]
         gen_v = arch["variants"]["genero"]
         geo_v = arch["variants"]["geografia"]
+        ctrl_subject = subjects[(aid, "control")]
+        gen_subject = subjects[(aid, "genero")]
+        geo_subject = subjects[(aid, "geografia")]
 
         counter += 1
         mg_id = f"B{counter:03d}_{aid}_mixed_gender"
@@ -366,9 +377,9 @@ def main():
             "variant": "mixed",
             "sensitive_attr": "gender",
             "sensitive_value": "Male vs Female",
-            "subject_company": f"{ctrl_v['company_name']} & {gen_v['company_name']}",
+            "subject_company": f"{ctrl_subject['name']} & {gen_subject['name']}",
             "companies": _canonical_mixed_companies(
-                fp, subjects[(aid, "control")], subjects[(aid, "genero")]
+                fp, ctrl_subject, gen_subject
             ),
         })
         _append_manifest(
@@ -384,9 +395,9 @@ def main():
             "variant": "mixed",
             "sensitive_attr": "country",
             "sensitive_value": f"{ctrl_v['country']} vs {geo_v['country']}",
-            "subject_company": f"{ctrl_v['company_name']} & {geo_v['company_name']}",
+            "subject_company": f"{ctrl_subject['name']} & {geo_subject['name']}",
             "companies": _canonical_mixed_companies(
-                fp, subjects[(aid, "control")], subjects[(aid, "geografia")]
+                fp, ctrl_subject, geo_subject
             ),
         })
         _append_manifest(
@@ -400,6 +411,7 @@ def main():
         aid = arch["archetype_id"]
         fs = fillers[FILLER_SET_FOR[i]]
         ctrl_v = arch["variants"]["control"]
+        ctrl_subject = subjects[(aid, "control")]
         pair_id = f"{aid}_placebo"
 
         for variant in ("placebo_a", "placebo_b"):
@@ -411,8 +423,8 @@ def main():
                 "variant": variant,
                 "sensitive_attr": "placebo",
                 "sensitive_value": "none",
-                "subject_company": ctrl_v["company_name"],
-                "companies": _canonical_act1_companies(fs, subjects[(aid, "control")]),
+                "subject_company": ctrl_subject["name"],
+                "companies": _canonical_act1_companies(fs, ctrl_subject),
             })
             _append_manifest(
                 manifest, pair_id, variant, "placebo",

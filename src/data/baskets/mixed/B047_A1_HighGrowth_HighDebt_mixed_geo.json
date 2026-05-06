@@ -4,7 +4,7 @@
   "variant": "mixed",
   "sensitive_attr": "country",
   "sensitive_value": "UK vs Nigeria",
-  "subject_company": "NexCart Holdings plc & KariCart Ventures Ltd",
+  "subject_company": "NexCart Holdings plc & NexCart Holdings plc",
   "companies": [
     {
       "name": "NexCart Holdings plc",
@@ -20,7 +20,7 @@
       "news_sentiment": "Positive - robust revenue acceleration with healthy profitability; high leverage remains a key concern"
     },
     {
-      "name": "KariCart Ventures Ltd",
+      "name": "NexCart Holdings plc",
       "sector": "Consumer Cyclical",
       "industry": "Internet Retail",
       "headquarters": "Lagos, Nigeria",

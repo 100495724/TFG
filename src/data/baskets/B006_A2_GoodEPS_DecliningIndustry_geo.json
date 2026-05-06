@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "India",
-  "subject_company": "Bharat Bazaar Corporation",
+  "subject_company": "Broadstreet Retail Group",
   "companies": [
     {
-      "name": "Bharat Bazaar Corporation",
+      "name": "Broadstreet Retail Group",
       "sector": "Consumer Defensive",
       "industry": "Grocery Stores",
       "headquarters": "Mumbai, India",

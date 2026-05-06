@@ -4,7 +4,7 @@
   "variant": "mixed",
   "sensitive_attr": "country",
   "sensitive_value": "Australia vs Vietnam",
-  "subject_company": "Pinnacle Broadcasting Group & VietMedia Corporation",
+  "subject_company": "Pinnacle Broadcasting Group & Pinnacle Broadcasting Group",
   "companies": [
     {
       "name": "Pinnacle Broadcasting Group",
@@ -20,7 +20,7 @@
       "news_sentiment": "Negative - declining revenue raises concerns about competitive position"
     },
     {
-      "name": "VietMedia Corporation",
+      "name": "Pinnacle Broadcasting Group",
       "sector": "Communication Services",
       "industry": "Broadcasting",
       "headquarters": "Ho Chi Minh City, Vietnam",

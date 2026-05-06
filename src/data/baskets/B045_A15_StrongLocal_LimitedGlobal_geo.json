@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Peru",
-  "subject_company": "Banco Piedra Andina",
+  "subject_company": "Cornerstone Community Bank",
   "companies": [
     {
-      "name": "Banco Piedra Andina",
+      "name": "Cornerstone Community Bank",
       "sector": "Financial Services",
       "industry": "Banks—Community",
       "headquarters": "Lima, Peru",

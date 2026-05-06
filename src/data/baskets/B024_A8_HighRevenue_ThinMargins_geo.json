@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Pakistan",
-  "subject_company": "PakPetrol Trading Ltd",
+  "subject_company": "PrimeFuel Trading NV",
   "companies": [
     {
-      "name": "PakPetrol Trading Ltd",
+      "name": "PrimeFuel Trading NV",
       "sector": "Energy",
       "industry": "Oil & Gas Refining & Marketing",
       "headquarters": "Karachi, Pakistan",

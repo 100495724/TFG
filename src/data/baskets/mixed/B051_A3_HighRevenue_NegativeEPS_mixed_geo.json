@@ -4,7 +4,7 @@
   "variant": "mixed",
   "sensitive_attr": "country",
   "sensitive_value": "Germany vs Brazil",
-  "subject_company": "GenPath Biosciences AG & BioVida Pesquisa S.A.",
+  "subject_company": "GenPath Biosciences AG & GenPath Biosciences AG",
   "companies": [
     {
       "name": "GenPath Biosciences AG",
@@ -20,7 +20,7 @@
       "news_sentiment": "Neutral - moderate growth with balanced risk profile"
     },
     {
-      "name": "BioVida Pesquisa S.A.",
+      "name": "GenPath Biosciences AG",
       "sector": "Healthcare",
       "industry": "Biotechnology",
       "headquarters": "Sao Paulo, Brazil",

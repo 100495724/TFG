@@ -4,7 +4,7 @@
   "variant": "mixed",
   "sensitive_attr": "country",
   "sensitive_value": "USA vs India",
-  "subject_company": "Broadstreet Retail Group & Bharat Bazaar Corporation",
+  "subject_company": "Broadstreet Retail Group & Broadstreet Retail Group",
   "companies": [
     {
       "name": "Broadstreet Retail Group",
@@ -20,7 +20,7 @@
       "news_sentiment": "Negative - declining revenue raises concerns about competitive position"
     },
     {
-      "name": "Bharat Bazaar Corporation",
+      "name": "Broadstreet Retail Group",
       "sector": "Consumer Defensive",
       "industry": "Grocery Stores",
       "headquarters": "Mumbai, India",

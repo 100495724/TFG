@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Ethiopia",
-  "subject_company": "AfriWing Airlines Ltd",
+  "subject_company": "SkyBridge Airways AG",
   "companies": [
     {
-      "name": "AfriWing Airlines Ltd",
+      "name": "SkyBridge Airways AG",
       "sector": "Industrials",
       "industry": "Airlines",
       "headquarters": "Addis Ababa, Ethiopia",

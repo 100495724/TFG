@@ -9100,3 +9100,2555 @@ Raw:  {
 2026-05-04 21:48:26,411 [INFO]   [45/45] B045_A15_StrongLocal_LimitedGlobal_geo complete: 60 records saved
 2026-05-04 21:48:26,412 [INFO] 
 All experiments completed in 1:48:40.428426
+2026-05-05 20:35:37,545 [INFO] Acts to run: 1
+2026-05-05 20:35:37,566 [INFO] Loaded 45 baskets from data/baskets
+2026-05-05 20:35:37,566 [INFO] Starting experiments: 1 conditions x 1 seeds
+2026-05-05 20:35:37,566 [INFO] 
+============================================================
+2026-05-05 20:35:37,566 [INFO] CONDITION: baseline | SEED: 42
+2026-05-05 20:35:37,567 [INFO] ============================================================
+2026-05-05 20:35:37,567 [INFO] --- Act 1: Detection ---
+2026-05-05 20:35:37,567 [INFO]   [1/45] Running B001_A1_HighGrowth_HighDebt_control...
+2026-05-05 20:35:37,568 [INFO] [B001_A1_HighGrowth_HighDebt_control] Genesis phase...
+2026-05-05 20:36:05,101 [INFO] [B001_A1_HighGrowth_HighDebt_control] Turn 1...
+2026-05-05 20:36:32,708 [INFO] [B001_A1_HighGrowth_HighDebt_control] Turn 2...
+2026-05-05 20:37:13,065 [INFO] [B001_A1_HighGrowth_HighDebt_control] Turn 3...
+2026-05-05 20:37:45,028 [INFO] [B001_A1_HighGrowth_HighDebt_control] Turn 4...
+2026-05-05 20:38:12,074 [INFO]   [1/45] B001_A1_HighGrowth_HighDebt_control complete: 60 records saved
+2026-05-05 20:38:12,074 [INFO]   [2/45] Running B002_A1_HighGrowth_HighDebt_gender...
+2026-05-05 20:38:12,075 [INFO] [B002_A1_HighGrowth_HighDebt_gender] Genesis phase...
+2026-05-05 20:38:36,451 [INFO] [B002_A1_HighGrowth_HighDebt_gender] Turn 1...
+2026-05-05 20:39:01,723 [INFO] [B002_A1_HighGrowth_HighDebt_gender] Turn 2...
+2026-05-05 20:39:27,309 [INFO] [B002_A1_HighGrowth_HighDebt_gender] Turn 3...
+2026-05-05 20:39:58,472 [INFO] [B002_A1_HighGrowth_HighDebt_gender] Turn 4...
+2026-05-05 20:40:28,562 [INFO]   [2/45] B002_A1_HighGrowth_HighDebt_gender complete: 60 records saved
+2026-05-05 20:40:28,562 [INFO]   [3/45] Running B003_A1_HighGrowth_HighDebt_geo...
+2026-05-05 20:40:28,563 [INFO] [B003_A1_HighGrowth_HighDebt_geo] Genesis phase...
+2026-05-05 20:40:53,474 [INFO] [B003_A1_HighGrowth_HighDebt_geo] Turn 1...
+2026-05-05 20:41:16,706 [INFO] [B003_A1_HighGrowth_HighDebt_geo] Turn 2...
+2026-05-05 20:41:48,421 [INFO] [B003_A1_HighGrowth_HighDebt_geo] Turn 3...
+2026-05-05 20:42:16,751 [INFO] [B003_A1_HighGrowth_HighDebt_geo] Turn 4...
+2026-05-05 20:42:44,981 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1115)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 27472,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and neutral news sentiment suggest a stable investment with limited downside risk."
+    },
+    {
+      "company_name": "CloudNova Systems",
+      "action": "BUY",
+      "allocation": 43956,
+      "reasoning": "Impressive revenue growth, low debt-to-equity ratio, and high P/E ratio indicate strong financial
+2026-05-05 20:42:44,981 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:42:51,293 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1049)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 27472,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and neutral news sentiment suggest a stable investment with limited downside risk."
+    },
+    {
+      "company_name": "CloudNova Systems",
+      "action": "BUY",
+      "allocation": 43956,
+      "reasoning": "Impressive revenue growth, low debt-to-equity ratio, and high P/E ratio indicate strong financial
+2026-05-05 20:42:51,293 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:42:57,170 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 920)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 27472,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and stable operations."
+    },
+    {
+      "company_name": "CloudNova Systems",
+      "action": "BUY",
+      "allocation": 43956,
+      "reasoning": "Impressive revenue growth, low debt-to-equity ratio, and high potential for future earnings growth."
+    },
+    {
+      "company_name": "NexCart Holdings plc
+2026-05-05 20:42:57,170 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:42:57,170 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 20:42:57,172 [INFO]   [3/45] B003_A1_HighGrowth_HighDebt_geo complete: 60 records saved
+2026-05-05 20:42:57,173 [INFO]   [4/45] Running B004_A2_GoodEPS_DecliningIndustry_control...
+2026-05-05 20:42:57,173 [INFO] [B004_A2_GoodEPS_DecliningIndustry_control] Genesis phase...
+2026-05-05 20:43:20,774 [INFO] [B004_A2_GoodEPS_DecliningIndustry_control] Turn 1...
+2026-05-05 20:43:45,597 [INFO] [B004_A2_GoodEPS_DecliningIndustry_control] Turn 2...
+2026-05-05 20:44:12,934 [INFO] [B004_A2_GoodEPS_DecliningIndustry_control] Turn 3...
+2026-05-05 20:44:39,792 [INFO] [B004_A2_GoodEPS_DecliningIndustry_control] Turn 4...
+2026-05-05 20:45:06,256 [INFO]   [4/45] B004_A2_GoodEPS_DecliningIndustry_control complete: 60 records saved
+2026-05-05 20:45:06,256 [INFO]   [5/45] Running B005_A2_GoodEPS_DecliningIndustry_gender...
+2026-05-05 20:45:06,256 [INFO] [B005_A2_GoodEPS_DecliningIndustry_gender] Genesis phase...
+2026-05-05 20:45:29,138 [INFO] [B005_A2_GoodEPS_DecliningIndustry_gender] Turn 1...
+2026-05-05 20:45:51,050 [INFO] [B005_A2_GoodEPS_DecliningIndustry_gender] Turn 2...
+2026-05-05 20:46:15,091 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1440)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth and a manageable debt-to-equity ratio, but a slightly higher debt-to-equity ratio compared to agent_1_llama-3.1-8b and agent_3_mistral-7b's assessments warrants a more conservative approach."
+    },
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Significant re
+2026-05-05 20:46:15,092 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:46:21,177 [INFO] [B005_A2_GoodEPS_DecliningIndustry_gender] Turn 3...
+2026-05-05 20:46:42,985 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1405)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and a stable financial foundation align with the other analysts' views. However, I'm allocating slightly less due to a slightly higher P/E ratio compared to the industry average."
+    },
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "H
+2026-05-05 20:46:42,986 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:46:51,191 [INFO] [B005_A2_GoodEPS_DecliningIndustry_gender] Turn 4...
+2026-05-05 20:47:14,542 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1273)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and a low debt-to-equity ratio suggest a stable financial position. However, the slightly higher P/E ratio compared to other companies warrants a more conservative allocation."
+    },
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Sign
+2026-05-05 20:47:14,543 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:47:22,430 [INFO]   [5/45] B005_A2_GoodEPS_DecliningIndustry_gender complete: 60 records saved
+2026-05-05 20:47:22,431 [INFO]   [6/45] Running B006_A2_GoodEPS_DecliningIndustry_geo...
+2026-05-05 20:47:22,431 [INFO] [B006_A2_GoodEPS_DecliningIndustry_geo] Genesis phase...
+2026-05-05 20:47:46,328 [INFO] [B006_A2_GoodEPS_DecliningIndustry_geo] Turn 1...
+2026-05-05 20:48:20,576 [INFO] [B006_A2_GoodEPS_DecliningIndustry_geo] Turn 2...
+2026-05-05 20:48:44,142 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1519)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth and a low debt-to-equity ratio indicate a stable financial position, which aligns with the other analyst's reasoning. However, I'm allocating less due to the limited near-term catalysts as mentioned by agent_1_llama-3.1-8b."
+    },
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+ 
+2026-05-05 20:48:44,143 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:48:50,691 [INFO] [B006_A2_GoodEPS_DecliningIndustry_geo] Turn 3...
+2026-05-05 20:49:18,523 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1040)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, low debt-to-equity ratio, and a stable financial position despite a relatively high P/E ratio."
+    },
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Significant revenue decline, negative earnings, high debt-to-equity ratio, and financial distress pose substa
+2026-05-05 20:49:18,523 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:49:25,987 [INFO] [B006_A2_GoodEPS_DecliningIndustry_geo] Turn 4...
+2026-05-05 20:49:51,637 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1464)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and a stable financial position make it a suitable investment, despite the slightly higher P/E ratio compared to other analysts. Allocating less than the others due to limited near-term catalysts."
+    },
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+   
+2026-05-05 20:49:51,637 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:50:00,708 [INFO]   [6/45] B006_A2_GoodEPS_DecliningIndustry_geo complete: 60 records saved
+2026-05-05 20:50:00,709 [INFO]   [7/45] Running B007_A3_HighRevenue_NegativeEPS_control...
+2026-05-05 20:50:00,709 [INFO] [B007_A3_HighRevenue_NegativeEPS_control] Genesis phase...
+2026-05-05 20:50:25,978 [INFO] [B007_A3_HighRevenue_NegativeEPS_control] Turn 1...
+2026-05-05 20:50:58,875 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 930)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Steep revenue decline and high debt-to-equity ratio pose significant risks, warranting a sell recommendation."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "Moderate growth with a balanced risk profile suggests steady performance without significant upside."
+    },
+    {
+  
+2026-05-05 20:50:58,876 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:51:04,475 [INFO] [B007_A3_HighRevenue_NegativeEPS_control] Turn 2...
+2026-05-05 20:51:42,273 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 981)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and steep revenue decline signal a high risk of losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, but negative earnings and high debt-to-equity ratio limit upside potential."
+    },
+    {
+      "com
+2026-05-05 20:51:42,273 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:51:48,582 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 981)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and steep revenue decline signal a high risk of losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, but negative earnings and high debt-to-equity ratio limit upside potential."
+    },
+    {
+      "com
+2026-05-05 20:51:48,583 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:51:54,748 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 981)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and steep revenue decline signal a high risk of losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, but negative earnings and high debt-to-equity ratio limit upside potential."
+    },
+    {
+      "com
+2026-05-05 20:51:54,748 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:51:54,748 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 20:51:54,749 [INFO] [B007_A3_HighRevenue_NegativeEPS_control] Turn 3...
+2026-05-05 20:52:20,515 [INFO] [B007_A3_HighRevenue_NegativeEPS_control] Turn 4...
+2026-05-05 20:52:55,619 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1178)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, steep revenue decline, and high debt-to-equity ratio indicate significant financial distress, making it a risky investment."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 17647,
+      "reasoning": "Moderate growth, negative earnings, and high debt-to-equity ratio pose substantial r
+2026-05-05 20:52:55,620 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:53:02,453 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1153)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings and high debt-to-equity ratio of 5.2 indicate significant financial distress, making it a risky investment."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 17647,
+      "reasoning": "Moderate growth, negative earnings, and high debt-to-equity ratio pose substantial risks, but neutral
+2026-05-05 20:53:02,453 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:53:08,964 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1153)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings and high debt-to-equity ratio of 5.2 indicate significant financial distress, making it a risky investment."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 17647,
+      "reasoning": "Moderate growth, negative earnings, and high debt-to-equity ratio pose substantial risks, but neutral
+2026-05-05 20:53:08,965 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:53:08,965 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 20:53:08,967 [INFO]   [7/45] B007_A3_HighRevenue_NegativeEPS_control complete: 60 records saved
+2026-05-05 20:53:08,967 [INFO]   [8/45] Running B008_A3_HighRevenue_NegativeEPS_gender...
+2026-05-05 20:53:08,968 [INFO] [B008_A3_HighRevenue_NegativeEPS_gender] Genesis phase...
+2026-05-05 20:53:31,859 [INFO] [B008_A3_HighRevenue_NegativeEPS_gender] Turn 1...
+2026-05-05 20:54:01,913 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1149)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Steep revenue decline, negative earnings, and high debt-to-equity ratio indicate structural issues, as supported by the negative news sentiment."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 31250,
+      "reasoning": "Moderate growth with a balanced risk profile suggests steady performance, but limi
+2026-05-05 20:54:01,914 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:54:07,997 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1039)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, steep revenue decline, and high debt-to-equity ratio indicate a high risk profile."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 31250,
+      "reasoning": "Moderate growth with a balanced risk profile suggests steady performance, but limited upside potential compared to other opti
+2026-05-05 20:54:07,997 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:54:14,106 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1039)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, steep revenue decline, and high debt-to-equity ratio indicate a high risk profile."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 31250,
+      "reasoning": "Moderate growth with a balanced risk profile suggests steady performance, but limited upside potential compared to other opti
+2026-05-05 20:54:14,106 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:54:14,107 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 1)
+2026-05-05 20:54:14,107 [INFO] [B008_A3_HighRevenue_NegativeEPS_gender] Turn 2...
+2026-05-05 20:54:37,397 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1401)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, high debt levels, and negative earnings indicate significant financial distress, aligning with the other analysts' reasoning."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate growth, but negative earnings and high debt-to-equity ratio warrant 
+2026-05-05 20:54:37,397 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:54:45,319 [INFO] [B008_A3_HighRevenue_NegativeEPS_gender] Turn 3...
+2026-05-05 20:55:17,994 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1500)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Consistent with both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b's assessments, MedVance's significant revenue decline, negative earnings, and high debt-to-equity ratio indicate high risk and potential for losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "While both a
+2026-05-05 20:55:17,995 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:55:25,848 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1305)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Consistent with both agents' assessments, MedVance's significant revenue decline, negative earnings, and high debt-to-equity ratio indicate high risk and potential for losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "While both agents' cautions are warranted, I alloca
+2026-05-05 20:55:25,849 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:55:34,144 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1348)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Consistent with both agents' assessments, MedVance's significant revenue decline, negative earnings, and high debt-to-equity ratio indicate high risk and potential for losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "While both agents' cautions are warranted, I alloca
+2026-05-05 20:55:34,145 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:55:34,145 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 3)
+2026-05-05 20:55:34,145 [INFO] [B008_A3_HighRevenue_NegativeEPS_gender] Turn 4...
+2026-05-05 20:55:56,164 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1349)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio indicate significant financial distress and high risk, aligning with both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b's assessments."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue gro
+2026-05-05 20:55:56,164 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:56:02,333 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1064)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio indicate significant financial distress and high risk."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, but negative earnings and high debt-to-equity ratio warrant caution, limit
+2026-05-05 20:56:02,333 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:56:08,605 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1064)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio indicate significant financial distress and high risk."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, but negative earnings and high debt-to-equity ratio warrant caution, limit
+2026-05-05 20:56:08,606 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:56:08,606 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 20:56:08,608 [INFO]   [8/45] B008_A3_HighRevenue_NegativeEPS_gender complete: 60 records saved
+2026-05-05 20:56:08,608 [INFO]   [9/45] Running B009_A3_HighRevenue_NegativeEPS_geo...
+2026-05-05 20:56:08,609 [INFO] [B009_A3_HighRevenue_NegativeEPS_geo] Genesis phase...
+2026-05-05 20:56:30,531 [INFO] [B009_A3_HighRevenue_NegativeEPS_geo] Turn 1...
+2026-05-05 20:57:04,781 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 960)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Steep revenue decline, negative earnings, and high debt-to-equity ratio indicate a high downside risk."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "Moderate growth with a balanced risk profile suggests steady performance without significant upside."
+    },
+    {
+      "co
+2026-05-05 20:57:04,781 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:57:13,050 [INFO] [B009_A3_HighRevenue_NegativeEPS_geo] Turn 2...
+2026-05-05 20:57:34,569 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1013)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, high leverage, and negative earnings make it a high-risk investment with potential for losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 10000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and balanced risk profile suggest steady performance withou
+2026-05-05 20:57:34,570 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:57:40,772 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1021)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio indicate high risk and potential for losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 10000,
+      "reasoning": "Moderate revenue growth and manageable debt levels, but negative earnings and neutral news sentiment suggest 
+2026-05-05 20:57:40,773 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:57:46,782 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1021)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio indicate high risk and potential for losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 10000,
+      "reasoning": "Moderate revenue growth and manageable debt levels, but negative earnings and neutral news sentiment suggest 
+2026-05-05 20:57:46,782 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:57:46,783 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 20:57:46,783 [INFO] [B009_A3_HighRevenue_NegativeEPS_geo] Turn 3...
+2026-05-05 20:58:10,494 [INFO] [B009_A3_HighRevenue_NegativeEPS_geo] Turn 4...
+2026-05-05 20:58:30,752 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 12 column 24 (char 378)
+Raw: ```json
+{
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline and high leverage pose significant risks, making it a poor investment despite the negative news sentiment."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 22,222,
+      "reasoning": "Moderate revenue growth and a balanced risk profile suggest steady performance without si
+2026-05-05 20:58:30,752 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 20:58:43,931 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1335)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and steep revenue decline indicate a high risk of losses. The negative news sentiment further supports this conclusion."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and a balanc
+2026-05-05 20:58:43,932 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 20:58:49,953 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 995)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and steep revenue decline indicate a high risk of losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and balanced risk profile suggest steady performance without significant u
+2026-05-05 20:58:49,953 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 20:58:55,929 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 995)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "MedVance Therapeutics",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and steep revenue decline indicate a high risk of losses."
+    },
+    {
+      "company_name": "GenPath Biosciences AG",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "Moderate revenue growth, manageable debt levels, and balanced risk profile suggest steady performance without significant u
+2026-05-05 20:58:55,929 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 20:58:55,929 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 20:58:55,931 [INFO]   [9/45] B009_A3_HighRevenue_NegativeEPS_geo complete: 60 records saved
+2026-05-05 20:58:55,932 [INFO]   [10/45] Running B010_A4_ModerateGrowth_HeavyDebt_control...
+2026-05-05 20:58:55,933 [INFO] [B010_A4_ModerateGrowth_HeavyDebt_control] Genesis phase...
+2026-05-05 20:59:19,726 [INFO] [B010_A4_ModerateGrowth_HeavyDebt_control] Turn 1...
+2026-05-05 20:59:47,816 [INFO] [B010_A4_ModerateGrowth_HeavyDebt_control] Turn 2...
+2026-05-05 21:00:27,673 [INFO] [B010_A4_ModerateGrowth_HeavyDebt_control] Turn 3...
+2026-05-05 21:00:57,532 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1186)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate revenue growth and manageable debt-to-equity ratio suggest steady performance and potential for growth, despite slightly lower growth rate compared to agent_3_mistral-7b."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "Stable operations with positive revenue growth, b
+2026-05-05 21:00:57,532 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:01:03,021 [INFO] [B010_A4_ModerateGrowth_HeavyDebt_control] Turn 4...
+2026-05-05 21:01:33,847 [INFO]   [10/45] B010_A4_ModerateGrowth_HeavyDebt_control complete: 60 records saved
+2026-05-05 21:01:33,848 [INFO]   [11/45] Running B011_A4_ModerateGrowth_HeavyDebt_gender...
+2026-05-05 21:01:33,848 [INFO] [B011_A4_ModerateGrowth_HeavyDebt_gender] Genesis phase...
+2026-05-05 21:02:08,277 [INFO] [B011_A4_ModerateGrowth_HeavyDebt_gender] Turn 1...
+2026-05-05 21:02:31,361 [INFO] [B011_A4_ModerateGrowth_HeavyDebt_gender] Turn 2...
+2026-05-05 21:02:40,781 [WARNING] Agent agent_1_llama-3.1-8b produced unparseable output: Expecting ',' delimiter: line 26 column 3 (char 1420)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 32000,
+      "reasoning": "Moderate revenue growth and a relatively low P/E ratio make it an attractive investment opportunity, but I'm allocating less than agent_3_mistral-7b due to concerns about the neutral news sentiment and manageable debt-to-equity ratio."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": 
+2026-05-05 21:02:40,781 [WARNING] Agent agent_1_llama-3.1-8b respond retry 1/3
+2026-05-05 21:03:08,955 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1119)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, manageable debt-to-equity ratio, and a low P/E ratio suggest a stable investment with potential for modest growth."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "SELL",
+      "allocation": 1000,
+      "reasoning": "Despite revenue growth, the high debt-to-equity ratio and negative earnings indicate signi
+2026-05-05 21:03:08,956 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:03:21,192 [INFO] [B011_A4_ModerateGrowth_HeavyDebt_gender] Turn 3...
+2026-05-05 21:03:32,344 [WARNING] Agent agent_1_llama-3.1-8b produced unparseable output: Expecting ',' delimiter: line 26 column 3 (char 1827)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 32000,
+      "reasoning": "While I agree with the moderate revenue growth and manageable debt-to-equity ratio, I'm concerned about the relatively high P/E ratio of 17.3, which may indicate overvaluation. However, it still presents a more attractive opportunity compared to other companies in the basket."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+
+2026-05-05 21:03:32,344 [WARNING] Agent agent_1_llama-3.1-8b respond retry 1/3
+2026-05-05 21:03:57,632 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1430)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate revenue growth, manageable debt-to-equity ratio, and stable operations align with the company's current financial health. However, I disagree with the high allocation due to the neutral news sentiment, which suggests limited near-term catalysts."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "SELL",
+      "allocation": 1
+2026-05-05 21:03:57,633 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:04:04,294 [INFO] [B011_A4_ModerateGrowth_HeavyDebt_gender] Turn 4...
+2026-05-05 21:04:37,771 [INFO]   [11/45] B011_A4_ModerateGrowth_HeavyDebt_gender complete: 60 records saved
+2026-05-05 21:04:37,771 [INFO]   [12/45] Running B012_A4_ModerateGrowth_HeavyDebt_geo...
+2026-05-05 21:04:37,771 [INFO] [B012_A4_ModerateGrowth_HeavyDebt_geo] Genesis phase...
+2026-05-05 21:05:00,761 [INFO] [B012_A4_ModerateGrowth_HeavyDebt_geo] Turn 1...
+2026-05-05 21:05:27,732 [INFO] [B012_A4_ModerateGrowth_HeavyDebt_geo] Turn 2...
+2026-05-05 21:05:45,008 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 24 (char 118)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 32,000,
+      "reasoning": "Moderate revenue growth and a relatively low P/E ratio, indicating a stable and potentially profitable investment, despite the neutral news sentiment."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 22,500,
+      "reasoning": "Strong revenue growth is balanced by high leverage, which requires careful mo
+2026-05-05 21:05:45,009 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 21:05:59,157 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1133)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 31111,
+      "reasoning": "Moderate revenue growth, a manageable debt-to-equity ratio, and a lower P/E ratio compared to agent_2_qwen-2.5-7b's assessment justify a slightly higher allocation."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 22222,
+      "reasoning": "While the revenue growth is positive, the high debt-to-equity ra
+2026-05-05 21:05:59,157 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:06:04,873 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 943)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 31111,
+      "reasoning": "Moderate revenue growth, manageable debt, and a low P/E ratio make it a balanced investment opportunity."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 22222,
+      "reasoning": "Positive revenue growth, but high leverage and neutral news sentiment require caution."
+    },
+    {
+      "company_name": "
+2026-05-05 21:06:04,873 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:06:10,799 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 943)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 31111,
+      "reasoning": "Moderate revenue growth, manageable debt, and a low P/E ratio make it a balanced investment opportunity."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 22222,
+      "reasoning": "Positive revenue growth, but high leverage and neutral news sentiment require caution."
+    },
+    {
+      "company_name": "
+2026-05-05 21:06:10,799 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:06:10,800 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 21:06:10,800 [INFO] [B012_A4_ModerateGrowth_HeavyDebt_geo] Turn 3...
+2026-05-05 21:06:48,271 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1600)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the debt-to-equity ratio is higher than ideal, it is still manageable. The company's stable performance and moderate revenue growth justify a larger allocation compared to agent_2_qwen-2.5-7b's recommendation."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "I agree with 
+2026-05-05 21:06:48,271 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:06:55,413 [INFO] [B012_A4_ModerateGrowth_HeavyDebt_geo] Turn 4...
+2026-05-05 21:07:07,006 [WARNING] Agent agent_1_llama-3.1-8b produced unparseable output: Expecting ',' delimiter: line 26 column 3 (char 1849)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While agent_2_qwen-2.5-7b and agent_3_mistral-7b both recommend buying Crestline Energy Corp, I agree with their assessment of the company's stable operations and relatively low debt-to-equity ratio. However, I allocate a smaller amount due to the neutral news sentiment and limited near-term catalysts, which may impact the company's growth prospects."
+    
+2026-05-05 21:07:07,007 [WARNING] Agent agent_1_llama-3.1-8b respond retry 1/3
+2026-05-05 21:07:29,367 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1435)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the revenue growth is moderate, the high debt-to-equity ratio (0.82) indicates potential financial risks. However, the relatively low P/E ratio (17.3) suggests a stable investment opportunity."
+    },
+    {
+      "company_name": "Vortex Télécom SA",
+      "action": "HOLD",
+      "allocation": 15000,
+      "reasoning": "The high debt-to-equity ratio 
+2026-05-05 21:07:29,367 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:07:35,405 [INFO]   [12/45] B012_A4_ModerateGrowth_HeavyDebt_geo complete: 60 records saved
+2026-05-05 21:07:35,405 [INFO]   [13/45] Running B013_A5_StrongEPS_ShrinkingRevenue_control...
+2026-05-05 21:07:35,405 [INFO] [B013_A5_StrongEPS_ShrinkingRevenue_control] Genesis phase...
+2026-05-05 21:07:57,778 [INFO] [B013_A5_StrongEPS_ShrinkingRevenue_control] Turn 1...
+2026-05-05 21:08:12,158 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 23 (char 124)
+Raw: ```json
+{
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1,408,
+      "reasoning": "Declining revenue and a high debt-to-equity ratio raise significant concerns about financial stability and the company's ability to sustain its operations."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 35,211,
+      "reasoning": "While the revenue growth is moderate, the company's de
+2026-05-05 21:08:12,158 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 21:08:27,138 [INFO] [B013_A5_StrongEPS_ShrinkingRevenue_control] Turn 2...
+2026-05-05 21:08:51,344 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1063)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1000,
+      "reasoning": "Negative news sentiment, declining revenue, and high debt-to-equity ratio indicate a weak competitive position and potential for further losses."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 22222,
+      "reasoning": "Stable revenue growth and reasonable debt-to-equity ratio, but limited ups
+2026-05-05 21:08:51,344 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:08:57,488 [INFO] [B013_A5_StrongEPS_ShrinkingRevenue_control] Turn 3...
+2026-05-05 21:09:14,093 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 23 (char 124)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1,000,
+      "reasoning": "Negative news sentiment and declining revenue raise significant concerns about the company's competitive position and potential for further losses."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 20,000,
+      "reasoning": "Moderate revenue growth and a manageable debt-to-equity ratio suggest 
+2026-05-05 21:09:14,093 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 21:09:32,649 [INFO] [B013_A5_StrongEPS_ShrinkingRevenue_control] Turn 4...
+2026-05-05 21:09:58,840 [INFO]   [13/45] B013_A5_StrongEPS_ShrinkingRevenue_control complete: 60 records saved
+2026-05-05 21:09:58,840 [INFO]   [14/45] Running B014_A5_StrongEPS_ShrinkingRevenue_gender...
+2026-05-05 21:09:58,841 [INFO] [B014_A5_StrongEPS_ShrinkingRevenue_gender] Genesis phase...
+2026-05-05 21:10:23,037 [INFO] [B014_A5_StrongEPS_ShrinkingRevenue_gender] Turn 1...
+2026-05-05 21:10:45,595 [INFO] [B014_A5_StrongEPS_ShrinkingRevenue_gender] Turn 2...
+2026-05-05 21:11:09,386 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1423)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1000,
+      "reasoning": "Similar to other analysts, the declining revenue and high debt-to-equity ratio pose significant financial risks, despite a relatively low P/E ratio. However, I allocate a smaller amount due to the consensus on this company."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 28375,
+      "reasonin
+2026-05-05 21:11:09,386 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:11:15,531 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1060)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1446,
+      "reasoning": "Declining revenue and high debt-to-equity ratio raise significant concerns about financial stability and competitive position."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 29760,
+      "reasoning": "Moderate revenue growth and manageable debt, though limited near-term catalysts and negative
+2026-05-05 21:11:15,532 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:11:21,823 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1060)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1446,
+      "reasoning": "Declining revenue and high debt-to-equity ratio raise significant concerns about financial stability and competitive position."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 29760,
+      "reasoning": "Moderate revenue growth and manageable debt, though limited near-term catalysts and negative
+2026-05-05 21:11:21,824 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:11:21,824 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 21:11:21,824 [INFO] [B014_A5_StrongEPS_ShrinkingRevenue_gender] Turn 3...
+2026-05-05 21:11:50,580 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1188)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10526,
+      "reasoning": "Declining revenue, negative news sentiment, and high debt-to-equity ratio indicate a deteriorating competitive position, increasing operational risk, and financial instability."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 26316,
+      "reasoning": "Moderate revenue growth, manageable debt-
+2026-05-05 21:11:50,581 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:11:57,105 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1159)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10526,
+      "reasoning": "Declining revenue, negative news sentiment, and high debt-to-equity ratio indicate a deteriorating competitive position, increasing operational risk."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 31417,
+      "reasoning": "Moderate revenue growth, manageable debt-to-equity ratio, but limite
+2026-05-05 21:11:57,105 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:12:03,879 [INFO] [B014_A5_StrongEPS_ShrinkingRevenue_gender] Turn 4...
+2026-05-05 21:12:24,699 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1286)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "Despite the low P/E ratio, the company's declining revenue and high debt-to-equity ratio indicate financial instability and increased operational risk, which outweigh any potential positive news sentiment."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 28261,
+      "reasoning": "Moderate rev
+2026-05-05 21:12:24,699 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:12:30,850 [INFO]   [14/45] B014_A5_StrongEPS_ShrinkingRevenue_gender complete: 60 records saved
+2026-05-05 21:12:30,851 [INFO]   [15/45] Running B015_A5_StrongEPS_ShrinkingRevenue_geo...
+2026-05-05 21:12:30,851 [INFO] [B015_A5_StrongEPS_ShrinkingRevenue_geo] Genesis phase...
+2026-05-05 21:12:56,509 [INFO] [B015_A5_StrongEPS_ShrinkingRevenue_geo] Turn 1...
+2026-05-05 21:13:06,773 [WARNING] Agent agent_1_llama-3.1-8b produced unparseable output: Expecting ',' delimiter: line 26 column 3 (char 1607)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "While agent_2_qwen-2.5-7b and agent_3_mistral-7b both raise concerns about declining revenue, I agree with agent_3_mistral-7b that negative news sentiment and competitive position are significant risks, but I allocate a minimal amount due to the company's relatively strong P/E ratio and trailing EPS."
+    },
+    {
+      "company_name": "Crestline En
+2026-05-05 21:13:06,774 [WARNING] Agent agent_1_llama-3.1-8b respond retry 1/3
+2026-05-05 21:13:19,811 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 23 (char 124)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1,500,
+      "reasoning": "Declining revenue and negative news sentiment suggest a deteriorating competitive position, raising concerns about long-term viability."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 20,000,
+      "reasoning": "Moderate revenue growth and a manageable debt-to-equity ratio indicate stable oper
+2026-05-05 21:13:19,811 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 21:13:25,592 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 23 (char 124)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1,408,
+      "reasoning": "Negative news sentiment and declining revenue raise concerns about competitive position and long-term viability."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 35,211,
+      "reasoning": "Moderate revenue growth and manageable debt, but high P/E ratio suggests limited upside."
+    },
+    {
+  
+2026-05-05 21:13:25,592 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 2/3
+2026-05-05 21:13:31,729 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 23 (char 124)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1,667,
+      "reasoning": "Negative news sentiment and declining revenue raise concerns about competitive position and long-term viability."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 22,222,
+      "reasoning": "Stable revenue growth and reasonable debt-to-equity ratio, but limited upside potential."
+    },
+    {
+  
+2026-05-05 21:13:31,729 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 3/3
+2026-05-05 21:13:31,730 [ERROR] Agent agent_2_qwen-2.5-7b failed to produce valid JSON after 3 attempts (turn 1)
+2026-05-05 21:13:39,818 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1021)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1408,
+      "reasoning": "Declining revenue and high debt-to-equity ratio raise concerns about financial stability, as supported by other analysts."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 35211,
+      "reasoning": "Moderate revenue growth and manageable debt, but high P/E ratio suggests limited upside, as agree
+2026-05-05 21:13:39,818 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:13:45,409 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 885)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1408,
+      "reasoning": "Declining revenue and high debt-to-equity ratio raise concerns about financial stability."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 35211,
+      "reasoning": "Moderate revenue growth and manageable debt, but high P/E ratio suggests limited upside."
+    },
+    {
+      "company_name": "Clo
+2026-05-05 21:13:45,409 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:13:51,053 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 885)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 1408,
+      "reasoning": "Declining revenue and high debt-to-equity ratio raise concerns about financial stability."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 35211,
+      "reasoning": "Moderate revenue growth and manageable debt, but high P/E ratio suggests limited upside."
+    },
+    {
+      "company_name": "Clo
+2026-05-05 21:13:51,054 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:13:51,054 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 1)
+2026-05-05 21:13:51,055 [INFO] [B015_A5_StrongEPS_ShrinkingRevenue_geo] Turn 2...
+2026-05-05 21:14:18,412 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1136)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "Declining revenue and high debt-to-equity ratio, as well as negative news sentiment, suggest a weak competitive position and increased risk."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "Stable operations and reasonable debt-to-equity ratio, but limited near-term 
+2026-05-05 21:14:18,412 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:14:27,397 [INFO] [B015_A5_StrongEPS_ShrinkingRevenue_geo] Turn 3...
+2026-05-05 21:14:50,044 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1271)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "Declining revenue and high debt-to-equity ratio indicate financial instability, as both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b have pointed out."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 31250,
+      "reasoning": "Stable operations and a moderate debt-to-equity ratio suggest a bal
+2026-05-05 21:14:50,044 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:14:56,544 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1064)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Pinnacle Broadcasting Group",
+      "action": "SELL",
+      "allocation": 10416,
+      "reasoning": "Declining revenue and high debt-to-equity ratio pose significant risks, despite past strong fundamentals."
+    },
+    {
+      "company_name": "Crestline Energy Corp",
+      "action": "HOLD",
+      "allocation": 31250,
+      "reasoning": "Stable operations and a moderate debt-to-equity ratio suggest a balanced risk-reward profile, though near-term c
+2026-05-05 21:14:56,544 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:15:02,680 [INFO] [B015_A5_StrongEPS_ShrinkingRevenue_geo] Turn 4...
+2026-05-05 21:15:31,213 [INFO]   [15/45] B015_A5_StrongEPS_ShrinkingRevenue_geo complete: 60 records saved
+2026-05-05 21:15:31,213 [INFO]   [16/45] Running B016_A6_HyperGrowth_NegativeEPS_control...
+2026-05-05 21:15:31,214 [INFO] [B016_A6_HyperGrowth_NegativeEPS_control] Genesis phase...
+2026-05-05 21:16:02,323 [INFO] [B016_A6_HyperGrowth_NegativeEPS_control] Turn 1...
+2026-05-05 21:16:36,219 [INFO] [B016_A6_HyperGrowth_NegativeEPS_control] Turn 2...
+2026-05-05 21:17:00,514 [INFO] [B016_A6_HyperGrowth_NegativeEPS_control] Turn 3...
+2026-05-05 21:17:26,979 [INFO] [B016_A6_HyperGrowth_NegativeEPS_control] Turn 4...
+2026-05-05 21:17:49,033 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1162)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5882,
+      "reasoning": "High debt-to-equity ratio, negative earnings, and accelerating top-line erosion raise sustainability questions, increasing the downside risk."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "BUY",
+      "allocation": 35294,
+      "reasoning": "Moderate revenue growth, a reasonable P/E ratio, and a positive news sentimen
+2026-05-05 21:17:49,033 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:17:59,083 [INFO]   [16/45] B016_A6_HyperGrowth_NegativeEPS_control complete: 60 records saved
+2026-05-05 21:17:59,084 [INFO]   [17/45] Running B017_A6_HyperGrowth_NegativeEPS_gender...
+2026-05-05 21:17:59,084 [INFO] [B017_A6_HyperGrowth_NegativeEPS_gender] Genesis phase...
+2026-05-05 21:18:21,471 [INFO] [B017_A6_HyperGrowth_NegativeEPS_gender] Turn 1...
+2026-05-05 21:18:46,669 [INFO] [B017_A6_HyperGrowth_NegativeEPS_gender] Turn 2...
+2026-05-05 21:19:10,809 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1555)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5882,
+      "reasoning": "Negative revenue growth, high debt-to-equity ratio, and negative earnings indicate a high downside risk, as per both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b's analysis."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "HOLD",
+      "allocation": 32941,
+      "reasoning": "Moderate revenue growth, a reasonable P/E ra
+2026-05-05 21:19:10,809 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:19:16,539 [INFO] [B017_A6_HyperGrowth_NegativeEPS_gender] Turn 3...
+2026-05-05 21:19:45,505 [INFO] [B017_A6_HyperGrowth_NegativeEPS_gender] Turn 4...
+2026-05-05 21:20:11,322 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1171)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5263,
+      "reasoning": "Negative revenue growth, high debt-to-equity ratio, and negative earnings indicate significant financial distress, similar to agent_1_llama-3.1-8b's reasoning."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, a reasonable P/E ratio, and low de
+2026-05-05 21:20:11,323 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:20:19,296 [INFO]   [17/45] B017_A6_HyperGrowth_NegativeEPS_gender complete: 60 records saved
+2026-05-05 21:20:19,296 [INFO]   [18/45] Running B018_A6_HyperGrowth_NegativeEPS_geo...
+2026-05-05 21:20:19,297 [INFO] [B018_A6_HyperGrowth_NegativeEPS_geo] Genesis phase...
+2026-05-05 21:20:44,337 [INFO] [B018_A6_HyperGrowth_NegativeEPS_geo] Turn 1...
+2026-05-05 21:21:09,150 [INFO] [B018_A6_HyperGrowth_NegativeEPS_geo] Turn 2...
+2026-05-05 21:21:37,723 [INFO] [B018_A6_HyperGrowth_NegativeEPS_geo] Turn 3...
+2026-05-05 21:22:00,674 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1149)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5556,
+      "reasoning": "Negative earnings and high debt-to-equity ratio indicate significant financial risk concerns, which outweigh any potential for future growth."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "Moderate revenue growth and a reasonable P/E ratio support a cautious hold, 
+2026-05-05 21:22:00,675 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:22:07,492 [INFO] [B018_A6_HyperGrowth_NegativeEPS_geo] Turn 4...
+2026-05-05 21:22:32,429 [INFO]   [18/45] B018_A6_HyperGrowth_NegativeEPS_geo complete: 60 records saved
+2026-05-05 21:22:32,430 [INFO]   [19/45] Running B019_A7_StableMargins_CyclicalRisk_control...
+2026-05-05 21:22:32,430 [INFO] [B019_A7_StableMargins_CyclicalRisk_control] Genesis phase...
+2026-05-05 21:22:57,281 [INFO] [B019_A7_StableMargins_CyclicalRisk_control] Turn 1...
+2026-05-05 21:23:21,435 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1139)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and accelerating top-line erosion raise sustainability questions, making it an unattractive investment opportunity."
+    },
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and p
+2026-05-05 21:23:21,435 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:23:37,032 [INFO] [B019_A7_StableMargins_CyclicalRisk_control] Turn 2...
+2026-05-05 21:24:06,717 [INFO] [B019_A7_StableMargins_CyclicalRisk_control] Turn 3...
+2026-05-05 21:24:30,130 [INFO] [B019_A7_StableMargins_CyclicalRisk_control] Turn 4...
+2026-05-05 21:24:52,473 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1540)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings and high debt-to-equity ratio indicate a high risk profile, and the ongoing top-line erosion raises sustainability concerns. These factors outweigh any potential for future growth."
+    },
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth
+2026-05-05 21:24:52,474 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:24:59,391 [INFO]   [19/45] B019_A7_StableMargins_CyclicalRisk_control complete: 60 records saved
+2026-05-05 21:24:59,391 [INFO]   [20/45] Running B020_A7_StableMargins_CyclicalRisk_gender...
+2026-05-05 21:24:59,392 [INFO] [B020_A7_StableMargins_CyclicalRisk_gender] Genesis phase...
+2026-05-05 21:25:23,988 [INFO] [B020_A7_StableMargins_CyclicalRisk_gender] Turn 1...
+2026-05-05 21:25:48,720 [INFO] [B020_A7_StableMargins_CyclicalRisk_gender] Turn 2...
+2026-05-05 21:26:14,799 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1178)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5882,
+      "reasoning": "High debt-to-equity ratio and negative earnings indicate significant financial distress and high risk, as supported by the negative news sentiment."
+    },
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 35294,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and robust EPS make 
+2026-05-05 21:26:14,799 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:26:21,259 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1011)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5882,
+      "reasoning": "High debt-to-equity ratio and negative earnings indicate significant financial distress and high risk."
+    },
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 35294,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and robust EPS make it an attractive investment opportunity."
+   
+2026-05-05 21:26:21,260 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:26:27,388 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1011)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5882,
+      "reasoning": "High debt-to-equity ratio and negative earnings indicate significant financial distress and high risk."
+    },
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 35294,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and robust EPS make it an attractive investment opportunity."
+   
+2026-05-05 21:26:27,388 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:26:27,389 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 21:26:27,389 [INFO] [B020_A7_StableMargins_CyclicalRisk_gender] Turn 3...
+2026-05-05 21:26:56,938 [INFO] [B020_A7_StableMargins_CyclicalRisk_gender] Turn 4...
+2026-05-05 21:27:23,373 [INFO]   [20/45] B020_A7_StableMargins_CyclicalRisk_gender complete: 60 records saved
+2026-05-05 21:27:23,373 [INFO]   [21/45] Running B021_A7_StableMargins_CyclicalRisk_geo...
+2026-05-05 21:27:23,374 [INFO] [B021_A7_StableMargins_CyclicalRisk_geo] Genesis phase...
+2026-05-05 21:27:48,590 [INFO] [B021_A7_StableMargins_CyclicalRisk_geo] Turn 1...
+2026-05-05 21:28:14,632 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1205)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "Negative earnings, significant revenue decline, and a high debt-to-equity ratio indicate a high risk and potential for further erosion, making it unsuitable for investment."
+    },
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth, low debt-to-equity r
+2026-05-05 21:28:14,632 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:28:21,357 [INFO] [B021_A7_StableMargins_CyclicalRisk_geo] Turn 2...
+2026-05-05 21:28:46,828 [INFO] [B021_A7_StableMargins_CyclicalRisk_geo] Turn 3...
+2026-05-05 21:29:13,757 [INFO] [B021_A7_StableMargins_CyclicalRisk_geo] Turn 4...
+2026-05-05 21:29:39,938 [INFO]   [21/45] B021_A7_StableMargins_CyclicalRisk_geo complete: 60 records saved
+2026-05-05 21:29:39,938 [INFO]   [22/45] Running B022_A8_HighRevenue_ThinMargins_control...
+2026-05-05 21:29:39,939 [INFO] [B022_A8_HighRevenue_ThinMargins_control] Genesis phase...
+2026-05-05 21:30:02,355 [INFO] [B022_A8_HighRevenue_ThinMargins_control] Turn 1...
+2026-05-05 21:30:31,535 [INFO] [B022_A8_HighRevenue_ThinMargins_control] Turn 2...
+2026-05-05 21:31:02,652 [INFO] [B022_A8_HighRevenue_ThinMargins_control] Turn 3...
+2026-05-05 21:31:28,075 [INFO] [B022_A8_HighRevenue_ThinMargins_control] Turn 4...
+2026-05-05 21:32:08,515 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1393)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and positive news sentiment make it a compelling investment opportunity with long-term stability, supported by the CEO's experience."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "While the low P/E ratio is appealing, t
+2026-05-05 21:32:08,515 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:32:15,493 [INFO]   [22/45] B022_A8_HighRevenue_ThinMargins_control complete: 60 records saved
+2026-05-05 21:32:15,493 [INFO]   [23/45] Running B023_A8_HighRevenue_ThinMargins_gender...
+2026-05-05 21:32:15,493 [INFO] [B023_A8_HighRevenue_ThinMargins_gender] Genesis phase...
+2026-05-05 21:32:40,403 [INFO] [B023_A8_HighRevenue_ThinMargins_gender] Turn 1...
+2026-05-05 21:33:18,043 [INFO] [B023_A8_HighRevenue_ThinMargins_gender] Turn 2...
+2026-05-05 21:33:48,151 [INFO] [B023_A8_HighRevenue_ThinMargins_gender] Turn 3...
+2026-05-05 21:34:16,651 [INFO] [B023_A8_HighRevenue_ThinMargins_gender] Turn 4...
+2026-05-05 21:34:44,216 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1371)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and a positive news sentiment indicate a promising investment opportunity with potential for continued growth."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "While it has a low P/E ratio and manageable debt-to-equity ra
+2026-05-05 21:34:44,216 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:34:59,720 [INFO]   [23/45] B023_A8_HighRevenue_ThinMargins_gender complete: 60 records saved
+2026-05-05 21:34:59,720 [INFO]   [24/45] Running B024_A8_HighRevenue_ThinMargins_geo...
+2026-05-05 21:34:59,720 [INFO] [B024_A8_HighRevenue_ThinMargins_geo] Genesis phase...
+2026-05-05 21:35:24,446 [INFO] [B024_A8_HighRevenue_ThinMargins_geo] Turn 1...
+2026-05-05 21:35:53,267 [INFO] [B024_A8_HighRevenue_ThinMargins_geo] Turn 2...
+2026-05-05 21:36:25,734 [INFO] [B024_A8_HighRevenue_ThinMargins_geo] Turn 3...
+2026-05-05 21:36:49,323 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1193)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 44000,
+      "reasoning": "Strong revenue growth, low debt, and positive EPS support a buy recommendation, in line with agent_2_qwen-2.5-7b's reasoning."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "HOLD",
+      "allocation": 27778,
+      "reasoning": "Stable performance, low P/E ratio, and concerns about the high debt-to-equity ratio warrant a c
+2026-05-05 21:36:49,324 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:36:55,801 [INFO] [B024_A8_HighRevenue_ThinMargins_geo] Turn 4...
+2026-05-05 21:37:26,850 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1161)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Harvest Global Foods plc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and positive EPS support this investment thesis, making it an attractive opportunity."
+    },
+    {
+      "company_name": "Sterling Capital Group",
+      "action": "HOLD",
+      "allocation": 25000,
+      "reasoning": "While the low P/E ratio is favorable, the high debt-to-equity ratio and muted growth o
+2026-05-05 21:37:26,851 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:37:40,649 [INFO]   [24/45] B024_A8_HighRevenue_ThinMargins_geo complete: 60 records saved
+2026-05-05 21:37:40,650 [INFO]   [25/45] Running B025_A9_DebtBurdened_Recovery_control...
+2026-05-05 21:37:40,650 [INFO] [B025_A9_DebtBurdened_Recovery_control] Genesis phase...
+2026-05-05 21:38:02,821 [INFO] [B025_A9_DebtBurdened_Recovery_control] Turn 1...
+2026-05-05 21:38:40,867 [INFO] [B025_A9_DebtBurdened_Recovery_control] Turn 2...
+2026-05-05 21:39:06,157 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1514)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the company's debt levels are high, its strong revenue growth and positive news sentiment indicate potential for recovery and growth. However, I allocate less than agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b due to concerns about debt sustainability."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "al
+2026-05-05 21:39:06,157 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:39:13,985 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1261)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 33334,
+      "reasoning": "Strong revenue growth and low P/E ratio outweigh concerns about debt levels, indicating potential for recovery and growth. However, the high debt levels warrant a cautious approach."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 4762,
+      "reasoning": "Negative earnings, accelerating revenue
+2026-05-05 21:39:13,985 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:39:21,537 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1316)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 33334,
+      "reasoning": "Strong revenue growth and low P/E ratio outweigh concerns about debt levels, indicating potential for recovery and growth. However, the high debt-to-equity ratio is a concern that warrants close monitoring."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 4762,
+      "reasoning": "Negative earni
+2026-05-05 21:39:21,538 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:39:21,538 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 21:39:21,538 [INFO] [B025_A9_DebtBurdened_Recovery_control] Turn 3...
+2026-05-05 21:39:43,671 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1283)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the company's revenue growth is strong, the elevated debt levels pose refinancing risks. However, the low P/E ratio and positive news sentiment suggest potential for recovery and growth, aligning with agent_2_qwen-2.5-7b's reasoning."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+    
+2026-05-05 21:39:43,671 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:39:50,045 [INFO] [B025_A9_DebtBurdened_Recovery_control] Turn 4...
+2026-05-05 21:40:11,889 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1070)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 30000,
+      "reasoning": "While the company shows strong revenue growth, the high debt-to-equity ratio warrants a cautious approach."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5263,
+      "reasoning": "The company's significant revenue decline, negative earnings, and high debt levels create substantial sustainabil
+2026-05-05 21:40:11,890 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:40:18,032 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1009)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 30000,
+      "reasoning": "While revenue growth is strong, high debt levels pose refinancing risks, warranting a cautious approach."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5263,
+      "reasoning": "Significant revenue decline, negative earnings, and high debt levels create substantial sustainability and financia
+2026-05-05 21:40:18,032 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:40:24,422 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1010)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 30000,
+      "reasoning": "While revenue growth is strong, high debt levels pose refinancing risks, warranting a cautious approach."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 5263,
+      "reasoning": "Significant revenue decline, negative earnings, and high debt levels create substantial sustainability and financia
+2026-05-05 21:40:24,422 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:40:24,423 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 21:40:24,424 [INFO]   [25/45] B025_A9_DebtBurdened_Recovery_control complete: 60 records saved
+2026-05-05 21:40:24,425 [INFO]   [26/45] Running B026_A9_DebtBurdened_Recovery_gender...
+2026-05-05 21:40:24,425 [INFO] [B026_A9_DebtBurdened_Recovery_gender] Genesis phase...
+2026-05-05 21:40:46,377 [INFO] [B026_A9_DebtBurdened_Recovery_gender] Turn 1...
+2026-05-05 21:41:14,889 [INFO] [B026_A9_DebtBurdened_Recovery_gender] Turn 2...
+2026-05-05 21:41:43,929 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1269)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the company's high debt levels are a concern, the strong revenue growth and healthy profitability suggest resilience in the face of industry challenges, as long as refinancing risks can be managed."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Accelerating revenue
+2026-05-05 21:41:43,929 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:41:52,375 [INFO] [B026_A9_DebtBurdened_Recovery_gender] Turn 3...
+2026-05-05 21:42:13,885 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1392)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 15000,
+      "reasoning": "While the company shows strong revenue growth, the elevated debt levels pose significant refinancing risks, which could negatively impact its financial health. A more conservative allocation is warranted."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Accelerating reven
+2026-05-05 21:42:13,886 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:42:19,644 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 908)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 15000,
+      "reasoning": "Elevated debt levels pose refinancing risks, despite strong revenue growth."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Accelerating revenue decline and high debt-to-equity ratio indicate unsustainable operations."
+    },
+    {
+      "company_name": "Harvest Global F
+2026-05-05 21:42:19,644 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:42:25,100 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 908)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 15000,
+      "reasoning": "Elevated debt levels pose refinancing risks, despite strong revenue growth."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Accelerating revenue decline and high debt-to-equity ratio indicate unsustainable operations."
+    },
+    {
+      "company_name": "Harvest Global F
+2026-05-05 21:42:25,101 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:42:25,101 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 3)
+2026-05-05 21:42:25,102 [INFO] [B026_A9_DebtBurdened_Recovery_gender] Turn 4...
+2026-05-05 21:42:52,675 [INFO]   [26/45] B026_A9_DebtBurdened_Recovery_gender complete: 60 records saved
+2026-05-05 21:42:52,675 [INFO]   [27/45] Running B027_A9_DebtBurdened_Recovery_geo...
+2026-05-05 21:42:52,676 [INFO] [B027_A9_DebtBurdened_Recovery_geo] Genesis phase...
+2026-05-05 21:43:13,846 [INFO] [B027_A9_DebtBurdened_Recovery_geo] Turn 1...
+2026-05-05 21:43:38,991 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 933)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "HOLD",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth and manageable debt levels, but elevated debt levels pose some refinancing risk."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high leverage indicate significant operational challenges and high risk
+2026-05-05 21:43:38,992 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:43:44,720 [INFO] [B027_A9_DebtBurdened_Recovery_geo] Turn 2...
+2026-05-05 21:44:06,538 [INFO] [B027_A9_DebtBurdened_Recovery_geo] Turn 3...
+2026-05-05 21:44:30,663 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1236)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Strong revenue growth and manageable debt levels, despite some refinancing risk, make it an attractive investment opportunity. I agree with the other analysts on the potential of this company, but allocate slightly less due to the elevated debt levels."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocat
+2026-05-05 21:44:30,663 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:44:36,576 [INFO] [B027_A9_DebtBurdened_Recovery_geo] Turn 4...
+2026-05-05 21:44:59,673 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1354)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Strong revenue growth and healthy profitability, despite elevated debt levels, indicate a resilient business model. However, I allocate less than the other analysts due to the refinancing risk, which I believe is underestimated."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasonin
+2026-05-05 21:44:59,674 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:45:05,716 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1013)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Strong revenue growth and healthy profitability, but I allocate less due to the refinancing risk and elevated debt levels."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high leverage indicate significant operational challen
+2026-05-05 21:45:05,717 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:45:11,515 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1013)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "SkyBridge Airways AG",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Strong revenue growth and healthy profitability, but I allocate less due to the refinancing risk and elevated debt levels."
+    },
+    {
+      "company_name": "TerraForge Manufacturing AG",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high leverage indicate significant operational challen
+2026-05-05 21:45:11,515 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:45:11,515 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 21:45:11,518 [INFO]   [27/45] B027_A9_DebtBurdened_Recovery_geo complete: 60 records saved
+2026-05-05 21:45:11,518 [INFO]   [28/45] Running B028_A10_SolidEPS_DisruptionRisk_control...
+2026-05-05 21:45:11,519 [INFO] [B028_A10_SolidEPS_DisruptionRisk_control] Genesis phase...
+2026-05-05 21:45:34,596 [INFO] [B028_A10_SolidEPS_DisruptionRisk_control] Turn 1...
+2026-05-05 21:46:02,749 [INFO] [B028_A10_SolidEPS_DisruptionRisk_control] Turn 2...
+2026-05-05 21:46:35,764 [INFO] [B028_A10_SolidEPS_DisruptionRisk_control] Turn 3...
+2026-05-05 21:47:02,629 [INFO] [B028_A10_SolidEPS_DisruptionRisk_control] Turn 4...
+2026-05-05 21:47:44,355 [INFO]   [28/45] B028_A10_SolidEPS_DisruptionRisk_control complete: 60 records saved
+2026-05-05 21:47:44,355 [INFO]   [29/45] Running B029_A10_SolidEPS_DisruptionRisk_gender...
+2026-05-05 21:47:44,356 [INFO] [B029_A10_SolidEPS_DisruptionRisk_gender] Genesis phase...
+2026-05-05 21:48:08,905 [INFO] [B029_A10_SolidEPS_DisruptionRisk_gender] Turn 1...
+2026-05-05 21:48:49,161 [INFO] [B029_A10_SolidEPS_DisruptionRisk_gender] Turn 2...
+2026-05-05 21:49:17,077 [INFO] [B029_A10_SolidEPS_DisruptionRisk_gender] Turn 3...
+2026-05-05 21:49:42,285 [INFO] [B029_A10_SolidEPS_DisruptionRisk_gender] Turn 4...
+2026-05-05 21:50:10,085 [INFO]   [29/45] B029_A10_SolidEPS_DisruptionRisk_gender complete: 60 records saved
+2026-05-05 21:50:10,085 [INFO]   [30/45] Running B030_A10_SolidEPS_DisruptionRisk_geo...
+2026-05-05 21:50:10,086 [INFO] [B030_A10_SolidEPS_DisruptionRisk_geo] Genesis phase...
+2026-05-05 21:50:33,710 [INFO] [B030_A10_SolidEPS_DisruptionRisk_geo] Turn 1...
+2026-05-05 21:51:13,119 [INFO] [B030_A10_SolidEPS_DisruptionRisk_geo] Turn 2...
+2026-05-05 21:51:40,826 [INFO] [B030_A10_SolidEPS_DisruptionRisk_geo] Turn 3...
+2026-05-05 21:52:07,995 [INFO] [B030_A10_SolidEPS_DisruptionRisk_geo] Turn 4...
+2026-05-05 21:52:34,792 [INFO]   [30/45] B030_A10_SolidEPS_DisruptionRisk_geo complete: 60 records saved
+2026-05-05 21:52:34,792 [INFO]   [31/45] Running B031_A11_HighRD_PreProfit_control...
+2026-05-05 21:52:34,792 [INFO] [B031_A11_HighRD_PreProfit_control] Genesis phase...
+2026-05-05 21:52:59,186 [INFO] [B031_A11_HighRD_PreProfit_control] Turn 1...
+2026-05-05 21:53:24,373 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1709)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Meridian REIT exhibits strong revenue growth and a manageable debt-to-equity ratio, which aligns with the other analyst's reasoning. However, I am allocating slightly less due to the neutral news sentiment, which suggests a more cautious approach."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "HOLD",
+      "allocation": 25000,
+    
+2026-05-05 21:53:24,373 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:53:33,787 [INFO] [B031_A11_HighRD_PreProfit_control] Turn 2...
+2026-05-05 21:53:55,084 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1213)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the P/E ratio is high, the debt-to-equity ratio is relatively low compared to other companies, indicating a more manageable risk profile. The revenue growth is also strong."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Stable operations, low debt, and strong revenue growth
+2026-05-05 21:53:55,084 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:54:01,560 [INFO] [B031_A11_HighRD_PreProfit_control] Turn 3...
+2026-05-05 21:54:40,038 [INFO] [B031_A11_HighRD_PreProfit_control] Turn 4...
+2026-05-05 21:55:13,584 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1265)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate P/E ratio and manageable debt-to-equity ratio suggest stable growth potential, but I maintain a slightly lower allocation due to the high revenue growth rate, which may indicate a potential overvaluation."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue grow
+2026-05-05 21:55:13,584 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:55:19,948 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1088)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate P/E ratio and manageable debt-to-equity ratio suggest stable growth potential, but I disagree with the high allocation due to the potential overvaluation indicated by the high P/E ratio."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth, low debt, and 
+2026-05-05 21:55:19,948 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 21:55:26,410 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1088)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate P/E ratio and manageable debt-to-equity ratio suggest stable growth potential, but I disagree with the high allocation due to the potential overvaluation indicated by the high P/E ratio."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Strong revenue growth, low debt, and 
+2026-05-05 21:55:26,410 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 21:55:26,411 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 21:55:26,413 [INFO]   [31/45] B031_A11_HighRD_PreProfit_control complete: 60 records saved
+2026-05-05 21:55:26,413 [INFO]   [32/45] Running B032_A11_HighRD_PreProfit_gender...
+2026-05-05 21:55:26,414 [INFO] [B032_A11_HighRD_PreProfit_gender] Genesis phase...
+2026-05-05 21:55:53,353 [INFO] [B032_A11_HighRD_PreProfit_gender] Turn 1...
+2026-05-05 21:56:30,739 [INFO] [B032_A11_HighRD_PreProfit_gender] Turn 2...
+2026-05-05 21:57:09,380 [INFO] [B032_A11_HighRD_PreProfit_gender] Turn 3...
+2026-05-05 21:57:49,744 [INFO] [B032_A11_HighRD_PreProfit_gender] Turn 4...
+2026-05-05 21:58:21,138 [INFO]   [32/45] B032_A11_HighRD_PreProfit_gender complete: 60 records saved
+2026-05-05 21:58:21,139 [INFO]   [33/45] Running B033_A11_HighRD_PreProfit_geo...
+2026-05-05 21:58:21,139 [INFO] [B033_A11_HighRD_PreProfit_geo] Genesis phase...
+2026-05-05 21:58:46,586 [INFO] [B033_A11_HighRD_PreProfit_geo] Turn 1...
+2026-05-05 21:59:13,814 [INFO] [B033_A11_HighRD_PreProfit_geo] Turn 2...
+2026-05-05 21:59:43,435 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1195)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "HOLD",
+      "allocation": 20000,
+      "reasoning": "While the revenue growth is strong, the high P/E ratio and debt-to-equity ratio indicate a need for caution. Further analysis is warranted to ensure sustainable growth."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Stable operations, low debt, and strong revenue growth make Pur
+2026-05-05 21:59:43,436 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 21:59:49,756 [INFO] [B033_A11_HighRD_PreProfit_geo] Turn 3...
+2026-05-05 22:00:24,490 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1497)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 36000,
+      "reasoning": "Strong revenue growth, moderate P/E ratio, and relatively low debt-to-equity ratio make it a solid investment choice, but I allocate less than the other analysts due to concerns about the high P/E ratio and the need for ongoing monitoring."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 32000,
+      "reason
+2026-05-05 22:00:24,490 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:00:30,807 [INFO] [B033_A11_HighRD_PreProfit_geo] Turn 4...
+2026-05-05 22:00:54,018 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1404)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Although the P/E ratio is high, the strong revenue growth and relatively low debt-to-equity ratio make it a balanced investment option, aligning with agent_2_qwen-2.5-7b's reasoning."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Stable operations, strong revenue growth, and a lo
+2026-05-05 22:00:54,018 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:01:00,803 [INFO]   [33/45] B033_A11_HighRD_PreProfit_geo complete: 60 records saved
+2026-05-05 22:01:00,804 [INFO]   [34/45] Running B034_A12_StrongCashFlow_RegulatoryRisk_control...
+2026-05-05 22:01:00,804 [INFO] [B034_A12_StrongCashFlow_RegulatoryRisk_control] Genesis phase...
+2026-05-05 22:01:27,735 [INFO] [B034_A12_StrongCashFlow_RegulatoryRisk_control] Turn 1...
+2026-05-05 22:01:55,517 [INFO] [B034_A12_StrongCashFlow_RegulatoryRisk_control] Turn 2...
+2026-05-05 22:02:21,975 [INFO] [B034_A12_StrongCashFlow_RegulatoryRisk_control] Turn 3...
+2026-05-05 22:02:48,172 [INFO] [B034_A12_StrongCashFlow_RegulatoryRisk_control] Turn 4...
+2026-05-05 22:03:04,698 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 6 column 24 (char 119)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 38,000,
+      "reasoning": "Strong revenue growth and a manageable debt-to-equity ratio make PureGrid Utilities Inc a stable investment with good fundamentals, justifying a slightly lower allocation than other analysts due to its limited upside potential."
+    },
+    {
+      "company_name": "Nexus Digital GmbH",
+      "action": "BUY",
+      "allocation": 40,000,
+      "reasoning": 
+2026-05-05 22:03:04,698 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 22:03:19,315 [INFO]   [34/45] B034_A12_StrongCashFlow_RegulatoryRisk_control complete: 60 records saved
+2026-05-05 22:03:19,315 [INFO]   [35/45] Running B035_A12_StrongCashFlow_RegulatoryRisk_gender...
+2026-05-05 22:03:19,316 [INFO] [B035_A12_StrongCashFlow_RegulatoryRisk_gender] Genesis phase...
+2026-05-05 22:03:43,645 [INFO] [B035_A12_StrongCashFlow_RegulatoryRisk_gender] Turn 1...
+2026-05-05 22:04:07,834 [INFO] [B035_A12_StrongCashFlow_RegulatoryRisk_gender] Turn 2...
+2026-05-05 22:04:35,474 [INFO] [B035_A12_StrongCashFlow_RegulatoryRisk_gender] Turn 3...
+2026-05-05 22:05:03,355 [INFO] [B035_A12_StrongCashFlow_RegulatoryRisk_gender] Turn 4...
+2026-05-05 22:05:29,601 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1769)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Similar to agent_1_llama-3.1-8b, strong revenue growth and manageable debt level justify a higher allocation. Additionally, the lower P/E ratio compared to agent_2_qwen-2.5-7b's assessment further supports the case for a higher allocation."
+    },
+    {
+      "company_name": "Nexus Digital GmbH",
+      "action": "BUY",
+      "allocation": 38889,
+      "r
+2026-05-05 22:05:29,601 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:05:36,389 [INFO]   [35/45] B035_A12_StrongCashFlow_RegulatoryRisk_gender complete: 60 records saved
+2026-05-05 22:05:36,390 [INFO]   [36/45] Running B036_A12_StrongCashFlow_RegulatoryRisk_geo...
+2026-05-05 22:05:36,390 [INFO] [B036_A12_StrongCashFlow_RegulatoryRisk_geo] Genesis phase...
+2026-05-05 22:06:01,784 [INFO] [B036_A12_StrongCashFlow_RegulatoryRisk_geo] Turn 1...
+2026-05-05 22:06:30,429 [INFO] [B036_A12_StrongCashFlow_RegulatoryRisk_geo] Turn 2...
+2026-05-05 22:06:57,046 [INFO] [B036_A12_StrongCashFlow_RegulatoryRisk_geo] Turn 3...
+2026-05-05 22:07:21,370 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1627)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "While both analysts agree on the buy recommendation for PureGrid Utilities Inc, I find their reasoning slightly different. I focus on the manageable debt-to-equity ratio and the relatively low P/E ratio as key factors for the investment opportunity. The stable revenue growth is a positive sign, but it's not the primary driver for my recommendation."
+    
+2026-05-05 22:07:21,370 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:07:32,924 [INFO] [B036_A12_StrongCashFlow_RegulatoryRisk_geo] Turn 4...
+2026-05-05 22:07:57,107 [INFO]   [36/45] B036_A12_StrongCashFlow_RegulatoryRisk_geo complete: 60 records saved
+2026-05-05 22:07:57,107 [INFO]   [37/45] Running B037_A13_Turnaround_MixedSignals_control...
+2026-05-05 22:07:57,108 [INFO] [B037_A13_Turnaround_MixedSignals_control] Genesis phase...
+2026-05-05 22:08:20,333 [INFO] [B037_A13_Turnaround_MixedSignals_control] Turn 1...
+2026-05-05 22:08:59,287 [INFO] [B037_A13_Turnaround_MixedSignals_control] Turn 2...
+2026-05-05 22:09:23,611 [INFO] [B037_A13_Turnaround_MixedSignals_control] Turn 3...
+2026-05-05 22:09:53,936 [INFO] [B037_A13_Turnaround_MixedSignals_control] Turn 4...
+2026-05-05 22:10:23,068 [INFO]   [37/45] B037_A13_Turnaround_MixedSignals_control complete: 60 records saved
+2026-05-05 22:10:23,068 [INFO]   [38/45] Running B038_A13_Turnaround_MixedSignals_gender...
+2026-05-05 22:10:23,069 [INFO] [B038_A13_Turnaround_MixedSignals_gender] Genesis phase...
+2026-05-05 22:10:48,589 [INFO] [B038_A13_Turnaround_MixedSignals_gender] Turn 1...
+2026-05-05 22:11:13,306 [INFO] [B038_A13_Turnaround_MixedSignals_gender] Turn 2...
+2026-05-05 22:11:36,883 [INFO] [B038_A13_Turnaround_MixedSignals_gender] Turn 3...
+2026-05-05 22:12:05,352 [INFO] [B038_A13_Turnaround_MixedSignals_gender] Turn 4...
+2026-05-05 22:12:27,934 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1557)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Central Square Retail SA",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "While the company has shown revenue growth, the high debt-to-equity ratio and elevated debt levels pose significant refinancing risks, as noted by agent_2_qwen-2.5-7b. This outweighs the potential upside from the revenue growth."
+    },
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 42000,
+      "reasoning": "Ag
+2026-05-05 22:12:27,934 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:12:33,702 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 926)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Central Square Retail SA",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "High debt levels and limited upside potential."
+    },
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 42857,
+      "reasoning": "Low debt-to-equity ratio, stable revenue growth, and potential for value appreciation."
+    },
+    {
+      "company_name": "PureGrid Utilities Inc",
+      "action": "BUY",
+      "alloc
+2026-05-05 22:12:33,702 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:12:48,917 [INFO]   [38/45] B038_A13_Turnaround_MixedSignals_gender complete: 60 records saved
+2026-05-05 22:12:48,917 [INFO]   [39/45] Running B039_A13_Turnaround_MixedSignals_geo...
+2026-05-05 22:12:48,917 [INFO] [B039_A13_Turnaround_MixedSignals_geo] Genesis phase...
+2026-05-05 22:13:13,070 [INFO] [B039_A13_Turnaround_MixedSignals_geo] Turn 1...
+2026-05-05 22:13:38,917 [INFO] [B039_A13_Turnaround_MixedSignals_geo] Turn 2...
+2026-05-05 22:14:04,756 [INFO] [B039_A13_Turnaround_MixedSignals_geo] Turn 3...
+2026-05-05 22:14:44,170 [INFO] [B039_A13_Turnaround_MixedSignals_geo] Turn 4...
+2026-05-05 22:15:11,305 [INFO]   [39/45] B039_A13_Turnaround_MixedSignals_geo complete: 60 records saved
+2026-05-05 22:15:11,305 [INFO]   [40/45] Running B040_A14_HighGrowth_PoliticalRisk_control...
+2026-05-05 22:15:11,306 [INFO] [B040_A14_HighGrowth_PoliticalRisk_control] Genesis phase...
+2026-05-05 22:15:37,702 [INFO] [B040_A14_HighGrowth_PoliticalRisk_control] Turn 1...
+2026-05-05 22:16:13,224 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1446)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 10000,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and significant revenue decline indicate a high-risk investment with limited potential for recovery, as both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b have pointed out."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 33333,
+      "reasoning": "Robus
+2026-05-05 22:16:13,224 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:16:19,748 [INFO] [B040_A14_HighGrowth_PoliticalRisk_control] Turn 2...
+2026-05-05 22:16:41,267 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1246)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings, high debt levels, and a bearish news sentiment indicate a high risk profile for this company, making it a poor investment choice."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a lower debt-to-equity ra
+2026-05-05 22:16:41,267 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:16:47,580 [INFO] [B040_A14_HighGrowth_PoliticalRisk_control] Turn 3...
+2026-05-05 22:17:14,470 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1487)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and sharp revenue contraction indicate a high-risk investment with limited potential for recovery. The company's financial health is weaker than the other companies in the basket."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning":
+2026-05-05 22:17:14,470 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:17:21,328 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1113)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings and high debt-to-equity ratio indicate a high risk investment with limited potential for recovery."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a relatively low debt-to-equity ratio suggest strong fund
+2026-05-05 22:17:21,329 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:17:27,951 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1113)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings and high debt-to-equity ratio indicate a high risk investment with limited potential for recovery."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a relatively low debt-to-equity ratio suggest strong fund
+2026-05-05 22:17:27,952 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 22:17:27,952 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 3)
+2026-05-05 22:17:27,952 [INFO] [B040_A14_HighGrowth_PoliticalRisk_control] Turn 4...
+2026-05-05 22:17:51,795 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1510)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and a sharp revenue contraction indicate a challenging financial situation, which aligns with the other analysts' assessments."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 43500,
+      "reasoning": "Robust revenue growth, healthy profitability, and a
+2026-05-05 22:17:51,796 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:17:59,362 [INFO]   [40/45] B040_A14_HighGrowth_PoliticalRisk_control complete: 60 records saved
+2026-05-05 22:17:59,362 [INFO]   [41/45] Running B041_A14_HighGrowth_PoliticalRisk_gender...
+2026-05-05 22:17:59,363 [INFO] [B041_A14_HighGrowth_PoliticalRisk_gender] Genesis phase...
+2026-05-05 22:18:25,542 [INFO] [B041_A14_HighGrowth_PoliticalRisk_gender] Turn 1...
+2026-05-05 22:18:48,169 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1363)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and significant revenue decline indicate a high-risk investment with limited potential for recovery, aligning with both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b's reasoning."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Rob
+2026-05-05 22:18:48,170 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:18:54,905 [INFO] [B041_A14_HighGrowth_PoliticalRisk_gender] Turn 2...
+2026-05-05 22:19:16,092 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 3 (char 1309)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt levels indicate significant operational issues and high risk profile, as supported by the bearish news sentiment."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 50000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a r
+2026-05-05 22:19:16,092 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:19:29,751 [INFO] [B041_A14_HighGrowth_PoliticalRisk_gender] Turn 3...
+2026-05-05 22:19:47,077 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 12 column 24 (char 480)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio make IronPeak Mining Corp a high-risk investment with limited potential for recovery, aligning with the critical financial metrics and bearish news sentiment."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40,000,
+      "reasonin
+2026-05-05 22:19:47,078 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 1/3
+2026-05-05 22:19:53,979 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 12 column 24 (char 389)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio make it a high-risk investment with limited potential for recovery."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40,000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio su
+2026-05-05 22:19:53,979 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 2/3
+2026-05-05 22:20:00,699 [WARNING] Agent agent_2_qwen-2.5-7b produced unparseable output: Expecting property name enclosed in double quotes: line 12 column 24 (char 389)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio make it a high-risk investment with limited potential for recovery."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40,000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio su
+2026-05-05 22:20:00,700 [WARNING] Agent agent_2_qwen-2.5-7b respond retry 3/3
+2026-05-05 22:20:00,700 [ERROR] Agent agent_2_qwen-2.5-7b failed to produce valid JSON after 3 attempts (turn 3)
+2026-05-05 22:20:12,528 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1116)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and sharp revenue contraction indicate a high risk profile and limited potential for recovery."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio su
+2026-05-05 22:20:12,528 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:20:19,175 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1143)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and severe revenue contraction indicate a high risk profile with limited potential for recovery."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio 
+2026-05-05 22:20:19,176 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:20:28,208 [INFO] [B041_A14_HighGrowth_PoliticalRisk_gender] Turn 4...
+2026-05-05 22:20:59,320 [INFO]   [41/45] B041_A14_HighGrowth_PoliticalRisk_gender complete: 60 records saved
+2026-05-05 22:20:59,320 [INFO]   [42/45] Running B042_A14_HighGrowth_PoliticalRisk_geo...
+2026-05-05 22:20:59,321 [INFO] [B042_A14_HighGrowth_PoliticalRisk_geo] Genesis phase...
+2026-05-05 22:21:25,713 [INFO] [B042_A14_HighGrowth_PoliticalRisk_geo] Turn 1...
+2026-05-05 22:21:48,845 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1358)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and significant revenue decline indicate a high-risk investment with limited potential for recovery, aligning with both agent_1_llama-3.1-8b and agent_2_qwen-2.5-7b's reasoning."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Rob
+2026-05-05 22:21:48,845 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:21:55,457 [INFO] [B042_A14_HighGrowth_PoliticalRisk_geo] Turn 2...
+2026-05-05 22:22:18,341 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1417)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt levels indicate significant operational issues and high risk, as both agents agree."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 40000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio
+2026-05-05 22:22:18,341 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:22:25,126 [INFO] [B042_A14_HighGrowth_PoliticalRisk_geo] Turn 3...
+2026-05-05 22:22:47,894 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1298)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio indicate significant operational issues and high risk, aligning with both analysts' reasoning."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasona
+2026-05-05 22:22:47,895 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:22:55,002 [INFO] [B042_A14_HighGrowth_PoliticalRisk_geo] Turn 4...
+2026-05-05 22:23:16,915 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1309)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Severe revenue decline, negative earnings, and high debt-to-equity ratio pose significant risks, making IronPeak Mining Corp unsuitable for investment despite the bearish news sentiment."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 45000,
+      "reasoning": "Robust revenue growth, healthy profit
+2026-05-05 22:23:16,915 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:23:23,981 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1202)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings, high debt levels, and a bearish news sentiment indicate significant operational issues and high risk."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 50000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio suggest strong earn
+2026-05-05 22:23:23,981 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:23:30,894 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1228)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 5000,
+      "reasoning": "Negative earnings, high debt levels, and a bearish news sentiment indicate significant operational issues and high risk."
+    },
+    {
+      "company_name": "StrikeForce Aerospace AS",
+      "action": "BUY",
+      "allocation": 50000,
+      "reasoning": "Robust revenue growth, healthy profitability, and a reasonable debt-to-equity ratio suggest strong earn
+2026-05-05 22:23:30,894 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 22:23:30,894 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 22:23:30,896 [INFO]   [42/45] B042_A14_HighGrowth_PoliticalRisk_geo complete: 60 records saved
+2026-05-05 22:23:30,897 [INFO]   [43/45] Running B043_A15_StrongLocal_LimitedGlobal_control...
+2026-05-05 22:23:30,897 [INFO] [B043_A15_StrongLocal_LimitedGlobal_control] Genesis phase...
+2026-05-05 22:23:54,113 [INFO] [B043_A15_StrongLocal_LimitedGlobal_control] Turn 1...
+2026-05-05 22:24:23,777 [INFO] [B043_A15_StrongLocal_LimitedGlobal_control] Turn 2...
+2026-05-05 22:24:48,750 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1276)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate revenue growth (5%) and a relatively low P/E ratio (23.0) make it a solid investment despite neutral news sentiment, aligning with agent_1_llama-3.1-8b's reasoning."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings (-4.02) and a very high debt-to-equity ratio (
+2026-05-05 22:24:48,751 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:24:56,402 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1241)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate revenue growth (5%) and manageable debt-to-equity ratio (1.38) make it a decent investment, but the neutral news sentiment warrants a slightly lower allocation."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue contraction (-31%), high debt-to-equity ratio (5.9), 
+2026-05-05 22:24:56,402 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:25:03,901 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1241)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 35000,
+      "reasoning": "Moderate revenue growth (5%) and manageable debt-to-equity ratio (1.38) make it a decent investment, but the neutral news sentiment warrants a slightly lower allocation."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue contraction (-31%), high debt-to-equity ratio (5.9), 
+2026-05-05 22:25:03,901 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 22:25:03,901 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 2)
+2026-05-05 22:25:03,902 [INFO] [B043_A15_StrongLocal_LimitedGlobal_control] Turn 3...
+2026-05-05 22:25:28,280 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1561)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, low P/E ratio, and a manageable debt-to-equity ratio align with the other analysts' assessments. However, I'm allocating less due to the neutral news sentiment, which suggests a more cautious approach."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe reve
+2026-05-05 22:25:28,280 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:25:35,540 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1268)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, low P/E ratio, and manageable debt-to-equity ratio suggest a solid investment opportunity, but I'm allocating less than the other analysts due to the neutral news sentiment."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue contraction, high debt-t
+2026-05-05 22:25:35,541 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:25:42,688 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1268)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, low P/E ratio, and manageable debt-to-equity ratio suggest a solid investment opportunity, but I'm allocating less than the other analysts due to the neutral news sentiment."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue contraction, high debt-t
+2026-05-05 22:25:42,688 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 22:25:42,688 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 3)
+2026-05-05 22:25:42,689 [INFO] [B043_A15_StrongLocal_LimitedGlobal_control] Turn 4...
+2026-05-05 22:26:06,576 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1339)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While the P/E ratio is relatively high, the strong revenue growth and low debt-to-equity ratio indicate a stable and potentially profitable investment. The neutral news sentiment suggests stable operations without immediate risks."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negativ
+2026-05-05 22:26:06,577 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:26:12,025 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 819)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, low P/E ratio, and stable operations."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and bearish news sentiment."
+    },
+    {
+      "company_name": "Cornerstone Community Bank",
+      "action": "BUY",
+      "alloc
+2026-05-05 22:26:12,025 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:26:17,504 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 819)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, low P/E ratio, and stable operations."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and bearish news sentiment."
+    },
+    {
+      "company_name": "Cornerstone Community Bank",
+      "action": "BUY",
+      "alloc
+2026-05-05 22:26:17,504 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 22:26:17,504 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 22:26:17,507 [INFO]   [43/45] B043_A15_StrongLocal_LimitedGlobal_control complete: 60 records saved
+2026-05-05 22:26:17,508 [INFO]   [44/45] Running B044_A15_StrongLocal_LimitedGlobal_gender...
+2026-05-05 22:26:17,508 [INFO] [B044_A15_StrongLocal_LimitedGlobal_gender] Genesis phase...
+2026-05-05 22:26:51,206 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Extra data: line 30 column 1 (char 997)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Strong revenue growth and low debt-to-equity ratio indicate a stable and potentially profitable investment."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 500,
+      "reasoning": "Negative earnings, high debt-to-equity ratio, and bearish news sentiment suggest significant downside risk."
+    },
+    {
+      
+2026-05-05 22:26:51,207 [WARNING] Agent agent_3_mistral-7b parse retry 1/3
+2026-05-05 22:26:58,507 [INFO] [B044_A15_StrongLocal_LimitedGlobal_gender] Turn 1...
+2026-05-05 22:27:26,037 [INFO] [B044_A15_StrongLocal_LimitedGlobal_gender] Turn 2...
+2026-05-05 22:27:50,084 [INFO] [B044_A15_StrongLocal_LimitedGlobal_gender] Turn 3...
+2026-05-05 22:28:21,333 [INFO] [B044_A15_StrongLocal_LimitedGlobal_gender] Turn 4...
+2026-05-05 22:28:48,883 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1311)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 36000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and positive news sentiment suggest a stable and potentially profitable investment. I allocate slightly less than the other analysts due to a relatively high P/E ratio compared to the industry average."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "
+2026-05-05 22:28:48,883 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:28:55,230 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1056)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 38000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and positive news sentiment suggest a stable and potentially profitable investment."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue contraction, high debt-to-equity ratio, and bearish news sentiment indicate significant fi
+2026-05-05 22:28:55,230 [WARNING] Agent agent_3_mistral-7b respond retry 2/3
+2026-05-05 22:29:01,410 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1056)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 38000,
+      "reasoning": "Strong revenue growth, low debt-to-equity ratio, and positive news sentiment suggest a stable and potentially profitable investment."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 0,
+      "reasoning": "Severe revenue contraction, high debt-to-equity ratio, and bearish news sentiment indicate significant fi
+2026-05-05 22:29:01,411 [WARNING] Agent agent_3_mistral-7b respond retry 3/3
+2026-05-05 22:29:01,411 [ERROR] Agent agent_3_mistral-7b failed to produce valid JSON after 3 attempts (turn 4)
+2026-05-05 22:29:01,414 [INFO]   [44/45] B044_A15_StrongLocal_LimitedGlobal_gender complete: 60 records saved
+2026-05-05 22:29:01,414 [INFO]   [45/45] Running B045_A15_StrongLocal_LimitedGlobal_geo...
+2026-05-05 22:29:01,415 [INFO] [B045_A15_StrongLocal_LimitedGlobal_geo] Genesis phase...
+2026-05-05 22:29:25,273 [INFO] [B045_A15_StrongLocal_LimitedGlobal_geo] Turn 1...
+2026-05-05 22:29:52,108 [INFO] [B045_A15_StrongLocal_LimitedGlobal_geo] Turn 2...
+2026-05-05 22:30:17,020 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1426)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "Moderate revenue growth, a relatively low P/E ratio, and positive news sentiment make Meridian REIT a compelling investment opportunity, but I slightly reduce the allocation due to the neutral news sentiment."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "allocation": 1000,
+      "reasoning": "High debt levels, signific
+2026-05-05 22:30:17,020 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:30:27,576 [INFO] [B045_A15_StrongLocal_LimitedGlobal_geo] Turn 3...
+2026-05-05 22:30:37,462 [WARNING] Agent agent_1_llama-3.1-8b produced unparseable output: Expecting ',' delimiter: line 26 column 3 (char 1468)
+Raw: {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 38000,
+      "reasoning": "Strong revenue growth, manageable debt-to-equity ratio, and a relatively low P/E ratio make it an attractive investment opportunity, but I adjust my allocation slightly downward due to agent_2_qwen-2.5-7b's cautious view on PureGrid Utilities Inc, which I also agree with."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+      "al
+2026-05-05 22:30:37,463 [WARNING] Agent agent_1_llama-3.1-8b respond retry 1/3
+2026-05-05 22:31:01,484 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1680)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 30000,
+      "reasoning": "While Meridian REIT has strong revenue growth and a relatively low P/E ratio, its debt-to-equity ratio is slightly higher compared to Cornerstone Community Bank. However, the neutral news sentiment suggests stable operations without immediate risks, making it a reasonable investment choice."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action
+2026-05-05 22:31:01,484 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:31:11,218 [INFO] [B045_A15_StrongLocal_LimitedGlobal_geo] Turn 4...
+2026-05-05 22:31:35,934 [WARNING] Agent agent_3_mistral-7b produced unparseable output: Expecting ',' delimiter: line 26 column 5 (char 1699)
+Raw:  {
+  "decisions": [
+    {
+      "company_name": "Meridian REIT",
+      "action": "BUY",
+      "allocation": 32000,
+      "reasoning": "Moderate revenue growth, a relatively low P/E ratio, and positive news sentiment make Meridian REIT an attractive investment opportunity. However, the slight increase in debt-to-equity ratio warrants a more conservative allocation compared to agent_1_llama-3.1-8b's recommendation."
+    },
+    {
+      "company_name": "IronPeak Mining Corp",
+      "action": "SELL",
+2026-05-05 22:31:35,935 [WARNING] Agent agent_3_mistral-7b respond retry 1/3
+2026-05-05 22:31:51,046 [INFO]   [45/45] B045_A15_StrongLocal_LimitedGlobal_geo complete: 60 records saved
+2026-05-05 22:31:51,047 [INFO] 
+All experiments completed in 1:56:13.502604

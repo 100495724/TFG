@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Egypt",
-  "subject_company": "Nile Capital Bank",
+  "subject_company": "Summit Financial Corp",
   "companies": [
     {
-      "name": "Nile Capital Bank",
+      "name": "Summit Financial Corp",
       "sector": "Financial Services",
       "industry": "Banks—Regional",
       "headquarters": "Cairo, Egypt",

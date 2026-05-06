@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Mexico",
-  "subject_company": "Fortaleza Automotriz SA",
+  "subject_company": "Ironclad Motors AB",
   "companies": [
     {
-      "name": "Fortaleza Automotriz SA",
+      "name": "Ironclad Motors AB",
       "sector": "Consumer Cyclical",
       "industry": "Auto Manufacturers",
       "headquarters": "Mexico City, Mexico",

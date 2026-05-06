@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Bangladesh",
-  "subject_company": "DhakaDefense Systems Ltd",
+  "subject_company": "StrikeForce Aerospace AS",
   "companies": [
     {
-      "name": "DhakaDefense Systems Ltd",
+      "name": "StrikeForce Aerospace AS",
       "sector": "Industrials",
       "industry": "Aerospace & Defense",
       "headquarters": "Dhaka, Bangladesh",

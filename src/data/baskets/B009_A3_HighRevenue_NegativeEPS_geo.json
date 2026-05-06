@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Brazil",
-  "subject_company": "BioVida Pesquisa S.A.",
+  "subject_company": "GenPath Biosciences AG",
   "companies": [
     {
-      "name": "BioVida Pesquisa S.A.",
+      "name": "GenPath Biosciences AG",
       "sector": "Healthcare",
       "industry": "Biotechnology",
       "headquarters": "Sao Paulo, Brazil",

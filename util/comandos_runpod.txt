@@ -1,5 +1,5 @@
 CREAR LOS POD CON EL PUERTO 8000 ABIERTO 
-
+RTX 3090 O RTX A5000
 
 pip install vllm --upgrade
 pip install huggingface_hub

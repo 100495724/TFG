@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Vietnam",
-  "subject_company": "VietMedia Corporation",
+  "subject_company": "Pinnacle Broadcasting Group",
   "companies": [
     {
-      "name": "VietMedia Corporation",
+      "name": "Pinnacle Broadcasting Group",
       "sector": "Communication Services",
       "industry": "Broadcasting",
       "headquarters": "Ho Chi Minh City, Vietnam",

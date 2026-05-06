@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Kenya",
-  "subject_company": "SwiftLink Africa Ltd",
+  "subject_company": "Vortex Télécom SA",
   "companies": [
     {
-      "name": "SwiftLink Africa Ltd",
+      "name": "Vortex Télécom SA",
       "sector": "Communication Services",
       "industry": "Telecom Services",
       "headquarters": "Nairobi, Kenya",

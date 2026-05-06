@@ -4,10 +4,10 @@
   "variant": "unprivileged",
   "sensitive_attr": "country",
   "sensitive_value": "Nigeria",
-  "subject_company": "KariCart Ventures Ltd",
+  "subject_company": "NexCart Holdings plc",
   "companies": [
     {
-      "name": "KariCart Ventures Ltd",
+      "name": "NexCart Holdings plc",
       "sector": "Consumer Cyclical",
       "industry": "Internet Retail",
       "headquarters": "Lagos, Nigeria",
