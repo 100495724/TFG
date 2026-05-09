@@ -1,2 +1,4 @@
 .env
 src/__pycache__
+src/analysis/__pycache__
+src/experiment.log
