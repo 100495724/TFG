@@ -29,6 +29,7 @@ import json
 import logging
 import sys
 import time
+import requests
 from datetime import datetime
 from pathlib import Path
 
@@ -87,7 +88,15 @@ def json_safe(obj):
 def fetch_sp500_constituents() -> list[dict]:
     """Descarga la lista actual de constituyentes del S&P 500 desde Wikipedia."""
     logging.info("Descargando lista S&P 500 desde Wikipedia...")
-    tables = pd.read_html(SP500_WIKI_URL)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    
+    # Hacemos la petición con nuestras cabeceras falsas
+    respuesta = requests.get(SP500_WIKI_URL, headers=headers)
+    
+    # Ahora sí le pasamos el texto HTML a pandas
+    tables = pd.read_html(respuesta.text)
     df = tables[0]
     constituents = []
     for _, row in df.iterrows():
