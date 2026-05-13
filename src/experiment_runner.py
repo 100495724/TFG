@@ -25,14 +25,29 @@ from models import create_model
 from agents import Agent
 from orchestrator import run_debate, run_single_agent
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[
+LOGS_DIR = Path("logs")
+EXPERIMENT_LOG_PATH = LOGS_DIR / "experiment.log"
+
+
+def _configure_logging() -> None:
+    LOGS_DIR.mkdir(parents=True, exist_ok=True)
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.INFO)
+    if any(getattr(handler, "_tfg_experiment_runner", False)
+           for handler in root_logger.handlers):
+        return
+
+    formatter = logging.Formatter("%(asctime)s [%(levelname)s] %(message)s")
+    for handler in [
         logging.StreamHandler(),
-        logging.FileHandler("experiment.log"),
-    ],
-)
+        logging.FileHandler(EXPERIMENT_LOG_PATH, encoding="utf-8"),
+    ]:
+        handler.setFormatter(formatter)
+        handler._tfg_experiment_runner = True
+        root_logger.addHandler(handler)
+
+
+_configure_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -43,7 +58,8 @@ CSV_FIELDNAMES = [
     "timestamp", "basket_id", "pair_id", "variant", "sensitive_attr",
     "sensitive_value", "experiment_label", "composition", "instruction_level",
     "protocol", "vaccine", "seed", "agent_id", "agent_model", "agent_role",
-    "role_key", "is_blind", "turn", "phase", "company_name", "action", "allocation", "reasoning",
+    "role_key", "is_blind", "turn", "phase", "company_name",
+    "real_company_name", "ticker", "action", "allocation", "reasoning",
     "is_subject", "subject_position", "parse_error",
     "pre_normalize_total", "was_normalized", "validation_error",
     "missing_companies", "duplicate_companies",
@@ -73,9 +89,29 @@ def get_placebo_results_path(label: str, seed: int) -> str:
 def append_records_to_csv(filepath: str, records: list[dict]):
     """Append records to CSV, creating headers if file is new."""
     file_exists = os.path.exists(filepath)
+    fieldnames = CSV_FIELDNAMES
+    write_header = not file_exists or os.path.getsize(filepath) == 0
+    if file_exists and not write_header:
+        with open(filepath, "r", encoding="utf-8", newline="") as existing:
+            reader = csv.reader(existing)
+            existing_header = next(reader, [])
+        if existing_header and existing_header != CSV_FIELDNAMES:
+            missing_new_fields = [
+                field for field in CSV_FIELDNAMES
+                if field not in existing_header
+            ]
+            if missing_new_fields:
+                logger.warning(
+                    "Existing CSV %s lacks new columns %s; appending with its "
+                    "current header to avoid rewriting prior results.",
+                    filepath,
+                    missing_new_fields,
+                )
+                fieldnames = existing_header
+
     with open(filepath, "a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES, extrasaction="ignore")
-        if not file_exists:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
+        if write_header:
             writer.writeheader()
         writer.writerows(records)
 

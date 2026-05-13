@@ -97,12 +97,12 @@
       ],
       "news_headlines": [
         {
-          "title": "Do Options Traders Know Something About GE Healthcare Stock We Don't?",
+          "title": "Do Options Traders Know Something About [Company] Stock We Don't?",
           "publisher": "Zacks",
           "publish_time": "2026-05-12T15:16:00Z"
         },
         {
-          "title": "GE HealthCare Expands SIGNA MR Portfolio With AI-Powered Tools",
+          "title": "[Company] Expands SIGNA MR Portfolio With AI-Powered Tools",
           "publisher": "Zacks",
           "publish_time": "2026-05-12T14:38:00Z"
         }
@@ -196,14 +196,14 @@
       ],
       "news_headlines": [
         {
-          "title": "S&P 500, Nasdaq end lower as inflation, Iran tensions weigh",
-          "publisher": "Reuters",
-          "publish_time": "2026-05-12T20:00:49Z"
-        },
-        {
-          "title": "What Humana (HUM)'s Lowered 2026 EPS Outlook and Buybacks Mean For Shareholders",
+          "title": "What [Company]'s Lowered 2026 EPS Outlook and Buybacks Mean For Shareholders",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-09T08:23:38Z"
+        },
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         }
       ]
     },
@@ -278,7 +278,7 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "What Makes [Company] (WAT) an Investment Bet?",
+          "title": "What Makes [Company] an Investment Bet?",
           "publisher": "Insider Monkey",
           "publish_time": "2026-05-11T13:11:53Z"
         },
@@ -377,12 +377,12 @@
       ],
       "news_headlines": [
         {
-          "title": "Investors Can Find Comfort In Zimmer Biomet Holdings' (NYSE:ZBH) Earnings Quality",
+          "title": "Investors Can Find Comfort In [Company] Holdings' Earnings Quality",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-11T10:32:45Z"
         },
         {
-          "title": "Why Zimmer Biomet (ZBH) is a Top Growth Stock for the Long-Term",
+          "title": "Why [Company] is a Top Growth Stock for the Long-Term",
           "publisher": "Zacks",
           "publish_time": "2026-05-04T13:45:02Z"
         }

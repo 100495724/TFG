@@ -89,12 +89,12 @@
       ],
       "news_headlines": [
         {
-          "title": "Qnity Electronics Beats Q1 Targets, Raises Full-Year Outlook",
+          "title": "[Company] Beats Q1 Targets, Raises Full-Year Outlook",
           "publisher": "Investor's Business Daily",
           "publish_time": "2026-05-12T20:32:58Z"
         },
         {
-          "title": "Qnity Electronics Inc (Q) Q1 2026 Earnings Call Highlights: Strong Growth and Strategic ...",
+          "title": "[Company] Q1 2026 Earnings Call Highlights: Strong Growth and Strategic...",
           "publisher": "GuruFocus.com",
           "publish_time": "2026-05-12T19:00:58Z"
         }
@@ -171,14 +171,14 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "onsemi is Facing a Continued Slowdown in SiC and Greater Competition in CIS from Sony",
-          "publisher": "24/7 Wall St.",
-          "publish_time": "2026-05-12T02:12:10Z"
-        },
-        {
-          "title": "Roth Capital Raises its Price Target on ON Semiconductor (ON) to $125",
+          "title": "Roth Capital Raises its Price Target [Company] to $125",
           "publisher": "Insider Monkey",
           "publish_time": "2026-05-11T14:38:35Z"
+        },
+        {
+          "title": "Can [Company]'s AI Data Center Momentum Drive a Multi-Year Growth Cycle?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T14:29:00Z"
         }
       ]
     },
@@ -253,12 +253,12 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "Super Micro Computer's (NASDAQ:SMCI) Profits Appear To Have Quality Issues",
+          "title": "[Company]'s Profits Appear To Have Quality Issues",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-12T19:08:41Z"
         },
         {
-          "title": "This is Why Super Micro Computer Inc. (SMCI) is A Top Tech Stock in Louis Navellier’s Portfolio",
+          "title": "This is Why [Company] is A Top Tech Stock in Louis Navellier’s Portfolio",
           "publisher": "Insider Monkey",
           "publish_time": "2026-05-12T18:14:31Z"
         }
@@ -335,14 +335,14 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "Kratos Defense Stock Slips 24.9% YTD: Should You Buy the Dip?",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-12T18:24:00Z"
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         },
         {
-          "title": "Should You Buy, Hold or Sell ISSC Stock Ahead of Q2 Earnings?",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-12T15:25:00Z"
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         }
       ]
     }

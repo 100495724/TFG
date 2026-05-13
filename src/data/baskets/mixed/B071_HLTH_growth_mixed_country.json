@@ -80,14 +80,14 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "A Look At Veeva Systems (VEEV) Valuation After New Client Win And Snowflake Partnership",
+          "title": "A Look At [Company] Valuation After New Client Win And Snowflake Partnership",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-12T18:17:04Z"
         },
         {
-          "title": "OptimizeRx Expands EHR Advertising Reach With New DSP Integration",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-12T16:05:00Z"
+          "title": "[Company] Partnerships Deepen Role As Core Life Sciences Cloud Platform",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T15:10:52Z"
         }
       ]
     },
@@ -162,14 +162,14 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "A Look At Veeva Systems (VEEV) Valuation After New Client Win And Snowflake Partnership",
+          "title": "A Look At [Company] Valuation After New Client Win And Snowflake Partnership",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-12T18:17:04Z"
         },
         {
-          "title": "OptimizeRx Expands EHR Advertising Reach With New DSP Integration",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-12T16:05:00Z"
+          "title": "[Company] Partnerships Deepen Role As Core Life Sciences Cloud Platform",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T15:10:52Z"
         }
       ]
     },
@@ -244,12 +244,12 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "Shareholder Pressure Meets New Digital Workflows For Align Technology",
+          "title": "Shareholder Pressure Meets New Digital Workflows For [Company]",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-12T13:21:17Z"
         },
         {
-          "title": "ALGN vs. WST: Which Stock Is the Better Value Option?",
+          "title": "[Company] vs. WST: Which Stock Is the Better Value Option?",
           "publisher": "Zacks",
           "publish_time": "2026-05-11T15:40:03Z"
         }
@@ -343,14 +343,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Investment Firm Sells $12.2 Million Worth of Materials Stock, According to Latest SEC Filing",
-          "publisher": "Motley Fool",
-          "publish_time": "2026-05-12T13:21:34Z"
-        },
-        {
-          "title": "Bio-Techne Q3 Earnings Call Highlights",
+          "title": "[Company] Q3 Earnings Call Highlights",
           "publisher": "MarketBeat",
           "publish_time": "2026-05-07T06:07:15Z"
+        },
+        {
+          "title": "Why [Company] Is Up 5.9% After Profits Rose Despite Slightly Lower Sales – And What's Next",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-06T22:13:02Z"
         }
       ]
     }

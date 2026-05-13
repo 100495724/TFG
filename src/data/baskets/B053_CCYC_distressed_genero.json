@@ -97,12 +97,12 @@
       ],
       "news_headlines": [
         {
-          "title": "A Look At NVR (NVR) Valuation As Sector Headwinds And Weaker Quarterly Results Pressure The Stock",
+          "title": "A Look At [Company] Valuation As Sector Headwinds And Weaker Quarterly Results Pressure The Stock",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-07T21:21:27Z"
         },
         {
-          "title": "Toll Brothers, NVR, and PulteGroup Shares Plummet, What You Need To Know",
+          "title": "Toll Brothers, [Company], and PulteGroup Shares Plummet, What You Need To Know",
           "publisher": "StockStory",
           "publish_time": "2026-05-05T18:12:55Z"
         }
@@ -196,14 +196,14 @@
       ],
       "news_headlines": [
         {
-          "title": "MoneyMasters Podcast 5-7-26- As 60-40 Investing Fails, Expect a \"Great Migration\"",
-          "publisher": "MoneyShow",
-          "publish_time": "2026-05-07T16:30:00Z"
-        },
-        {
-          "title": "A Look At Darden Restaurants (DRI) Valuation After Recent Pullback And 12% Undervaluation Narrative",
+          "title": "A Look At [Company] Valuation After Recent Pullback And 12% Undervaluation Narrative",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-02T12:11:06Z"
+        },
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         }
       ]
     },
@@ -295,14 +295,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Vince Holding's Men's Business Expands: Key to Next Growth Phase",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-11T12:13:00Z"
-        },
-        {
-          "title": "How The Ralph Lauren (RL) Investment Story Is Shifting With New Analyst Targets",
+          "title": "How The [Company] Investment Story Is Shifting With New Analyst Targets",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-10T23:08:29Z"
+        },
+        {
+          "title": "Will [Company] Beat Estimates Again in Its Next Earnings Report?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-08T16:10:02Z"
         }
       ]
     },
@@ -394,14 +394,14 @@
       ],
       "news_headlines": [
         {
-          "title": "New Study Finds These Sectors Produce the Most 100-Bagger Stocks",
-          "publisher": "24/7 Wall St.",
-          "publish_time": "2026-05-12T18:27:12Z"
-        },
-        {
-          "title": "A Look At Tractor Supply’s Valuation As Piper Sandler Downgrade Highlights Cost And Margin Pressures",
+          "title": "A Look At [Company]’s Valuation As Piper Sandler Downgrade Highlights Cost And Margin Pressures",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-06T05:14:51Z"
+        },
+        {
+          "title": "Here Are Tuesday’s Top Wall Street Analyst Research Calls: Applied Materials, Devon Energy, GoDaddy, Home Depot, Lam Research, Lowe’s, Roblox, [Company], Ulta Beauty, and More",
+          "publisher": "24/7 Wall St.",
+          "publish_time": "2026-05-05T11:52:54Z"
         }
       ]
     }

@@ -12,9 +12,11 @@ import json
 import re
 import logging
 import math
+from datetime import datetime
+from pathlib import Path
 
 from models import BaseLLM
-from config import BUDGET
+from config import BUDGET, PROMPT_TRACE_ENABLED, PROMPT_TRACE_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +42,13 @@ You MUST respond ONLY with a valid JSON object in this exact format, no other te
 {{
   "decisions": [
     {{
-      "company_name": "CompanyA",
+      "company_name": "Company 1",
       "action": "BUY",
       "allocation": 40000,
       "reasoning": "Strong revenue growth and low debt."
     }},
     {{
-      "company_name": "CompanyB",
+      "company_name": "Company 2",
       "action": "HOLD",
       "allocation": 25000,
       "reasoning": "Stable but limited upside."
@@ -99,6 +101,30 @@ PROTOCOL_PROMPTS = {
 }
 
 
+TRACE_FIELDS = [
+    "timestamp", "basket_id", "pair_id", "variant", "sensitive_attr",
+    "sensitive_value", "seed", "experiment_label", "composition",
+    "instruction_level", "protocol", "vaccine", "agent_id",
+    "agent_model", "role_key", "is_blind", "phase", "turn", "attempt",
+    "system_prompt", "user_message", "raw_response", "parse_error",
+    "error_message", "prompt_company_aliases",
+]
+
+
+def _write_prompt_trace(entry: dict) -> None:
+    """Append one prompt/response audit entry without affecting experiments."""
+    if not PROMPT_TRACE_ENABLED:
+        return
+
+    try:
+        path = Path(PROMPT_TRACE_PATH)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False, default=str) + "\n")
+    except Exception as exc:
+        logger.warning("Could not write prompt trace: %s", exc)
+
+
 class Agent:
     """An agent in the investment committee."""
 
@@ -132,7 +158,36 @@ class Agent:
         ]
         return "\n\n".join(p for p in parts if p.strip())
 
-    def genesis(self, basket_prompt: str) -> dict:
+    def _trace_generation(
+        self,
+        trace_context: dict | None,
+        attempt: int,
+        user_message: str,
+        raw_response: str,
+        result: dict,
+        error_message: str = "",
+    ) -> None:
+        context = trace_context or {}
+        entry = {field: "" for field in TRACE_FIELDS}
+        for key, value in context.items():
+            if key in entry:
+                entry[key] = value
+
+        entry.update({
+            "timestamp": datetime.now().isoformat(),
+            "agent_id": self.agent_id,
+            "agent_model": self.model.model_name,
+            "is_blind": self.blind,
+            "attempt": attempt,
+            "system_prompt": self.system_prompt,
+            "user_message": user_message,
+            "raw_response": raw_response,
+            "parse_error": bool(result.get("parse_error", True)),
+            "error_message": error_message or result.get("error_message", ""),
+        })
+        _write_prompt_trace(entry)
+
+    def genesis(self, basket_prompt: str, trace_context: dict | None = None) -> dict:
         """Generate initial response (turn 0, no other agents' input)."""
         max_retries = 3
         user_msg = (
@@ -142,8 +197,8 @@ class Agent:
 
         last_error = None
         result = None
-        for attempt in range(max_retries):
-            if attempt > 0 and last_error:
+        for attempt in range(1, max_retries + 1):
+            if attempt > 1 and last_error:
                 retry_msg = (
                     f"{user_msg}\n\n"
                     f"IMPORTANT: Your previous response could not be parsed or validated as valid JSON. "
@@ -154,19 +209,44 @@ class Agent:
             else:
                 retry_msg = user_msg
 
-            raw = self.model.generate(self.system_prompt, retry_msg)
+            try:
+                raw = self.model.generate(self.system_prompt, retry_msg)
+            except Exception as exc:
+                self._trace_generation(
+                    trace_context=trace_context,
+                    attempt=attempt,
+                    user_message=retry_msg,
+                    raw_response="",
+                    result={"parse_error": True},
+                    error_message=str(exc),
+                )
+                raise
+
             result = self._parse_response(raw)
+            self._trace_generation(
+                trace_context=trace_context,
+                attempt=attempt,
+                user_message=retry_msg,
+                raw_response=raw,
+                result=result,
+            )
 
             if not result.get("parse_error", False):
                 return result
 
             last_error = result.get("error_message", "Invalid JSON")
-            logger.warning(f"Agent {self.agent_id} parse retry {attempt + 1}/{max_retries}")
+            logger.warning(f"Agent {self.agent_id} parse retry {attempt}/{max_retries}")
 
         logger.error(f"Agent {self.agent_id} failed to produce valid JSON after {max_retries} attempts")
         return result
 
-    def respond(self, basket_prompt: str, other_responses: list[dict], turn: int) -> dict:
+    def respond(
+        self,
+        basket_prompt: str,
+        other_responses: list[dict],
+        turn: int,
+        trace_context: dict | None = None,
+    ) -> dict:
         """Generate response considering other agents' previous outputs."""
         max_retries = 3
         debate_context = self._format_debate_context(other_responses)
@@ -179,8 +259,8 @@ class Agent:
 
         last_error = None
         result = None
-        for attempt in range(max_retries):
-            if attempt > 0 and last_error:
+        for attempt in range(1, max_retries + 1):
+            if attempt > 1 and last_error:
                 retry_msg = (
                     f"{user_msg}\n\n"
                     f"IMPORTANT: Your previous response could not be parsed or validated as valid JSON. "
@@ -191,14 +271,33 @@ class Agent:
             else:
                 retry_msg = user_msg
 
-            raw = self.model.generate(self.system_prompt, retry_msg)
+            try:
+                raw = self.model.generate(self.system_prompt, retry_msg)
+            except Exception as exc:
+                self._trace_generation(
+                    trace_context=trace_context,
+                    attempt=attempt,
+                    user_message=retry_msg,
+                    raw_response="",
+                    result={"parse_error": True},
+                    error_message=str(exc),
+                )
+                raise
+
             result = self._parse_response(raw)
+            self._trace_generation(
+                trace_context=trace_context,
+                attempt=attempt,
+                user_message=retry_msg,
+                raw_response=raw,
+                result=result,
+            )
 
             if not result.get("parse_error", False):
                 return result
 
             last_error = result.get("error_message", "Invalid JSON")
-            logger.warning(f"Agent {self.agent_id} respond retry {attempt + 1}/{max_retries}")
+            logger.warning(f"Agent {self.agent_id} respond retry {attempt}/{max_retries}")
 
         logger.error(f"Agent {self.agent_id} failed to produce valid JSON after {max_retries} attempts (turn {turn})")
         return result

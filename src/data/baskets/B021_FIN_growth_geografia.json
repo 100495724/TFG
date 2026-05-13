@@ -97,12 +97,12 @@
       ],
       "news_headlines": [
         {
-          "title": "5 Insightful Analyst Questions From Ares’s Q1 Earnings Call",
+          "title": "5 Insightful Analyst Questions From [Company]’s Q1 Earnings Call",
           "publisher": "StockStory",
           "publish_time": "2026-05-11T23:08:55Z"
         },
         {
-          "title": "Should You Consider Selling Ares Management (ARES)?",
+          "title": "Should You Consider Selling [Company]?",
           "publisher": "Insider Monkey",
           "publish_time": "2026-05-11T13:07:10Z"
         }
@@ -196,14 +196,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Zebra Technologies Lifts 2026 Outlook After Broad-Based Growth Drives Quarterly Beat; Shares Jump",
-          "publisher": "MT Newswires",
-          "publish_time": "2026-05-12T17:49:46Z"
+          "title": "Jensen Mid Cap Fund Sold [Company] Despite Strengths",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-12T12:44:36Z"
         },
         {
-          "title": "Symbotic Stock Declines 15.5% Since Q2 Earnings Release",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-12T13:47:00Z"
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         }
       ]
     },
@@ -295,12 +295,12 @@
       ],
       "news_headlines": [
         {
-          "title": "A Look At Loews (L) Valuation As Recent Price Swings Cool Longer Term Momentum",
+          "title": "A Look At [Company] Valuation As Recent Price Swings Cool Longer Term Momentum",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-06T05:15:09Z"
         },
         {
-          "title": "Loews reports year-over-year drop in profit",
+          "title": "[Company] reports year-over-year drop in profit",
           "publisher": "Proactive",
           "publish_time": "2026-05-04T14:14:00Z"
         }
@@ -320,7 +320,7 @@
       "trailing_eps": 2.41,
       "free_cashflow": "N/A",
       "pe_ratio": 11.3,
-      "debt_to_equity": null,
+      "debt_to_equity": "N/A",
       "beta": 1.03,
       "price_history": [
         {
@@ -394,14 +394,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Amy Barrentine Takes Regions Business Capital Helm As Risk Focus Shifts",
-          "publisher": "Simply Wall St.",
-          "publish_time": "2026-05-11T16:24:46Z"
-        },
-        {
-          "title": "Do Wall Street Analysts Like Regions Financial Stock?",
+          "title": "Do Wall Street Analysts Like [Company] Stock?",
           "publisher": "Barchart",
           "publish_time": "2026-05-07T13:13:12Z"
+        },
+        {
+          "title": "How Investors May Respond To [Company] Q1 Results And New ReimbursePro Digital Fee Push",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-04-25T23:03:56Z"
         }
       ]
     }

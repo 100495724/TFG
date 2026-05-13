@@ -80,12 +80,12 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "[Company] (CPRT) Gains As Market Dips: What You Should Know",
+          "title": "[Company] Gains As Market Dips: What You Should Know",
           "publisher": "Zacks",
           "publish_time": "2026-05-07T22:15:01Z"
         },
         {
-          "title": "Is It Time To Reassess Copart (CPRT) After A 45% One Year Share Price Slide?",
+          "title": "Is It Time To Reassess [Company] After A 45% One Year Share Price Slide?",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-05T21:21:00Z"
         }
@@ -179,14 +179,14 @@
       ],
       "news_headlines": [
         {
-          "title": "ZTO or CHRW: Which Is the Better Value Stock Right Now?",
+          "title": "ZTO or [Company]: Which Is the Better Value Stock Right Now?",
           "publisher": "Zacks",
           "publish_time": "2026-05-11T15:40:05Z"
         },
         {
-          "title": "BofA Just Picked FedEx Stock as One of Its Best Ideas: Logistics Giant Joins the US 1 List",
-          "publisher": "24/7 Wall St.",
-          "publish_time": "2026-05-11T15:01:29Z"
+          "title": "[Company] Investors Back Board, Pay Plan in Annual Meeting Votes",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-08T21:07:44Z"
         }
       ]
     },
@@ -278,14 +278,14 @@
       ],
       "news_headlines": [
         {
-          "title": "3 Cash-Producing Stocks Walking a Fine Line",
-          "publisher": "StockStory",
-          "publish_time": "2026-05-12T12:28:55Z"
-        },
-        {
-          "title": "Is Nordson (NDSN) Stock Outpacing Its Industrial Products Peers This Year?",
+          "title": "Is [Company] Stock Outpacing Its Industrial Products Peers This Year?",
           "publisher": "Zacks",
           "publish_time": "2026-05-11T13:40:06Z"
+        },
+        {
+          "title": "Assessing [Company] Valuation After Recent Share Price Momentum And Mixed Multiple Signals",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-04-27T04:29:14Z"
         }
       ]
     },
@@ -303,7 +303,7 @@
       "trailing_eps": 6.56,
       "free_cashflow": "$944.4M",
       "pe_ratio": 25.4,
-      "debt_to_equity": null,
+      "debt_to_equity": "N/A",
       "beta": 0.73,
       "price_history": [
         {
@@ -377,14 +377,14 @@
       ],
       "news_headlines": [
         {
-          "title": "GM settles California OnStar driver data privacy probe for $12.75M",
-          "publisher": "Quartz",
-          "publish_time": "2026-05-11T11:21:02Z"
+          "title": "Is [Company] A Good Stock To Buy Now?",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-03T19:52:24Z"
         },
         {
-          "title": "GM agrees to pay $12.75M in California driver privacy settlement",
-          "publisher": "TechCrunch",
-          "publish_time": "2026-05-09T19:05:30Z"
+          "title": "AI Push, Buybacks and Steady Guidance Could Be A Game Changer For [Company]",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-02T00:23:12Z"
         }
       ]
     }

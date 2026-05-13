@@ -97,12 +97,12 @@
       ],
       "news_headlines": [
         {
-          "title": "Is It Time To Reconsider Ball (BALL) After Recent Share Price Pullback?",
+          "title": "Is It Time To Reconsider [Company] After Recent Share Price Pullback?",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-10T11:12:07Z"
         },
         {
-          "title": "Ball Q1 Earnings Call Highlights",
+          "title": "[Company] Q1 Earnings Call Highlights",
           "publisher": "MarketBeat",
           "publish_time": "2026-05-06T07:06:19Z"
         }
@@ -179,14 +179,14 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "On Running Sees Record Q1 Net Sales on Asian Demand",
-          "publisher": "Exec Edge",
-          "publish_time": "2026-05-12T15:37:06Z"
+          "title": "Deckers ([Company]) Stock Declines While Market Improves: Some Information for Investors",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T21:50:02Z"
         },
         {
-          "title": "Under Armour Tanks 18% After Earnings. Sales Continue to Slide.",
-          "publisher": "Barrons.com",
-          "publish_time": "2026-05-12T15:03:00Z"
+          "title": "[Company] Pullback Versus Fundamentals And Brand Momentum",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T19:14:32Z"
         }
       ]
     },
@@ -278,14 +278,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Expedia Group Posts Q1 Earnings & Revenue Beat on Strong B2B Growth",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-11T15:36:00Z"
-        },
-        {
-          "title": "Is It Too Late To Consider Hasbro (HAS) After Its Strong Share Price Run?",
+          "title": "Is It Too Late To Consider [Company] After Its Strong Share Price Run?",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-10T20:09:16Z"
+        },
+        {
+          "title": "[Company] Union Drive And Marvel Tie In Shape Investor Considerations",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T16:10:57Z"
         }
       ]
     },
@@ -377,14 +377,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Millrose Properties Q1 Earnings Call Highlights",
-          "publisher": "MarketBeat",
-          "publish_time": "2026-05-12T06:05:29Z"
-        },
-        {
-          "title": "Lennar (LEN) Stock Declines While Market Improves: Some Information for Investors",
+          "title": "[Company] Stock Declines While Market Improves: Some Information for Investors",
           "publisher": "Zacks",
           "publish_time": "2026-05-11T22:15:02Z"
+        },
+        {
+          "title": "Does [Company]’s New Vinova Luxury Community Signal a Deeper Shift in [Company]’s Upscale Strategy?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T06:17:28Z"
         }
       ]
     }

@@ -97,14 +97,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Integrity Alliance Loads Up on DFGP: A $2.7 Million Bet on Global Fixed Income",
-          "publisher": "Motley Fool",
-          "publish_time": "2026-05-12T11:18:10Z"
-        },
-        {
-          "title": "General Mills Swicy Gushers Launch Adds New Angle To GIS Valuation",
+          "title": "[Company] Swicy Gushers Launch Adds New Angle To [Company] Valuation",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-09T14:20:22Z"
+        },
+        {
+          "title": "Are Wall Street Analysts Bullish on [Company] Stock?",
+          "publisher": "Barchart",
+          "publish_time": "2026-05-08T10:18:04Z"
         }
       ]
     },
@@ -196,14 +196,14 @@
       ],
       "news_headlines": [
         {
-          "title": "1 Large-Cap Stock with Promising Prospects and 2 Facing Headwinds",
-          "publisher": "StockStory",
-          "publish_time": "2026-05-12T09:40:55Z"
+          "title": "Is It Time To Reconsider [Company] After Recent Price Rebound?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-07T08:17:30Z"
         },
         {
-          "title": "C4 Energy parent hires Hershey vet as COO",
-          "publisher": "Food Dive",
-          "publish_time": "2026-05-11T09:00:00Z"
+          "title": "[Company] Stock: Analyst Estimates & Ratings",
+          "publisher": "Barchart",
+          "publish_time": "2026-04-30T17:49:48Z"
         }
       ]
     },
@@ -295,14 +295,14 @@
       ],
       "news_headlines": [
         {
-          "title": "These 5 Stocks Yield More Than 5% and Are Still Growing Profits",
-          "publisher": "Barrons.com",
-          "publish_time": "2026-05-11T18:42:00Z"
-        },
-        {
-          "title": "A Look At Campbell's (CPB) Valuation After A Year Of Weak Share Price Performance",
+          "title": "A Look At [Company]'s ([Company]) Valuation After A Year Of Weak Share Price Performance",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-01T23:13:11Z"
+        },
+        {
+          "title": "Bear of the Day: [Company]",
+          "publisher": "Zacks",
+          "publish_time": "2026-04-28T09:00:00Z"
         }
       ]
     },
@@ -394,14 +394,14 @@
       ],
       "news_headlines": [
         {
-          "title": "Darling Ingredients Up 84.3% in 6 Months: What's Driving the Stock?",
-          "publisher": "Zacks",
-          "publish_time": "2026-05-12T15:04:00Z"
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         },
         {
-          "title": "Trump to Sign Orders Monday Aimed at Lowering Beef Prices",
-          "publisher": "Bloomberg",
-          "publish_time": "2026-05-11T17:50:44Z"
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
         }
       ]
     }

@@ -97,12 +97,12 @@
       ],
       "news_headlines": [
         {
-          "title": "Do Options Traders Know Something About GE Healthcare Stock We Don't?",
+          "title": "Do Options Traders Know Something About [Company] Stock We Don't?",
           "publisher": "Zacks",
           "publish_time": "2026-05-12T15:16:00Z"
         },
         {
-          "title": "GE HealthCare Expands SIGNA MR Portfolio With AI-Powered Tools",
+          "title": "[Company] Expands SIGNA MR Portfolio With AI-Powered Tools",
           "publisher": "Zacks",
           "publish_time": "2026-05-12T14:38:00Z"
         }
@@ -184,7 +184,7 @@
           "publish_time": "2026-05-08T10:43:15Z"
         },
         {
-          "title": "Henry Schein Q1 Earnings Call Highlights",
+          "title": "[Company] Q1 Earnings Call Highlights",
           "publisher": "MarketBeat",
           "publish_time": "2026-05-05T19:27:16Z"
         }
@@ -261,14 +261,14 @@
       "dividends": [],
       "news_headlines": [
         {
-          "title": "Toast downgraded, Lowe's upgraded: Wall Street's top analyst calls",
-          "publisher": "The Fly",
-          "publish_time": "2026-05-12T13:56:25Z"
+          "title": "[Company] Trial Targets Type 2 Diabetes As Shares Trade Below Estimates",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T03:13:18Z"
         },
         {
-          "title": "Here Are Tuesday’s Top Wall Street Analyst Research Calls: Autodesk, Celanese, DexCom, FormFactor, GitLab, Lowe’s, Matador Resources, Toast and More",
-          "publisher": "24/7 Wall St.",
-          "publish_time": "2026-05-12T11:54:21Z"
+          "title": "[Company] Q1 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-06T20:42:50Z"
         }
       ]
     },
@@ -360,12 +360,12 @@
       ],
       "news_headlines": [
         {
-          "title": "Investors Can Find Comfort In Zimmer Biomet Holdings' (NYSE:ZBH) Earnings Quality",
+          "title": "Investors Can Find Comfort In [Company] Holdings' Earnings Quality",
           "publisher": "Simply Wall St.",
           "publish_time": "2026-05-11T10:32:45Z"
         },
         {
-          "title": "Why Zimmer Biomet (ZBH) is a Top Growth Stock for the Long-Term",
+          "title": "Why [Company] is a Top Growth Stock for the Long-Term",
           "publisher": "Zacks",
           "publish_time": "2026-05-04T13:45:02Z"
         }

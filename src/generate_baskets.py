@@ -266,6 +266,15 @@ def _format_beta(beta) -> object:
         return "N/A"
 
 
+def _format_number(value, digits: int = 2) -> object:
+    if value is None:
+        return "N/A"
+    try:
+        return round(float(value), digits)
+    except (TypeError, ValueError):
+        return "N/A"
+
+
 def _format_growth(rg) -> str:
     if rg is None:
         return "N/A"
@@ -356,6 +365,174 @@ def _recent_dividends(dividends: list[dict]) -> list[dict]:
     return dividends[-DIVIDENDS_RECENT:]
 
 
+def _strip_urls(text: str) -> str:
+    return re.sub(r"https?://\S+|www\.\S+", "", str(text or "")).strip()
+
+
+def _standalone_pattern(term: str) -> str:
+    return r"(?<![A-Za-z0-9])" + re.escape(term) + r"(?![A-Za-z0-9])"
+
+
+def _contains_standalone(text: str, term: str) -> bool:
+    if not term:
+        return False
+    return re.search(_standalone_pattern(term), text, flags=re.IGNORECASE) is not None
+
+
+def _dedupe_terms(terms: list[str]) -> list[str]:
+    out = []
+    seen = set()
+    candidates = [str(term) for term in terms if term]
+    for term in sorted(candidates, key=len, reverse=True):
+        cleaned = " ".join(str(term).strip().split())
+        key = cleaned.casefold()
+        if cleaned and key not in seen:
+            out.append(cleaned)
+            seen.add(key)
+    return out
+
+
+def _company_news_aliases(company: dict, company_name: str) -> list[str]:
+    info = company.get("info") or {}
+    wiki = company.get("wikipedia_meta") or {}
+    aliases = [
+        info.get("longName"),
+        info.get("shortName"),
+        info.get("displayName"),
+        wiki.get("name"),
+        company_name,
+        company.get("ticker"),
+    ]
+
+    suffix_pattern = (
+        r"\b(incorporated|inc|corporation|corp|company|co|limited|ltd|plc|"
+        r"group|holdings|holding|technologies|technology|therapeutics|systems|"
+        r"services|class\s+[abc])\.?\b"
+    )
+    for name in list(aliases):
+        if not name:
+            continue
+        core = re.sub(suffix_pattern, "", str(name), flags=re.IGNORECASE)
+        core = re.sub(r"[,()]+", " ", core)
+        core = " ".join(core.split())
+        if len(core) >= 3:
+            aliases.append(core)
+        tokens = [t for t in re.split(r"[^A-Za-z0-9&.-]+", core) if len(t) >= 5]
+        if len(tokens) == 1:
+            aliases.append(tokens[0])
+
+    return _dedupe_terms([a for a in aliases if a])
+
+
+def _direct_news_identifiers(company: dict, company_name: str) -> list[str]:
+    """Identifiers allowed to prove a headline is directly about this company."""
+    info = company.get("info") or {}
+    wiki = company.get("wikipedia_meta") or {}
+    return _dedupe_terms([
+        info.get("longName"),
+        info.get("shortName"),
+        info.get("displayName"),
+        wiki.get("name"),
+        company_name,
+        company.get("ticker"),
+    ])
+
+
+def _title_contains_direct_identifier(title: str, identifiers: list[str]) -> bool:
+    return any(_contains_standalone(title, identifier) for identifier in identifiers)
+
+
+def _remove_exchange_parentheticals(text: str) -> str:
+    exchanges = (
+        "NASDAQ|NYSE|NYSEAMERICAN|NYSEMKT|AMEX|OTC|OTCMKTS|CBOE|TSX|LSE|"
+        "NSE|BSE|HKEX|ASX"
+    )
+    return re.sub(
+        rf"\(\s*(?:{exchanges})\s*:\s*[A-Z0-9.\-]+\s*\)",
+        "",
+        text,
+        flags=re.IGNORECASE,
+    )
+
+
+def _normalize_placeholder_artifacts(text: str) -> str:
+    legal_suffix = (
+        "incorporated|inc|corporation|corp|company|co|limited|ltd|plc|"
+        "group|holdings|holding"
+    )
+    normalized = text
+    normalized = re.sub(
+        rf"\[Company\]\s*,?\s+(?:{legal_suffix})\.?(?=\s|$|[),.;:!?])",
+        "[Company]",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    normalized = re.sub(
+        r"\[Company\]\.?\s*\(\s*\[Company\]\s*\)",
+        "[Company]",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    normalized = re.sub(
+        r"(?:\[Company\]\s+){1,}\[Company\]",
+        "[Company]",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    normalized = re.sub(r"\(\s*\)", "", normalized)
+    normalized = re.sub(r"\s+([,.;:!?])", r"\1", normalized)
+    normalized = re.sub(r"([([{])\s+", r"\1", normalized)
+    normalized = re.sub(r"\s+([)\]}])", r"\1", normalized)
+    normalized = re.sub(r"([,;:!?])\1+", r"\1", normalized)
+    normalized = re.sub(r"\s+", " ", normalized)
+    return normalized.strip(" ,;:-")
+
+
+def _headline_word_count_excluding_placeholder(title: str) -> int:
+    without_placeholder = title.replace("[Company]", "")
+    without_possessive = re.sub(r"\b['’]s\b", "", without_placeholder)
+    return len(re.findall(r"[A-Za-z0-9]+", without_possessive))
+
+
+def _sanitized_title_leaks(title: str, identifiers: list[str]) -> bool:
+    return any(_contains_standalone(title, identifier) for identifier in identifiers)
+
+
+def _sanitize_company_headline(
+    title: str,
+    company: dict,
+    company_name: str,
+) -> str | None:
+    """Preserve headline semantics; only remove/replace company identifiers."""
+    identifiers = _direct_news_identifiers(company, company_name)
+    aliases = _company_news_aliases(company, company_name)
+
+    sanitized = _strip_urls(title)
+    sanitized = _remove_exchange_parentheticals(sanitized)
+    for alias in aliases:
+        sanitized = re.sub(
+            _standalone_pattern(alias),
+            "[Company]",
+            sanitized,
+            flags=re.IGNORECASE,
+        )
+    sanitized = _normalize_placeholder_artifacts(sanitized)
+
+    if _sanitized_title_leaks(sanitized, identifiers):
+        return None
+    if _headline_word_count_excluding_placeholder(sanitized) < 4:
+        return None
+    return sanitized or None
+
+
+def _placeholder_news() -> dict:
+    return {
+        "title": "No directly company-specific recent headline available.",
+        "publisher": "N/A",
+        "publish_time": "N/A",
+    }
+
+
 def _scrub_company_name(text: str, company_name: str) -> str:
     """Replace the company name (and obvious variants) with [Company]."""
     if not text or not company_name:
@@ -371,18 +548,28 @@ def _scrub_company_name(text: str, company_name: str) -> str:
     return text
 
 
-def _recent_news(news: list[dict], company_name: str) -> list[dict]:
-    """Take NEWS_HEADLINES most recent items, scrub the company name."""
-    if not news:
-        return []
-    items = news[:NEWS_HEADLINES]
+def _recent_news(company: dict, company_name: str) -> list[dict]:
+    """Select title-direct company news, sanitize identifiers, and drop links."""
+    news = company.get("news") or []
+    identifiers = _direct_news_identifiers(company, company_name)
     out = []
-    for n in items:
+    for n in news:
+        title = _strip_urls(n.get("title", ""))
+        if not _title_contains_direct_identifier(title, identifiers):
+            continue
+        sanitized_title = _sanitize_company_headline(title, company, company_name)
+        if not sanitized_title:
+            continue
         out.append({
-            "title": _scrub_company_name(n.get("title", ""), company_name),
-            "publisher": n.get("publisher", ""),
-            "publish_time": n.get("publish_time", ""),
+            "title": sanitized_title,
+            "publisher": _strip_urls(n.get("publisher", "")) or "N/A",
+            "publish_time": _strip_urls(n.get("publish_time", "")) or "N/A",
         })
+        if len(out) >= NEWS_HEADLINES:
+            break
+
+    while len(out) < NEWS_HEADLINES:
+        out.append(_placeholder_news())
     return out
 
 
@@ -412,18 +599,18 @@ def build_company_from_snapshot(company: dict, ceo: str, hq: str) -> dict:
         "revenue_growth": _format_growth(info.get("revenueGrowth")),
         # Profitability
         "profit_margins": _format_margins(info.get("profitMargins")),
-        "trailing_eps": info.get("trailingEps"),
+        "trailing_eps": _format_number(info.get("trailingEps"), 2),
         # Cash quality
         "free_cashflow": _format_revenue(info.get("freeCashflow")),
         # Valuation
         "pe_ratio": _format_pe(info.get("trailingPE"), info.get("trailingEps")),
         # Risk
-        "debt_to_equity": info.get("debtToEquity"),
+        "debt_to_equity": _format_number(info.get("debtToEquity"), 3),
         "beta": _format_beta(info.get("beta")),
         # Time series
         "price_history": _sample_history(company.get("history") or []),
         "dividends": _recent_dividends(company.get("dividends") or []),
-        "news_headlines": _recent_news(company.get("news") or [], real_name),
+        "news_headlines": _recent_news(company, real_name),
     }
 
 

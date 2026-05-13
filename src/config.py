@@ -301,3 +301,5 @@ VACCINES = {
 # =============================================================================
 RESULTS_DIR = "results"
 BASKETS_DIR = "data/baskets"
+PROMPT_TRACE_ENABLED = True
+PROMPT_TRACE_PATH = "logs/prompt_responses.jsonl"
