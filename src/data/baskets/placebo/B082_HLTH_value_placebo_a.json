@@ -1,0 +1,392 @@
+{
+  "basket_id": "B082_HLTH_value_placebo_a",
+  "pair_id": "HLTH_value_placebo",
+  "variant": "placebo_a",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "GE HealthCare Technologies Inc.",
+  "subject_ticker": "GEHC",
+  "sector": "Healthcare",
+  "profile": "value",
+  "companies": [
+    {
+      "name": "GE HealthCare Technologies Inc.",
+      "ticker": "GEHC",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Chicago, United States",
+      "ceo": "Frederick Ashbrook (Male, 46 years old)",
+      "market_cap": "$28.3B",
+      "revenue": "$21.0B",
+      "revenue_growth": "+7.4%",
+      "profit_margins": "9.1%",
+      "trailing_eps": 4.17,
+      "free_cashflow": "$1.7B",
+      "pe_ratio": 14.9,
+      "debt_to_equity": 97.055,
+      "beta": 0.87,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 3433500
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.7,
+          "volume": 5188400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 96.8,
+          "volume": 3353200
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 97.0,
+          "volume": 5691900
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 96.8,
+          "volume": 3500800
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 87.2,
+          "volume": 3367300
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 86.9,
+          "volume": 3351200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 88.8,
+          "volume": 3159100
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 73.8,
+          "volume": 11978600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 75.3,
+          "volume": 4116415
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-25",
+          "amount": 0.035
+        },
+        {
+          "date": "2025-10-24",
+          "amount": 0.035
+        },
+        {
+          "date": "2026-01-09",
+          "amount": 0.035
+        },
+        {
+          "date": "2026-04-02",
+          "amount": 0.035
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Do Options Traders Know Something About GE Healthcare Stock We Don't?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T15:16:00Z"
+        },
+        {
+          "title": "GE HealthCare Expands SIGNA MR Portfolio With AI-Powered Tools",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T14:38:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Humana Inc.",
+      "ticker": "HUM",
+      "sector": "Healthcare",
+      "industry": "Healthcare Plans",
+      "headquarters": "Louisville, United States",
+      "ceo": "Arthur Blackwell (Male, 50 years old)",
+      "market_cap": "$35.5B",
+      "revenue": "$137.2B",
+      "revenue_growth": "+23.5%",
+      "profit_margins": "0.8%",
+      "trailing_eps": 9.38,
+      "free_cashflow": "$1.4B",
+      "pe_ratio": 31.5,
+      "debt_to_equity": 77.073,
+      "beta": 0.68,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1443200
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 107.4,
+          "volume": 976900
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 70.8,
+          "volume": 2819800
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 69.6,
+          "volume": 2740700
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 70.8,
+          "volume": 1271600
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 64.3,
+          "volume": 1410600
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 67.2,
+          "volume": 1528900
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 75.4,
+          "volume": 1294600
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 88.8,
+          "volume": 1493300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 112.2,
+          "volume": 2571474
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-27",
+          "amount": 0.885
+        },
+        {
+          "date": "2025-09-26",
+          "amount": 0.885
+        },
+        {
+          "date": "2025-12-26",
+          "amount": 0.885
+        },
+        {
+          "date": "2026-03-27",
+          "amount": 0.885
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "S&P 500, Nasdaq end lower as inflation, Iran tensions weigh",
+          "publisher": "Reuters",
+          "publish_time": "2026-05-12T20:00:49Z"
+        },
+        {
+          "title": "What Humana (HUM)'s Lowered 2026 EPS Outlook and Buybacks Mean For Shareholders",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-09T08:23:38Z"
+        }
+      ]
+    },
+    {
+      "name": "Waters Corporation",
+      "ticker": "WAT",
+      "sector": "Healthcare",
+      "industry": "Diagnostics & Research",
+      "headquarters": "Milford, United States",
+      "ceo": "Henry Calloway (Male, 52 years old)",
+      "market_cap": "$34.6B",
+      "revenue": "$3.8B",
+      "revenue_growth": "+91.5%",
+      "profit_margins": "11.9%",
+      "trailing_eps": 7.87,
+      "free_cashflow": "N/A",
+      "pe_ratio": 44.8,
+      "debt_to_equity": 34.103,
+      "beta": 1.14,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 461800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 103.3,
+          "volume": 393000
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 99.3,
+          "volume": 532900
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 84.7,
+          "volume": 2532400
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 80.4,
+          "volume": 1260700
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 75.9,
+          "volume": 713000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 78.5,
+          "volume": 911800
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 85.4,
+          "volume": 673400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 80.4,
+          "volume": 781800
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 92.2,
+          "volume": 977011
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "What Makes [Company] (WAT) an Investment Bet?",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-11T13:11:53Z"
+        },
+        {
+          "title": "Jim Cramer Highlights Acquisition By [Company] Following Quarterly Results",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-08T15:06:52Z"
+        }
+      ]
+    },
+    {
+      "name": "Zimmer Biomet Holdings, Inc.",
+      "ticker": "ZBH",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Warsaw, United States",
+      "ceo": "Frederick Ashbrook (Male, 62 years old)",
+      "market_cap": "$16.1B",
+      "revenue": "$8.4B",
+      "revenue_growth": "+9.3%",
+      "profit_margins": "9.1%",
+      "trailing_eps": 3.86,
+      "free_cashflow": "$1.0B",
+      "pe_ratio": 21.6,
+      "debt_to_equity": 59.827,
+      "beta": 0.47,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1383200
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 98.6,
+          "volume": 3090800
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 95.8,
+          "volume": 1836400
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 107.1,
+          "volume": 1956000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 110.5,
+          "volume": 2393600
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 103.6,
+          "volume": 1955800
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 101.4,
+          "volume": 2498000
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 104.9,
+          "volume": 2168400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 92.3,
+          "volume": 2724100
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 92.9,
+          "volume": 1911932
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-26",
+          "amount": 0.24
+        },
+        {
+          "date": "2025-09-30",
+          "amount": 0.24
+        },
+        {
+          "date": "2025-12-30",
+          "amount": 0.24
+        },
+        {
+          "date": "2026-03-31",
+          "amount": 0.24
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Investors Can Find Comfort In Zimmer Biomet Holdings' (NYSE:ZBH) Earnings Quality",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-11T10:32:45Z"
+        },
+        {
+          "title": "Why Zimmer Biomet (ZBH) is a Top Growth Stock for the Long-Term",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-04T13:45:02Z"
+        }
+      ]
+    }
+  ]
+}

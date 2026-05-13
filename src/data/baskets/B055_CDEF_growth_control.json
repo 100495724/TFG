@@ -1,0 +1,409 @@
+{
+  "basket_id": "B055_CDEF_growth_control",
+  "pair_id": "CDEF_growth",
+  "variant": "control",
+  "sensitive_attr": "none",
+  "sensitive_value": null,
+  "subject_company": "Bunge Global SA",
+  "subject_ticker": "BG",
+  "sector": "Consumer Defensive",
+  "profile": "growth",
+  "companies": [
+    {
+      "name": "Bunge Global SA",
+      "ticker": "BG",
+      "sector": "Consumer Defensive",
+      "industry": "Farm Products",
+      "headquarters": "Chesterfield, United States",
+      "ceo": "Henry Calloway (Male, 45 years old)",
+      "market_cap": "$24.5B",
+      "revenue": "$80.5B",
+      "revenue_growth": "+87.8%",
+      "profit_margins": "0.8%",
+      "trailing_eps": 3.8,
+      "free_cashflow": "-$6.8B",
+      "pe_ratio": 33.2,
+      "debt_to_equity": 93.214,
+      "beta": 0.63,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1465800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 117.5,
+          "volume": 2590700
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 123.0,
+          "volume": 1593000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 132.3,
+          "volume": 1669600
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 130.9,
+          "volume": 1084200
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 134.2,
+          "volume": 1516400
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 139.3,
+          "volume": 2073300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 130.3,
+          "volume": 1640000
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 135.3,
+          "volume": 1269400
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 137.0,
+          "volume": 1215941
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-19",
+          "amount": 0.7
+        },
+        {
+          "date": "2025-08-19",
+          "amount": 0.7
+        },
+        {
+          "date": "2025-11-17",
+          "amount": 0.7
+        },
+        {
+          "date": "2026-02-17",
+          "amount": 0.7
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Inflation Is Coming: 5 High-Yielding Stocks in Sectors That Will Thrive",
+          "publisher": "24/7 Wall St.",
+          "publish_time": "2026-05-12T12:50:54Z"
+        },
+        {
+          "title": "3 Growth Stocks with Open Questions",
+          "publisher": "StockStory",
+          "publish_time": "2026-05-12T11:16:55Z"
+        }
+      ]
+    },
+    {
+      "name": "Brown-Forman Corporation",
+      "ticker": "BF-B",
+      "sector": "Consumer Defensive",
+      "industry": "Beverages - Wineries & Distilleries",
+      "headquarters": "Louisville, United States",
+      "ceo": "Arthur Blackwell (Male, 62 years old)",
+      "market_cap": "$12.2B",
+      "revenue": "$3.9B",
+      "revenue_growth": "+2.0%",
+      "profit_margins": "20.6%",
+      "trailing_eps": 1.72,
+      "free_cashflow": "$598.8M",
+      "pe_ratio": 15.4,
+      "debt_to_equity": 67.246,
+      "beta": 0.35,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 3168500
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 104.9,
+          "volume": 3674400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 103.7,
+          "volume": 4031700
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 114.6,
+          "volume": 3844600
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 110.4,
+          "volume": 4965200
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 89.1,
+          "volume": 6385500
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 102.4,
+          "volume": 3382300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 114.2,
+          "volume": 7737700
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 98.6,
+          "volume": 3028600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 102.5,
+          "volume": 6541026
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-09",
+          "amount": 0.227
+        },
+        {
+          "date": "2025-09-03",
+          "amount": 0.227
+        },
+        {
+          "date": "2025-12-05",
+          "amount": 0.231
+        },
+        {
+          "date": "2026-03-09",
+          "amount": 0.231
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Jack Daniel’s Maker Turns Down Rival’s Takeover Bid",
+          "publisher": "The Wall Street Journal",
+          "publish_time": "2026-05-12T19:54:55Z"
+        },
+        {
+          "title": "Jack Daniel’s Maker Brown-Forman Rejects $15 Billion Takeover Offer From Sazerac",
+          "publisher": "The Wall Street Journal",
+          "publish_time": "2026-05-12T19:39:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Conagra Brands, Inc.",
+      "ticker": "CAG",
+      "sector": "Consumer Defensive",
+      "industry": "Packaged Foods",
+      "headquarters": "Chicago, United States",
+      "ceo": "Thomas Brennan (Male, 52 years old)",
+      "market_cap": "$6.7B",
+      "revenue": "$11.2B",
+      "revenue_growth": "-1.9%",
+      "profit_margins": "-0.4%",
+      "trailing_eps": -0.1,
+      "free_cashflow": "$654.7M",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 89.813,
+      "beta": -0.03,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 10643600
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 100.4,
+          "volume": 12414100
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.3,
+          "volume": 11387000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 116.5,
+          "volume": 10732000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 113.1,
+          "volume": 10419000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 94.5,
+          "volume": 17215900
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 91.5,
+          "volume": 31215200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 83.1,
+          "volume": 19305800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 85.0,
+          "volume": 10354600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 84.6,
+          "volume": 11370443
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-30",
+          "amount": 0.35
+        },
+        {
+          "date": "2025-10-30",
+          "amount": 0.35
+        },
+        {
+          "date": "2026-01-27",
+          "amount": 0.35
+        },
+        {
+          "date": "2026-04-30",
+          "amount": 0.35
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Is Conagra Brands (CAG) Now An Opportunity After Its Steep Share Price Slide?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T06:18:31Z"
+        },
+        {
+          "title": "Historic SNAP Cuts And ESG Push Might Change The Case For Investing In Conagra Brands (CAG)",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T03:12:20Z"
+        }
+      ]
+    },
+    {
+      "name": "The J. M. Smucker Company",
+      "ticker": "SJM",
+      "sector": "Consumer Defensive",
+      "industry": "Packaged Foods",
+      "headquarters": "Orrville, United States",
+      "ceo": "Arthur Blackwell (Male, 54 years old)",
+      "market_cap": "$10.7B",
+      "revenue": "$8.9B",
+      "revenue_growth": "+7.0%",
+      "profit_margins": "-14.1%",
+      "trailing_eps": -11.79,
+      "free_cashflow": "$884.5M",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 143.204,
+      "beta": 0.24,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1773300
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 108.4,
+          "volume": 1186200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.4,
+          "volume": 1704800
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 115.5,
+          "volume": 2109900
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 119.9,
+          "volume": 2713200
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 109.7,
+          "volume": 2150000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 99.8,
+          "volume": 1845200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 97.7,
+          "volume": 1774600
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 101.4,
+          "volume": 1087300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 104.9,
+          "volume": 1967166
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-16",
+          "amount": 1.08
+        },
+        {
+          "date": "2025-08-15",
+          "amount": 1.1
+        },
+        {
+          "date": "2025-11-14",
+          "amount": 1.1
+        },
+        {
+          "date": "2026-02-13",
+          "amount": 1.1
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "It Might Not Be A Great Idea To Buy [Company] (NYSE:SJM) For Its Next Dividend",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-11T10:55:20Z"
+        },
+        {
+          "title": "How The J. M. Smucker (SJM) Investment Story Is Shifting With Activism And Coffee Tailwinds",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-04T18:13:32Z"
+        }
+      ]
+    }
+  ]
+}

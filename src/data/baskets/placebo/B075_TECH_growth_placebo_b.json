@@ -1,0 +1,409 @@
+{
+  "basket_id": "B075_TECH_growth_placebo_b",
+  "pair_id": "TECH_growth_placebo",
+  "variant": "placebo_b",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "Gen Digital Inc.",
+  "subject_ticker": "GEN",
+  "sector": "Technology",
+  "profile": "growth",
+  "companies": [
+    {
+      "name": "Gen Digital Inc.",
+      "ticker": "GEN",
+      "sector": "Technology",
+      "industry": "Software - Infrastructure",
+      "headquarters": "Tempe, United States",
+      "ceo": "Christopher Walsh (Male, 61 years old)",
+      "market_cap": "$13.3B",
+      "revenue": "$5.0B",
+      "revenue_growth": "+27.0%",
+      "profit_margins": "19.5%",
+      "trailing_eps": 1.57,
+      "free_cashflow": "$1.4B",
+      "pe_ratio": 14.0,
+      "debt_to_equity": 313.903,
+      "beta": 1.09,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 3808300
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 101.2,
+          "volume": 3587200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 91.3,
+          "volume": 5855300
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 91.5,
+          "volume": 7117900
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 86.2,
+          "volume": 5332300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 79.5,
+          "volume": 6812900
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 72.2,
+          "volume": 8610900
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 75.9,
+          "volume": 5551700
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 74.7,
+          "volume": 4876400
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 85.0,
+          "volume": 8859293
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-19",
+          "amount": 0.125
+        },
+        {
+          "date": "2025-08-18",
+          "amount": 0.125
+        },
+        {
+          "date": "2025-11-17",
+          "amount": 0.125
+        },
+        {
+          "date": "2026-02-13",
+          "amount": 0.125
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "[Company] Q4 2026 Earnings Call Summary",
+          "publisher": "Moby",
+          "publish_time": "2026-05-08T12:30:00Z"
+        },
+        {
+          "title": "Gen Digital Q4 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-08T02:13:28Z"
+        }
+      ]
+    },
+    {
+      "name": "Broadridge Financial Solutions, Inc.",
+      "ticker": "BR",
+      "sector": "Technology",
+      "industry": "Information Technology Services",
+      "headquarters": "Lake Success, United States",
+      "ceo": "Edward Sinclair (Male, 54 years old)",
+      "market_cap": "$17.3B",
+      "revenue": "$7.3B",
+      "revenue_growth": "+7.8%",
+      "profit_margins": "15.0%",
+      "trailing_eps": 9.35,
+      "free_cashflow": "$1.2B",
+      "pe_ratio": 16.0,
+      "debt_to_equity": 120.878,
+      "beta": 0.9,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 544200
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.5,
+          "volume": 988500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 90.0,
+          "volume": 1570000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 78.8,
+          "volume": 1813000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 84.6,
+          "volume": 946300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 81.4,
+          "volume": 1697000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 73.0,
+          "volume": 2504000
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 73.3,
+          "volume": 1044200
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 70.8,
+          "volume": 1195000
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 68.2,
+          "volume": 2542621
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-12",
+          "amount": 0.88
+        },
+        {
+          "date": "2025-09-11",
+          "amount": 0.975
+        },
+        {
+          "date": "2025-12-12",
+          "amount": 0.975
+        },
+        {
+          "date": "2026-03-16",
+          "amount": 0.975
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Here’s Why Broadridge Financial Solutions (BR) Traded Down in Q1",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-12T12:48:09Z"
+        },
+        {
+          "title": "Wall Street Puts Blockchain to Work in $13 Trillion Repo Market",
+          "publisher": "Bloomberg",
+          "publish_time": "2026-05-12T11:00:11Z"
+        }
+      ]
+    },
+    {
+      "name": "Fortive Corporation",
+      "ticker": "FTV",
+      "sector": "Technology",
+      "industry": "Scientific & Technical Instruments",
+      "headquarters": "Everett, United States",
+      "ceo": "Henry Calloway (Male, 59 years old)",
+      "market_cap": "$18.4B",
+      "revenue": "$4.2B",
+      "revenue_growth": "+7.7%",
+      "profit_margins": "12.8%",
+      "trailing_eps": 1.7,
+      "free_cashflow": "$953.6M",
+      "pe_ratio": 35.5,
+      "debt_to_equity": 58.806,
+      "beta": 1.0,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2691300
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 100.2,
+          "volume": 2666000
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 96.9,
+          "volume": 3170100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 102.7,
+          "volume": 5692000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 105.8,
+          "volume": 2503400
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 97.2,
+          "volume": 3269700
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 101.0,
+          "volume": 2498000
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 107.3,
+          "volume": 2236500
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 106.7,
+          "volume": 3258100
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 108.9,
+          "volume": 1861412
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-30",
+          "amount": 0.060286
+        },
+        {
+          "date": "2025-09-12",
+          "amount": 0.06
+        },
+        {
+          "date": "2025-11-28",
+          "amount": 0.06
+        },
+        {
+          "date": "2026-03-13",
+          "amount": 0.06
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "FUJIFILM Q4 Earnings & Revenues Up Y/Y on Solid Segmental Performance",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T14:03:00Z"
+        },
+        {
+          "title": "Dell downgraded, Uber upgraded: Wall Street's top analyst calls",
+          "publisher": "The Fly",
+          "publish_time": "2026-05-11T13:44:30Z"
+        }
+      ]
+    },
+    {
+      "name": "Hewlett Packard Enterprise Company",
+      "ticker": "HPE",
+      "sector": "Technology",
+      "industry": "Communication Equipment",
+      "headquarters": "Spring, United States",
+      "ceo": "James Anderson (Male, 61 years old)",
+      "market_cap": "$40.1B",
+      "revenue": "$35.7B",
+      "revenue_growth": "+18.4%",
+      "profit_margins": "-0.3%",
+      "trailing_eps": -0.17,
+      "free_cashflow": "$2.6B",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 87.223,
+      "beta": 1.29,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 11238800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 90.8,
+          "volume": 14910500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 91.1,
+          "volume": 16061700
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 93.9,
+          "volume": 16791300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 91.6,
+          "volume": 15744500
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 90.4,
+          "volume": 16518800
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 99.9,
+          "volume": 12283500
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 102.5,
+          "volume": 9348500
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 119.0,
+          "volume": 11032500
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 125.8,
+          "volume": 9328966
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-18",
+          "amount": 0.13
+        },
+        {
+          "date": "2025-09-18",
+          "amount": 0.13
+        },
+        {
+          "date": "2025-12-19",
+          "amount": 0.143
+        },
+        {
+          "date": "2026-03-24",
+          "amount": 0.143
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "The Zacks Analyst Blog  Cisco, Arista Networks, Dell and Hewlett",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T08:26:00Z"
+        },
+        {
+          "title": "Hewlett Packard Enterprise Doubles Down On AI Networking And Edge Workloads",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T03:13:23Z"
+        }
+      ]
+    }
+  ]
+}
