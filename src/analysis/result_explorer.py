@@ -23,11 +23,22 @@ if TYPE_CHECKING:
 
 # %% Configuration
 NUMERIC_COLUMNS = ("turn", "seed", "allocation", "subject_position")
+# (display_label, sensitive_attr). The label drives figure titles only; all
+# filtering is done on the `sensitive_attr` column (never on `variant`, whose
+# only values are control/unprivileged).
 DEFAULT_VARIANT_SPECS = (
     ("control", "none"),
     ("gender", "gender"),
-    ("geo", "country"),
+    ("country", "country"),
 )
+# Canonical instruction-level labels. Older result CSVs were written with the
+# alias `level_1_professional_fairness` for the prompt now named
+# `level_1_professional`; normalize it at load so merge/group keys stay aligned.
+# Note: `level_1_professional_geopolitical` was a different prompt (removed) and
+# is intentionally NOT remapped here.
+INSTRUCTION_LEVEL_ALIASES = {
+    "level_1_professional_fairness": "level_1_professional",
+}
 SUPPORTED_TABLE_FIELDS = {
     "action",
     "allocation",
@@ -86,6 +97,12 @@ def _natural_key(value: object) -> tuple:
 
 
 def _pair_short_id(pair_id: str) -> str:
+    """Best-effort shorthand for a pair_id (e.g. "A1" from "A1_HighGrowth").
+
+    Only collapses ids whose first token matches a letter+digit code (A1, B12).
+    Free-form ids (e.g. "TECH_growth") have no such prefix and are returned
+    unchanged, so exact-match resolution always works for them.
+    """
     text = str(pair_id)
     first = text.split("_", 1)[0]
     return first if re.fullmatch(r"[A-Za-z]+\d+", first) else text
@@ -141,6 +158,23 @@ def _coerce_numeric_columns(df: pd.DataFrame) -> pd.DataFrame:
     for column in NUMERIC_COLUMNS:
         if column in cleaned.columns:
             cleaned[column] = pd.to_numeric(cleaned[column], errors="coerce")
+    return cleaned
+
+
+def _normalize_instruction_level(df: pd.DataFrame) -> pd.DataFrame:
+    """Map legacy instruction_level aliases to their canonical labels.
+
+    Applied once at load time so MERGE_KEYS / PAIR_KEYS group consistently
+    across CSVs written under old and new naming schemes.
+    """
+    if "instruction_level" not in df.columns:
+        return df
+    cleaned = df.copy()
+    cleaned["instruction_level"] = (
+        cleaned["instruction_level"].map(
+            lambda value: INSTRUCTION_LEVEL_ALIASES.get(value, value)
+        )
+    )
     return cleaned
 
 
@@ -210,6 +244,7 @@ def load_result_csvs(paths_or_globs: list[str]) -> pd.DataFrame:
 
     df = pd.concat(frames, ignore_index=True)
     df = _coerce_numeric_columns(df)
+    df = _normalize_instruction_level(df)
 
     parse_error_rows = (
         int(_truthy(df["parse_error"]).sum()) if "parse_error" in df.columns else 0
@@ -295,8 +330,9 @@ def plot_subject_allocation_evolution(
                 "pass seed=... to avoid a cluttered plot."
             )
 
-    if variant is not None and "variant" in plot_df.columns:
-        plot_df = plot_df[plot_df["variant"].astype(str) == variant]
+    # Filtering is done on `sensitive_attr` only. `variant` is kept as a
+    # display-only label (its values are control/unprivileged, which do not
+    # correspond to the gender/country counterfactuals being plotted).
     if sensitive_attr is not None and "sensitive_attr" in plot_df.columns:
         plot_df = plot_df[plot_df["sensitive_attr"].astype(str) == sensitive_attr]
 
