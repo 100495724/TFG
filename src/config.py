@@ -20,7 +20,7 @@ MODEL_ENDPOINTS = {
     # Local models (vLLM on RunPod)
     "llama-3.1-8b": {
         "type": "vllm",
-        "base_url": "https://xxbj8qbw33f3tt-8000.proxy.runpod.net/v1",
+        "base_url": "https://tz44qr439447ne-8000.proxy.runpod.net/v1",
         "model_name": "meta-llama/Llama-3.1-8B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
