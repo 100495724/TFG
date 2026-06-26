@@ -6,3 +6,6 @@ numpy>=1.24.0
 # Analysis layer (result_explorer.py figures + aggregate.py statistics)
 matplotlib>=3.7.0
 scipy>=1.10.0
+
+# Interactive results explorer (src/app.py)
+streamlit>=1.28.0
