@@ -1,0 +1,48 @@
+# --- homo_llama (resto) ---
+python experiment_runner.py --act 1 --condition homo_llama__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_llama__level_2_identity --seeds "42,123,456"
+
+# --- homo_qwen ---
+python experiment_runner.py --act 1 --condition homo_qwen__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_qwen__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_qwen__level_2_identity --seeds "42,123,456"
+
+# --- homo_mistral ---
+python experiment_runner.py --act 1 --condition homo_mistral__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_mistral__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_mistral__level_2_identity --seeds "42,123,456"
+
+# --- homo_gpt (API: requiere OPENAI_API_KEY) ---
+python experiment_runner.py --act 1 --condition homo_gpt__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_gpt__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_gpt__level_2_identity --seeds "42,123,456"
+
+# --- homo_claude (API: requiere ANTHROPIC_API_KEY) ---
+python experiment_runner.py --act 1 --condition homo_claude__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_claude__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition homo_claude__level_2_identity --seeds "42,123,456"
+
+# --- hetero_local ---
+python experiment_runner.py --act 1 --condition hetero_local__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition baseline --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition hetero_local__level_2_identity --seeds "42,123,456"
+
+# --- hetero_api_claude (API: OPENAI + ANTHROPIC según los modelos del mix) ---
+python experiment_runner.py --act 1 --condition hetero_api_claude__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition hetero_api_claude__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition hetero_api_claude__level_2_identity --seeds "42,123,456"
+
+# --- hetero_api_gpt (API) ---
+python experiment_runner.py --act 1 --condition hetero_api_gpt__level_0_neutral --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition hetero_api_gpt__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act 1 --condition hetero_api_gpt__level_2_identity --seeds "42,123,456"
+
+# --- placebos ---
+python experiment_runner.py --act placebo --condition homo_llama__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition homo_qwen__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition homo_mistral__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition homo_gpt__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition homo_claude__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition baseline --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition hetero_api_claude__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --act placebo --condition hetero_api_gpt__level_1_professional --seeds "42,123,456"
