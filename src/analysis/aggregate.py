@@ -92,7 +92,13 @@ def detection_committee_gap(
 
 
 # ---------------------------------------------------------------------------
-# 2. Propagation - lagged Pearson correlation non-blind(t-1) -> blind(t)
+# 2. Debate coupling - lagged Pearson correlation non-blind(t-1) -> blind(t)
+#
+# This is NOT bias propagation: it is a generic debate-coupling channel. It
+# must ALWAYS be reported next to its placebo reference (twin-vs-twin runs give
+# essentially the same correlation), so ``debate_coupling`` embeds the placebo
+# figures when a placebo frame is supplied and no consumer can show the
+# treatment correlation without its null.
 # ---------------------------------------------------------------------------
 def _pearson(x: np.ndarray, y: np.ndarray) -> tuple[float, float, int]:
     """Pearson rho + p-value. Falls back to numpy (p=nan) if scipy missing."""
@@ -109,36 +115,71 @@ def _pearson(x: np.ndarray, y: np.ndarray) -> tuple[float, float, int]:
         return rho, float("nan"), n
 
 
-def propagation_correlation(
-    df: pd.DataFrame,
-    attr: str = "gender",
-    by_condition: bool = False,
+def _placebo_agent_gap_long(
+    df_placebo: pd.DataFrame,
     include_errors: bool = False,
-) -> dict[str, pd.DataFrame]:
-    """Lagged correlation between non-blind agents' gap at t-1 and the blind
-    agent's gap at t, pooled over baskets x seeds.
+) -> pd.DataFrame:
+    """Per-agent placebo gap (``placebo_b - placebo_a``) by pair/seed/agent/turn.
 
-    Returns a dict with:
-      - ``scatter``: one row per (condition, pair_id, seed, turn t) with
-        ``x_nonblind_prev`` (mean gap of agent_2+agent_3 at t-1) and
-        ``y_blind`` (agent_1 gap at t).
-      - ``stats``: Pearson ``rho``, ``pvalue``, ``n`` (pooled, or per condition
-        if ``by_condition``). ``rho``/``pvalue`` are NaN when ``n < 3``.
+    Mirrors the shape of ``rex.compute_agent_pair_gap_table`` (same PAIR_KEYS,
+    ``role_key``, ``is_blind``, ``turn``) but the gap is the twin-vs-twin
+    difference, so it carries no sensitive attribute. Empty frame (never raises)
+    when there are no ``placebo_a``/``placebo_b`` rows.
+    """
+    columns = rex.PAIR_KEYS + ["agent_id", "role_key", "is_blind", "turn", "gap"]
+    if df_placebo is None or df_placebo.empty or "variant" not in df_placebo.columns:
+        return _empty(columns)
+
+    subject = rex.filter_valid_subject_rows(df_placebo, include_errors=include_errors)
+    variants = set(subject["variant"].astype(str).unique()) if "variant" in subject.columns else set()
+    if not {"placebo_a", "placebo_b"}.issubset(variants):
+        return _empty(columns)
+
+    subject = subject.copy()
+    subject["allocation"] = pd.to_numeric(subject["allocation"], errors="coerce")
+    merge_keys = rex._present(subject, rex.MERGE_KEYS)
+    a = subject[subject["variant"].astype(str) == "placebo_a"].drop_duplicates(merge_keys)
+    b = subject[subject["variant"].astype(str) == "placebo_b"].drop_duplicates(merge_keys)
+    merged = a.merge(b, on=merge_keys, how="inner", suffixes=("_a", "_b"))
+    if merged.empty:
+        return _empty(columns)
+
+    out = pd.DataFrame()
+    for column in rex._present(merged, rex.PAIR_KEYS + ["agent_id", "turn"]):
+        out[column] = merged[column]
+    out["role_key"] = merged.get("role_key_a", merged.get("role_key"))
+    out["is_blind"] = merged.get("is_blind_a", merged.get("is_blind"))
+    # placebo_b - placebo_a (same sign convention as variant - control).
+    out["gap"] = (
+        pd.to_numeric(merged["allocation_b"], errors="coerce")
+        - pd.to_numeric(merged["allocation_a"], errors="coerce")
+    )
+    ordered = [c for c in columns if c in out.columns]
+    remaining = [c for c in out.columns if c not in ordered]
+    return out[ordered + remaining]
+
+
+def _lagged_coupling(
+    gaps: pd.DataFrame,
+    value_col: str,
+    by_condition: bool = False,
+) -> dict[str, pd.DataFrame]:
+    """Lagged non-blind(t-1) -> blind(t) correlation over a per-agent gap table.
+
+    ``gaps`` must expose PAIR_KEYS, ``turn``, a blind marker (``is_blind`` or
+    ``role_key``) and ``value_col``. Returns ``{"scatter", "stats"}``.
     """
     scatter_cols = CONDITION_KEYS + [
         "pair_id", "seed", "turn", "x_nonblind_prev", "y_blind",
     ]
     stats_cols = CONDITION_KEYS + ["rho", "pvalue", "n"]
 
-    gaps = rex.compute_agent_pair_gap_table(
-        df, attr=attr, include_errors=include_errors,
-    )
-    if gaps.empty:
+    if gaps is None or gaps.empty or value_col not in gaps.columns:
         return {"scatter": _empty(scatter_cols), "stats": _empty(stats_cols)}
 
     gaps = gaps.copy()
     gaps["__blind"] = rex._is_blind_gap_row(gaps).to_numpy()
-    gaps["allocation_gap"] = pd.to_numeric(gaps["allocation_gap"], errors="coerce")
+    gaps[value_col] = pd.to_numeric(gaps[value_col], errors="coerce")
     group_keys = rex._present(gaps, PAIR_KEYS)
 
     records = []
@@ -150,8 +191,8 @@ def propagation_correlation(
         nonblind = frame[~frame["__blind"]]
         if blind.empty or nonblind.empty:
             continue
-        blind_by_turn = blind.groupby("turn")["allocation_gap"].mean()
-        nonblind_by_turn = nonblind.groupby("turn")["allocation_gap"].mean()
+        blind_by_turn = blind.groupby("turn")[value_col].mean()
+        nonblind_by_turn = nonblind.groupby("turn")[value_col].mean()
         for turn in sorted(blind_by_turn.index):
             prev = turn - 1
             if prev not in nonblind_by_turn.index:
@@ -197,6 +238,54 @@ def propagation_correlation(
         stats = pd.DataFrame([_stats_for(scatter, {})])[stats_cols]
 
     return {"scatter": scatter, "stats": stats}
+
+
+def placebo_debate_coupling(
+    df_placebo: pd.DataFrame,
+    by_condition: bool = False,
+    include_errors: bool = False,
+) -> dict[str, pd.DataFrame]:
+    """Lagged non-blind(t-1) -> blind(t) coupling on placebo twin-vs-twin gaps.
+
+    Same computation as ``debate_coupling`` but on ``placebo_b - placebo_a``.
+    This is the reference r that ALWAYS accompanies the treatment coupling.
+    """
+    gaps = _placebo_agent_gap_long(df_placebo, include_errors=include_errors)
+    return _lagged_coupling(gaps, value_col="gap", by_condition=by_condition)
+
+
+def debate_coupling(
+    df: pd.DataFrame,
+    attr: str = "gender",
+    by_condition: bool = False,
+    include_errors: bool = False,
+    df_placebo: pd.DataFrame | None = None,
+) -> dict[str, pd.DataFrame]:
+    """Lagged correlation between non-blind agents' gap at t-1 and the blind
+    agent's gap at t, pooled over baskets x seeds. Generic debate coupling, NOT
+    bias propagation.
+
+    Returns a dict with:
+      - ``scatter``: one row per (condition, pair_id, seed, turn t) with
+        ``x_nonblind_prev`` (mean gap of agent_2+agent_3 at t-1) and
+        ``y_blind`` (agent_1 gap at t).
+      - ``stats``: Pearson ``rho``, ``pvalue``, ``n`` (pooled, or per condition
+        if ``by_condition``). ``rho``/``pvalue`` are NaN when ``n < 3``.
+    When ``df_placebo`` is supplied, also returns ``placebo_scatter`` and
+    ``placebo_stats`` so the treatment coupling can never be shown without its
+    placebo reference.
+    """
+    gaps = rex.compute_agent_pair_gap_table(
+        df, attr=attr, include_errors=include_errors,
+    )
+    out = _lagged_coupling(gaps, value_col="allocation_gap", by_condition=by_condition)
+    if df_placebo is not None:
+        placebo = placebo_debate_coupling(
+            df_placebo, by_condition=by_condition, include_errors=include_errors,
+        )
+        out["placebo_scatter"] = placebo["scatter"]
+        out["placebo_stats"] = placebo["stats"]
+    return out
 
 
 # ---------------------------------------------------------------------------
@@ -286,7 +375,7 @@ def dynamics_turn_trajectory(
 
 
 # ---------------------------------------------------------------------------
-# 5. Ablations - composition x instruction matrix (+ cooperative comparison)
+# 5. Ablations - composition x instruction matrix
 # ---------------------------------------------------------------------------
 def ablation_matrix(
     df: pd.DataFrame,
@@ -297,10 +386,9 @@ def ablation_matrix(
 ) -> pd.DataFrame:
     """Matrix (composition rows x instruction_level columns) of a single metric.
 
-    Only ``protocol == "debate"`` cells are included; the cooperative probe is a
-    separate paired comparison (see ``cooperative_comparison``). Degrades to a
-    1x1 matrix when only one cell exists; returns an empty frame if no data.
-    Currently the only supported ``metric`` is ``committee_gap`` (signed mean).
+    Only ``protocol == "debate"`` cells are included. Degrades to a 1x1 matrix
+    when only one cell exists; returns an empty frame if no data. Currently the
+    only supported ``metric`` is ``committee_gap`` (signed mean).
     """
     if "protocol" in df.columns:
         debate = df[df["protocol"].astype(str) == "debate"].copy()
@@ -322,38 +410,6 @@ def ablation_matrix(
         index="composition", columns="instruction_level", values="committee_gap",
     )
     return matrix
-
-
-def cooperative_comparison(
-    df: pd.DataFrame,
-    attr: str = "gender",
-    final_turn: int = 4,
-    include_errors: bool = False,
-) -> pd.DataFrame:
-    """Paired debate-vs-cooperative committee gap per (composition, instruction).
-
-    Tidy long form so the caller can pair the matching debate (#17) and
-    cooperative (#25) cells. Empty frame when no data.
-    """
-    columns = [
-        "composition", "instruction_level", "protocol",
-        "sensitive_attr", "mean_committee_gap", "n",
-    ]
-    detail = detection_committee_gap(
-        df, attrs=(attr,), final_turn=final_turn, include_errors=include_errors,
-    )
-    if detail.empty or "protocol" not in detail.columns:
-        return _empty(columns)
-
-    agg = (
-        detail.groupby(["composition", "instruction_level", "protocol"], dropna=False)["committee_gap"]
-        .agg(mean_committee_gap="mean", n="count")
-        .reset_index()
-    )
-    agg["sensitive_attr"] = attr
-    ordered = [c for c in columns if c in agg.columns]
-    remaining = [c for c in agg.columns if c not in ordered]
-    return agg[ordered + remaining]
 
 
 # ---------------------------------------------------------------------------
@@ -479,3 +535,354 @@ def placebo_band(
         .reset_index()
     )
     return summary[columns]
+
+
+# ---------------------------------------------------------------------------
+# 8. Genesis (t=0) statistics with the placebo as the empirical null
+#
+# Sign convention (CRITICAL): all functions below report the gap as
+# ``variant - control`` (i.e. ``-allocation_gap`` from result_explorer, which
+# returns ``control - test``) so a NEGATIVE gap means the subject was penalized
+# in the variant. Placebo gap is ``placebo_b - placebo_a``. The bias endpoint
+# is the genesis turn t=0; permutation / bootstrap use a FIXED seed (0).
+# ---------------------------------------------------------------------------
+GENESIS_STAT_COLS = [
+    "sensitive_attr", "instruction_level", "mean_gap", "sd",
+    "n_pairs", "p_signflip", "ci95_lo", "ci95_hi",
+]
+
+
+def _signflip_p(values, n_perm: int = 10000, seed: int = 0) -> float:
+    """Two-sided sign-flip permutation p-value for a mean == 0 null."""
+    v = np.asarray(list(values), dtype=float)
+    v = v[~np.isnan(v)]
+    n = v.size
+    if n == 0:
+        return float("nan")
+    obs = abs(float(v.mean()))
+    rng = np.random.default_rng(seed)
+    signs = rng.integers(0, 2, size=(n_perm, n)) * 2 - 1
+    perm_means = np.abs((signs * v).mean(axis=1))
+    return float((perm_means >= obs).mean())
+
+
+def _bootstrap_ci(
+    values, n_boot: int = 10000, seed: int = 0, lo: float = 2.5, hi: float = 97.5,
+) -> tuple[float, float]:
+    """Percentile bootstrap CI of the mean (fixed seed)."""
+    v = np.asarray(list(values), dtype=float)
+    v = v[~np.isnan(v)]
+    n = v.size
+    if n == 0:
+        return float("nan"), float("nan")
+    if n == 1:
+        return float(v[0]), float(v[0])
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, n, size=(n_boot, n))
+    boot_means = v[idx].mean(axis=1)
+    return float(np.percentile(boot_means, lo)), float(np.percentile(boot_means, hi))
+
+
+def _treatment_agent_gap_long(
+    df: pd.DataFrame, attr: str, include_errors: bool = False,
+) -> pd.DataFrame:
+    """Per-agent treatment gap in the ``variant - control`` convention."""
+    gaps = rex.compute_agent_pair_gap_table(df, attr=attr, include_errors=include_errors)
+    if gaps.empty:
+        return gaps
+    gaps = gaps.copy()
+    gaps["gap"] = -pd.to_numeric(gaps["allocation_gap"], errors="coerce")
+    return gaps
+
+
+def _seed_avg_pair_gaps(
+    long: pd.DataFrame, turn: int, visible_only: bool,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Aggregate an agent-gap long frame to per-pair gaps.
+
+    Returns ``(committee, seed_avg)`` where ``committee`` is one gap per
+    (instruction_level, seed, pair_id) [pair x seed units] and ``seed_avg`` is
+    one gap per (instruction_level, pair_id) [seeds averaged].
+    """
+    empty = _empty(["instruction_level", "seed", "pair_id", "gap"])
+    if long is None or long.empty or "gap" not in long.columns:
+        return empty, _empty(["instruction_level", "pair_id", "gap"])
+    sub = long.copy()
+    if "turn" in sub.columns:
+        sub = sub[pd.to_numeric(sub["turn"], errors="coerce") == turn]
+    if visible_only and "is_blind" in sub.columns:
+        sub = sub[~rex._truthy(sub["is_blind"])]
+    sub = sub.copy()
+    sub["gap"] = pd.to_numeric(sub["gap"], errors="coerce")
+    keys1 = rex._present(sub, ["instruction_level", "seed", "pair_id"])
+    if not keys1:
+        return empty, _empty(["instruction_level", "pair_id", "gap"])
+    committee = sub.groupby(keys1, dropna=False)["gap"].mean().reset_index()
+    keys2 = rex._present(committee, ["instruction_level", "pair_id"])
+    seed_avg = committee.groupby(keys2, dropna=False)["gap"].mean().reset_index()
+    return committee, seed_avg
+
+
+def _stats_row(sensitive_attr: str, instruction_level: str, values) -> dict:
+    v = np.asarray(list(values), dtype=float)
+    v = v[~np.isnan(v)]
+    n = int(v.size)
+    if n == 0:
+        return {
+            "sensitive_attr": sensitive_attr, "instruction_level": instruction_level,
+            "mean_gap": float("nan"), "sd": float("nan"), "n_pairs": 0,
+            "p_signflip": float("nan"), "ci95_lo": float("nan"), "ci95_hi": float("nan"),
+        }
+    lo, hi = _bootstrap_ci(v)
+    return {
+        "sensitive_attr": sensitive_attr,
+        "instruction_level": instruction_level,
+        "mean_gap": float(v.mean()),
+        "sd": float(v.std(ddof=1)) if n > 1 else float("nan"),
+        "n_pairs": n,
+        "p_signflip": _signflip_p(v),
+        "ci95_lo": lo,
+        "ci95_hi": hi,
+    }
+
+
+def _summarize_pair_gaps(seed_avg: pd.DataFrame, sensitive_attr: str) -> pd.DataFrame:
+    """One stats row per instruction_level + a ``pooled`` row (levels grouped)."""
+    if seed_avg is None or seed_avg.empty:
+        return _empty(GENESIS_STAT_COLS)
+    rows = []
+    if "instruction_level" in seed_avg.columns:
+        for lvl, frame in seed_avg.groupby("instruction_level", dropna=False):
+            rows.append(_stats_row(sensitive_attr, str(lvl), frame["gap"].to_numpy()))
+    rows.append(_stats_row(sensitive_attr, "pooled", seed_avg["gap"].to_numpy()))
+    return pd.DataFrame(rows)[GENESIS_STAT_COLS]
+
+
+def genesis_gap_stats(
+    df: pd.DataFrame,
+    attrs: tuple[str, ...] = ("gender", "country"),
+    turn: int = 0,
+    visible_only: bool = True,
+    include_errors: bool = False,
+) -> pd.DataFrame:
+    """Genesis (t=0) gap statistics per (sensitive_attr, instruction_level).
+
+    Gap is ``variant - control`` at the agent level (visible agents only when
+    ``visible_only``), averaged first to committee-partial level by
+    (instruction_level, seed, pair_id), then across seeds by
+    (instruction_level, pair_id). Returns per-level rows plus a ``pooled`` row
+    (levels grouped) with ``mean_gap, sd, n_pairs, p_signflip`` (sign-flip
+    permutation, 10k, fixed seed) and ``ci95_lo/ci95_hi`` (mean bootstrap, 10k).
+    """
+    frames = []
+    for attr in attrs:
+        long = _treatment_agent_gap_long(df, attr, include_errors=include_errors)
+        _, seed_avg = _seed_avg_pair_gaps(long, turn=turn, visible_only=visible_only)
+        summ = _summarize_pair_gaps(seed_avg, attr)
+        if not summ.empty:
+            frames.append(summ)
+    if not frames:
+        return _empty(GENESIS_STAT_COLS)
+    return pd.concat(frames, ignore_index=True)
+
+
+def placebo_gap_stats(
+    df_placebo: pd.DataFrame,
+    turn: int = 0,
+    visible_only: bool = True,
+    include_errors: bool = False,
+) -> pd.DataFrame:
+    """Genesis-style stats on the placebo gap ``placebo_b - placebo_a``.
+
+    This is the reference row that ALWAYS accompanies ``genesis_gap_stats``.
+    Same aggregation and statistics. The placebo is a per-composition noise
+    floor, so ``instruction_level`` is incidental (currently only level_1).
+    """
+    long = _placebo_agent_gap_long(df_placebo, include_errors=include_errors)
+    _, seed_avg = _seed_avg_pair_gaps(long, turn=turn, visible_only=visible_only)
+    return _summarize_pair_gaps(seed_avg, "placebo")
+
+
+def permutation_vs_placebo(
+    df: pd.DataFrame,
+    df_placebo: pd.DataFrame,
+    attr: str,
+    turn: int = 0,
+    visible_only: bool = True,
+    n_perm: int = 10000,
+) -> dict:
+    """Two-sample permutation test: treatment pair gaps vs placebo pair gaps.
+
+    Statistic = difference of means (treatment - placebo) over per-pair gaps
+    (seeds averaged); labels treatment/placebo are permuted (fixed seed 0).
+    Returns observed ``statistic``, two-sided ``pvalue``, and sample sizes.
+
+    NOTE: with the current placebo (5 pairs) the power is minimal and this test
+    is only informative after the placebo is expanded to all 21 archetypes.
+    """
+    tlong = _treatment_agent_gap_long(df, attr, include_errors=False)
+    plong = _placebo_agent_gap_long(df_placebo, include_errors=False)
+    _, t_seed = _seed_avg_pair_gaps(tlong, turn=turn, visible_only=visible_only)
+    _, p_seed = _seed_avg_pair_gaps(plong, turn=turn, visible_only=visible_only)
+
+    treat = t_seed["gap"].dropna().to_numpy(dtype=float) if not t_seed.empty else np.array([])
+    plac = p_seed["gap"].dropna().to_numpy(dtype=float) if not p_seed.empty else np.array([])
+    result = {
+        "sensitive_attr": attr, "statistic": float("nan"), "pvalue": float("nan"),
+        "n_treat": int(treat.size), "n_placebo": int(plac.size),
+    }
+    if treat.size == 0 or plac.size == 0:
+        return result
+
+    obs = float(treat.mean() - plac.mean())
+    pooled = np.concatenate([treat, plac])
+    n_treat = treat.size
+    rng = np.random.default_rng(0)
+    order = np.argsort(rng.random((n_perm, pooled.size)), axis=1)
+    permuted = pooled[order]
+    diffs = permuted[:, :n_treat].mean(axis=1) - permuted[:, n_treat:].mean(axis=1)
+    result["statistic"] = obs
+    result["pvalue"] = float((np.abs(diffs) >= abs(obs)).mean())
+    return result
+
+
+def trajectory_with_placebo(
+    df: pd.DataFrame,
+    df_placebo: pd.DataFrame,
+    attr: str,
+    include_errors: bool = False,
+) -> pd.DataFrame:
+    """Per-turn gap trajectory (mean +/- bootstrap CI, seeds grouped) with the
+    placebo band overlaid, ready to plot.
+
+    Columns: ``turn, mean_gap, ci_lo, ci_hi, placebo_mean, placebo_lo,
+    placebo_hi`` per (composition, instruction_level, sensitive_attr).
+
+    The placebo band is joined by (composition, turn) ONLY - never by
+    instruction_level - so the single per-composition placebo (currently only
+    level_1) is broadcast to every instruction_level of that composition.
+    """
+    columns = [
+        "composition", "instruction_level", "sensitive_attr", "turn",
+        "mean_gap", "ci_lo", "ci_hi", "placebo_mean", "placebo_lo", "placebo_hi",
+    ]
+    long = _treatment_agent_gap_long(df, attr, include_errors=include_errors)
+    if long.empty:
+        return _empty(columns)
+    long = long.copy()
+    long["gap"] = pd.to_numeric(long["gap"], errors="coerce")
+    long["turn"] = pd.to_numeric(long["turn"], errors="coerce")
+
+    ckeys = rex._present(long, ["composition", "instruction_level", "seed", "pair_id", "turn"])
+    committee = long.groupby(ckeys, dropna=False)["gap"].mean().reset_index()
+    gkeys = rex._present(committee, ["composition", "instruction_level", "turn"])
+    rows = []
+    for keys, frame in committee.groupby(gkeys, dropna=False):
+        if not isinstance(keys, tuple):
+            keys = (keys,)
+        meta = dict(zip(gkeys, keys))
+        vals = frame["gap"].dropna().to_numpy(dtype=float)
+        lo, hi = _bootstrap_ci(vals)
+        meta["mean_gap"] = float(np.mean(vals)) if vals.size else float("nan")
+        meta["ci_lo"] = lo
+        meta["ci_hi"] = hi
+        rows.append(meta)
+    traj = pd.DataFrame(rows)
+    if traj.empty:
+        return _empty(columns)
+    traj["sensitive_attr"] = attr
+
+    band = placebo_band(df_placebo, include_errors=include_errors) if df_placebo is not None else _empty([])
+    if not band.empty:
+        # placebo_band gap is (placebo_a - placebo_b) with lo=q05, hi=q95;
+        # negate to (placebo_b - placebo_a): mean -> -mean, [lo,hi] -> [-hi,-lo].
+        pb = pd.DataFrame({
+            "composition": band["composition"].to_numpy(),
+            "turn": pd.to_numeric(band["turn"], errors="coerce").to_numpy(),
+            "placebo_mean": -band["mean_gap"].to_numpy(dtype=float),
+            "placebo_lo": -band["hi"].to_numpy(dtype=float),
+            "placebo_hi": -band["lo"].to_numpy(dtype=float),
+        })
+        join_keys = rex._present(traj, ["composition", "turn"])
+        traj = traj.merge(pb, on=join_keys, how="left")
+    else:
+        traj["placebo_mean"] = np.nan
+        traj["placebo_lo"] = np.nan
+        traj["placebo_hi"] = np.nan
+
+    ordered = [c for c in columns if c in traj.columns]
+    remaining = [c for c in traj.columns if c not in ordered]
+    return traj[ordered + remaining]
+
+
+def _seed_consistency_from_long(
+    long: pd.DataFrame, sensitive_attr: str, visible_only: bool,
+) -> pd.DataFrame:
+    """Between-seed Pearson reliability of per-pair gaps, per (level, turn)."""
+    columns = [
+        "sensitive_attr", "instruction_level", "turn",
+        "r_42_123", "r_42_456", "r_123_456", "mean_r",
+    ]
+    if long is None or long.empty or "gap" not in long.columns:
+        return _empty(columns)
+    sub = long.copy()
+    if visible_only and "is_blind" in sub.columns:
+        sub = sub[~rex._truthy(sub["is_blind"])]
+    sub = sub.copy()
+    sub["gap"] = pd.to_numeric(sub["gap"], errors="coerce")
+    sub["turn"] = pd.to_numeric(sub["turn"], errors="coerce")
+    sub["seed"] = pd.to_numeric(sub["seed"], errors="coerce")
+    keys = rex._present(sub, ["instruction_level", "seed", "pair_id", "turn"])
+    if "seed" not in keys or "turn" not in keys:
+        return _empty(columns)
+    committee = sub.groupby(keys, dropna=False)["gap"].mean().reset_index()
+
+    seed_pairs = [(42, 123), (42, 456), (123, 456)]
+    group_keys = rex._present(committee, ["instruction_level", "turn"])
+    rows = []
+    for keys_val, frame in committee.groupby(group_keys, dropna=False):
+        if not isinstance(keys_val, tuple):
+            keys_val = (keys_val,)
+        meta = dict(zip(group_keys, keys_val))
+        r_values = {}
+        for s1, s2 in seed_pairs:
+            a = frame[frame["seed"] == s1][["pair_id", "gap"]]
+            b = frame[frame["seed"] == s2][["pair_id", "gap"]]
+            merged = a.merge(b, on="pair_id", suffixes=("_1", "_2"))
+            rho, _, _ = _pearson(
+                merged["gap_1"].to_numpy(dtype=float),
+                merged["gap_2"].to_numpy(dtype=float),
+            )
+            r_values[(s1, s2)] = rho
+        valid = [r for r in r_values.values() if pd.notna(r)]
+        rows.append({
+            "sensitive_attr": sensitive_attr,
+            "instruction_level": meta.get("instruction_level"),
+            "turn": int(meta["turn"]) if pd.notna(meta.get("turn")) else meta.get("turn"),
+            "r_42_123": r_values[(42, 123)],
+            "r_42_456": r_values[(42, 456)],
+            "r_123_456": r_values[(123, 456)],
+            "mean_r": float(np.mean(valid)) if valid else float("nan"),
+        })
+    if not rows:
+        return _empty(columns)
+    return pd.DataFrame(rows)[columns].sort_values(
+        rex._present(pd.DataFrame(rows), ["instruction_level", "turn"])
+    ).reset_index(drop=True)
+
+
+def seed_consistency(
+    df: pd.DataFrame,
+    attr: str,
+    visible_only: bool = True,
+    include_errors: bool = False,
+) -> pd.DataFrame:
+    """Between-seed reliability of per-pair gaps by (sensitive_attr, level, turn).
+
+    Pearson r between per-pair gaps for each seed pair (42-123, 42-456,
+    123-456) plus their mean. Quantitative evidence of the dissolution: weakly
+    positive reliability at t=0 that collapses to ~0 at t=4. Also applicable to
+    the placebo via ``_seed_consistency_from_long``.
+    """
+    long = _treatment_agent_gap_long(df, attr, include_errors=include_errors)
+    return _seed_consistency_from_long(long, attr, visible_only)

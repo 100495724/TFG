@@ -6,6 +6,19 @@ Features:
 - Checkpoints results after every single basket (crash-safe)
 - Supports resuming from where it left off
 - Logs progress and errors
+
+Stages (``--stage``):
+- ``detection``  : bias detection runs (endpoint is the genesis turn t=0).
+- ``mitigation`` : same baskets with passive/active vaccines applied.
+- ``placebo``    : control-vs-control noise floor, one run per composition.
+- ``single``     : single-agent genesis baseline.
+
+NOTE on placebo: the placebo is a per-COMPOSITION noise floor (instruction
+level does not affect twin-vs-twin baseline noise), so it is run once per
+composition. The ``placebo_*`` CSVs currently on disk were generated from only
+5 archetypes; after regenerating baskets with the full 21 archetypes (see
+``generate_baskets.py::PLACEBO_ARCHETYPE_COUNT``) the placebo stage must be
+re-run (1 run per composition x 3 seeds).
 """
 
 import os
@@ -68,10 +81,14 @@ CSV_FIELDNAMES = [
 SINGLE_AGENT_MODELS = ["llama-3.1-8b", "qwen-2.5-7b", "mistral-7b"]
 
 
-def get_results_path(experiment_label: str, act: str) -> str:
-    """Get the CSV path for a given experiment condition."""
+def get_results_path(experiment_label: str, stage: str) -> str:
+    """Get the CSV path for a given experiment condition.
+
+    ``stage`` is the output prefix: ``detection`` (bias detection at genesis)
+    or ``mitigation`` (vaccine runs). The placebo stage has its own helper.
+    """
     os.makedirs(RESULTS_DIR, exist_ok=True)
-    return os.path.join(RESULTS_DIR, f"{act}_{experiment_label}.csv")
+    return os.path.join(RESULTS_DIR, f"{stage}_{experiment_label}.csv")
 
 
 def get_single_results_path(model_id: str, seed: int) -> str:
@@ -216,12 +233,15 @@ def initialize_single_agent(
 # =============================================================================
 # EXPERIMENT EXECUTION
 # =============================================================================
-def run_act1(baskets: list[dict], condition: dict, seed: int):
+def run_detection(baskets: list[dict], condition: dict, seed: int):
     """
-    Act 1: Detection - Run parallel baskets to measure Allocation Gap.
+    Detection - Run parallel baskets to measure the Allocation Gap.
+
+    The bias endpoint is the genesis turn (t=0); later turns document the
+    dissolution of the gap into generic debate noise.
     """
     label = condition["label"]
-    csv_path = get_results_path(f"{label}_seed{seed}", "act1")
+    csv_path = get_results_path(f"{label}_seed{seed}", "detection")
     completed = get_completed_baskets(csv_path)
 
     agents = initialize_agents(
@@ -264,58 +284,14 @@ def run_act1(baskets: list[dict], condition: dict, seed: int):
             continue  # Skip and continue with next basket
 
 
-def run_act2(baskets_mixed: list[dict], condition: dict, seed: int):
+def run_mitigation(baskets: list[dict], condition: dict, seed: int):
     """
-    Act 2: Performative Fairness - Run baskets with twins in same prompt.
-    Uses the same agents as baseline but with mixed baskets.
-    """
-    label = condition["label"]
-    csv_path = get_results_path(f"{label}_seed{seed}", "act2")
-    completed = get_completed_baskets(csv_path)
-
-    agents = initialize_agents(
-        composition_key=condition["composition"],
-        instruction_key=condition["instruction"],
-        protocol=condition["protocol"],
-        seed=seed,
-    )
-
-    for i, basket in enumerate(baskets_mixed):
-        bid = basket["basket_id"]
-        if bid in completed:
-            continue
-
-        logger.info(f"  [Act2 {i+1}/{len(baskets_mixed)}] Running {bid}...")
-        metadata = {
-            "basket_id": bid,
-            "pair_id": basket.get("pair_id", ""),
-            "variant": "mixed",
-            "sensitive_attr": basket.get("sensitive_attr", ""),
-            "sensitive_value": "both_visible",
-            "subject_company": basket.get("subject_company", ""),
-            "experiment_label": f"{label}_performative",
-            "composition": condition["composition"],
-            "instruction_level": condition["instruction"],
-            "protocol": condition["protocol"],
-            "vaccine": "none",
-            "seed": seed,
-        }
-
-        try:
-            records = run_debate(agents, basket, metadata)
-            append_records_to_csv(csv_path, records)
-        except Exception as e:
-            logger.error(f"  [Act2] {bid} FAILED: {e}")
-
-
-def run_act3(baskets: list[dict], condition: dict, seed: int):
-    """
-    Act 3: Mitigation - Run Act1 baskets but with vaccines applied.
+    Mitigation - Run the detection baskets but with vaccines applied.
     """
     label = condition["label"]
 
     for vaccine_key in ["passive", "active"]:
-        csv_path = get_results_path(f"{label}_{vaccine_key}_seed{seed}", "act3")
+        csv_path = get_results_path(f"{label}_{vaccine_key}_seed{seed}", "mitigation")
         completed = get_completed_baskets(csv_path)
 
         agents = initialize_agents(
@@ -331,7 +307,7 @@ def run_act3(baskets: list[dict], condition: dict, seed: int):
             if bid in completed:
                 continue
 
-            logger.info(f"  [Act3-{vaccine_key} {i+1}/{len(baskets)}] Running {bid}...")
+            logger.info(f"  [Mitigation-{vaccine_key} {i+1}/{len(baskets)}] Running {bid}...")
             metadata = {
                 "basket_id": bid,
                 "pair_id": basket.get("pair_id", ""),
@@ -351,7 +327,7 @@ def run_act3(baskets: list[dict], condition: dict, seed: int):
                 records = run_debate(agents, basket, metadata)
                 append_records_to_csv(csv_path, records)
             except Exception as e:
-                logger.error(f"  [Act3-{vaccine_key}] {bid} FAILED: {e}")
+                logger.error(f"  [Mitigation-{vaccine_key}] {bid} FAILED: {e}")
 
 
 def run_single_agent_baseline(
@@ -448,12 +424,13 @@ def run_placebo(baskets_placebo: list[dict], condition: dict, seed: int):
 def main():
     parser = argparse.ArgumentParser(description="MAS Bias TFG Experiment Runner")
     parser.add_argument(
-        "--act", type=str, default="1",
-        choices=["1", "2", "3", "all", "single", "placebo"],
+        "--stage", type=str, default="detection",
+        choices=["detection", "mitigation", "placebo", "single", "all"],
         help=(
-            "Which experimental act to run "
-            "(1=detection, 2=performative, 3=mitigation, "
-            "single=single-agent genesis baseline, placebo=control-vs-control, all=acts 1-3)"
+            "Which stage to run "
+            "(detection=bias detection at genesis, mitigation=vaccine runs, "
+            "placebo=control-vs-control noise floor, "
+            "single=single-agent genesis baseline, all=detection+mitigation)"
         )
     )
     parser.add_argument(
@@ -470,15 +447,15 @@ def main():
     )
     parser.add_argument(
         "--single-instruction", type=str, default="level_0_neutral",
-        help="Instruction level for --act single (default: level_0_neutral)"
+        help="Instruction level for --stage single (default: level_0_neutral)"
     )
     args = parser.parse_args()
 
     seeds = [int(s) for s in args.seeds.split(",")]
     start_time = datetime.now()
-    logger.info(f"Acts to run: {args.act}")
+    logger.info(f"Stage to run: {args.stage}")
 
-    if args.act == "single":
+    if args.stage == "single":
         baskets = load_baskets(args.baskets_dir)
         if not baskets:
             logger.error(f"No baskets found in {args.baskets_dir}. Generate dataset first.")
@@ -501,7 +478,7 @@ def main():
         logger.info(f"\nAll single-agent baselines completed in {elapsed}")
         return
 
-    if args.act == "placebo":
+    if args.stage == "placebo":
         if args.condition == "all":
             conditions = [c for c in ABLATION_PLAN if c["label"] == "baseline"]
         else:
@@ -552,24 +529,13 @@ def main():
             logger.info(f"CONDITION: {label} | SEED: {seed}")
             logger.info(f"{'='*60}")
 
-            if args.act in ("1", "all"):
-                logger.info(f"--- Act 1: Detection ---")
-                run_act1(baskets, condition, seed)
+            if args.stage in ("detection", "all"):
+                logger.info(f"--- Detection ---")
+                run_detection(baskets, condition, seed)
 
-            if args.act in ("2", "all"):
-                # For Act 2, you need mixed baskets (twins in same prompt)
-                # These would be in a separate directory or flagged in the JSON
-                baskets_mixed_dir = os.path.join(args.baskets_dir, "mixed")
-                if os.path.exists(baskets_mixed_dir):
-                    baskets_mixed = load_baskets(baskets_mixed_dir)
-                    logger.info(f"--- Act 2: Performative Fairness ---")
-                    run_act2(baskets_mixed, condition, seed)
-                else:
-                    logger.warning(f"No mixed baskets found at {baskets_mixed_dir}, skipping Act 2")
-
-            if args.act in ("3", "all"):
-                logger.info(f"--- Act 3: Mitigation ---")
-                run_act3(baskets, condition, seed)
+            if args.stage in ("mitigation", "all"):
+                logger.info(f"--- Mitigation ---")
+                run_mitigation(baskets, condition, seed)
 
     elapsed = datetime.now() - start_time
     logger.info(f"\nAll experiments completed in {elapsed}")

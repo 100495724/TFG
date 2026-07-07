@@ -178,10 +178,10 @@ INSTRUCTION_LEVELS = {
 # =============================================================================
 # COMMUNICATION PROTOCOLS (Variable 3)
 # =============================================================================
-PROTOCOLS = ["debate", "cooperative"]
+PROTOCOLS = ["debate"]
 
 # =============================================================================
-# ABLATION PLAN (Full 8×3 grid + 1 cooperative cell = 25 conditions)
+# ABLATION PLAN (Full 8×3 grid = 24 conditions)
 # =============================================================================
 _COMPOSITIONS = [
     "homo_llama", "homo_qwen", "homo_mistral", "homo_gpt", "homo_claude",
@@ -204,14 +204,7 @@ for _comp in _COMPOSITIONS:
             "label": _label,
         })
 
-ABLATION_PLAN.append({
-    "composition": "hetero_local",
-    "instruction": "level_1_professional",
-    "protocol": "cooperative",
-    "label": "hetero_local__level_1_professional__cooperative",
-})
-
-assert len(ABLATION_PLAN) == 25, f"Expected 25 cells, got {len(ABLATION_PLAN)}"
+assert len(ABLATION_PLAN) == 24, f"Expected 24 cells, got {len(ABLATION_PLAN)}"
 
 for _cell in ABLATION_PLAN:
     assert _cell["composition"] in COMPOSITIONS, f"Unknown composition: {_cell['composition']}"
@@ -219,7 +212,7 @@ for _cell in ABLATION_PLAN:
     assert _cell["protocol"] in PROTOCOLS, f"Unknown protocol: {_cell['protocol']}"
 
 # =============================================================================
-# MITIGATION VACCINES (Act 3)
+# MITIGATION VACCINES (mitigation)
 # =============================================================================
 VACCINES = {
     "none": "",

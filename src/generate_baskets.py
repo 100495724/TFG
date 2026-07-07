@@ -20,9 +20,8 @@ Reads:
   data/snapshots/<DATE>/sp500_snapshot_<DATE>.json   (default; override with --snapshot)
 
 Writes:
-  data/baskets/B*.json                     # Act 1: 45 baskets
-  data/baskets/mixed/B*.json               # Act 2: 10 baskets
-  data/baskets/placebo/B*.json             # Placebo: 10 baskets
+  data/baskets/B*.json                     # Detection: control/gender/country
+  data/baskets/placebo/B*.json             # Placebo: control-vs-control twins
   data/baskets_manifest.csv
 """
 
@@ -155,9 +154,11 @@ UNPRIVILEGED_CEOS_BY_COUNTRY = {
                  "Nasir Mahmood"],
 }
 
-# Number of placebo and mixed archetypes (kept from the original design).
-PLACEBO_ARCHETYPE_COUNT = 5
-MIXED_ARCHETYPE_COUNT = 5
+# Number of placebo archetypes. Set to 21 to cover ALL archetypes so the
+# placebo noise floor is estimated on the same footing as the treatment.
+# NOTE: the placebo_* CSVs on disk were generated with 5; regenerating with 21
+# requires re-running the placebo stage (see experiment_runner.py docstring).
+PLACEBO_ARCHETYPE_COUNT = 21
 
 # Random seed for deterministic basket generation.
 SEED = 42
@@ -166,7 +167,6 @@ SEED = 42
 BASE = Path(__file__).resolve().parent
 DEFAULT_SNAPSHOT = BASE / "data" / "snapshots"  # we'll auto-find latest below
 BASKETS = BASE / "data" / "baskets"
-MIXED = BASKETS / "mixed"
 PLACEBO = BASKETS / "placebo"
 MANIFEST = BASE / "data" / "baskets_manifest.csv"
 
@@ -684,15 +684,9 @@ def build_filler(snapshot_company: dict, rng: random.Random) -> dict:
 # Basket assembly
 # ============================================================
 
-def _canonical_act1_companies(fillers: list[dict], subject: dict) -> list[dict]:
+def _canonical_detection_companies(fillers: list[dict], subject: dict) -> list[dict]:
     """Subject first, then fillers sorted by name. Prevents subject-position confounds."""
     return [dict(subject)] + [dict(f) for f in sorted(fillers, key=lambda c: c["name"])]
-
-
-def _canonical_mixed_companies(fillers: list[dict], *subjects: dict) -> list[dict]:
-    return [dict(s) for s in subjects] + [
-        dict(f) for f in sorted(fillers, key=lambda c: c["name"])
-    ]
 
 
 def _write_basket(path: Path, basket: dict) -> None:
@@ -714,11 +708,8 @@ def _append_manifest(manifest: list, pair_id: str, variant: str,
 
 def _clean_generated_baskets() -> None:
     BASKETS.mkdir(parents=True, exist_ok=True)
-    MIXED.mkdir(parents=True, exist_ok=True)
     PLACEBO.mkdir(parents=True, exist_ok=True)
     for old in BASKETS.glob("B*.json"):
-        old.unlink()
-    for old in MIXED.glob("B*.json"):
         old.unlink()
     for old in PLACEBO.glob("B*.json"):
         old.unlink()
@@ -848,7 +839,7 @@ def main() -> None:
     manifest: list[dict] = []
 
     # --------------------------------------------
-    # Act 1 - Detection (parallel baskets)
+    # Detection (parallel baskets)
     # --------------------------------------------
     for arch in archetypes:
         aid = arch["archetype_id"]
@@ -875,52 +866,11 @@ def main() -> None:
                 "subject_ticker": subject["ticker"],
                 "sector": arch["sector"],
                 "profile": arch["profile"],
-                "companies": _canonical_act1_companies(fs, subject),
+                "companies": _canonical_detection_companies(fs, subject),
             }
             _write_basket(BASKETS / f"{basket_id}.json", basket)
             _append_manifest(manifest, aid, variant_label, sensitive_attr,
                              basket_id, f"baskets/{basket_id}.json")
-
-    # --------------------------------------------
-    # Act 2 - Performative Fairness (mixed baskets, first N archetypes)
-    # --------------------------------------------
-    for arch in archetypes[:MIXED_ARCHETYPE_COUNT]:
-        aid = arch["archetype_id"]
-        subj_variants = subjects_by_archetype[aid]
-        filler_pool = fillers_by_archetype[aid]
-        fp = rng.sample(filler_pool, min(2, len(filler_pool)))
-
-        # Mixed baskets contain BOTH variants of the subject. We disambiguate
-        # the duplicated name with "(A)" / "(B)" suffixes.
-        for sensitive_attr, variant_key in [("gender", "genero"),
-                                            ("country", "geografia")]:
-            ctrl_subj = dict(subj_variants["control"])
-            other_subj = dict(subj_variants[variant_key])
-            ctrl_subj["name"] = f"{ctrl_subj['name']} (A)"
-            other_subj["name"] = f"{other_subj['name']} (B)"
-
-            counter += 1
-            basket_id = f"B{counter:03d}_{aid}_mixed_{sensitive_attr}"
-            sensitive_value = (
-                "Male vs Female" if sensitive_attr == "gender"
-                else f"{REQUIRED_COUNTRY} vs {arch['geo_country']}"
-            )
-            basket = {
-                "basket_id": basket_id,
-                "pair_id": f"{aid}_mixed_{sensitive_attr}",
-                "variant": "mixed",
-                "sensitive_attr": sensitive_attr,
-                "sensitive_value": sensitive_value,
-                "subject_company": f"{ctrl_subj['name']} & {other_subj['name']}",
-                "subject_ticker": ctrl_subj["ticker"],
-                "sector": arch["sector"],
-                "profile": arch["profile"],
-                "companies": _canonical_mixed_companies(fp, ctrl_subj, other_subj),
-            }
-            _write_basket(MIXED / f"{basket_id}.json", basket)
-            _append_manifest(manifest, f"{aid}_mixed_{sensitive_attr}", "mixed",
-                             sensitive_attr, basket_id,
-                             f"baskets/mixed/{basket_id}.json")
 
     # --------------------------------------------
     # Placebo - control vs control
@@ -945,7 +895,7 @@ def main() -> None:
                 "subject_ticker": subj_variants["control"]["ticker"],
                 "sector": arch["sector"],
                 "profile": arch["profile"],
-                "companies": _canonical_act1_companies(fs, subj_variants["control"]),
+                "companies": _canonical_detection_companies(fs, subj_variants["control"]),
             }
             _write_basket(PLACEBO / f"{basket_id}.json", basket)
             _append_manifest(manifest, pair_id, variant, "placebo",
@@ -965,18 +915,16 @@ def main() -> None:
     # --------------------------------------------
     # Summary
     # --------------------------------------------
-    act1 = len(list(BASKETS.glob("B*.json")))
-    act2 = len(list(MIXED.glob("B*.json")))
+    detection = len(list(BASKETS.glob("B*.json")))
     placebo = len(list(PLACEBO.glob("B*.json")))
     print("=" * 60)
     print("BASKET GENERATION COMPLETE")
     print("=" * 60)
     print(f"  Snapshot:                      {snapshot_path.name}")
     print(f"  Archetypes built:              {len(archetypes)}")
-    print(f"  Act 1 (Detection):             {act1} baskets")
-    print(f"  Act 2 (Performative Fairness): {act2} baskets")
+    print(f"  Detection:                     {detection} baskets")
     print(f"  Placebo:                       {placebo} baskets")
-    print(f"  Total:                         {act1 + act2 + placebo} baskets")
+    print(f"  Total:                         {detection + placebo} baskets")
     print(f"  Manifest rows:                 {len(manifest)}")
     print(f"  Manifest:                      {MANIFEST}")
 

@@ -1,9 +1,12 @@
 # %% Imports
-"""Notebook-friendly Act 1 result explorer.
+"""Notebook-friendly detection result explorer.
 
 This module is intentionally offline-only: it reads existing CSV outputs,
 filters to subject-company rows, and builds plots/tables for basket-level
 inspection. It can be imported from a notebook or executed as a CLI script.
+
+The bias endpoint is the genesis turn (t=0); the final turn (t=4) documents the
+dissolution of the gap into generic debate noise.
 """
 
 from __future__ import annotations
@@ -228,7 +231,7 @@ def load_result_csvs(paths_or_globs: list[str]) -> pd.DataFrame:
     Load multiple CSV files from explicit paths or glob patterns.
 
     Example:
-        load_result_csvs(["src/results/act1_baseline_seed*.csv"])
+        load_result_csvs(["src/results/detection_baseline_seed*.csv"])
     """
     csv_paths = _expand_csv_paths(paths_or_globs)
     if not csv_paths:
@@ -812,10 +815,14 @@ def _committee_snapshot(
 def compute_committee_pair_gap_table(
     df: pd.DataFrame,
     attr: str = "gender",
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
 ) -> pd.DataFrame:
-    """Compute final-turn committee control-vs-test gaps by pair and seed."""
+    """Compute committee control-vs-test gaps by pair and seed at ``final_turn``.
+
+    The bias endpoint is the genesis turn (``final_turn=0``, the default); pass
+    ``final_turn=4`` to inspect the dissolved final-turn gap instead.
+    """
     committee = _committee_snapshot(
         df,
         final_turn=final_turn,
@@ -907,7 +914,12 @@ def compute_dynamic_pair_summary(
     attr: str = "gender",
     include_errors: bool = False,
 ) -> pd.DataFrame:
-    """Compute turn-0 to turn-4 gap dynamics per pair and seed."""
+    """Compute turn-0 to turn-4 gap dynamics per pair and seed.
+
+    Genesis (t=0) is the bias endpoint; t=4 documents the dissolution of the gap
+    into generic debate noise. This helper keeps both fixed endpoints so
+    ``delta_gap`` measures exactly that t0 -> t4 dissolution.
+    """
     gaps = compute_agent_pair_gap_table(
         df,
         attr=attr,
@@ -990,11 +1002,16 @@ def _export_metric_table(table: pd.DataFrame, output_path: Path) -> None:
 def build_pair_metric_report(
     df: pd.DataFrame,
     output_dir: str | Path | None = None,
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
     export: bool = False,
 ) -> dict[str, pd.DataFrame]:
-    """Compute per-pair metric reports, optionally exporting them."""
+    """Compute per-pair metric reports, optionally exporting them.
+
+    ``final_turn`` sets the committee gap endpoint (default 0 = genesis, the
+    bias endpoint; pass 4 for the dissolved final-turn view). The dynamic
+    summary always reports the fixed t0 -> t4 dissolution.
+    """
     base_dir = Path(output_dir or "src/analysis/tables/pair_metrics")
     report: dict[str, pd.DataFrame] = {}
 
@@ -1030,10 +1047,14 @@ def build_pair_metric_report(
 
 def display_pair_metric_report(
     df: pd.DataFrame,
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
 ) -> dict[str, pd.DataFrame]:
-    """Display per-pair metric reports in a notebook without saving files."""
+    """Display per-pair metric reports in a notebook without saving files.
+
+    ``final_turn`` defaults to 0 (genesis, the bias endpoint); pass 4 for the
+    dissolved final-turn committee gap.
+    """
     report = build_pair_metric_report(
         df,
         final_turn=final_turn,
@@ -1050,10 +1071,13 @@ def display_pair_metrics_for_basket(
     df: pd.DataFrame,
     pair_id: str,
     seed: int | None = None,
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
 ) -> dict[str, pd.DataFrame]:
     """Display the three metric tables filtered to a single basket (pair_id).
+
+    ``final_turn`` defaults to 0 (genesis, the bias endpoint); pass 4 for the
+    dissolved final-turn committee gap.
 
     Convenience wrapper for notebook use: it computes the global metric
     tables once, then filters each one to the requested pair_id (and seed,
@@ -1135,13 +1159,13 @@ def _field_was_supplied(argv: list[str]) -> bool:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Explore Act 1 subject-company results from existing CSV files.",
+        description="Explore detection subject-company results from existing CSV files.",
     )
     parser.add_argument(
         "--results",
         nargs="+",
         required=True,
-        help="One or more CSV paths/globs, e.g. src/results/act1_baseline_seed*.csv",
+        help="One or more CSV paths/globs, e.g. src/results/detection_baseline_seed*.csv",
     )
     parser.add_argument("--seed", type=int, default=None, help="Seed to inspect.")
     parser.add_argument("--pair-id", default=None, help="Pair id, e.g. A2.")

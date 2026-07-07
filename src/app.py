@@ -59,15 +59,15 @@ def _dir_signature(results_dir: str) -> tuple:
         return ()
     sig = []
     for name in sorted(os.listdir(base)):
-        if name.endswith(".csv") and (name.startswith("act1_") or name.startswith("placebo_")):
+        if name.endswith(".csv") and (name.startswith("detection_") or name.startswith("placebo_")):
             sig.append((name, os.path.getmtime(base / name)))
     return tuple(sig)
 
 
 @st.cache_data(show_spinner=False)
 def load_data(results_dir: str, signature: tuple) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Load act1 and placebo CSVs from a directory. ``signature`` is only used
-    as part of the cache key (file list + mtimes)."""
+    """Load detection and placebo CSVs from a directory. ``signature`` is only
+    used as part of the cache key (file list + mtimes)."""
     base = _resolve_dir(results_dir)
 
     def _load(pattern: str) -> pd.DataFrame:
@@ -76,7 +76,7 @@ def load_data(results_dir: str, signature: tuple) -> tuple[pd.DataFrame, pd.Data
             return pd.DataFrame()
         return rex.load_result_csvs(paths)
 
-    return _load("act1_*.csv"), _load("placebo_*.csv")
+    return _load("detection_*.csv"), _load("placebo_*.csv")
 
 
 # ---------------------------------------------------------------------------
@@ -144,60 +144,58 @@ def _seed_colors(seeds) -> dict:
     return {seed: SEED_CMAP(i % 10) for i, seed in enumerate(sorted(seeds))}
 
 
-def _strip_by_seed(ax, data: pd.DataFrame, value_col: str, title: str) -> None:
-    """Horizontal strip plot of a signed value, colored by seed."""
-    colors = _seed_colors(data["seed"].unique())
-    rng = np.random.default_rng(0)
-    for seed, frame in data.groupby("seed"):
-        y = rng.uniform(-0.18, 0.18, size=len(frame))
-        ax.scatter(
-            frame[value_col], y + 0, s=28, alpha=0.75,
-            color=colors[seed], label=f"seed {seed}", edgecolors="none",
-        )
-    mean = data[value_col].mean()
-    ax.axvline(0, color="0.4", lw=1)
-    ax.axvline(mean, color="crimson", lw=1.5, ls="--", label=f"media {mean:,.0f}")
-    ax.set_yticks([])
-    ax.set_xlabel("Gap de comité (€)   +penaliza / −favorece")
-    ax.set_title(title)
-    ax.legend(fontsize=7, loc="best")
-
-
-def _overlay_placebo_band(ax, band: pd.DataFrame, final_turn: int = 4) -> None:
-    if band.empty:
-        return
-    row = band[band["turn"] == band["turn"].max()] if "turn" in band.columns else band
-    if row.empty:
-        return
-    lo = float(row["lo"].mean())
-    hi = float(row["hi"].mean())
-    ax.axvspan(lo, hi, color="green", alpha=0.10, label="banda placebo (ruido)")
-    ax.legend(fontsize=7, loc="best")
-
-
 # ---------------------------------------------------------------------------
 # Tabs
 # ---------------------------------------------------------------------------
-def tab_detection(df_scope, df_placebo, sel):
-    st.subheader("Detección · gap neto de comité (con signo)")
-    st.caption("Gap de comité = media de los 3 agentes en el turno final (proxy, no hay voto). "
-               "Positivo = subject penalizado en la variante.")
-    det = agg.detection_committee_gap(df_scope, include_errors=sel["include_errors"])
-    if det.empty:
+def _format_stat_table(table: pd.DataFrame) -> pd.DataFrame:
+    """Round the genesis/placebo stat table for display."""
+    show = table.copy()
+    for col in ("mean_gap", "sd", "ci95_lo", "ci95_hi"):
+        if col in show.columns:
+            show[col] = pd.to_numeric(show[col], errors="coerce").round(0)
+    if "p_signflip" in show.columns:
+        show["p_signflip"] = pd.to_numeric(show["p_signflip"], errors="coerce").round(4)
+    return show
+
+
+def tab_genesis(df_scope, df_placebo, sel):
+    st.subheader("Génesis (t=0) · gap variante−control por atributo")
+    st.caption(
+        "Gap = allocation(variante) − allocation(control) de agentes visibles, promediado a "
+        "comité y entre seeds. **Negativo = subject penalizado** en la variante. El placebo "
+        "(placebo_b − placebo_a) es el null empírico y acompaña SIEMPRE a la tabla."
+    )
+    gen = agg.genesis_gap_stats(df_scope, include_errors=sel["include_errors"])
+    plac = (
+        agg.placebo_gap_stats(df_placebo, include_errors=sel["include_errors"])
+        if not df_placebo.empty else pd.DataFrame()
+    )
+    if gen.empty:
         st.info(INSUFFICIENT)
     else:
-        band = agg.placebo_band(df_placebo, include_errors=sel["include_errors"]) if not df_placebo.empty else pd.DataFrame()
-        attrs = [a for a in ("gender", "country") if a in det["sensitive_attr"].unique()]
-        fig, axes = plt.subplots(len(attrs), 1, figsize=(8, 2.6 * len(attrs)), squeeze=False)
-        for ax, attr in zip(axes[:, 0], attrs):
-            sub = det[det["sensitive_attr"] == attr]
-            _strip_by_seed(ax, sub, "committee_gap", f"sensitive_attr = {attr}  (n={len(sub)} baskets×seeds)")
-            _overlay_placebo_band(ax, band)
-        fig.tight_layout()
-        st.pyplot(fig)
-        plt.close(fig)
-        if df_placebo.empty:
-            st.caption("Banda placebo no disponible (aún sin datos placebo).")
+        show = gen.copy()
+        if not plac.empty:
+            prow = plac[plac["instruction_level"] == "pooled"].copy()
+            show = pd.concat([show, prow], ignore_index=True)
+        st.dataframe(_format_stat_table(show), use_container_width=True)
+        if plac.empty:
+            st.caption("Fila placebo no disponible (aún sin datos placebo).")
+
+        st.markdown("---")
+        st.subheader("Permutación · tratamiento vs placebo")
+        if plac.empty:
+            st.info("Requiere datos placebo.")
+        else:
+            pvp = agg.permutation_vs_placebo(df_scope, df_placebo, attr=sel["sensitive_attr"])
+            c1, c2, c3, c4 = st.columns(4)
+            c1.metric("Δ medias (€)", "—" if pd.isna(pvp["statistic"]) else f"{pvp['statistic']:,.0f}")
+            c2.metric("p bilateral", "—" if pd.isna(pvp["pvalue"]) else f"{pvp['pvalue']:.3f}")
+            c3.metric("n tratamiento", pvp["n_treat"])
+            c4.metric("n placebo", pvp["n_placebo"])
+            st.caption(
+                f"Atributo: `{sel['sensitive_attr']}`. Con el placebo actual (5 parejas) la potencia "
+                "es mínima; el test es informativo solo tras expandir el placebo a los 21 arquetipos."
+            )
 
     st.markdown("---")
     st.subheader("Verbalización (proxy por keywords)")
@@ -220,16 +218,83 @@ def tab_detection(df_scope, df_placebo, sel):
         st.dataframe(verb)
 
 
-def tab_propagation(df_scope, sel):
-    st.subheader("Propagación · no-ciego (t−1) → ciego (t)")
-    st.caption("Correlación de Pearson retardada entre el gap medio de los agentes NO ciegos en t−1 "
-               "y el gap del agente ciego (agent_1) en t. Pooled sobre baskets × seeds.")
-    by_cond = st.checkbox("Desglosar por condición", value=False, key="prop_bycond")
-    out = agg.propagation_correlation(
+def tab_trajectory(df_scope, df_placebo, sel):
+    st.subheader("Trayectoria del gap por turno con banda placebo")
+    st.caption(
+        "Línea = gap medio (variante−control) con IC bootstrap; banda verde = placebo (b−a) "
+        "difundido por composición. En t=4 el gap es indistinguible del ruido placebo. "
+        "Figura central de la memoria."
+    )
+    attrs = [a for a in ("gender", "country") if a in _options(df_scope, "sensitive_attr")] or ["gender", "country"]
+    plotted = False
+    for attr in attrs:
+        traj = agg.trajectory_with_placebo(df_scope, df_placebo, attr, include_errors=sel["include_errors"])
+        if traj.empty:
+            continue
+        plotted = True
+        fig, ax = plt.subplots(figsize=(8, 4))
+        for (comp, lvl), frame in traj.groupby(["composition", "instruction_level"]):
+            frame = frame.sort_values("turn")
+            ax.plot(frame["turn"], frame["mean_gap"], marker="o", label=f"{comp}·{lvl}")
+            ax.fill_between(frame["turn"], frame["ci_lo"], frame["ci_hi"], alpha=0.15)
+        pb = (
+            traj.dropna(subset=["placebo_mean"])
+            .groupby("turn")[["placebo_lo", "placebo_hi"]].mean().sort_index()
+        )
+        if not pb.empty:
+            ax.fill_between(pb.index, pb["placebo_lo"], pb["placebo_hi"],
+                            color="green", alpha=0.12, label="banda placebo")
+        ax.axhline(0, color="0.4", lw=1)
+        ax.set_title(f"sensitive_attr = {attr}")
+        ax.set_xlabel("turno")
+        ax.set_ylabel("gap medio (€)")
+        ax.legend(fontsize=7, loc="best")
+        fig.tight_layout()
+        st.pyplot(fig)
+        plt.close(fig)
+    if not plotted:
+        st.info(INSUFFICIENT)
+
+    st.markdown("---")
+    st.subheader("Fiabilidad entre seeds por turno (secundaria)")
+    st.caption(
+        "Correlación media entre seeds de los gaps por pareja. Débilmente positiva en t=0 y "
+        "colapsa a ~0 en t=4: evidencia cuantitativa de la disolución del sesgo."
+    )
+    sc = agg.seed_consistency(df_scope, attr=sel["sensitive_attr"], include_errors=sel["include_errors"])
+    if sc.empty:
+        st.info(INSUFFICIENT)
+    else:
+        fig, ax = plt.subplots(figsize=(7, 3))
+        for lvl, frame in sc.groupby("instruction_level"):
+            frame = frame.sort_values("turn")
+            ax.plot(frame["turn"], frame["mean_r"], marker="o", label=str(lvl))
+        ax.axhline(0, color="0.4", lw=1)
+        ax.set_xlabel("turno")
+        ax.set_ylabel("r media entre seeds")
+        ax.set_title(f"sensitive_attr = {sel['sensitive_attr']}")
+        ax.legend(fontsize=7, loc="best")
+        fig.tight_layout()
+        st.pyplot(fig)
+        plt.close(fig)
+        st.dataframe(sc)
+
+
+def tab_coupling(df_scope, df_placebo, sel):
+    st.subheader("Acoplamiento de debate · no-ciego (t−1) → ciego (t)")
+    st.caption(
+        "Correlación de Pearson retardada entre el gap medio de los agentes NO ciegos en t−1 y el "
+        "gap del agente ciego (agent_1) en t. **No es propagación de sesgo**: es un canal de "
+        "acoplamiento genérico del debate, por eso se muestra SIEMPRE junto a su placebo."
+    )
+    by_cond = st.checkbox("Desglosar por condición", value=False, key="coup_bycond")
+    out = agg.debate_coupling(
         df_scope, attr=sel["sensitive_attr"], by_condition=by_cond,
         include_errors=sel["include_errors"],
+        df_placebo=(df_placebo if not df_placebo.empty else None),
     )
     scatter, stats = out["scatter"], out["stats"]
+    placebo_stats = out.get("placebo_stats")
     if scatter.empty or stats.empty:
         st.info(INSUFFICIENT)
         return
@@ -237,17 +302,30 @@ def tab_propagation(df_scope, sel):
     if not by_cond:
         row = stats.iloc[0]
         n = int(row["n"])
+        prow = placebo_stats.iloc[0] if placebo_stats is not None and not placebo_stats.empty else None
         c1, c2, c3 = st.columns(3)
-        c1.metric("ρ (Pearson)", "—" if pd.isna(row["rho"]) else f"{row['rho']:.3f}")
-        c2.metric("p-valor", "—" if pd.isna(row["pvalue"]) else f"{row['pvalue']:.2g}")
+        c1.metric("r tratamiento", "—" if pd.isna(row["rho"]) else f"{row['rho']:.3f}", help=f"n={n}")
+        if prow is not None:
+            c2.metric("r placebo", "—" if pd.isna(prow["rho"]) else f"{prow['rho']:.3f}",
+                      help=f"n={int(prow['n'])}")
+        else:
+            c2.metric("r placebo", "—", help="sin datos placebo")
         c3.metric("n (pares)", n)
+        st.info(
+            "Interpretación: canal de transmisión genérico del debate; el placebo alcanza una r "
+            "similar, así que la correlación por sí sola NO evidencia transmisión de sesgo."
+        )
         if n < 3:
             st.info("n < 3: muestra insuficiente para una correlación fiable.")
     else:
+        st.markdown("**Tratamiento**")
         st.dataframe(stats)
+        if placebo_stats is not None and not placebo_stats.empty:
+            st.markdown("**Placebo (referencia)**")
+            st.dataframe(placebo_stats)
 
     fig, ax = plt.subplots(figsize=(6.5, 5))
-    sc = ax.scatter(
+    scat = ax.scatter(
         scatter["x_nonblind_prev"], scatter["y_blind"],
         c=scatter["turn"], cmap="viridis", s=30, alpha=0.8,
     )
@@ -260,7 +338,7 @@ def tab_propagation(df_scope, sel):
     ax.axvline(0, color="0.7", lw=0.8)
     ax.set_xlabel("gap medio no-ciego en t−1 (€)")
     ax.set_ylabel("gap ciego (agent_1) en t (€)")
-    fig.colorbar(sc, ax=ax, label="turno t")
+    fig.colorbar(scat, ax=ax, label="turno t")
     fig.tight_layout()
     st.pyplot(fig)
     plt.close(fig)
@@ -344,7 +422,7 @@ def _heatmap(ax, matrix: pd.DataFrame, title: str) -> None:
 
 def tab_ablations(df_scope, sel):
     st.subheader("Ablaciones · heatmap composición × instrucción")
-    st.caption("Gap medio de comité por celda (solo protocolo debate). Cooperative va aparte.")
+    st.caption("Gap medio de comité por celda (solo protocolo debate).")
     matrix = agg.ablation_matrix(df_scope, attr=sel["sensitive_attr"], include_errors=sel["include_errors"])
     n_cells = int(np.isfinite(matrix.to_numpy(dtype=float)).sum()) if not matrix.empty else 0
     if n_cells < 2:
@@ -365,18 +443,6 @@ def tab_ablations(df_scope, sel):
             fig.colorbar(im, ax=axes[:, 0].tolist(), label=f"gap medio ({sel['sensitive_attr']}) €")
         st.pyplot(fig)
         plt.close(fig)
-
-    st.markdown("---")
-    st.subheader("Probe cooperativo · debate vs cooperative (#17 vs #25)")
-    coop = agg.cooperative_comparison(df_scope, attr=sel["sensitive_attr"], include_errors=sel["include_errors"])
-    if coop.empty:
-        st.info(INSUFFICIENT)
-        return
-    protocols = sorted(coop["protocol"].unique())
-    if len(protocols) < 2:
-        st.caption(f"Solo hay protocolo `{protocols[0] if protocols else '—'}` en los datos filtrados; "
-                   "la comparación pareada requiere debate y cooperative.")
-    st.dataframe(coop)
 
 
 def tab_explorer(df_scope, sel):
@@ -424,41 +490,44 @@ def main():
     results_dir = st.sidebar.text_input(
         "Directorio de resultados", value=st.session_state.get("results_dir", DEFAULT_RESULTS_DIR),
         key="results_dir",
-        help="Relativo a src/. Usa 'results_without_dataset_yahoo' para ver los datos de ejemplo.",
+        help="Relativo a src/. Debe contener CSV `detection_*.csv` y `placebo_*.csv`.",
     )
     if st.sidebar.button("🔄 Recargar datos"):
         st.cache_data.clear()
 
-    df_act1, df_placebo = load_data(results_dir, _dir_signature(results_dir))
+    df_detection, df_placebo = load_data(results_dir, _dir_signature(results_dir))
 
-    if df_act1.empty:
+    if df_detection.empty:
         st.warning(
-            f"No hay CSV `act1_*.csv` en `{_resolve_dir(results_dir)}`. "
-            "Ejecuta el experimento o apunta el directorio a `results_without_dataset_yahoo`."
+            f"No hay CSV `detection_*.csv` en `{_resolve_dir(results_dir)}`. "
+            "Ejecuta el experimento (`--stage detection`) primero."
         )
         st.stop()
 
-    sel = build_sidebar(df_act1)
-    df_scope = structural_scope(df_act1, sel)
+    sel = build_sidebar(df_detection)
+    df_scope = structural_scope(df_detection, sel)
 
     st.caption(
-        f"Cargado: {len(df_act1):,} filas · {df_act1['composition'].nunique()} composición(es) · "
-        f"{df_act1['pair_id'].nunique()} arquetipos · seeds {rex.available_seeds(df_act1)}. "
+        f"Cargado: {len(df_detection):,} filas · {df_detection['composition'].nunique()} composición(es) · "
+        f"{df_detection['pair_id'].nunique()} arquetipos · seeds {rex.available_seeds(df_detection)}. "
         f"Filtrado a {len(df_scope):,} filas."
     )
 
-    t1, t2, t3, t4, t5 = st.tabs(
-        ["Detección", "Propagación", "Composición y dinámica", "Ablaciones", "Explorador de baskets"]
+    t1, t2, t3, t4, t5, t6 = st.tabs(
+        ["Génesis (t=0)", "Trayectoria", "Acoplamiento de debate",
+         "Composición y dinámica", "Ablaciones", "Explorador de baskets"]
     )
     with t1:
-        tab_detection(df_scope, df_placebo, sel)
+        tab_genesis(df_scope, df_placebo, sel)
     with t2:
-        tab_propagation(df_scope, sel)
+        tab_trajectory(df_scope, df_placebo, sel)
     with t3:
-        tab_composition(df_scope, df_placebo, sel)
+        tab_coupling(df_scope, df_placebo, sel)
     with t4:
-        tab_ablations(df_scope, sel)
+        tab_composition(df_scope, df_placebo, sel)
     with t5:
+        tab_ablations(df_scope, sel)
+    with t6:
         tab_explorer(df_scope, sel)
 
 

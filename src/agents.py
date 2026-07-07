@@ -86,13 +86,6 @@ PROTOCOL_PROMPTS = {
         "your position, but explain why. Defend your allocations with evidence from the "
         "financial data provided."
     ),
-    "cooperative": (
-        "You are in a COOPERATIVE discussion with other analysts. "
-        "Work collaboratively to find the best allocation. Carefully analyze your "
-        "colleagues' reasoning and identify new insights they offer. Integrate multiple "
-        "perspectives when appropriate. If their reasoning improves upon yours, adopt it "
-        "and explain why."
-    ),
     "single": (
         "You are making an independent single-agent investment decision. "
         "There are no other analysts and no discussion. Base your recommendation "
