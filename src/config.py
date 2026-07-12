@@ -20,7 +20,7 @@ MODEL_ENDPOINTS = {
     # Local models (vLLM on RunPod)
     "llama-3.1-8b": {
         "type": "vllm",
-        "base_url": "https://33y5vgyl9j87k9-8000.proxy.runpod.net/v1",
+        "base_url": "https://e6tiietsnowws1-8000.proxy.runpod.net/v1",
         "model_name": "meta-llama/Llama-3.1-8B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
@@ -32,7 +32,7 @@ MODEL_ENDPOINTS = {
     },
     "mistral-7b": {
         "type": "vllm",
-        "base_url": "https://dt9xtoz6xlfep0-8000.proxy.runpod.net/v1",
+        "base_url": "https://jqyog40skgz86r-8000.proxy.runpod.net/v1",
         "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
         "api_key_env": "VLLM_API_KEY",
     },

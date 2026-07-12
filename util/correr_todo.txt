@@ -1,48 +1,83 @@
-# --- homo_llama (resto) ---
-python experiment_runner.py --act 1 --condition homo_llama__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_llama__level_2_identity --seeds "42,123,456"
+# ============================================================
+# homo_llama — YA EJECUTADO (level_0, level_1, level_2). Solo falta su placebo.
+# ============================================================
+# python experiment_runner.py --stage detection --condition homo_llama__level_0_neutral --seeds "42,123,456"      # HECHO
+# python experiment_runner.py --stage detection --condition homo_llama__level_1_professional --seeds "42,123,456" # HECHO
+# python experiment_runner.py --stage detection --condition homo_llama__level_2_identity --seeds "42,123,456"     # HECHO
+python experiment_runner.py --stage placebo --condition homo_llama__level_1_professional --seeds "42,123,456"
 
-# --- homo_qwen ---
-python experiment_runner.py --act 1 --condition homo_qwen__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_qwen__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_qwen__level_2_identity --seeds "42,123,456"
+# ============================================================
+# homo_qwen
+# Puerta de calidad: lanza primero SOLO seed 42 de level_0, revisa
+# parse_error/was_normalized en el CSV, y si esta sano lanza el resto.
+# ============================================================
+python experiment_runner.py --stage detection --condition homo_qwen__level_0_neutral --seeds "42"
+# (revisar calidad) luego:
+python experiment_runner.py --stage detection --condition homo_qwen__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition homo_qwen__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition homo_qwen__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition homo_qwen__level_1_professional --seeds "42,123,456"
 
-# --- homo_mistral ---
-python experiment_runner.py --act 1 --condition homo_mistral__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_mistral__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_mistral__level_2_identity --seeds "42,123,456"
+# ============================================================
+# homo_mistral (historial de fallos de parseo: puerta de calidad OBLIGATORIA)
+# ============================================================
+python experiment_runner.py --stage detection --condition homo_mistral__level_0_neutral --seeds "42"
+# (revisar calidad) luego:
+python experiment_runner.py --stage detection --condition homo_mistral__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition homo_mistral__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition homo_mistral__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition homo_mistral__level_1_professional --seeds "42,123,456"
 
-# --- homo_gpt (API: requiere OPENAI_API_KEY) ---
-python experiment_runner.py --act 1 --condition homo_gpt__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_gpt__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_gpt__level_2_identity --seeds "42,123,456"
+# ============================================================
+# homo_gpt (API: requiere OPENAI_API_KEY)
+# ============================================================
+python experiment_runner.py --stage detection --condition homo_gpt__level_0_neutral --seeds "42"
+# (revisar calidad y COSTE del run antes de continuar) luego:
+python experiment_runner.py --stage detection --condition homo_gpt__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition homo_gpt__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition homo_gpt__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition homo_gpt__level_1_professional --seeds "42,123,456"
 
-# --- homo_claude (API: requiere ANTHROPIC_API_KEY) ---
-python experiment_runner.py --act 1 --condition homo_claude__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_claude__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition homo_claude__level_2_identity --seeds "42,123,456"
+# ============================================================
+# homo_claude (API: requiere ANTHROPIC_API_KEY)
+# ============================================================
+python experiment_runner.py --stage detection --condition homo_claude__level_0_neutral --seeds "42"
+# (revisar calidad y coste) luego:
+python experiment_runner.py --stage detection --condition homo_claude__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition homo_claude__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition homo_claude__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition homo_claude__level_1_professional --seeds "42,123,456"
 
-# --- hetero_local ---
-python experiment_runner.py --act 1 --condition hetero_local__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition baseline --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition hetero_local__level_2_identity --seeds "42,123,456"
+# ============================================================
+# hetero_local (llama+qwen+mistral; requiere los 3 pods levantados a la vez)
+# OJO: la celda de level_1 se llama "baseline" (etiqueta legacy en config.py);
+# sus CSVs saldran como detection_baseline_* / placebo_baseline_*. Es solo
+# nomenclatura: la columna composition contiene hetero_local y el analisis
+# agrupa por ella, asi que no afecta a nada.
+# ============================================================
+python experiment_runner.py --stage detection --condition hetero_local__level_0_neutral --seeds "42"
+# (revisar calidad) luego:
+python experiment_runner.py --stage detection --condition hetero_local__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition baseline --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition hetero_local__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition baseline --seeds "42,123,456"
 
-# --- hetero_api_claude (API: OPENAI + ANTHROPIC según los modelos del mix) ---
-python experiment_runner.py --act 1 --condition hetero_api_claude__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition hetero_api_claude__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition hetero_api_claude__level_2_identity --seeds "42,123,456"
+# ============================================================
+# hetero_api_claude (API: OPENAI + ANTHROPIC segun el mix)
+# ============================================================
+python experiment_runner.py --stage detection --condition hetero_api_claude__level_0_neutral --seeds "42"
+# (revisar calidad y coste) luego:
+python experiment_runner.py --stage detection --condition hetero_api_claude__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition hetero_api_claude__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition hetero_api_claude__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition hetero_api_claude__level_1_professional --seeds "42,123,456"
 
-# --- hetero_api_gpt (API) ---
-python experiment_runner.py --act 1 --condition hetero_api_gpt__level_0_neutral --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition hetero_api_gpt__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act 1 --condition hetero_api_gpt__level_2_identity --seeds "42,123,456"
-
-# --- placebos ---
-python experiment_runner.py --act placebo --condition homo_llama__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition homo_qwen__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition homo_mistral__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition homo_gpt__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition homo_claude__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition baseline --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition hetero_api_claude__level_1_professional --seeds "42,123,456"
-python experiment_runner.py --act placebo --condition hetero_api_gpt__level_1_professional --seeds "42,123,456"
+# ============================================================
+# hetero_api_gpt (API)
+# ============================================================
+python experiment_runner.py --stage detection --condition hetero_api_gpt__level_0_neutral --seeds "42"
+# (revisar calidad y coste) luego:
+python experiment_runner.py --stage detection --condition hetero_api_gpt__level_0_neutral --seeds "123,456"
+python experiment_runner.py --stage detection --condition hetero_api_gpt__level_1_professional --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition hetero_api_gpt__level_2_identity --seeds "42,123,456"
+python experiment_runner.py --stage placebo --condition hetero_api_gpt__level_1_professional --seeds "42,123,456"
