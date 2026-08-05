@@ -20,19 +20,19 @@ MODEL_ENDPOINTS = {
     # Local models (vLLM on RunPod)
     "llama-3.1-8b": {
         "type": "vllm",
-        "base_url": "https://e6tiietsnowws1-8000.proxy.runpod.net/v1",
+        "base_url": "https://xpb48cghxuy2mp-8000.proxy.runpod.net/v1",
         "model_name": "meta-llama/Llama-3.1-8B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
     "qwen-2.5-7b": {
         "type": "vllm",
-        "base_url": "https://9dh87w1m5zwjft-8000.proxy.runpod.net/v1",
+        "base_url": "https://4npmteuxkechuv-8000.proxy.runpod.net/v1",
         "model_name": "Qwen/Qwen2.5-7B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
     "mistral-7b": {
         "type": "vllm",
-        "base_url": "https://jqyog40skgz86r-8000.proxy.runpod.net/v1",
+        "base_url": "https://tc8bm4g3km6jsp-8000.proxy.runpod.net/v1",
         "model_name": "mistralai/Mistral-7B-Instruct-v0.3",
         "api_key_env": "VLLM_API_KEY",
     },
@@ -87,7 +87,7 @@ COMPOSITIONS = {
 
     # Heterogeneous (cross-family)
     "hetero_local": ["llama-3.1-8b", "qwen-2.5-7b", "mistral-7b"],
-    "hetero_api_claude": ["llama-3.1-8b", "qwen-2.5-7b", "claude-haiku"],
+    "hetero_api_claude": ["llama-3.1-8b", "gpt-4o-mini", "claude-haiku"],
     "hetero_api_gpt": ["llama-3.1-8b", "gpt-4o-mini", "mistral-7b"],
 }
 
