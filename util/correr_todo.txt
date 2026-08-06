@@ -53,12 +53,10 @@ python experiment_runner.py --stage placebo --condition homo_claude__level_1_pro
 # nomenclatura: la columna composition contiene hetero_local y el analisis
 # agrupa por ella, asi que no afecta a nada.
 # ============================================================
-python experiment_runner.py --stage detection --condition hetero_local__level_0_neutral --seeds "42"
-# (revisar calidad) luego:
-python experiment_runner.py --stage detection --condition hetero_local__level_0_neutral --seeds "123,456"
-python experiment_runner.py --stage detection --condition baseline --seeds "42,123,456"
-python experiment_runner.py --stage detection --condition hetero_local__level_2_identity --seeds "42,123,456"
-python experiment_runner.py --stage placebo --condition baseline --seeds "42,123,456"
+python experiment_runner.py --stage detection --condition hetero_local__level_0_neutral --seeds "42,123,456"            # HECHO 7:19:29.605587
+python experiment_runner.py --stage detection --condition baseline --seeds "42,123,456"                                 # HECHO 6:24:10.336603
+python experiment_runner.py --stage detection --condition hetero_local__level_2_identity --seeds "42,123,456"           # HECHO 6:16:32.951364
+python experiment_runner.py --stage placebo --condition baseline --seeds "42,123,456"                                   # HECHO 4:15:48.389964
 
 # ============================================================
 # hetero_api_claude (API: OPENAI + ANTHROPIC segun el mix)
