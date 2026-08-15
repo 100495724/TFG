@@ -1,0 +1,1419 @@
+{
+  "timestamp": "2026-08-14T20:03:37.312594+00:00",
+  "git": {
+    "commit": "a481e90b7a4a53377735b8f8fbda87f641c55a59",
+    "dirty": true
+  },
+  "input_files": [
+    {
+      "path": "../results/detection_baseline_seed123.csv",
+      "size_bytes": 2128486,
+      "sha256": "68ce492e7f451dc87fcdf858a4383d578edc009aa47c6868712f654fb8c6a50f"
+    },
+    {
+      "path": "../results/detection_baseline_seed42.csv",
+      "size_bytes": 2104460,
+      "sha256": "8de39176b11bfa869de66b247c08618bd8926fcf6d982227361d838acee93f41"
+    },
+    {
+      "path": "../results/detection_baseline_seed456.csv",
+      "size_bytes": 2138442,
+      "sha256": "74ae94c428c132f516101db715ed85f33daf97d79dbcb0f5d0999b852789a3ce"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_0_neutral_seed123.csv",
+      "size_bytes": 2120784,
+      "sha256": "ba241748be12bc8a3899bb7e05456d511a1d2870531bed969bbfa3463a8e5f07"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_0_neutral_seed42.csv",
+      "size_bytes": 2120102,
+      "sha256": "3c237a6a7fad1b8c40683c1c7b1dca76ea2948cedb66094ea6b740806792d779"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_0_neutral_seed456.csv",
+      "size_bytes": 2148908,
+      "sha256": "7dc02b045fc28523fc99382d82656a8dcdda2763a0c67de656476e02a2f2d1d4"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_1_professional_seed123.csv",
+      "size_bytes": 2128721,
+      "sha256": "eae0256ccbb4c7b0e472dd22995d9799749ece291ef87accb925426a1860c849"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_1_professional_seed42.csv",
+      "size_bytes": 2112948,
+      "sha256": "2d5ac7e4c876d96b23b1c734a78ff8908a5aecf7d0ed3edb1c5eebc4db77433c"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_1_professional_seed456.csv",
+      "size_bytes": 2133279,
+      "sha256": "7ca7ce86bb047a3ddec4e4b840f19841642bc84c9781a5800c4adc2bffa93132"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_2_identity_seed123.csv",
+      "size_bytes": 2101861,
+      "sha256": "6d9de3202deeb7bf80a92474abd6397122aa9280e57c0008126bce4d2d7e7c7a"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_2_identity_seed42.csv",
+      "size_bytes": 2076663,
+      "sha256": "604ff8e5262346b4e9cf3def07b49f7953472d13d08d2c4c872c81be84095278"
+    },
+    {
+      "path": "../results/detection_hetero_api_gpt__level_2_identity_seed456.csv",
+      "size_bytes": 2110605,
+      "sha256": "5a2a29768a716ab7216934e2b66f9fad12afc37024a93c23c3a08a02cd58b197"
+    },
+    {
+      "path": "../results/detection_hetero_local__level_0_neutral_seed123.csv",
+      "size_bytes": 2248818,
+      "sha256": "dbe0660b186d16e6574eb351da5703006260152453f9fca87b73bb166459c12b"
+    },
+    {
+      "path": "../results/detection_hetero_local__level_0_neutral_seed42.csv",
+      "size_bytes": 2241916,
+      "sha256": "e0c58b0377b6c985f66f5a6e099803aeec06a8d36db38b2ecd259b7ef4b5221b"
+    },
+    {
+      "path": "../results/detection_hetero_local__level_0_neutral_seed456.csv",
+      "size_bytes": 2250296,
+      "sha256": "ee02308e8d66359d1a83da8c8c3dc0cd611f896bb360e0d988b87ab1ab69abec"
+    },
+    {
+      "path": "../results/detection_hetero_local__level_2_identity_seed123.csv",
+      "size_bytes": 2205491,
+      "sha256": "2895c40ffd6e30503b1dd95a4f19110a10610f308121e4a3d9ce69af591aca96"
+    },
+    {
+      "path": "../results/detection_hetero_local__level_2_identity_seed42.csv",
+      "size_bytes": 2181880,
+      "sha256": "ea12615bbeb2db8bd20a95028804b6d38654fd788f3a18eb5f555b3abe621811"
+    },
+    {
+      "path": "../results/detection_hetero_local__level_2_identity_seed456.csv",
+      "size_bytes": 2208307,
+      "sha256": "b5fa7fcfe6943bb1e5ca2346b27c2c5ed3089594212e47e30be30576b4599188"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_0_neutral_seed123.csv",
+      "size_bytes": 1951249,
+      "sha256": "3b62b25419193bccd1e455050c4d1298981023e9303951f625397eed46212f13"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_0_neutral_seed42.csv",
+      "size_bytes": 1944520,
+      "sha256": "3286a9f7c241fe9648c8d7224c6333044bcd00a004efca460c055eb655948079"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_0_neutral_seed456.csv",
+      "size_bytes": 1947455,
+      "sha256": "048ad0d0f871c7d576008f1145dee4f0aaa09d6a6a7e933747378b447d8cc237"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_1_professional_seed123.csv",
+      "size_bytes": 1968945,
+      "sha256": "a329ec4a651ed3908ae17ca959da8b28e37594db3b456f4e41f2b6b9738db7c6"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_1_professional_seed42.csv",
+      "size_bytes": 1895631,
+      "sha256": "ac46d08a256f79b60c693524b4c352970e3f07a86851a8878f21445a9fb743b0"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_1_professional_seed456.csv",
+      "size_bytes": 1956333,
+      "sha256": "31bacaa7ad3204ecd493c5b9f748e218984225bb1bb31685cd53dd4bf9e2023d"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_2_identity_seed123.csv",
+      "size_bytes": 1946917,
+      "sha256": "e318b63f7e7159d9d9906c148528cc4d622acadff3227430bf3f479a4d5b028f"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_2_identity_seed42.csv",
+      "size_bytes": 1939003,
+      "sha256": "2f0e6dbd4b2f32e54f8d43cde9875daf8797bb24e3da91ef72adbad9e847c5ec"
+    },
+    {
+      "path": "../results/detection_homo_gpt__level_2_identity_seed456.csv",
+      "size_bytes": 1938929,
+      "sha256": "211f01bb12d1677461dd72773860637d326fd38c4341f144ab40f732d41f9054"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_0_neutral_seed123.csv",
+      "size_bytes": 2298419,
+      "sha256": "3084cbd3cd321846dca6d6ce92be1f4d3872259147f0bf8736f2117810bdd11e"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_0_neutral_seed42.csv",
+      "size_bytes": 2256313,
+      "sha256": "8bce31861e1dd887284da8898d587de3189198ad3506616654682a52a22feeac"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_0_neutral_seed456.csv",
+      "size_bytes": 2281969,
+      "sha256": "a86143a854f63a798f1abe9746031f2851cb062035d8c3ec57d363e7ab557794"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_1_professional_seed123.csv",
+      "size_bytes": 2269415,
+      "sha256": "4cf1809dd9c6cf06da139a4f1cb2513bb2a3ac9294206e35fd116b704cea8bc3"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_1_professional_seed42.csv",
+      "size_bytes": 2221825,
+      "sha256": "62447eb3d4fd8d0b20f14c70136cdafc8343e475771dbacefe956d46db694c3f"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_1_professional_seed456.csv",
+      "size_bytes": 2242541,
+      "sha256": "695d8cc6d13292fed45d5a430520cd4f07c763bb77bd6dc034384b3bcef5c2a0"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_2_identity_seed123.csv",
+      "size_bytes": 2208804,
+      "sha256": "a6151481fc57c89d86b089380c725a708235bacaf246e0da0e66679b40181f1c"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_2_identity_seed42.csv",
+      "size_bytes": 2177148,
+      "sha256": "5b95433c14714aaa775801611bea50cd3b956dee446f2bad8a632d0ef69bfd78"
+    },
+    {
+      "path": "../results/detection_homo_llama__level_2_identity_seed456.csv",
+      "size_bytes": 2206024,
+      "sha256": "87f7de225d878f7972d12d1d6ea9ea33c1a824669b7fcbfccc83196cf65235eb"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_0_neutral_seed123.csv",
+      "size_bytes": 2253138,
+      "sha256": "01c383fde16d7ace05df2f757763eccd825af249347e50c1a41d2fa52a1cc1ba"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_0_neutral_seed42.csv",
+      "size_bytes": 2241066,
+      "sha256": "bec389956710a4aae987e90dd8bb32f4238bd6b54f61645a79919220ebc26422"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_0_neutral_seed456.csv",
+      "size_bytes": 2267494,
+      "sha256": "5cc1532c6ee2c58ccba1ea889746533a7d2f5833b5fac5835739c27a22ecb1ba"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_1_professional_seed123.csv",
+      "size_bytes": 2216310,
+      "sha256": "0e03417a6caa55490f7a573c578ad4d2c6070ea0335e19e25c2cb0a83c592c83"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_1_professional_seed42.csv",
+      "size_bytes": 2213020,
+      "sha256": "f3328d0b03bc8165e4fd04f324298ca050ecf63300f7bfc104bc2c6b017f9b7b"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_1_professional_seed456.csv",
+      "size_bytes": 2263193,
+      "sha256": "e818daa72c8aa927cdcc4668e6779fdf8e8e2081731a595f10d0860792e8ba72"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_2_identity_seed123.csv",
+      "size_bytes": 2199553,
+      "sha256": "fd8f3651186d57903338d2d4f18995e2ca099ed26fab54f4c05dd2f5c05df0b2"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_2_identity_seed42.csv",
+      "size_bytes": 2197639,
+      "sha256": "fe7fb447e5deea4146b851e309e4ef2a27bce6d8d963d91f3f78e2939d142ccf"
+    },
+    {
+      "path": "../results/detection_homo_mistral__level_2_identity_seed456.csv",
+      "size_bytes": 2224877,
+      "sha256": "6f8d917a092a6c25f2694304a5338fb3d2a7013651d687aa850601daff4f5ec4"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_0_neutral_seed123.csv",
+      "size_bytes": 2292791,
+      "sha256": "219a50b5ae5b518972d805e9248c5345ae83c0a872dbb747077ab6b437295625"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_0_neutral_seed42.csv",
+      "size_bytes": 2264123,
+      "sha256": "b521ae1e6239fd4eb826160e85008418927fb6383c3ce79ba421bc2b75d5bf3f"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_0_neutral_seed456.csv",
+      "size_bytes": 2262752,
+      "sha256": "27053c88e09555fdaad9004e5d4ad9e4c958234b6202854cb9b3f828a847b823"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_1_professional_seed123.csv",
+      "size_bytes": 2277469,
+      "sha256": "fc9d81d80119ab8c81e4be367465f33d4a896a66c931bc350e72918dcb8573fd"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_1_professional_seed42.csv",
+      "size_bytes": 2243965,
+      "sha256": "ad71d0c72a38f2a699059ba7365acb69823807568154eb11a86e9dedfd74803f"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_1_professional_seed456.csv",
+      "size_bytes": 2257595,
+      "sha256": "0a108c64dca5c9f4733caeb0be50d652b1b89e8bc2c045ab6c4177c95204743d"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_2_identity_seed123.csv",
+      "size_bytes": 2276944,
+      "sha256": "66824b5c0ff65da0c8aadb8e7028b0a535e663d5ec5d80402f8ac148a56d04b5"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_2_identity_seed42.csv",
+      "size_bytes": 2264942,
+      "sha256": "3ac1472ef0ee1fdd1d9cee6316cd6386967e5ced239177b873884ca48b5f6d5d"
+    },
+    {
+      "path": "../results/detection_homo_qwen__level_2_identity_seed456.csv",
+      "size_bytes": 2259996,
+      "sha256": "06410b3941b2d49d7d732b2844df735eb32cbb0708e3312c5b50d8643070dc4f"
+    },
+    {
+      "path": "../results/placebo_baseline_seed123.csv",
+      "size_bytes": 1462043,
+      "sha256": "660f84951cac0e79ba8bfd78298f967c05ec5a4c8fd57041d91a70b3d4a51078"
+    },
+    {
+      "path": "../results/placebo_baseline_seed42.csv",
+      "size_bytes": 1475410,
+      "sha256": "7f43b0beff4076b219e96e76cc224283972d9fa106169e733fcc05ddcdfa4004"
+    },
+    {
+      "path": "../results/placebo_baseline_seed456.csv",
+      "size_bytes": 1473122,
+      "sha256": "6d7611db1936528e187531c10151926bc4774b355d829683b9ba8b5b5be9a430"
+    },
+    {
+      "path": "../results/placebo_hetero_api_gpt__level_1_professional_seed123.csv",
+      "size_bytes": 1455030,
+      "sha256": "07e5ec493da833bc56ea7b2d15bd49494d96fd7e03712b68b750c8cac5af19bd"
+    },
+    {
+      "path": "../results/placebo_hetero_api_gpt__level_1_professional_seed42.csv",
+      "size_bytes": 1462275,
+      "sha256": "fb7246ed7fe6d3e856f760ad823bb01a86b2efe51cc47935307568abdde48d67"
+    },
+    {
+      "path": "../results/placebo_hetero_api_gpt__level_1_professional_seed456.csv",
+      "size_bytes": 1462020,
+      "sha256": "bd819d6805b7a5baeb3bd4a4733715064478d98374240508b4f5f49928345706"
+    },
+    {
+      "path": "../results/placebo_homo_gpt__level_1_professional_seed123.csv",
+      "size_bytes": 1347372,
+      "sha256": "c8f41b7d2d717eab7edb380897edc81d3d61fd3d41a0b916cdebf7e968d3f20e"
+    },
+    {
+      "path": "../results/placebo_homo_gpt__level_1_professional_seed42.csv",
+      "size_bytes": 1348446,
+      "sha256": "ef4d2d98447e4bb2ad7a2022736aa89258db6c05b514531900b040d0422d80d5"
+    },
+    {
+      "path": "../results/placebo_homo_gpt__level_1_professional_seed456.csv",
+      "size_bytes": 1355145,
+      "sha256": "d5dce15a860f0c8588793ec2277a440866fe7f14620ee190a39e79ea0b465e3e"
+    },
+    {
+      "path": "../results/placebo_homo_llama__level_1_professional_seed123.csv",
+      "size_bytes": 1525845,
+      "sha256": "32a839abc8675619eb8e026680cc985e7948dd35480b7eaf399695f383c34e4b"
+    },
+    {
+      "path": "../results/placebo_homo_llama__level_1_professional_seed42.csv",
+      "size_bytes": 1580881,
+      "sha256": "b215556625ade76ed8a11d235599eaca08a7e300667e33132008328c2c4cd395"
+    },
+    {
+      "path": "../results/placebo_homo_llama__level_1_professional_seed456.csv",
+      "size_bytes": 1541519,
+      "sha256": "c92ec2842f9a5139a3db338e66e4810309c44d4fd61872276b717ee359ce1fdc"
+    },
+    {
+      "path": "../results/placebo_homo_mistral__level_1_professional_seed123.csv",
+      "size_bytes": 1509437,
+      "sha256": "52206adc766a85fa15fd3314c5cce4f4ff6888a70ef1813ed87c21dfba281f47"
+    },
+    {
+      "path": "../results/placebo_homo_mistral__level_1_professional_seed42.csv",
+      "size_bytes": 1534984,
+      "sha256": "38345c2bf5e64a36fba5dcfefa4a6e02f18ad1d912394d4a176501e3ba1a2da9"
+    },
+    {
+      "path": "../results/placebo_homo_mistral__level_1_professional_seed456.csv",
+      "size_bytes": 1543145,
+      "sha256": "257d7b9d5679a30d31b840667babdb2396335180bb8dff4ba5158be2303ae519"
+    },
+    {
+      "path": "../results/placebo_homo_qwen__level_1_professional_seed123.csv",
+      "size_bytes": 1560629,
+      "sha256": "f7540daad64b6a63a678399811f4e566cf986438fe487755aa579ad4453427bf"
+    },
+    {
+      "path": "../results/placebo_homo_qwen__level_1_professional_seed42.csv",
+      "size_bytes": 1563688,
+      "sha256": "26b343b23834657fab37f1cc0f6262b9fe8e8221ab4785d40ff6701eacc8c05b"
+    },
+    {
+      "path": "../results/placebo_homo_qwen__level_1_professional_seed456.csv",
+      "size_bytes": 1545498,
+      "sha256": "df0eb42e1c797d54392aa348a93bb5559f9ec15ba1a4e00926a9d333acb008cb"
+    }
+  ],
+  "params": {
+    "n_perm": 10000,
+    "permutation_seed": 0,
+    "n_boot": 10000,
+    "bootstrap_seed": 0,
+    "fdr_q": 0.05,
+    "endpoint_turn": 0,
+    "exclusion_criteria": "Subject rows with parse_error==True or action=='ERROR' are dropped by default (include_errors=False) before any gap is computed; see T01 for the per-composition counts."
+  },
+  "outputs": [
+    {
+      "file": "F01_varianza_visible_vs_ciego.png",
+      "function": "build_f01",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F02_varianza_por_turno.png",
+      "function": "build_f02",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F03_genesis_forest_medias.png",
+      "function": "build_f03",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F04_icc_entre_semillas.png",
+      "function": "build_f04",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_hetero_api_gpt_country.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_hetero_api_gpt_gender.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_hetero_local_country.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_hetero_local_gender.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_gpt_country.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_gpt_gender.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_llama_country.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_llama_gender.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_mistral_country.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_mistral_gender.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_qwen_country.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "F05_trayectoria_gap_homo_qwen_gender.png",
+      "function": "build_f05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T01_calidad_datos.csv",
+      "function": "build_t01",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T02_placebo_suelo_ruido.csv",
+      "function": "build_t02",
+      "sources": {
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T03_genesis_medias_36tests_BH.csv",
+      "function": "build_t03",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T04_genesis_VARIANZAS_36tests_BH.csv",
+      "function": "build_t04",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T05_icc_entre_semillas.csv",
+      "function": "build_t05",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T06_varianza_por_turno.csv",
+      "function": "build_t06",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T07_pendientes_transmision_BH.csv",
+      "function": "build_t07",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T08_contraste_niveles.csv",
+      "function": "build_t08",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T09_comparacion_composiciones.csv",
+      "function": "build_t09",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T10_hetero_vs_miembros.csv",
+      "function": "build_t10",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T11_verbalizacion.csv",
+      "function": "build_t11",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    },
+    {
+      "file": "T13_validacion_null_interno.csv",
+      "function": "build_t13",
+      "sources": {
+        "detection": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        }
+      }
+    }
+  ],
+  "versions": {
+    "python": "3.10.12",
+    "numpy": "2.2.6",
+    "pandas": "2.3.2",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  }
+}

@@ -213,6 +213,7 @@ def run_debate(
     agents: list[Agent],
     basket: dict,
     basket_metadata: dict,
+    max_turns: int | None = None,
 ) -> list[dict]:
     """
     Run a full committee debate and return per-turn per-agent records.
@@ -221,10 +222,17 @@ def run_debate(
         agents: List of initialized Agent objects
         basket: Raw basket dict (companies will be shuffled here)
         basket_metadata: Dict with basket_id, pair_id, variant, sensitive_attr, etc.
+        max_turns: Number of renaissance (deliberation) turns after genesis.
+            Defaults to ``config.MAX_DEBATE_TURNS`` when None. Passed explicitly
+            down the call chain rather than mutating the global constant, so
+            genesis-only runs (``max_turns=0``, Tarea C.1) can share a process
+            with full-length runs. ``0`` means the renaissance loop never
+            enters and the CSV carries genesis (turn 0) only.
 
     Returns:
         List of flat dicts (one per agent per turn), ready for DataFrame.
     """
+    effective_max_turns = MAX_DEBATE_TURNS if max_turns is None else max_turns
     records = []
     turn_responses = {}  # {agent_id: latest response dict}
 
@@ -285,7 +293,7 @@ def run_debate(
     # =========================================================================
     # PHASE 2: RENAISSANCE (Turns 1..N)
     # =========================================================================
-    for turn in range(1, MAX_DEBATE_TURNS + 1):
+    for turn in range(1, effective_max_turns + 1):
         logger.info(f"[{basket_metadata['basket_id']}] Turn {turn}...")
 
         new_responses = {}

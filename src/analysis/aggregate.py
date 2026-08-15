@@ -551,6 +551,11 @@ GENESIS_STAT_COLS = [
     "n_pairs", "p_signflip", "ci95_lo", "ci95_hi",
 ]
 
+# Label of the levels-grouped row of ``genesis_gap_stats``. It is INVALID to
+# report (see ``_summarize_pair_gaps``) and the name says so, so that no table
+# pasted into the memoria can carry it unnoticed.
+POOLED_INVALID_LABEL = "pooled_INVALIDO_NO_REPORTAR"
+
 
 def _signflip_p(values, n_perm: int = 10000, seed: int = 0) -> float:
     """Two-sided sign-flip permutation p-value for a mean == 0 null."""
@@ -581,6 +586,31 @@ def _bootstrap_ci(
     idx = rng.integers(0, n, size=(n_boot, n))
     boot_means = v[idx].mean(axis=1)
     return float(np.percentile(boot_means, lo)), float(np.percentile(boot_means, hi))
+
+
+def benjamini_hochberg(pvals, q: float = 0.05):
+    """Benjamini-Hochberg correction (FDR control). Returns (qvalues, rejections).
+
+    ``pvals`` may contain NaN (cells with no test): those positions stay NaN in
+    the q-values, are excluded from the family size ``m`` and are never
+    rejected. Pure numpy - no new dependency.
+    """
+    p = np.asarray(pvals, dtype=float)
+    mask = ~np.isnan(p)
+    out = np.full(p.shape, np.nan)
+    if mask.sum() == 0:
+        return out, np.zeros(p.shape, dtype=bool)
+    pv = p[mask]
+    m = pv.size
+    order = np.argsort(pv)
+    ranked = pv[order]
+    qv = ranked * m / np.arange(1, m + 1)
+    qv = np.minimum.accumulate(qv[::-1])[::-1]
+    qv = np.minimum(qv, 1.0)
+    res = np.empty(m)
+    res[order] = qv
+    out[mask] = res
+    return out, np.nan_to_num(out, nan=1.0) <= q
 
 
 def _treatment_agent_gap_long(
@@ -646,15 +676,38 @@ def _stats_row(sensitive_attr: str, instruction_level: str, values) -> dict:
     }
 
 
-def _summarize_pair_gaps(seed_avg: pd.DataFrame, sensitive_attr: str) -> pd.DataFrame:
-    """One stats row per instruction_level + a ``pooled`` row (levels grouped)."""
+def _summarize_pair_gaps(
+    seed_avg: pd.DataFrame, sensitive_attr: str, pooled_label: str,
+) -> pd.DataFrame:
+    """One stats row per instruction_level + a levels-grouped row.
+
+    ``pooled_label`` names the levels-grouped row and has NO default: both
+    callers pass it explicitly because they deliberately use DIFFERENT labels,
+    and the difference has to be visible at the call site.
+
+    - ``genesis_gap_stats`` passes ``POOLED_INVALID_LABEL``. Its grouped row is
+      invalid to report: it pools the SAME 21 pairs measured at 3 instruction
+      levels into ``n_pairs=63``, i.e. pseudo-replication that treats 63
+      dependent measurements as independent and inflates significance (in
+      homo_llama the pooled country p is 0.051 vs 0.027 for the strongest
+      single level, and 0.0009 once compositions are pooled too). It also
+      averages away level effects whose signs are opposite in some
+      compositions. The row is KEPT, as an internal diagnostic only.
+    - ``placebo_gap_stats`` passes ``"pooled"``. The placebo was run at a
+      single instruction level, so its grouped row IS the level row
+      (``n_pairs=21``, not 63): there is no pseudo-replication to warn about,
+      and consumers (the Streamlit app) select it by that literal.
+
+    The asymmetry is intentional - do not "fix" it by giving both callers the
+    same label.
+    """
     if seed_avg is None or seed_avg.empty:
         return _empty(GENESIS_STAT_COLS)
     rows = []
     if "instruction_level" in seed_avg.columns:
         for lvl, frame in seed_avg.groupby("instruction_level", dropna=False):
             rows.append(_stats_row(sensitive_attr, str(lvl), frame["gap"].to_numpy()))
-    rows.append(_stats_row(sensitive_attr, "pooled", seed_avg["gap"].to_numpy()))
+    rows.append(_stats_row(sensitive_attr, pooled_label, seed_avg["gap"].to_numpy()))
     return pd.DataFrame(rows)[GENESIS_STAT_COLS]
 
 
@@ -670,15 +723,20 @@ def genesis_gap_stats(
     Gap is ``variant - control`` at the agent level (visible agents only when
     ``visible_only``), averaged first to committee-partial level by
     (instruction_level, seed, pair_id), then across seeds by
-    (instruction_level, pair_id). Returns per-level rows plus a ``pooled`` row
-    (levels grouped) with ``mean_gap, sd, n_pairs, p_signflip`` (sign-flip
-    permutation, 10k, fixed seed) and ``ci95_lo/ci95_hi`` (mean bootstrap, 10k).
+    (instruction_level, pair_id). Returns per-level rows plus a levels-grouped
+    row labelled ``POOLED_INVALID_LABEL`` with ``mean_gap, sd, n_pairs,
+    p_signflip`` (sign-flip permutation, 10k, fixed seed) and
+    ``ci95_lo/ci95_hi`` (mean bootstrap, 10k).
+
+    The grouped row is a diagnostic and MUST NOT be reported: pooling the 21
+    pairs across the 3 instruction levels is pseudo-replication (see
+    ``_summarize_pair_gaps``). Report the per-level rows.
     """
     frames = []
     for attr in attrs:
         long = _treatment_agent_gap_long(df, attr, include_errors=include_errors)
         _, seed_avg = _seed_avg_pair_gaps(long, turn=turn, visible_only=visible_only)
-        summ = _summarize_pair_gaps(seed_avg, attr)
+        summ = _summarize_pair_gaps(seed_avg, attr, pooled_label=POOLED_INVALID_LABEL)
         if not summ.empty:
             frames.append(summ)
     if not frames:
@@ -697,10 +755,14 @@ def placebo_gap_stats(
     This is the reference row that ALWAYS accompanies ``genesis_gap_stats``.
     Same aggregation and statistics. The placebo is a per-composition noise
     floor, so ``instruction_level`` is incidental (currently only level_1).
+
+    The grouped row keeps the plain ``"pooled"`` label - with a single
+    instruction level it equals the level row (n_pairs=21, no
+    pseudo-replication), unlike the genesis one.
     """
     long = _placebo_agent_gap_long(df_placebo, include_errors=include_errors)
     _, seed_avg = _seed_avg_pair_gaps(long, turn=turn, visible_only=visible_only)
-    return _summarize_pair_gaps(seed_avg, "placebo")
+    return _summarize_pair_gaps(seed_avg, "placebo", pooled_label="pooled")
 
 
 def permutation_vs_placebo(
