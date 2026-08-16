@@ -80,8 +80,8 @@ python experiment_runner.py --stage placebo --condition hetero_api_gpt__level_1_
 # ============================================================
 # vacunas
 # ============================================================
-python experiment_runner.py --stage mitigation \
-  --condition homo_qwen__level_0_neutral --seeds "42,123,456" --max-turns 0
+python experiment_runner.py --stage mitigation --condition homo_qwen__level_0_neutral --seeds "42,123,456" --max-turns 0         # HECHO 2:05:25.748657
 
-python experiment_runner.py --stage mitigation \
-  --condition homo_qwen__level_1_professional --seeds "42,123,456" --max-turns 0
+python experiment_runner.py --stage mitigation --condition homo_qwen__level_1_professional --seeds "42,123,456" --max-turns 0    # HECHO 1:55:43.920334
+
+#=============================================================

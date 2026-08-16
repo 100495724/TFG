@@ -2132,6 +2132,22 @@ class _Manifest:
             },
             "outputs": sorted(self.outputs, key=lambda item: item["file"]),
             "versions": _versions(),
+            "numerical_notes": [
+                "p-values computed via scipy.stats closed-form distributions "
+                "(F.cdf/F.sf for p_fisher/p_levene/p_homog_ciego/T05's "
+                "p_value, spearmanr for spearman_p, binomtest for "
+                "p_binom_asimetria_parseo) can differ by ~1e-16 to ~9e-15 "
+                "(last-bit rounding in the regularized incomplete beta "
+                "function) between environments with different numpy/scipy "
+                "builds - e.g. different OpenBLAS DYNAMIC_ARCH kernel "
+                "selection - even when every input to those functions "
+                "(F, sd_visible, sd_ciego, icc, spearman_rho, mean_diff, all "
+                "n_* counts) is bit-identical. No BH significance decision "
+                "(sig_BH_global, sig_BH_composicion, sig_BH) is affected by "
+                "this drift at the observed magnitude. See requirements.txt "
+                "for the pinned numpy/scipy/pandas/matplotlib versions used "
+                "to reproduce the 'versions' block above exactly.",
+            ],
         }
         path.write_text(
             json.dumps(payload, indent=2, sort_keys=False, ensure_ascii=False) + "\n",
