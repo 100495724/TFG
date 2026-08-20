@@ -1,0 +1,289 @@
+
+% !TeX root = ../main.tex
+
+\chapter{Metodología y diseño experimental}
+\label{chap:metodologia}
+
+
+\section{Planteamiento y visión general}
+\label{sec:metodologia_planteamiento}
+
+El diseño experimental busca caracterizar la aparición y evolución de sesgo implícito en sistemas multiagente basados en modelos de lenguaje aplicados a una tarea de decisión financiera. Para ello, se ha construido un entorno controlado en el que un comité formado por tres agentes tiene que distribuir un presupuesto fijo entre varias empresas. Este diseño se fundamenta en el principio de comparación contrafactual formalizado en el marco de \textit{counterfactual fairness} de Kusner et al.~\cite{kusner2017counterfactual}, evaluando a una misma empresa bajo condiciones equivalentes. A diferencia de la formulación original, que requiere especificar un modelo causal estructural para estimar variables latentes mediante un proceso de abducción-acción-predicción, aquí el contrafactual se construye por intervención directa sobre el dato presentado al sistema, lo cual es viable gracias a que el entorno es sintético y controlado. Así, las diferencias en las decisiones de los agentes no pueden atribuirse a cambios en los fundamentales financieros, que se mantienen idénticos.
+
+En cada ejecución el comité evalúa una cesta de cuatro empresas y distribuye entre ellas un presupuesto total de 100.000~€. Para cada empresa, los agentes producen una recomendación de inversión (BUY, HOLD, SELL), una asignación monetaria y una breve justificación de su decisión. Una de estas cuatro empresas actúa como sujeto de la comparación contrafactual, mientras que las tres restantes mantienen la tarea como una decisión de cartera y no como una evaluación aislada. Además, uno de los tres agentes actúa como agente ciego, es decir, se le oculta la información del atributo sensible de modo que la información que recibe es idéntica entre las variantes contrafactuales. Su comportamiento proporciona un control del diseño el cual se desarrolla en la Sección~\ref{sec:dataset}.
+
+Sobre cada empresa sujeto se construyen dos variantes que conservan la misma información financiera y empresarial pero modifican el atributo sensible. Se estudian dos ejes: el género de la persona que ocupa el puesto de CEO y el país en el que se localiza la sede de la empresa. El desenlace básico de la comparación es el \textit{gap} de asignación, definido como la diferencia entre la cantidad asignada a la empresa sujeto en la variante y en su condición de control. La construcción de los contrafactuales y los mecanismos empleados para aislar los atributos sensibles se detallan en las Secciones~\ref{sec:contrafactual} y~\ref{sec:dataset}.
+
+La interacción entre agentes se basa en el protocolo de comunicación multiagente propuesto por Nguyen et al.~\cite{nguyen2025social}, que separa una fase inicial de decisión independiente, denominada \textit{génesis} ($t=0$), de rondas posteriores de deliberación. En este trabajo se conserva dicha estructura y el límite de cuatro rondas de interacción, que aquí se adaptan a un comité de tres agentes y una tarea de asignación financiera. En la fase de génesis ($t=0$), cada agente evalúa la cesta de forma independiente, sin observar las respuestas de los demás. A continuación se ejecutan cuatro turnos de deliberación ($t=1,\ldots,4$), durante los cuales cada agente recibe las decisiones de los otros miembros del comité y puede revisar su propia asignación. Esta separación permite distinguir los efectos o sesgos presentes antes de cualquier interacción de aquellos que emergen o se modifican durante el intercambio entre agentes.
+
+El estudio se organiza en una fase de detección y una fase posterior de mitigación. En la primera se caracteriza el comportamiento del sistema ante los contrafactuales definidos y se estudia su dependencia de la composición del comité, del nivel de especificación de las instrucciones y del turno de interacción. La segunda evalúa de forma específica la introducción de instrucciones de mitigación en los prompts de los agentes. A esta fase se ha añadido posteriormente un resultado de mitigación estructural no planteado inicialmente como tal, sino surgido del análisis de la fase de detección: el comportamiento diferencial de los comités heterogéneos frente a los homogéneos, que se retoma en la Sección~\ref{sec:mitigacion}. En ambas fases se incluye una condición placebo formada por parejas de cestas idénticas, sin manipulación alguna, que permite cuantificar el ruido propio del sistema. La Figura~\ref{fig:pipeline_experimental} resume el flujo general del estudio.
+
+\begin{figure}[htbp]
+	\centering
+	%\includegraphics[width=0.95\textwidth]{pipeline_experimental.pdf}
+	\caption{Visión general del diseño experimental.}
+	\label{fig:pipeline_experimental}
+\end{figure}
+
+\section{Variables experimentales y plan de ablación}
+\label{sec:variables_ablacion}
+
+\subsection{Composición del comité}
+\label{subsec:composicion}
+
+La primera variable experimental es la composición del comité, entendida como la combinación de modelos de lenguaje que actúan como sus tres agentes. Se consideran onfiguraciones homogéneas, en las que los tres agentes utilizan el mismo LLM, y heterogéneas, en las que se combinan modelos de familias diferentes.
+
+Esta doble elección conecta dos aproximaciones al estudio del sesgo en sistemas multiagente. Nguyen et al.~\cite{nguyen2025social} estudian el efecto del modelo subyacente y de la especialización de los agentes sobre la robustez frente al sesgo, en sistemas cuyos agentes comparten el mismo LLM. Madigan et al.~\cite{madigan2025emergent}, por su parte, evalúan sistemas financieros heterogéneos formados por tres LLM distintos. Este diseño reúne ambos tipos de comité bajo una misma tarea y un mismo protocolo de interacción, de modo que su comportamiento pueda compararse con el resto de factores fijos. La Tabla~\ref{tab:composiciones} recoge todas las composiciones definidas, incluidas las que quedaron fuera de la campaña final.
+
+El conjunto evaluado comprende cuatro composiciones homogéneas: tres agentes Llama~3.1-8B-Instruct, tres Qwen~2.5-7B-Instruct, tres Mistral-7B-Instruct-v0.3 y tres GPT-4o-mini. A ellas se suman dos heterogéneas: la primera combina Llama~3.1-8B-Instruct, Qwen~2.5-7B-Instruct y Mistral-7B-Instruct-v0.3; la segunda, Llama~3.1-8B-Instruct, GPT-4o-mini y Mistral-7B-Instruct-v0.3.
+
+Dentro de las composiciones heterogéneas, la asignación de modelos a agentes es fija. El primer agente, que actúa como agente ciego, utiliza Llama~3.1-8B-Instruct en ambos casos, y el tercero Mistral-7B-Instruct-v0.3. Solo el segundo agente cambia: Qwen~2.5-7B-Instruct en \textit{hetero\_local} y GPT-4o-mini en \textit{hetero\_api\_gpt}. Ambas configuraciones difieren, por tanto, en un único modelo asignado a un único rol.
+
+De ahí surge un contraste especialmente controlado entre \textit{homo\_llama} y \textit{hetero\_local}. El agente ciego emplea el mismo modelo y recibe el mismo rol en las dos configuraciones, y solo cambian los dos agentes visibles. Cualquier diferencia que se observe entre ellas no puede proceder, por tanto, del comportamiento del control interno.
+
+Los modelos locales se eligieron buscando una escala de parámetros comparable, entre 7B y 8B, y solapamiento con el estudio de Nguyen et al.~\cite{nguyen2025social}, que incluye Llama~3.1-8B-Instruct y Qwen~2.5-7B-Instruct entre los modelos evaluados.
+
+El diseño inicial contemplaba también una composición homogénea basada en Claude Haiku y otra heterogénea que lo incorporaba. Ambas quedaron implementadas en la infraestructura experimental, pero se excluyeron de la campaña final de detección por restricciones presupuestarias. La decisión y su impacto sobre el alcance del estudio se recogen en la Sección~\ref{sec:presupuesto}.
+
+\subsection{Nivel de instrucción}
+\label{subsec:nivel_instruccion}
+
+La segunda variable experimental modifica el grado y el tipo de especificación del rol asignado a cada agente. Se definen tres niveles de instrucción, manteniendo inalteradas la tarea financiera, la composición del comité y la estructura de interacción.
+
+En el nivel 0 (\textit{level\_0\_neutral}), los tres agentes reciben el mismo rol genérico de analista financiero, sin especialización funcional. Este nivel constituye además la condición más controlada respecto al rol: los tres agentes reciben exactamente la misma instrucción, por lo que la diferencia entre el agente ciego y los dos agentes visibles no procede de una especialización funcional distinta, sino únicamente de la información disponible para cada uno.
+
+En el nivel 1 (\textit{level\_1\_professional}), se asigna a cada agente una función profesional diferenciada dentro del comité: analista fundamental, analista de sentimiento y gestor de riesgos. Cada rol dirige la atención hacia un conjunto distinto de evidencias financieras o empresariales, de manera que el sistema incorpora especialización funcional sin introducir identidades sociales asociadas al atributo que se pretende medir.
+
+El nivel 2 (\textit{level\_2\_identity}) conserva esas mismas funciones profesionales y añade información sobre la identidad y trayectoria del agente. De este modo se estudia si una caracterización más específica del agente modifica su comportamiento respecto a los niveles anteriores. A diferencia del diseño de Nguyen et al.~\cite{nguyen2025social}, donde los agentes representan explícitamente grupos sociales relacionados con los estereotipos evaluados, ninguno de los roles utilizados en este trabajo menciona el género de la CEO ni el país de la sede en ninguno de los tres niveles.
+
+La condición de agente ciego se mantiene constante en los tres niveles: el
+primer agente no recibe los atributos sensibles independientemente del grado de especificación de su rol. Por tanto, la manipulación del nivel de instrucción no altera la estructura del control interno descrito en la
+Sección~\ref{sec:dataset}.
+
+El nivel 2 no constituye una manipulación pura de la cantidad de detalle del prompt, ya que las identidades añadidas incluyen también referencias culturales y geográficas. Por ello, sus diferencias respecto al nivel 1 se interpretan como un efecto del conjunto de la especificación identitaria y no exclusivamente de la longitud o riqueza del prompt. Esta limitación se retoma en la Sección~\ref{sec:amenazas_validez}.
+
+\subsection{Repeticiones y parámetros controlados}
+\label{subsec:repeticiones}
+
+Cada condición experimental se repite tres veces, con las semillas 42, 123 y 456. Las repeticiones permiten observar cuánta variabilidad produce el propio sistema entre ejecuciones de una configuración idéntica.
+
+Los parámetros de generación se mantienen fijos durante toda la fase de detección, con una temperatura de 0,3, un valor de \textit{top-p} de 0,95 y un límite máximo de 4096 tokens por respuesta. La temperatura se fija en un valor reducido, pero superior a cero, para conservar cierta variabilidad estocástica sin introducir una dispersión excesiva entre ejecuciones.
+
+El protocolo de comunicación se mantiene fijo y no se incluye como variable de ablación. En todas las condiciones se utiliza un protocolo de debate, en el que los agentes evalúan críticamente las decisiones de los demás y pueden modificar su propia posición durante los turnos de deliberación. De esta forma, la comparación entre condiciones queda centrada en las dos variables principales del diseño: la composición del comité y el nivel de instrucción.
+
+\subsection{Matriz experimental}
+\label{subsec:matriz_experimental}
+
+El cruce de las seis composiciones evaluadas con los tres niveles de instrucción genera 18 condiciones experimentales. Cada condición se ejecuta con las tres repeticiones definidas anteriormente, dando lugar a un total de 54 ejecuciones en la fase principal de detección. En cada una de ellas se evalúa el conjunto completo de cestas contrafactuales descrito en la Sección~\ref{sec:dataset}.
+
+A estas ejecuciones se añaden 18 ejecuciones de placebo, correspondientes a las seis composiciones y las tres semillas. El placebo se ejecuta utilizando el nivel \textit{level\_1\_professional} como condición de referencia y no se replica para cada nivel de instrucción. Su objetivo es proporcionar una estimación externa del nivel de variabilidad entre dos cestas idénticas para cada composición. La construcción de esta condición y su utilización estadística se desarrollan en la Sección~\ref{sec:dataset}. La ausencia de un placebo específico por nivel de instrucción limita su uso como referencia en los contrastes que dependen de esta condición externa, y se retoma en la Sección~\ref{sec:limitaciones}. No afecta, en cambio, al control interno descrito en la Sección~\ref{sec:dataset}, disponible en todas las condiciones por construcción.
+
+La fase de mitigación constituye una campaña experimental posterior y se
+describe por separado en la Sección~\ref{sec:mitigacion}, ya que sus condiciones fueron seleccionadas después de completar y analizar la fase de detección.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Composiciones consideradas en el diseño experimental.}
+	\label{tab:composiciones}
+	\small
+	\begin{tabular}{p{2.8cm} p{6.8cm} p{2.2cm} p{2.0cm}}
+		\hline
+		\textbf{Composición} & \textbf{Modelos} & \textbf{Tipo} & \textbf{Estado} \\
+		\hline
+		homo\_llama
+		& 3 $\times$ Llama 3.1-8B-Instruct
+		& Homogénea & Ejecutada \\
+		
+		homo\_qwen
+		& 3 $\times$ Qwen 2.5-7B-Instruct
+		& Homogénea & Ejecutada \\
+		
+		homo\_mistral
+		& 3 $\times$ Mistral-7B-Instruct-v0.3
+		& Homogénea & Ejecutada \\
+		
+		homo\_gpt
+		& 3 $\times$ GPT-4o-mini
+		& Homogénea & Ejecutada \\
+		
+		hetero\_local
+		& Llama 3.1-8B + Qwen 2.5-7B + Mistral-7B
+		& Heterogénea & Ejecutada \\
+		
+		hetero\_api\_gpt
+		& Llama 3.1-8B + GPT-4o-mini + Mistral-7B
+		& Heterogénea & Ejecutada \\
+		
+		homo\_claude
+		& 3 $\times$ Claude Haiku
+		& Homogénea & Excluida \\
+		
+		hetero\_api\_claude
+		& Llama 3.1-8B + GPT-4o-mini + Claude Haiku
+		& Heterogénea & Excluida \\
+		\hline
+	\end{tabular}
+\end{table}
+
+
+
+\section{Atributos sensibles y construcción del contrafactual}
+\label{sec:contrafactual}
+
+\subsection{Integración de los atributos sensibles}
+\label{subsec:atributos_sensibles}
+
+La construcción de las variantes experimentales sigue el principio de comparación contrafactual descrito en la Sección~\ref{sec:metodologia_planteamiento} y formalizado en el marco de \textit{counterfactual fairness} de Kusner et al.~\cite{kusner2017counterfactual}. El objetivo no es implementar un modelo causal estructural completo, sino trasladar a un diseño experimental pareado el principio de evaluar una misma entidad manteniendo constantes las características relevantes para la decisión y modificando el atributo sensible objeto de estudio.
+
+Se consideran dos atributos sensibles: el género de la persona que ocupa el puesto de CEO y la localización geográfica de la sede de la empresa. Ambos se evalúan de forma independiente a partir de una misma condición de control, correspondiente a una empresa con sede real en Estados Unidos y un CEO masculino. Para cada empresa sujeto se generan posteriormente una variante de género y una variante geográfica.
+
+En la variante de género se conserva la misma empresa y la misma sede que en la condición de control, mientras que el CEO masculino se sustituye por una CEO femenina de la misma edad. El género se representa tanto mediante el nombre de la persona como mediante una indicación explícita en su descripción. Los nombres masculinos y femeninos proceden de repertorios del mismo contexto cultural, con el objetivo de evitar que la manipulación del género introduzca simultáneamente una diferencia de origen cultural.
+
+La variante geográfica mantiene exactamente la identidad del CEO de control y modifica solo el campo de sede. La condición de control emplea la ciudad y el país reales de la empresa, mientras que la variante los sustituye por una de cinco localizaciones predefinidas: Lagos (Nigeria), Mumbai (India), São Paulo (Brasil), Ciudad Ho Chi Minh (Vietnam) o Karachi (Pakistán). Al mantenerse idéntico el resto de la ficha, incluido el nombre del CEO, el contraste geográfico no queda confundido con un cambio simultáneo de identidad de la persona.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Variantes contrafactuales de la empresa sujeto.}
+	\label{tab:variantes_contrafactuales}
+	\begin{tabular}{llll}
+		\hline
+		\textbf{Condición} & \textbf{CEO} & \textbf{Sede} &
+		\textbf{Atributo modificado} \\
+		\hline
+		
+		Control
+		& Masculino
+		& Ciudad y país reales
+		& --- \\
+		
+		Género
+		& Femenino
+		& Igual que control
+		& Género del CEO \\
+		
+		Geografía
+		& Igual que control
+		& Ciudad y país alternativos
+		& Localización de la sede \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Aislamiento de las variantes contrafactuales}
+\label{subsec:aislamiento_contrafactual}
+
+Las tres variantes de cada pareja se construyen a partir de la misma empresa subyacente. Por tanto, sus fundamentales financieros, sector, industria, histórico de precios, dividendos y demás información empresarial no sensible se mantienen constantes. También se conservan las tres empresas de relleno que acompañan a la empresa sujeto. La comparación se realiza así entre cestas equivalentes y no entre empresas financieramente similares pero distintas.
+
+Además de mantener constante el contenido de la cesta, se controlan dos posibles fuentes adicionales de confusión. En primer lugar, las empresas se presentan a los agentes mediante alias neutros (\textit{Company 1}, \textit{Company 2}, etc.), de modo que el nombre y el ticker de la empresa no
+están disponibles como señales explícitas. En segundo lugar, la empresa sujeto ocupa exactamente la misma posición dentro del prompt en las tres variantes de una pareja. La ficha conserva, no obstante, la sede, el sector y los fundamentales financieros, cuya combinación podría permitir en algún caso inferir la identidad de la empresa subyacente; las medidas adoptadas para reducir esta posibilidad se describen en la Sección~\ref{sec:dataset}.
+
+Para conseguir esta correspondencia posicional, el orden de las empresas se baraja de forma determinista utilizando una semilla derivada del identificador de la pareja y de la repetición experimental. Las condiciones de control, género y geografía comparten el mismo identificador de pareja y, por tanto, reciben el mismo orden para una misma repetición. De este modo, una diferencia
+entre condiciones no puede atribuirse a que la empresa sujeto haya aparecido en una posición distinta dentro del prompt.
+
+En conjunto, el emparejamiento mantiene constantes la empresa subyacente, las empresas de contexto, la información financiera y la posición presentada al modelo. La manipulación queda así restringida a la representación del atributo sensible correspondiente. La validación empírica de estas propiedades y de otros posibles factores de confusión se presenta posteriormente en el Capítulo~\ref{chap:validacion}.
+
+\subsection{Agregación del atributo geográfico}
+\label{subsec:agregacion_geografica}
+
+El eje geográfico se analiza de forma agregada. Las variantes utilizan sedes situadas en Nigeria, India, Brasil, Vietnam y Pakistán, asignadas de forma rotatoria entre los distintos arquetipos. En el análisis principal estas localizaciones no se tratan como cinco condiciones independientes, sino una única condición geográfica alternativa frente a la condición de control estadounidense.
+
+Esta agregación se adoptó antes de ejecutar el análisis con el objetivo de mantener un número suficiente de observaciones por condición. Con 21 parejas, un análisis separado para los cinco países dejaría únicamente cuatro o cinco observaciones por país, lo que reduciría considerablemente la capacidad para caracterizar la distribución del efecto. En consecuencia, los resultados del eje geográfico deben interpretarse como evidencia sobre la manipulación geográfica agregada y no como estimaciones específicas para cada uno de los países incluidos.
+
+De forma análoga, el eje de género se restringe experimentalmente al contraste entre CEO masculino y CEO femenino. Estas simplificaciones responden a una decisión de diseño orientada a aislar los efectos con el tamaño muestral disponible y no pretenden representar la totalidad de identidades de género ni considerar equivalentes los distintos contextos nacionales incluidos. Las implicaciones y limitaciones de esta operacionalización se retoman en los capítulos de discusión, Capítulo~\ref{chap:discusion} y análisis ético, Sección~\ref{sec:etica}.
+
+
+
+\section{Dataset}
+\label{sec:dataset}
+
+\subsection{Fuente de datos y selección de empresas}
+\label{subsec:fuente_datos}
+
+El banco de pruebas se construye a partir de información financiera real de empresas pertenecientes al índice bursátil S\&P 500. En lugar de consultar las fuentes de datos en tiempo real durante cada ejecución experimental, se utiliza un único \textit{snapshot} obtenido el 12 de mayo de 2026 mediante \textit{yfinance}. La descarga contiene información de los 503 valores incluidos en el índice y se mantiene fija durante toda la experimentación. Este procedimiento mantiene constantes los datos de entrada entre ejecuciones y evita que cambios posteriores en precios, fundamentales o noticias introduzcan diferencias entre condiciones realizadas en momentos distintos.
+
+La delimitación temporal del \textit{snapshot} contribuye además a reducir el riesgo de fuga temporal asociado al conocimiento de los modelos. Sarkar y Vafa~\cite{sarkar2024lookahead} muestran que los modelos de lenguaje preentrenados pueden presentar \textit{lookahead bias} cuando su corpus de entrenamiento contiene información posterior al periodo que se pretende analizar, incluso cuando el prompt restringe explícitamente la información disponible.
+
+Esa fecha es posterior a los periodos de conocimiento documentados para los modelos empleados lo que reduce la posibilidad de que los modelos hayan memorizado durante su preentrenamiento los valores concretos de los fundamentales, precios y noticias contenidos en el banco de pruebas. No elimina, sin embargo, otras posibles formas de conocimiento previo sobre las empresas ni garantiza la ausencia total de contaminación, especialmente en modelos servidos mediante APIs cuya evolución interna no está bajo control del experimento.
+
+Sobre esta fuente de datos se aplica un filtro previo por localización y capitalización. Las empresas candidatas deben tener su sede en Estados Unidos y una capitalización bursátil comprendida entre 5 y 50 mil millones de dólares. La exclusión de las compañías de mayor capitalización busca reducir la probabilidad de que el modelo identifique inmediatamente empresas ampliamente conocidas a partir de sus características financieras. Este filtrado no asegura que los modelos no puedan identificarlas, pero reduce la presencia de compañías especialmente reconocibles.
+
+A partir de las empresas candidatas se construyen 21 arquetipos combinando siete sectores económicos con tres perfiles financieros. Los sectores considerados son tecnología, salud, servicios financieros, energía, industriales, consumo cíclico y consumo defensivo. Para cada sector se selecciona una empresa sujeto perteneciente a cada uno de los perfiles \textit{growth}, \textit{value} y \textit{distressed}. Esta estratificación evita que el análisis dependa de un único perfil financiero y mantiene las comparaciones dentro de un mismo sector.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Criterios utilizados para definir los perfiles financieros.}
+	\label{tab:perfiles_financieros}
+	\begin{tabular}{p{2.5cm} p{10cm}}
+		\hline
+		\textbf{Perfil} & \textbf{Criterio de selección} \\
+		\hline
+		
+		Growth &
+		Crecimiento de ingresos superior al 15\,\%. \\
+		
+		Value &
+		Ratio P/E positivo e inferior a 18 y beneficio por acción
+		(\textit{EPS}) superior a 1,5. \\
+		
+		Distressed &
+		Presencia de al menos una señal de debilidad: EPS negativo,
+		margen de beneficio negativo, contracción de ingresos superior
+		al 3\,\%, apalancamiento elevado (D/E superior a 200) combinado con crecimiento
+		reducido (inferior al 5\,\%), o caída trimestral de beneficios superior al 20\,\%. \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+El término \textit{distressed} se utiliza, por tanto, para identificar empresas
+que presentan al menos una señal de debilidad en sus fundamentales y no implica
+necesariamente que la empresa se encuentre en pérdidas.
+
+\subsection{Construcción y representación de las cestas}
+\label{subsec:construccion_cestas}
+
+Cada arquetipo da lugar a una cesta formada por cuatro empresas del mismo sector: una empresa sujeto y tres empresas de contexto. Sobre la empresa sujeto se generan las tres condiciones descritas en la
+Sección~\ref{sec:contrafactual}: control, variante de género y variante geográfica. Las tres empresas restantes se mantienen constantes dentro de la comparación. De este modo, los 21 arquetipos generan 63 cestas para la fase de detección.
+
+La ficha presentada a los agentes contiene información financiera y de mercado suficiente para realizar una decisión de inversión. Entre las variables incluidas se encuentran sector e industria, capitalización bursátil, ingresos y crecimiento de ingresos, margen de beneficio, flujo de caja libre, ratio P/E, deuda sobre patrimonio, beneficio por acción, beta, histórico de precios y dividendos. Para los agentes visibles se añaden además la sede, la identidad del CEO y noticias recientes de la empresa.
+
+Para reducir señales que no forman parte del objetivo experimental, el nombre y el ticker de cada empresa se sustituyen antes de la inferencia por alias neutros (\textit{Company 1}, \textit{Company 2}, etc.). Las noticias se procesan asimismo para eliminar URLs e identificadores explícitos de la empresa. Estas medidas reducen la posibilidad de reconocimiento directo, aunque no constituyen una anonimización completa: la combinación de sector, sede y fundamentales podría permitir a los modelos inferir en determinados casos la identidad de la empresa subyacente.
+
+El histórico de precios se transforma a un índice con base 100 tomando como referencia la primera observación. La transformación conserva la evolución relativa y elimina el nivel absoluto. Birru y Wang~\cite{birru2016nominal} documentan la llamada \textit{nominal price illusion}, por la que los inversores perciben las acciones de precio nominal bajo como portadoras de mayor potencial que otras equivalentes de precio más elevado. Nada garantiza que un LLM reproduzca ese sesgo, pero el nivel nominal tampoco es necesario para la tarea, de modo que eliminarlo suprime una posible señal de \textit{framing} sin coste informativo.
+
+Todas estas transformaciones se realizan antes de comenzar la campaña experimental. Una vez generado el conjunto de cestas, este permanece fijo para todas las composiciones, niveles de instrucción y repeticiones. Las diferencias entre condiciones del sistema multiagente se evalúan, por tanto, sobre el mismo banco de pruebas.
+
+\subsection{Condición placebo}
+\label{subsec:placebo}
+
+Además de las cestas contrafactuales se construye una condición placebo destinada a estimar la variabilidad que puede aparecer aun cuando no se modifica ningún atributo sensible. Para cada uno de los 21 arquetipos se generan dos cestas gemelas, denominadas \textit{placebo\_a} y \textit{placebo\_b}, que contienen la misma empresa sujeto, las mismas empresas de contexto y la misma información. Ambas comparten además el mismo identificador de pareja, por lo que se mantiene también el orden de presentación de las empresas dentro de cada repetición.
+
+La diferencia de asignación entre las dos cestas placebo constituye un \textit{null} empírico externo. Idealmente su valor sería cero, pero el sistema incluye generación estocástica y, en algunos \textit{backends}, otras fuentes de no determinismo. El placebo permite por tanto estimar la magnitud de las diferencias que pueden observarse entre dos evaluaciones equivalentes sin atribuirlas a un tratamiento sensible.
+
+Se generan 21 parejas placebo para mantener la misma cobertura de arquetipos que en las comparaciones contrafactuales. Esta referencia se ejecuta por composición y no por cada nivel de instrucción, tal como se indicó en la Sección~\ref{subsec:matriz_experimental}. Esta decisión reduce el coste experimental, aunque implica que el placebo no constituye un control específico para cada celda de la matriz y se considera posteriormente entre las limitaciones del diseño en la Sección~\ref{sec:limitaciones}.
+
+\subsection{Null interno: agente ciego}
+\label{subsec:null_interno}
+
+El segundo control está integrado en el propio comité. A diferencia del placebo, que se estima sobre un conjunto de cestas distinto del brazo contrafactual, el agente ciego opera sobre las mismas cestas y las mismas parejas. Como se indicó en la Sección~\ref{sec:metodologia_planteamiento}, el primer agente recibe una versión reducida de la ficha de las empresas. Esta versión conserva íntegramente los campos financieros y de mercado, incluidos el histórico de precios indexado y los dividendos, y excluye únicamente la sede, la identidad del CEO y las noticias recientes. Dado que los restantes campos de la empresa sujeto son idénticos entre las variantes y que el orden se mantiene emparejado, el agente ciego recibe en la fase de génesis el mismo contenido para las condiciones de control, género y geografía. Por tanto, cualquier diferencia entre las asignaciones del agente ciego para dos brazos contrafactuales en génesis no puede estar causada por el atributo sensible, ya que este no forma parte de su entrada. Esa diferencia proporciona una estimación interna de la variabilidad basal de ejecución bajo las mismas empresas, las mismas parejas y la misma configuración experimental que el brazo visible.
+
+El agente ciego no pretende reproducir la decisión que tomarían los agentes visibles en ausencia del atributo sensible. Su función es más limitada: actuar como canal de control frente al que cuantificar cuánta dispersión aparece cuando el atributo sí está disponible. Esta distinción es especialmente importante en los niveles profesionales, donde el agente ciego y los agentes visibles desempeñan funciones diferentes dentro del comité.
+
+El control interno es válido como \textit{null} únicamente en génesis ($t=0$). A partir del primer turno de deliberación, el agente ciego observa las decisiones y razonamientos de los otros miembros del comité, que sí han tenido acceso al atributo sensible. Su respuesta puede entonces incorporar indirectamente información procedente de los agentes visibles y deja de constituir un control independiente. Esta propiedad motiva que el análisis principal de dispersión se sitúe en génesis, mientras que los turnos posteriores se emplean para estudiar la dinámica de interacción.
+
+La equivalencia efectiva de los prompts del agente ciego entre variantes se comprueba empíricamente antes del análisis de resultados; dicha validación se presenta en el Capítulo~\ref{chap:validacion}. La definición estadística de los endpoints construidos sobre este null se introduce en la Sección~\ref{sec:metricas}.
+
+\section{Métricas y análisis estadístico}
+\label{sec:metricas}
+
+
+
+\section{Diseño de la fase de mitigación}
+\label{sec:mitigacion}
+
+\subsection{Mitigación por composición}
+\label{subsec:mitigacion_composicion}
+
+\subsection{Mitigación por instrucción}
+\label{subsec:mitigacion_instruccion}

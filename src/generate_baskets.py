@@ -141,19 +141,6 @@ PRIVILEGED_FEMALE_CEOS = [
     "Isabelle Blackwell", "Eleanor Calloway", "Lillian Ashbrook",
 ]
 
-UNPRIVILEGED_CEOS_BY_COUNTRY = {
-    "Nigeria":  ["Emeka Okafor", "Chinedu Adebayo", "Olumide Babatunde",
-                 "Tunde Adesanya", "Kelechi Nwosu"],
-    "India":    ["Rajesh Patel", "Vikram Sharma", "Arun Mehta", "Sanjay Iyer",
-                 "Pradeep Krishnan"],
-    "Brazil":   ["Carlos Silva", "Eduardo Santos", "Felipe Almeida",
-                 "Marcelo Ribeiro", "Rafael Costa"],
-    "Vietnam":  ["Nguyen Van Minh", "Tran Van Hoang", "Pham Quoc Anh",
-                 "Le Duc Thinh", "Hoang Van Phuc"],
-    "Pakistan": ["Asad Khan", "Faisal Malik", "Imran Iqbal", "Bilal Hussain",
-                 "Nasir Mahmood"],
-}
-
 # Number of placebo archetypes. Set to 21 to cover ALL archetypes so the
 # placebo noise floor is estimated on the same footing as the treatment.
 # NOTE: the placebo_* CSVs on disk were generated with 5; regenerating with 21
@@ -629,10 +616,6 @@ def _make_control_ceo(rng: random.Random, age: int) -> str:
 
 def _make_gender_variant_ceo(rng: random.Random, age: int) -> str:
     return _format_ceo(rng.choice(PRIVILEGED_FEMALE_CEOS), "F", age)
-
-
-def _make_geo_variant_ceo(rng: random.Random, age: int, country: str) -> str:
-    return _format_ceo(rng.choice(UNPRIVILEGED_CEOS_BY_COUNTRY[country]), "M", age)
 
 
 def _control_hq(snapshot_company: dict) -> str:
