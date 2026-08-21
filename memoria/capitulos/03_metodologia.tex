@@ -4,11 +4,12 @@
 \chapter{Metodología y diseño experimental}
 \label{chap:metodologia}
 
+Este capítulo describe el experimento realizado y justifica las decisiones que lo definen. La pregunta que aborda no es cómo se implementó el sistema, sino por qué se midió lo que se midió: qué se manipula, qué se mantiene constante, frente a qué se compara el resultado y con qué procedimientos se decide si una diferencia observada es atribuible a la manipulación. Los detalles técnicos de la implementación se tratan en el Capítulo~\ref{chap:implementacion}, y las comprobaciones que verifican que el instrumento mide lo que pretende medir, en el Capítulo~\ref{chap:validacion}.
 
 \section{Planteamiento y visión general}
 \label{sec:metodologia_planteamiento}
 
-El diseño experimental busca caracterizar la aparición y evolución de sesgo implícito en sistemas multiagente basados en modelos de lenguaje aplicados a una tarea de decisión financiera. Para ello, se ha construido un entorno controlado en el que un comité formado por tres agentes tiene que distribuir un presupuesto fijo entre varias empresas. Este diseño se fundamenta en el principio de comparación contrafactual formalizado en el marco de \textit{counterfactual fairness} de Kusner et al.~\cite{kusner2017counterfactual}, evaluando a una misma empresa bajo condiciones equivalentes. A diferencia de la formulación original, que requiere especificar un modelo causal estructural para estimar variables latentes mediante un proceso de abducción-acción-predicción, aquí el contrafactual se construye por intervención directa sobre el dato presentado al sistema, lo cual es viable gracias a que el entorno es sintético y controlado. Así, las diferencias en las decisiones de los agentes no pueden atribuirse a cambios en los fundamentales financieros, que se mantienen idénticos.
+El diseño experimental busca caracterizar la aparición y evolución de sesgo implícito en sistemas multiagente (MAS) basados en modelos de lenguaje aplicados a una tarea de decisión financiera. Para ello, se ha construido un entorno controlado en el que un comité formado por tres agentes tiene que distribuir un presupuesto fijo entre varias empresas. Este diseño se fundamenta en el principio de comparación contrafactual formalizado en el marco de \textit{counterfactual fairness} de Kusner et al.~\cite{kusner2017counterfactual}, evaluando a una misma empresa bajo condiciones equivalentes. A diferencia de la formulación original, que requiere especificar un modelo causal estructural para estimar variables latentes mediante un proceso de abducción-acción-predicción, aquí el contrafactual se construye por intervención directa sobre el dato presentado al sistema, lo cual es viable gracias a que el entorno es sintético y controlado. Así, las diferencias en las decisiones de los agentes no pueden atribuirse a cambios en los fundamentales financieros, que se mantienen idénticos.
 
 En cada ejecución el comité evalúa una cesta de cuatro empresas y distribuye entre ellas un presupuesto total de 100.000~€. Para cada empresa, los agentes producen una recomendación de inversión (BUY, HOLD, SELL), una asignación monetaria y una breve justificación de su decisión. Una de estas cuatro empresas actúa como sujeto de la comparación contrafactual, mientras que las tres restantes mantienen la tarea como una decisión de cartera y no como una evaluación aislada. Además, uno de los tres agentes actúa como agente ciego, es decir, se le oculta la información del atributo sensible de modo que la información que recibe es idéntica entre las variantes contrafactuales. Su comportamiento proporciona un control del diseño el cual se desarrolla en la Sección~\ref{sec:dataset}.
 
@@ -18,15 +19,12 @@ La interacción entre agentes se basa en el protocolo de comunicación multiagen
 
 El estudio se organiza en una fase de detección y una fase posterior de mitigación. En la primera se caracteriza el comportamiento del sistema ante los contrafactuales definidos y se estudia su dependencia de la composición del comité, del nivel de especificación de las instrucciones y del turno de interacción. La segunda evalúa de forma específica la introducción de instrucciones de mitigación en los prompts de los agentes. A esta fase se ha añadido posteriormente un resultado de mitigación estructural no planteado inicialmente como tal, sino surgido del análisis de la fase de detección: el comportamiento diferencial de los comités heterogéneos frente a los homogéneos, que se retoma en la Sección~\ref{sec:mitigacion}. En ambas fases se incluye una condición placebo formada por parejas de cestas idénticas, sin manipulación alguna, que permite cuantificar el ruido propio del sistema. La Figura~\ref{fig:pipeline_experimental} resume el flujo general del estudio.
 
-\begin{figure}[htbp]
-	\centering
-	%\includegraphics[width=0.95\textwidth]{pipeline_experimental.pdf}
-	\caption{Visión general del diseño experimental.}
-	\label{fig:pipeline_experimental}
-\end{figure}
+\input{figuras/figura_pipeline}
 
 \section{Variables experimentales y plan de ablación}
 \label{sec:variables_ablacion}
+
+El diseño experimental manipula dos factores y mantiene fijo todo lo demás. El primero actúa sobre la arquitectura del sistema, mediante los modelos que componen el comité; el segundo, sobre las instrucciones que definen el papel de cada agente dentro de él. Ambos se cruzan de forma completa, de manera que cada combinación se evalúa bajo las mismas cestas, el mismo protocolo de interacción y los mismos parámetros de generación. El resto de elementos que podrían influir en la decisión, como la tarea, el presupuesto, el número de agentes y el protocolo de comunicación, se mantienen constantes y se documentan como tales.
 
 \subsection{Composición del comité}
 \label{subsec:composicion}
@@ -130,12 +128,14 @@ describe por separado en la Sección~\ref{sec:mitigacion}, ya que sus condicione
 \section{Atributos sensibles y construcción del contrafactual}
 \label{sec:contrafactual}
 
+La validez de la comparación contrafactual depende de que la manipulación del atributo sensible sea la única diferencia entre las condiciones comparadas. Garantizarlo exige dos cosas: definir con precisión cómo se representa cada atributo en la ficha de la empresa y verificar que ningún otro elemento del \textit{prompt} varía junto con él. Esta sección aborda ambas, y precisa además el nivel de agregación con el que se analiza el eje geográfico.
+
 \subsection{Integración de los atributos sensibles}
 \label{subsec:atributos_sensibles}
 
 La construcción de las variantes experimentales sigue el principio de comparación contrafactual descrito en la Sección~\ref{sec:metodologia_planteamiento} y formalizado en el marco de \textit{counterfactual fairness} de Kusner et al.~\cite{kusner2017counterfactual}. El objetivo no es implementar un modelo causal estructural completo, sino trasladar a un diseño experimental pareado el principio de evaluar una misma entidad manteniendo constantes las características relevantes para la decisión y modificando el atributo sensible objeto de estudio.
 
-Se consideran dos atributos sensibles: el género de la persona que ocupa el puesto de CEO y la localización geográfica de la sede de la empresa. Ambos se evalúan de forma independiente a partir de una misma condición de control, correspondiente a una empresa con sede real en Estados Unidos y un CEO masculino. Para cada empresa sujeto se generan posteriormente una variante de género y una variante geográfica.
+Se consideran dos atributos sensibles: el género de la persona que ocupa el puesto de CEO y la localización geográfica de la sede de la empresa. Ambos se evalúan de forma independiente a partir de una misma condición de control, correspondiente a una empresa con sede real en Estados Unidos y un CEO masculino. Para cada empresa sujeto se generan posteriormente una variante de género y una variante geográfica como se muestra en la Tabla~\ref{tab:variantes_contrafactuales}.
 
 En la variante de género se conserva la misma empresa y la misma sede que en la condición de control, mientras que el CEO masculino se sustituye por una CEO femenina de la misma edad. El género se representa tanto mediante el nombre de la persona como mediante una indicación explícita en su descripción. Los nombres masculinos y femeninos proceden de repertorios del mismo contexto cultural, con el objetivo de evitar que la manipulación del género introduzca simultáneamente una diferencia de origen cultural.
 
@@ -173,7 +173,7 @@ La variante geográfica mantiene exactamente la identidad del CEO de control y m
 \subsection{Aislamiento de las variantes contrafactuales}
 \label{subsec:aislamiento_contrafactual}
 
-Las tres variantes de cada pareja se construyen a partir de la misma empresa subyacente. Por tanto, sus fundamentales financieros, sector, industria, histórico de precios, dividendos y demás información empresarial no sensible se mantienen constantes. También se conservan las tres empresas de relleno que acompañan a la empresa sujeto. La comparación se realiza así entre cestas equivalentes y no entre empresas financieramente similares pero distintas.
+Las tres variantes de cada pareja se construyen a partir de la misma empresa subyacente. Por tanto, sus fundamentales financieros, sector, industria, histórico de precios, dividendos y demás información empresarial no sensible se mantienen constantes. También se conservan las tres empresas de contexto que acompañan a la empresa sujeto. La comparación se realiza así entre cestas equivalentes y no entre empresas financieramente similares pero distintas.
 
 Además de mantener constante el contenido de la cesta, se controlan dos posibles fuentes adicionales de confusión. En primer lugar, las empresas se presentan a los agentes mediante alias neutros (\textit{Company 1}, \textit{Company 2}, etc.), de modo que el nombre y el ticker de la empresa no
 están disponibles como señales explícitas. En segundo lugar, la empresa sujeto ocupa exactamente la misma posición dentro del prompt en las tres variantes de una pareja. La ficha conserva, no obstante, la sede, el sector y los fundamentales financieros, cuya combinación podría permitir en algún caso inferir la identidad de la empresa subyacente; las medidas adoptadas para reducir esta posibilidad se describen en la Sección~\ref{sec:dataset}.
@@ -197,18 +197,18 @@ De forma análoga, el eje de género se restringe experimentalmente al contraste
 \section{Dataset}
 \label{sec:dataset}
 
+El banco de pruebas debe satisfacer dos requisitos en tensión. Por un lado, la tarea ha de resultar suficientemente realista para que las decisiones de los agentes se parezcan a las de un escenario de inversión; por otro, el entorno ha de estar controlado hasta el punto de que la única diferencia entre condiciones sea el atributo manipulado. Los datos proceden por ello de empresas reales, pero se filtran, se anonimizan y se transforman antes de presentarlos al sistema. A ese conjunto se añaden dos condiciones que no participan en la comparación contrafactual y cuya función es estimar cuánta variabilidad produce el propio sistema en ausencia de manipulación.
+
 \subsection{Fuente de datos y selección de empresas}
 \label{subsec:fuente_datos}
 
 El banco de pruebas se construye a partir de información financiera real de empresas pertenecientes al índice bursátil S\&P 500. En lugar de consultar las fuentes de datos en tiempo real durante cada ejecución experimental, se utiliza un único \textit{snapshot} obtenido el 12 de mayo de 2026 mediante \textit{yfinance}. La descarga contiene información de los 503 valores incluidos en el índice y se mantiene fija durante toda la experimentación. Este procedimiento mantiene constantes los datos de entrada entre ejecuciones y evita que cambios posteriores en precios, fundamentales o noticias introduzcan diferencias entre condiciones realizadas en momentos distintos.
 
-La delimitación temporal del \textit{snapshot} contribuye además a reducir el riesgo de fuga temporal asociado al conocimiento de los modelos. Sarkar y Vafa~\cite{sarkar2024lookahead} muestran que los modelos de lenguaje preentrenados pueden presentar \textit{lookahead bias} cuando su corpus de entrenamiento contiene información posterior al periodo que se pretende analizar, incluso cuando el prompt restringe explícitamente la información disponible.
+La delimitación temporal del \textit{snapshot} contribuye además a reducir el riesgo de fuga temporal asociado al conocimiento de los modelos. Sarkar y Vafa~\cite{sarkar2024lookahead} muestran que los modelos de lenguaje preentrenados pueden presentar \textit{lookahead bias} cuando su corpus de entrenamiento contiene información posterior al periodo que se pretende analizar, incluso cuando el prompt restringe explícitamente la información disponible. La fecha del \textit{snapshot} es posterior a los periodos de conocimiento documentados para los modelos empleados lo que reduce la posibilidad de que los modelos hayan memorizado durante su preentrenamiento los valores concretos de los fundamentales, precios y noticias contenidos en el banco de pruebas. No elimina, sin embargo, otras posibles formas de conocimiento previo sobre las empresas ni garantiza la ausencia total de contaminación, especialmente en modelos servidos mediante APIs cuya evolución interna no está bajo control del experimento.
 
-Esa fecha es posterior a los periodos de conocimiento documentados para los modelos empleados lo que reduce la posibilidad de que los modelos hayan memorizado durante su preentrenamiento los valores concretos de los fundamentales, precios y noticias contenidos en el banco de pruebas. No elimina, sin embargo, otras posibles formas de conocimiento previo sobre las empresas ni garantiza la ausencia total de contaminación, especialmente en modelos servidos mediante APIs cuya evolución interna no está bajo control del experimento.
+Sobre esta fuente de datos se aplica un filtro previo por localización y capitalización. Las empresas candidatas deben tener su sede en Estados Unidos y una capitalización bursátil comprendida entre 5 y 50 mil millones de dólares. La exclusión de las compañías de mayor capitalización busca reducir la probabilidad de que el modelo identifique inmediatamente empresas ampliamente conocidas a partir de sus características financieras. Este filtrado no asegura que los modelos no puedan identificarlas, pero reduce la presencia de compañías especialmente reconocibles (como pueden ser Apple, Amazon o Tesla).
 
-Sobre esta fuente de datos se aplica un filtro previo por localización y capitalización. Las empresas candidatas deben tener su sede en Estados Unidos y una capitalización bursátil comprendida entre 5 y 50 mil millones de dólares. La exclusión de las compañías de mayor capitalización busca reducir la probabilidad de que el modelo identifique inmediatamente empresas ampliamente conocidas a partir de sus características financieras. Este filtrado no asegura que los modelos no puedan identificarlas, pero reduce la presencia de compañías especialmente reconocibles.
-
-A partir de las empresas candidatas se construyen 21 arquetipos combinando siete sectores económicos con tres perfiles financieros. Los sectores considerados son tecnología, salud, servicios financieros, energía, industriales, consumo cíclico y consumo defensivo. Para cada sector se selecciona una empresa sujeto perteneciente a cada uno de los perfiles \textit{growth}, \textit{value} y \textit{distressed}. Esta estratificación evita que el análisis dependa de un único perfil financiero y mantiene las comparaciones dentro de un mismo sector.
+A partir de las empresas candidatas se construyen 21 arquetipos combinando siete sectores económicos con tres perfiles financieros. Los sectores considerados son tecnología, salud, servicios financieros, energía, industriales, consumo cíclico y consumo defensivo. Para cada sector se selecciona una empresa sujeto perteneciente a cada uno de los perfiles \textit{growth}, \textit{value} y \textit{distressed}. Esta estratificación evita que el análisis dependa de un único perfil financiero y mantiene las comparaciones dentro de un mismo sector. En la Tabla~\ref{tab:perfiles_financieros} se pueden observar los criterios utilizados para definir estos perfiles.
 
 \begin{table}[htbp]
 	\centering
@@ -240,6 +240,10 @@ El término \textit{distressed} se utiliza, por tanto, para identificar empresas
 que presentan al menos una señal de debilidad en sus fundamentales y no implica
 necesariamente que la empresa se encuentre en pérdidas.
 
+Estos criterios no pretenden reproducir las definiciones canónicas de los factores de estilo utilizadas en la literatura financiera, sino segmentar el universo de empresas candidatas en tres situaciones financieras suficientemente diferenciadas. Los umbrales se fijaron de forma que cada combinación de sector y perfil dispusiera de un número viable de candidatas dentro del universo filtrado, y su elección no afecta a la validez del contraste contrafactual, que se realiza siempre sobre la misma empresa y no entre perfiles distintos. La estratificación cumple aquí una función de cobertura: evita que los resultados dependan de un único tipo de situación financiera.
+
+Por este mismo motivo, el perfil \textit{distressed} no recurre a modelos formales de predicción de quiebra como el \textit{Z-score} de Altman~\cite{altman1968financial} o el \textit{O-score} de Ohlson~\cite{ohlson1980financial}. Ambos exigen variables contables que el \textit{snapshot} no expone de forma completa (como capital circulante o beneficios retenidos), y el objetivo aquí es segmentar el universo de candidatas, no anticipar insolvencias.
+
 \subsection{Construcción y representación de las cestas}
 \label{subsec:construccion_cestas}
 
@@ -250,7 +254,7 @@ La ficha presentada a los agentes contiene información financiera y de mercado 
 
 Para reducir señales que no forman parte del objetivo experimental, el nombre y el ticker de cada empresa se sustituyen antes de la inferencia por alias neutros (\textit{Company 1}, \textit{Company 2}, etc.). Las noticias se procesan asimismo para eliminar URLs e identificadores explícitos de la empresa. Estas medidas reducen la posibilidad de reconocimiento directo, aunque no constituyen una anonimización completa: la combinación de sector, sede y fundamentales podría permitir a los modelos inferir en determinados casos la identidad de la empresa subyacente.
 
-El histórico de precios se transforma a un índice con base 100 tomando como referencia la primera observación. La transformación conserva la evolución relativa y elimina el nivel absoluto. Birru y Wang~\cite{birru2016nominal} documentan la llamada \textit{nominal price illusion}, por la que los inversores perciben las acciones de precio nominal bajo como portadoras de mayor potencial que otras equivalentes de precio más elevado. Nada garantiza que un LLM reproduzca ese sesgo, pero el nivel nominal tampoco es necesario para la tarea, de modo que eliminarlo suprime una posible señal de \textit{framing} sin coste informativo.
+El histórico de precios se transforma a un índice con base 100 tomando como referencia la primera observación del histórico incluido. La transformación conserva la evolución relativa y elimina el nivel absoluto. Birru y Wang~\cite{birru2016nominal} documentan la llamada \textit{nominal price illusion}, por la que los inversores perciben las acciones de precio nominal bajo como portadoras de mayor potencial que otras equivalentes de precio más elevado. Nada garantiza que un LLM reproduzca ese sesgo, pero el nivel nominal tampoco es necesario para la tarea, de modo que eliminarlo suprime una posible señal espuria sin coste informativo.
 
 Todas estas transformaciones se realizan antes de comenzar la campaña experimental. Una vez generado el conjunto de cestas, este permanece fijo para todas las composiciones, niveles de instrucción y repeticiones. Las diferencias entre condiciones del sistema multiagente se evalúan, por tanto, sobre el mismo banco de pruebas.
 
@@ -259,31 +263,312 @@ Todas estas transformaciones se realizan antes de comenzar la campaña experimen
 
 Además de las cestas contrafactuales se construye una condición placebo destinada a estimar la variabilidad que puede aparecer aun cuando no se modifica ningún atributo sensible. Para cada uno de los 21 arquetipos se generan dos cestas gemelas, denominadas \textit{placebo\_a} y \textit{placebo\_b}, que contienen la misma empresa sujeto, las mismas empresas de contexto y la misma información. Ambas comparten además el mismo identificador de pareja, por lo que se mantiene también el orden de presentación de las empresas dentro de cada repetición.
 
-La diferencia de asignación entre las dos cestas placebo constituye un \textit{null} empírico externo. Idealmente su valor sería cero, pero el sistema incluye generación estocástica y, en algunos \textit{backends}, otras fuentes de no determinismo. El placebo permite por tanto estimar la magnitud de las diferencias que pueden observarse entre dos evaluaciones equivalentes sin atribuirlas a un tratamiento sensible.
+La diferencia de asignación entre las dos cestas gemelas proporciona una referencia empírica externa del ruido del sistema, denominada \textit{null} externo. En ausencia de cualquier manipulación, esa diferencia debería ser nula. No lo es: los modelos generan texto de forma estocástica y algunos de los servicios utilizados no producen salidas idénticas ante entradas idénticas. El placebo cuantifica, por tanto, cuánta diferencia cabe esperar entre dos evaluaciones equivalentes, y establece el umbral por debajo del cual una diferencia observada en las cestas contrafactuales no puede atribuirse al atributo sensible.
 
 Se generan 21 parejas placebo para mantener la misma cobertura de arquetipos que en las comparaciones contrafactuales. Esta referencia se ejecuta por composición y no por cada nivel de instrucción, tal como se indicó en la Sección~\ref{subsec:matriz_experimental}. Esta decisión reduce el coste experimental, aunque implica que el placebo no constituye un control específico para cada celda de la matriz y se considera posteriormente entre las limitaciones del diseño en la Sección~\ref{sec:limitaciones}.
 
 \subsection{Null interno: agente ciego}
 \label{subsec:null_interno}
 
-El segundo control está integrado en el propio comité. A diferencia del placebo, que se estima sobre un conjunto de cestas distinto del brazo contrafactual, el agente ciego opera sobre las mismas cestas y las mismas parejas. Como se indicó en la Sección~\ref{sec:metodologia_planteamiento}, el primer agente recibe una versión reducida de la ficha de las empresas. Esta versión conserva íntegramente los campos financieros y de mercado, incluidos el histórico de precios indexado y los dividendos, y excluye únicamente la sede, la identidad del CEO y las noticias recientes. Dado que los restantes campos de la empresa sujeto son idénticos entre las variantes y que el orden se mantiene emparejado, el agente ciego recibe en la fase de génesis el mismo contenido para las condiciones de control, género y geografía. Por tanto, cualquier diferencia entre las asignaciones del agente ciego para dos brazos contrafactuales en génesis no puede estar causada por el atributo sensible, ya que este no forma parte de su entrada. Esa diferencia proporciona una estimación interna de la variabilidad basal de ejecución bajo las mismas empresas, las mismas parejas y la misma configuración experimental que el brazo visible.
+El segundo control está integrado en el propio comité. A diferencia del placebo, que se estima sobre un conjunto de cestas distinto del brazo contrafactual, el agente ciego opera sobre las mismas cestas y las mismas parejas. Como se indicó en la Sección~\ref{sec:metodologia_planteamiento}, el primer agente recibe una versión reducida de la ficha de las empresas que conserva íntegramente los campos financieros y de mercado, incluidos el histórico de precios indexado y los dividendos, y excluye únicamente la sede, la identidad del CEO y las noticias recientes. Dado que los restantes campos de la empresa sujeto son idénticos entre las variantes y que el orden se mantiene emparejado, el agente ciego recibe en la fase de génesis el mismo contenido para las condiciones de control, género y geografía. Por tanto, cualquier diferencia entre las asignaciones del agente ciego para dos brazos contrafactuales en génesis no puede estar causada por el atributo sensible, ya que este no forma parte de su entrada. Esa diferencia proporciona una estimación interna de la variabilidad basal de ejecución bajo las mismas empresas, las mismas parejas y la misma configuración experimental que el brazo visible.
 
-El agente ciego no pretende reproducir la decisión que tomarían los agentes visibles en ausencia del atributo sensible. Su función es más limitada: actuar como canal de control frente al que cuantificar cuánta dispersión aparece cuando el atributo sí está disponible. Esta distinción es especialmente importante en los niveles profesionales, donde el agente ciego y los agentes visibles desempeñan funciones diferentes dentro del comité.
+El agente ciego no pretende reproducir la decisión que tomarían los agentes visibles en ausencia del atributo sensible. Su función es más limitada: actuar como canal de control frente al que cuantificar cuánta dispersión aparece cuando el atributo sí está disponible. Esta distinción es especialmente importante en los niveles de instrucción profesionales, donde el agente ciego y los agentes visibles desempeñan funciones diferentes dentro del comité.
 
 El control interno es válido como \textit{null} únicamente en génesis ($t=0$). A partir del primer turno de deliberación, el agente ciego observa las decisiones y razonamientos de los otros miembros del comité, que sí han tenido acceso al atributo sensible. Su respuesta puede entonces incorporar indirectamente información procedente de los agentes visibles y deja de constituir un control independiente. Esta propiedad motiva que el análisis principal de dispersión se sitúe en génesis, mientras que los turnos posteriores se emplean para estudiar la dinámica de interacción.
 
 La equivalencia efectiva de los prompts del agente ciego entre variantes se comprueba empíricamente antes del análisis de resultados; dicha validación se presenta en el Capítulo~\ref{chap:validacion}. La definición estadística de los endpoints construidos sobre este null se introduce en la Sección~\ref{sec:metricas}.
 
+
+
 \section{Métricas y análisis estadístico}
 \label{sec:metricas}
+
+Esta sección define cómo se convierten las asignaciones de los agentes en evidencia estadística. El análisis distingue tres fenómenos que un mismo diseño puede detectar por separado: un desplazamiento sistemático de la asignación media, un aumento de la variabilidad de esa asignación entre ejecuciones equivalentes, y la transmisión de diferencias entre agentes durante la deliberación. Cada uno exige un procedimiento distinto, pero todos comparten la misma unidad de análisis y el mismo criterio de control de comparaciones múltiples.
+
+\subsection{Definición del gap y unidad de análisis}
+\label{subsec:definicion_gap}
+
+La variable de partida del análisis es la cantidad asignada a la empresa sujeto. Para cada pareja contrafactual, repetición y condición experimental se define el \textit{gap} de asignación como
+
+\begin{equation}
+	g_{p,s,t} =
+	A^{\mathrm{variante}}_{p,s,t}
+	-
+	A^{\mathrm{control}}_{p,s,t},
+	\label{eq:allocation_gap}
+\end{equation}
+
+donde $p$ identifica la pareja contrafactual, $s$ la repetición o semilla, $t$ el turno de la ejecución y $A$ representa la asignación en euros a la empresa sujeto. Con este convenio, un valor negativo indica que la empresa recibe una asignación menor en la variante que en su condición de control, mientras que un valor positivo indica una asignación mayor.
+
+El \textit{gap} se calcula en los cinco turnos de la ejecución, de modo que $t=0$ corresponde a la génesis y $t=1,\ldots,4$ a los turnos de deliberación. Los contrastes inferenciales del desenlace principal y del \textit{gap} medio se sitúan en génesis, mientras que los turnos posteriores se emplean para describir la evolución de las magnitudes analizadas y, en el caso de la Sección~\ref{subsec:transmision}, para relacionar turnos consecutivos. Cuando el turno no se indique explícitamente se entenderá $t=0$.
+
+Para los agentes visibles, $A$ se obtiene promediando la asignación de los dos agentes que reciben la ficha completa de la empresa. En el caso del agente ciego se emplea directamente la asignación del primer agente, con el mismo convenio de resta: la asignación registrada en la ejecución
+de la variante menos la registrada en la del control, aunque la información que
+recibe sea idéntica en ambas. El cálculo se realiza siempre dentro de una misma pareja, composición, nivel de instrucción y repetición, de modo que nunca se comparan observaciones procedentes de configuraciones experimentales distintas.
+
+Antes de calcular cualquier \textit{gap} se conservan únicamente las filas correspondientes a la empresa sujeto que contienen una respuesta válida. Se excluyen las observaciones marcadas con \textit{parse\_error} y aquellas cuya recomendación se registra como \textit{ERROR}, ya que no contienen una decisión utilizable del modelo. Estas exclusiones se contabilizan de forma explícita para que la pérdida de observaciones no quede oculta. El procedimiento de parseo, validación y registro de errores se describe en el Capítulo~\ref{chap:implementacion}.
+
+En los análisis de media y de dispersión, las tres repeticiones de una misma pareja se combinan antes de realizar los contrastes estadísticos:
+
+\begin{equation}
+	\bar{g}_{p} =
+	\frac{1}{k_p}
+	\sum_{s=1}^{k_p} g_{p,s,t},
+	\label{eq:gap_seed_average}
+\end{equation}
+
+donde $k_p$ es el número de repeticiones válidas disponibles para la pareja. Las semillas no se tratan así como observaciones independientes y la unidad de análisis sigue siendo la pareja contrafactual. En condiciones completas se obtienen 21 valores de $\bar{g}_{p}$ por celda experimental. Cuando alguna pareja carece de una de las tres repeticiones se conserva su media sobre las disponibles y la celda queda registrada como incompleta, sin imputar ningún valor. El estudio específico de la variabilidad entre semillas se realiza por separado en la Sección~\ref{subsec:icc}.
+
+Como indicador descriptivo complementario se calcula además una tasa de verbalización del atributo sensible, definida como la proporción de razonamientos sobre la empresa sujeto que contienen menciones explícitas a términos relacionados con el género, el país o la persona que ocupa el puesto de CEO. Su identificación se realiza mediante coincidencia de palabras clave, no mediante análisis semántico del razonamiento, por lo que esta tasa se emplea únicamente como descriptor de verbalización y no como evidencia inferencial de sesgo.
+
+Para los análisis de medias y para la construcción de intervalos de confianza se emplean procedimientos de remuestreo tomando la pareja como unidad. Los intervalos de confianza del 95\,\% se obtienen mediante 10.000 remuestreos \textit{bootstrap} de las parejas con reemplazo, calculando en cada uno de ellos el estadístico de interés y tomando los percentiles 2,5 y 97,5 de la
+distribución resultante.
+
+Los contrastes sobre medias emplean una prueba de permutación por cambio de signo. Bajo la hipótesis nula y la intercambiabilidad de los signos alrededor de cero, se invierte aleatoriamente el signo de cada \textit{gap} y se generan 10.000 muestras permutadas. El $p$-valor bilateral se calcula como la proporción de permutaciones cuya media, en valor absoluto, iguala o supera la observada. Los procedimientos paramétricos utilizados para el análisis de varianzas y de consistencia entre repeticiones se describen específicamente en las subsecciones correspondientes.
+
+\subsection{Exceso de dispersión en génesis}
+\label{subsec:dispersion_genesis}
+
+El desenlace principal del análisis mide si la disponibilidad del atributo sensible incrementa la variabilidad de las decisiones respecto a la variabilidad de base del agente ciego. Para cada combinación de composición, nivel de instrucción y atributo sensible se calcula el ratio de varianzas
+
+\begin{equation}
+	F =
+	\frac{s^2_{\mathrm{visible}}}
+	{s^2_{\mathrm{ciego}}},
+	\label{eq:variance_ratio}
+\end{equation}
+
+donde $s^2_{\mathrm{visible}}$ es la varianza de los \textit{gaps} de los agentes visibles en génesis y $s^2_{\mathrm{ciego}}$ la varianza basal del agente que no recibe el atributo sensible. Un valor $F>1$ indica mayor dispersión en el brazo visible, mientras que $F\simeq1$ señala una variabilidad comparable en ambos brazos.
+
+El agente ciego proporciona dos estimaciones de esa variabilidad basal, una procedente de las parejas de género y otra de las parejas geográficas. Como su entrada en génesis es independiente del atributo manipulado, ambas estiman la misma cantidad. Se emplea por ello un único denominador para cada combinación de composición y nivel de instrucción:
+
+\begin{equation}
+	s^2_{\mathrm{ciego}} =
+	\frac{
+		s^2_{\mathrm{ciego,genero}}
+		+
+		s^2_{\mathrm{ciego,geografia}}
+	}{2}.
+	\label{eq:blind_pooled_variance}
+\end{equation}
+
+Las dos muestras no se concatenan como si fueran observaciones independientes, puesto que proceden de las mismas parejas contrafactuales. Esta elección evita duplicar artificialmente el tamaño muestral del denominador y hace que las dos celdas correspondientes a género y geografía dentro de un mismo nivel compartan la misma referencia de variabilidad basal. El grado de acuerdo entre ambos
+estimadores se reporta como diagnóstico junto al ratio.
+
+La igualdad de varianzas se contrasta mediante un test $F$ bilateral de Fisher. Dada la sensibilidad de este contraste frente a desviaciones de la normalidad, se calcula además el test de Levene centrado en la mediana como comprobación robusta, en la variante propuesta por Brown y Forsythe~\cite{brown1974robust}. El test de Fisher compara la varianza visible con el denominador ciego combinado de la Ecuación~\ref{eq:blind_pooled_variance}; el de Levene requiere las observaciones originales y compara la muestra visible con la muestra ciega correspondiente al mismo atributo.
+
+Ambos contrastes no son, por tanto, estrictamente equivalentes: el primero emplea el denominador combinado y el segundo la muestra ciega específica del atributo. Cuando sus conclusiones difieran, la discrepancia puede reflejar tanto la sensibilidad del test $F$ a la no normalidad como la diferencia entre ambos denominadores. El test de Fisher es el contraste directamente asociado al ratio definido como desenlace principal, mientras que Levene interviene como comprobación complementaria de robustez.
+
+El intervalo de confianza del 95\,\% del ratio se obtiene por el procedimiento descrito en la Sección~\ref{subsec:definicion_gap}, aplicando el mismo remuestreo de parejas al brazo visible y a las muestras ciegas para conservar su estructura pareada.
+
+El diseño produce 36 contrastes de dispersión, resultado de cruzar seis composiciones, tres niveles de instrucción y dos atributos sensibles. El control principal de comparaciones múltiples se realiza mediante el procedimiento de Benjamini--Hochberg (BH), con una tasa de falsos descubrimientos $q=0{,}05$ sobre la familia completa de 36 contrastes~\cite{benjamini1995controlling}. De forma secundaria se aplica la misma corrección a los seis contrastes de cada composición, que corresponden a sus tres niveles y dos atributos. Ambas familias se reportan de forma sistemática y ninguna de las dos se selecciona en función del resultado obtenido.
+
+El análisis de dispersión no formaba parte del desenlace inicial del estudio. Su definición se incorporó tras observar este tipo de variabilidad durante la primera campaña, realizada con la composición homogénea basada en Llama. A partir de esa observación quedaron fijados la definición del ratio, el procedimiento de agregación, los contrastes y las familias de corrección, antes de analizar las cinco composiciones restantes. La primera composición tiene por tanto carácter exploratorio respecto a este desenlace, mientras que las restantes permiten evaluar su replicación bajo configuraciones diferentes.
+
+Aunque el contraste inferencial se sitúa en génesis, el mismo ratio y sus componentes de dispersión se calculan también para los turnos $t=1,\ldots,4$ con finalidad descriptiva. Esta extensión permite estudiar cómo evoluciona el exceso de variabilidad durante la deliberación sin redefinir el desenlace principal.
+
+\subsection{Gap medio y referencia placebo}
+\label{subsec:gap_medio}
+
+Como medida complementaria de dirección se analiza el \textit{gap} medio en génesis. Para cada celda experimental se calcula
+
+\begin{equation}
+	\bar{g} =
+	\frac{1}{n}
+	\sum_{p=1}^{n}\bar{g}_{p},
+	\label{eq:mean_gap}
+\end{equation}
+
+donde $n$ es el número de parejas disponibles. Esta métrica detecta desplazamientos sistemáticos de la asignación hacia valores positivos o negativos, mientras que el ratio de la Sección~\ref{subsec:dispersion_genesis} mide cambios en la estabilidad de las decisiones. Ambos fenómenos son conceptualmente distintos: una manipulación puede alterar la dispersión de las asignaciones sin desplazar su media.
+
+La hipótesis nula $\bar{g}=0$ se contrasta mediante la prueba de permutación por cambio de signo descrita en la Sección~\ref{subsec:definicion_gap}, junto con su intervalo de confianza \textit{bootstrap}. Los 36 contrastes correspondientes a las combinaciones de composición, nivel de instrucción y atributo se corrigen conjuntamente mediante Benjamini--Hochberg con $q=0{,}05$~\cite{benjamini1995controlling}.
+
+Cuando un contraste requiera agregar el resultado de varias composiciones, la unidad de análisis sigue siendo la pareja: se promedia su \textit{gap} entre las composiciones consideradas y el test se aplica sobre esos valores. Las composiciones no se tratan como observaciones independientes, ya que todas evalúan las mismas 21 parejas de cestas y la particularidad de una cesta concreta afectaría a todas ellas simultáneamente.
+
+La condición placebo aporta una segunda referencia para interpretar esta magnitud. Su \textit{gap} se define de forma análoga como
+
+\begin{equation}
+	g^{\mathrm{placebo}}_{p,s} =
+	A^{\mathrm{placebo\_b}}_{p,s}
+	-
+	A^{\mathrm{placebo\_a}}_{p,s}.
+	\label{eq:placebo_gap}
+\end{equation}
+
+Para cada composición y turno se caracterizan su media, su desviación típica y su intervalo de confianza, y se construye una banda empírica entre los percentiles 5 y 95 de los \textit{gaps} placebo. Esa distribución estima el nivel de variabilidad observable entre dos evaluaciones equivalentes y acompaña a las trayectorias del \textit{gap} a lo largo de la deliberación.
+
+\subsection{Consistencia entre repeticiones}
+\label{subsec:icc}
+
+Las tres semillas permiten estudiar si el \textit{gap} presenta una estructura estable asociada a determinadas parejas de empresas o si, por el contrario, predomina la variabilidad entre ejecuciones. Se emplea para ello el coeficiente de correlación intraclase ICC(1,1) de Shrout y Fleiss~\cite{shrout1979intraclass}, correspondiente a un modelo de efectos aleatorios de una vía y una medida individual.
+
+Para cada celda se construye una matriz de $n$ parejas por $k=3$ repeticiones y se calcula
+
+\begin{equation}
+	ICC(1,1) =
+	\frac{MS_B-MS_W}
+	{MS_B+(k-1)\,MS_W},
+	\label{eq:icc}
+\end{equation}
+
+donde $MS_B$ representa la variabilidad entre parejas y $MS_W$ la variabilidad entre repeticiones de una misma pareja. De forma equivalente, definiendo $F_{\mathrm{ICC}}=MS_B/MS_W$, el estimador puede expresarse como
+
+\begin{equation}
+	ICC(1,1) =
+	\frac{F_{\mathrm{ICC}}-1}
+	{F_{\mathrm{ICC}}+k-1}.
+	\label{eq:icc_alt}
+\end{equation}
+
+Un ICC elevado indica que las diferencias entre parejas se reproducen entre semillas; valores próximos a cero señalan que la mayor parte de la variabilidad aparece entre ejecuciones de una misma pareja. El análisis exige un diseño equilibrado, por lo que solo se incluyen las parejas con observaciones disponibles en las tres semillas, y toda exclusión queda registrada de forma explícita.
+
+La familia de contraste comprende las 36 celdas experimentales y seis referencias placebo, una por composición, para un total de 42 tests, corregidos conjuntamente mediante Benjamini--Hochberg con $q=0{,}05$~\cite{benjamini1995controlling}. Este análisis determina si existe evidencia suficiente para justificar una desagregación posterior por cesta, que no se realiza en ausencia de una estructura reproducible entre repeticiones.
+
+\subsection{Dinámica y transmisión durante la deliberación}
+\label{subsec:transmision}
+
+Además de estudiar cómo cambia la dispersión a lo largo de los turnos, se analiza si las diferencias presentes en los agentes visibles se reflejan posteriormente en la decisión del agente ciego. Para ello se relaciona el \textit{gap} medio de los agentes visibles en un turno $t$ con el \textit{gap} del agente ciego en el turno siguiente:
+
+\begin{equation}
+	g_{\mathrm{ciego},t+1}
+	=
+	\alpha
+	+
+	\beta\,g_{\mathrm{visible},t}
+	+
+	\varepsilon,
+	\label{eq:transmission_slope}
+\end{equation}
+
+donde $\alpha$ es el término independiente de la regresión, $\varepsilon$ el error aleatorio y $\beta$ el coeficiente de interés, que representa el cambio esperado en el \textit{gap} del agente ciego por unidad de \textit{gap} observada previamente en los agentes visibles. El término independiente no se interpreta, ya que el contraste recae únicamente sobre $\beta$.
+
+Para cada composición se emplean las transiciones $t=0\rightarrow1$, $1\rightarrow2$, $2\rightarrow3$ y $3\rightarrow4$. Cada observación de la regresión corresponde, por tanto, a una combinación de pareja, repetición, nivel de instrucción, atributo sensible y transición entre turnos consecutivos.
+
+Las cuatro transiciones procedentes de una misma pareja y una misma repetición no se consideran observaciones independientes, ya que forman parte de una única trayectoria de deliberación en la que cada turno condiciona al siguiente. La regresión se estima, por tanto, con errores estándar robustos agrupados por la combinación de pareja y repetición, lo que permite correlación arbitraria entre las observaciones de una misma trayectoria. Las distintas repeticiones de una misma pareja sí se tratan como independientes, al corresponder a ejecuciones separadas del sistema sobre una entrada idéntica.
+
+Este criterio reúne en un mismo grupo observaciones procedentes de los tres niveles de instrucción y de los dos atributos sensibles, que también son ejecuciones separadas. La estimación resultante de los errores estándar es por ello más conservadora de lo estrictamente necesario, de modo que un agrupamiento más fino aumentaría la precisión de los contrastes y no podría reducir la significación obtenida bajo este.
+
+Una pendiente positiva no basta por sí sola para concluir que existe transmisión específica del atributo sensible, ya que el propio proceso de deliberación puede generar acoplamiento entre las decisiones de los agentes. Se estima por ello la misma relación sobre las ejecuciones placebo y el contraste de interés es la diferencia entre ambas pendientes:
+
+\begin{equation}
+	z =
+	\frac{
+		\beta_{\mathrm{tratamiento}}
+		-
+		\beta_{\mathrm{placebo}}
+	}{
+		\sqrt{
+			SE^2_{\mathrm{tratamiento}}
+			+
+			SE^2_{\mathrm{placebo}}
+		}
+	},
+	\label{eq:transmission_z}
+\end{equation}
+
+donde $SE$ denota el error estándar de cada pendiente, estimado con la corrección por agrupación descrita anteriormente. La suma de varianzas en el denominador utiliza la aproximación de independencia entre ambos estimadores, dado que las pendientes de tratamiento y placebo se obtienen a partir de ejecuciones experimentales disjuntas y ninguna observación individual interviene simultáneamente en ambos ajustes. La familia inferencial la forman los seis contrastes correspondientes a las seis composiciones y se corrige mediante Benjamini--Hochberg con $q=0{,}05$~\cite{benjamini1995controlling}.
+
+En una versión inicial del análisis se consideró la correlación de Pearson entre ambos \textit{gaps} como medida de acoplamiento. Esta magnitud está sujeta a restricción de rango: cuando la varianza del predictor difiere entre dos muestras, sus correlaciones no son directamente comparables aunque la relación subyacente sea la misma. Una diferencia entre la correlación observada en tratamiento y en placebo podría deberse, por tanto, a sus distintas dispersiones y no a un mecanismo de transmisión diferente.
+
+La pendiente de regresión se adopta como medida principal porque expresa el cambio esperado en la variable respuesta por unidad del predictor y no depende de la amplitud del rango observado de este último. La correlación de Pearson y el rango del predictor se conservan como diagnósticos complementarios y se reportan junto a las pendientes, pero no intervienen en el contraste inferencial.
 
 
 
 \section{Diseño de la fase de mitigación}
 \label{sec:mitigacion}
 
+La fase de mitigación se plantea una vez completada la caracterización del sesgo en la fase de detección. Dado que el principal efecto identificado se manifiesta como un aumento de la dispersión de las asignaciones y no como un desplazamiento sistemático de su media, las intervenciones se evalúan sobre el mismo desenlace de dispersión definido en la Sección~\ref{subsec:dispersion_genesis}. El objetivo es determinar si resulta posible reducir el exceso de variabilidad asociado a la disponibilidad del atributo sensible sin introducir, como efecto secundario, un desplazamiento de la asignación media.
+
+Se consideran dos vías. La primera actúa sobre la estructura del sistema mediante la composición del comité y reutiliza configuraciones que ya formaban parte de la fase de detección. La segunda modifica las instrucciones proporcionadas a los agentes y requiere una campaña experimental adicional. Ambas tienen una procedencia metodológica distinta y no deben interpretarse como dos intervenciones especificadas simultáneamente antes de la detección.
+
 \subsection{Mitigación por composición}
 \label{subsec:mitigacion_composicion}
 
+La composición del comité se introdujo originalmente como una de las variables de la fase de detección, con el objetivo de estudiar si el comportamiento del sistema dependía de emplear agentes basados en un mismo modelo o en modelos de familias diferentes. No se planteó como una intervención de mitigación. Tras analizar esta fase se observó un comportamiento diferencial entre las configuraciones homogéneas y las heterogéneas, lo que motivó reutilizar este eje experimental como candidato a mitigación estructural.
+
+Esta vía no requiere ejecuciones adicionales. La comparación emplea las mismas cestas, atributos sensibles, niveles de instrucción, semillas y protocolo de interacción que la detección, y modifica únicamente la composición de modelos del comité. La evaluación utiliza el ratio de varianzas de la Ecuación~\ref{eq:variance_ratio}, de modo que la interpretación de la dispersión se mantiene constante respecto al análisis principal.
+
+Una reducción del ratio $F$ no se considera por sí sola evidencia suficiente de estabilización, ya que podría producirse por un incremento de la varianza del agente ciego en lugar de por una reducción de la variabilidad de los agentes visibles. La comparación entre composiciones considera por ello de forma conjunta el ratio de varianzas y la desviación típica absoluta del \textit{gap} de los agentes visibles. Solo cabe interpretar una composición como estabilizadora cuando la reducción del ratio va acompañada de una menor dispersión en esos agentes y no de una inflación del denominador.
+
+El contraste entre \textit{homo\_llama} y \textit{hetero\_local} resulta especialmente informativo. En ambas configuraciones el primer agente utiliza Llama~3.1-8B-Instruct y actúa como agente ciego, de modo que el canal de control emplea el mismo modelo y el mismo rol, mientras que los dos agentes visibles pasan de utilizar también Llama a utilizar Qwen y Mistral. Esta correspondencia permite examinar el efecto de la diversidad de los agentes visibles manteniendo fija la referencia interna del sistema.
+
+Puesto que esta interpretación surge de la observación de la fase de detección, sus resultados se presentan como evidencia de mitigación estructural emergente y no como la evaluación prospectiva de una intervención previamente especificada.
+
 \subsection{Mitigación por instrucción}
 \label{subsec:mitigacion_instruccion}
+
+La segunda vía introduce instrucciones explícitas destinadas a reducir la influencia de los atributos sensibles sobre la decisión. A diferencia de la anterior, estas condiciones constituyen una intervención posterior a la fase de detección y se comparan con las ejecuciones equivalentes sin mitigación.
+
+Se definen dos instrucciones, inspiradas en la distinción entre mecanismos pasivos y activos evaluada por Nguyen et al.~\cite{nguyen2025social} a partir de las estrategias de defensa propuestas por Peigne et al.~\cite{peigne2025multi}, y adaptadas aquí a una tarea de asignación financiera. La instrucción pasiva exige fundamentar la decisión en las variables financieras proporcionadas e ignorar de forma explícita atributos demográficos o geográficos como el nombre, el género o la edad de la persona que ocupa el puesto de CEO, o el país de la sede. La instrucción activa mantiene esa restricción y añade la obligación de señalar y corregir los sesgos de ese tipo que el agente detecte en el razonamiento del resto del comité. 
+
+\paragraph{Alcance efectivo de la instrucción activa.}
+En la fase de génesis los agentes no observan las respuestas del resto del comité, por lo que la cláusula que distingue a la instrucción activa no puede operar. Ambas instrucciones funcionan en esta campaña como dos formulaciones distintas de una misma intervención de neutralización, y su comparación no debe interpretarse como un contraste entre mecanismos pasivos y activos. Reportar las dos permite, en cambio, comprobar si el efecto observado depende de la redacción concreta de la instrucción. La evaluación del componente activo requeriría ejecutar la mitigación con deliberación completa y queda planteada como línea de trabajo futuro.
+
+\paragraph{Aplicación sobre el prompt.}
+Las instrucciones se añaden al prompt de sistema sin modificar el rol correspondiente al nivel de instrucción, la información de la cesta ni el formato de salida, y se aplican también al agente ciego, de modo que la variabilidad basal utilizada como denominador se estima dentro de la misma condición de mitigación. Aunque mencionan de forma genérica las categorías sensibles, no revelan el valor concreto del atributo para ninguna empresa y permanecen idénticas entre las variantes contrafactuales, por lo que el agente ciego sigue recibiendo la misma entrada en todas ellas y su función como \textit{null} interno no se ve alterada.
+
+\paragraph{Composición y niveles evaluados.}
+La mitigación se restringe a la composición homogénea basada en Qwen~2.5-7B-Instruct. Esta composición no ha sido elegida de forma arbitraria, sino aplicando un criterio fijado con anterioridad: seleccionar la que presentase el mayor exceso de dispersión en la fase de detección. Ese criterio quedó establecido en el mismo momento que la definición del desenlace descrita en la Sección~\ref{subsec:dispersion_genesis}, es decir, tras la primera campaña y antes de analizar las cinco composiciones restantes. Una vez completada la detección, siguiendo el criterio definido se ha seleccionado \textit{homo\_qwen}. La selección depende, por tanto, de los resultados de la fase de detección, pero es anterior a la campaña de mitigación. No se probaron las instrucciones en varias composiciones para seleccionar posteriormente aquella en la que ofrecieran un resultado más favorable.
+
+Se evalúan los tres niveles de instrucción con las dos instrucciones de mitigación y las tres semillas empleadas en la detección. La campaña adicional comprende así dieciocho ejecuciones: una composición, tres niveles de instrucción, dos instrucciones de mitigación y tres repeticiones. Cubrir los tres niveles permite además evaluar la intervención en una configuración en la que el comportamiento difiere entre atributos. En \textit{level\_2\_identity}, la fase de detección mostró evidencia de exceso de dispersión para el atributo geográfico, pero no para el atributo de género. Esto proporciona, dentro del mismo nivel de instrucción, una referencia con exceso previo y otra en la que no se detectó dicho exceso.
+
+\paragraph{Restricción a la fase de génesis.}
+Las ejecuciones de mitigación se limitan al turno inicial ($t=0$). La decisión responde al objetivo de la intervención: reducir el exceso de dispersión identificado en la decisión inicial, antes de que la deliberación introduzca sus propias dinámicas de acoplamiento y variabilidad. La reducción del coste computacional que se deriva de omitir los cuatro turnos posteriores es una consecuencia de esta decisión, no su justificación.
+
+\paragraph{Referencia de control y criterio de eficacia.}
+No se genera una condición placebo específica para las instrucciones de mitigación. El control sigue siendo el agente ciego incluido en la propia ejecución, de modo que cada condición dispone de su estimación de variabilidad basal bajo exactamente la misma intervención sobre el prompt.
+
+Para cada combinación de nivel, atributo e instrucción se calcula de nuevo el ratio $F$ entre la dispersión de los agentes visibles y la del agente ciego, y se compara con la celda correspondiente sin mitigación. La eficacia no se evalúa únicamente mediante la reducción de $F$, por la misma razón expuesta en la Sección~\ref{subsec:mitigacion_composicion}: un ratio menor podría deberse a un aumento de la dispersión del agente ciego. Se examinan por ello ambas desviaciones típicas por separado, junto a su variación respecto a la condición sin mitigación, y el intervalo de confianza del ratio estimado por \textit{bootstrap} de las parejas.
+
+Para cuantificar directamente el cambio introducido por la intervención se define además
+
+\begin{equation}
+	R_{\mathrm{vac}} =
+	\frac{
+		s^2_{\mathrm{visible,vacuna}}
+	}{
+		s^2_{\mathrm{visible,sin\,vacuna}}
+	},
+	\label{eq:mitigation_variance_ratio}
+\end{equation}
+
+donde valores de $R_{\mathrm{vac}}<1$ indican una reducción de la dispersión absoluta de los agentes visibles. Su intervalo de confianza del 95\,\% se estima mediante \textit{bootstrap} pareado, remuestreando simultáneamente las mismas parejas de la condición vacunada y de su referencia sin mitigación. Dada la reducida potencia de un contraste de varianzas con 21 parejas, este análisis solo permite detectar reducciones de gran magnitud. La ausencia de intervalos que excluyan la unidad debe interpretarse en consecuencia como falta de evidencia y no como evidencia de ausencia de efecto.
+
+La celda de \textit{level\_2\_identity} correspondiente al atributo de género, en la que la fase de detección no mostró evidencia de exceso de dispersión, se utiliza como referencia de especificidad. Si la instrucción redujera también la dispersión en esta condición, ello indicaría que parte de su efecto podría corresponder a una estabilización general de las respuestas y no específicamente a la corrección del exceso asociado al atributo sensible.
+
+\paragraph{Control de sobrecorrección.}
+La reducción de la dispersión no es el único criterio de éxito. Una instrucción de mitigación podría estabilizar las respuestas e introducir al mismo tiempo una preferencia sistemática en una de las direcciones del contrafactual. Se conserva por ello como medida secundaria el \textit{gap} medio de cada condición, que en la fase de detección no mostró evidencia de un desplazamiento sistemático respecto a cero en las celdas evaluadas. Cualquier desplazamiento apreciable respecto a ese valor tras aplicar la instrucción se interpretaría como indicio de sobrecorrección.
+
+\subsection{Comparación entre ambas vías}
+\label{subsec:mitigacion_comparacion}
+
+Las dos vías responden al objetivo de mitigación desde perspectivas complementarias. La primera estudia si la estructura del comité se asocia con una reducción del exceso de dispersión sin modificar las instrucciones de los agentes; la segunda evalúa si una intervención explícita sobre el prompt reduce ese mismo fenómeno en la composición seleccionada.
+
+Ambas se valoran mediante el mismo desenlace de dispersión y utilizan el agente ciego como referencia interna. No constituyen, sin embargo, dos brazos de un experimento comparativo directo: la mitigación por composición procede de la fase de detección y abarca varias composiciones, mientras que la intervención por instrucciones se ejecuta posteriormente y únicamente sobre \textit{homo\_qwen}. La comparación entre ambas tiene por tanto carácter interpretativo y permite situar la magnitud de la estabilización alcanzada por cada estrategia, no estimar un efecto causal entre ellas. La Tabla~\ref{tab:mitigacion} resume el diseño de ambas.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Resumen de las dos vías de mitigación evaluadas.}
+	\label{tab:mitigacion}
+	\small
+	\begin{tabular}{p{2.6cm} p{5.0cm} p{2.8cm} p{2.2cm}}
+		\hline
+		\textbf{Vía} & \textbf{Intervención} &
+		\textbf{Naturaleza} &
+		\textbf{Ejecuciones adicionales} \\
+		\hline
+		
+		Composición
+		& Comité heterogéneo frente a homogéneo
+		& Reanálisis de la fase de detección
+		& 0 \\
+		
+		Instrucción
+		& Instrucciones pasiva y activa sobre
+		\textit{homo\_qwen}, tres niveles, solo génesis
+		& Campaña posterior específica
+		& 18 \\
+		
+		\hline
+	\end{tabular}
+\end{table}

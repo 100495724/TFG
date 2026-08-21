@@ -1,0 +1,212 @@
+% =============================================================================
+% Figura del pipeline experimental — Sección 3.1
+%
+% Requiere en el preámbulo:
+%   \usepackage{tikz}
+%   \usetikzlibrary{arrows.meta, positioning, calc}
+% =============================================================================
+% !TeX root = ../main.tex
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{adjustbox}{
+			max width=\textwidth,
+			max totalheight=\textheight,
+			keepaspectratio
+		}
+		\begin{tikzpicture}[
+			node distance=5mm and 6mm,
+			font=\small,
+			% Bloques generales
+			bloque/.style = {
+				rectangle,
+				rounded corners=2pt,
+				draw,
+				thick,
+				minimum height=8mm,
+				align=center,
+				inner sep=5pt,
+				text width=52mm
+			},
+			datos/.style = {
+				bloque,
+				fill=black!5
+			},
+			ejec/.style = {
+				bloque,
+				fill=black!12
+			},
+			analisis/.style = {
+				bloque,
+				fill=black!7
+			},
+			salida/.style = {
+				bloque,
+				fill=white
+			},
+			% Agentes
+			agente/.style = {
+				rectangle,
+				rounded corners=2pt,
+				draw,
+				minimum height=9mm,
+				align=center,
+				inner sep=4pt,
+				text width=26mm,
+				font=\footnotesize
+			},
+			ciego/.style = {
+				agente,
+				very thick,
+				fill=black!8
+			},
+			% Anotaciones
+			nota/.style = {
+				font=\scriptsize,
+				align=left,
+				text width=35mm
+			},
+			% Flechas
+			flecha/.style = {
+				-{Stealth[length=2mm]},
+				thick
+			}
+			]
+			% =====================================================================
+			% 1. CONSTRUCCIÓN DEL BANCO DE PRUEBAS
+			% =====================================================================
+			
+			\node[datos] (snap)
+			{\textbf{Snapshot financiero}\\
+				\footnotesize S\&P 500 · 12/05/2026 · 503 tickers};
+			
+			\node[datos, below=of snap] (filtro)
+			{\textbf{Filtrado y estratificación}\\
+				\footnotesize sede en EE.\,UU. · capitalización 5--50\,B\$};
+			
+			\node[datos, below=of filtro] (arq)
+			{\textbf{21 arquetipos}\\
+				\footnotesize 7 sectores $\times$ 3 perfiles financieros};
+			
+			% Ramas: contrafactuales y placebo
+			\node[datos, below left=8mm and 3mm of arq] (cestas)
+			{\textbf{63 cestas contrafactuales}\\
+				\footnotesize control · género · geografía};
+			
+			\node[datos, below right=8mm and 3mm of arq] (placebo)
+			{\textbf{21 parejas placebo}\\
+				\footnotesize \textit{placebo\_a} $\leftrightarrow$ \textit{placebo\_b}};
+			
+			% Anotaciones de tamaño de campaña
+			\node[nota, left=4mm of cestas]
+			{\textbf{Detección}\\
+				6 composiciones\\
+				$\times$ 3 niveles\\
+				$\times$ 3 semillas\\
+				= 54 ejecuciones};
+			
+			\node[nota, right=4mm of placebo]
+			{\textbf{Placebo}\\
+				6 composiciones\\
+				$\times$ 3 semillas\\
+				= 18 ejecuciones};
+			
+			% =====================================================================
+			% 2. EJECUCIÓN EXPERIMENTAL
+			% =====================================================================
+			
+			\node[ejec, below=15mm of arq] (config)
+			{\textbf{Configuración experimental}\\
+				\footnotesize composición · nivel de instrucción · semilla};
+			
+			\node[ejec, below=of config] (comite)
+			{\textbf{Comité multiagente}\\
+				\footnotesize 3 agentes basados en LLM};
+			
+			% Agentes en paralelo
+			\node[agente, below=7mm of comite] (a2)
+			{\textbf{Agente 2}\\Visible};
+			
+			\node[ciego, left=4mm of a2] (a1)
+			{\textbf{Agente 1}\\Ciego};
+			
+			\node[agente, right=4mm of a2] (a3)
+			{\textbf{Agente 3}\\Visible};
+			
+			\node[nota, right=5mm of a3]
+			{El agente ciego no recibe\\
+				la sede, el CEO ni las\\
+				noticias recientes.};
+			
+			% Punto de convergencia de los tres agentes
+			\coordinate (agentes_join) at ($(a2.south)+(0,-5mm)$);
+			
+			\node[ejec, below=11mm of a2] (genesis)
+			{\textbf{Génesis ($t=0$)}\\
+				\footnotesize decisión independiente · sin comunicación};
+			
+			\node[ejec, below=of genesis] (debate)
+			{\textbf{Deliberación ($t=1,\ldots,4$)}\\
+				\footnotesize intercambio de decisiones y revisión de la asignación};
+			
+			\node[salida, below=of debate] (registro)
+			{\textbf{Registro de resultados}\\
+				\footnotesize asignación · recomendación · justificación · metadatos};
+			
+			% =====================================================================
+			% 3. ANÁLISIS
+			% =====================================================================
+			
+			\node[analisis, below=of registro] (deteccion)
+			{\textbf{Fase de detección}};
+			
+			\node[analisis, below=of deteccion] (mitigacion)
+			{\textbf{Fase de mitigación}};
+			
+			% =====================================================================
+			% FLECHAS
+			% =====================================================================
+			
+			% Dataset
+			\draw[flecha] (snap) -- (filtro);
+			\draw[flecha] (filtro) -- (arq);
+			\draw[flecha] (arq) -- (cestas);
+			\draw[flecha] (arq) -- (placebo);
+			
+			% Cestas -> configuración
+			\draw[flecha] (cestas.south) |- (config.west);
+			\draw[flecha] (placebo.south) |- (config.east);
+			
+			% Ejecución
+			\draw[flecha] (config) -- (comite);
+			
+			% Comité -> agentes en paralelo
+			\draw[flecha] (comite.south) -- ++(0,-3mm) -| (a1.north);
+			\draw[flecha] (comite.south) -- (a2.north);
+			\draw[flecha] (comite.south) -- ++(0,-3mm) -| (a3.north);
+			
+			% Agentes -> génesis
+			\draw[thick] (a1.south) |- (agentes_join);
+			\draw[thick] (a2.south) -- (agentes_join);
+			\draw[thick] (a3.south) |- (agentes_join);
+			\draw[flecha] (agentes_join) -- (genesis.north);
+			
+			% Génesis -> deliberación -> registro
+			\draw[flecha] (genesis) -- (debate);
+			\draw[flecha] (debate) -- (registro);
+			
+			% Análisis
+			\draw[flecha] (registro) -- (deteccion);
+			\draw[flecha] (deteccion) -- (mitigacion);
+			
+		\end{tikzpicture}
+	\end{adjustbox}
+	
+	\caption[Pipeline experimental]{Visión general del pipeline experimental,
+		desde la construcción del banco de pruebas hasta las dos fases de análisis.
+		El primer agente actúa como control interno del diseño: recibe la misma
+		información en todas las variantes contrafactuales.}
+	\label{fig:pipeline_experimental}
+	
+\end{figure}

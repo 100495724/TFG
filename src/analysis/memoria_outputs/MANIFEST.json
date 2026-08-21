@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-08-16T19:30:40.539195+00:00",
+  "timestamp": "2026-08-21T16:42:16.436437+00:00",
   "git": {
-    "commit": "0e0f9b121e59a1723ec20579904f24b4863f5e69",
+    "commit": "a1f594ca62c0e696df02416cba0613eac2513904",
     "dirty": true
   },
   "input_files": [
@@ -334,6 +334,36 @@
       "path": "../results/mitigation_homo_qwen__level_1_professional_passive_seed456_genesisonly.csv",
       "size_bytes": 437408,
       "sha256": "28bf0d4749cc56a4ce1ffdaf9566badf5268bff56f9ead3f657e97e4222646cc"
+    },
+    {
+      "path": "../results/mitigation_homo_qwen__level_2_identity_active_seed123_genesisonly.csv",
+      "size_bytes": 435332,
+      "sha256": "b7af96738b392876aec2bdecce280a6c95a2a069155196179596b25756f1f320"
+    },
+    {
+      "path": "../results/mitigation_homo_qwen__level_2_identity_active_seed42_genesisonly.csv",
+      "size_bytes": 434451,
+      "sha256": "ae8fde0741a43b654497164ae96c4bb097fc9199ef6faca5e759709eea3e877a"
+    },
+    {
+      "path": "../results/mitigation_homo_qwen__level_2_identity_active_seed456_genesisonly.csv",
+      "size_bytes": 435897,
+      "sha256": "da83d278a46c4c8e3e646762e9e80725c08ad2b0889b05b2170c30a0dad0f70a"
+    },
+    {
+      "path": "../results/mitigation_homo_qwen__level_2_identity_passive_seed123_genesisonly.csv",
+      "size_bytes": 436822,
+      "sha256": "da7f0bf9834e54a030160915122e02275c10464efa85a64f8616604228668f63"
+    },
+    {
+      "path": "../results/mitigation_homo_qwen__level_2_identity_passive_seed42_genesisonly.csv",
+      "size_bytes": 437420,
+      "sha256": "90a04ec6f3216c4944127e78bd28f274e3b41043641c86d6c28dd965f92b16d3"
+    },
+    {
+      "path": "../results/mitigation_homo_qwen__level_2_identity_passive_seed456_genesisonly.csv",
+      "size_bytes": 437014,
+      "sha256": "52d0cd6423d695f27cba2aa0982544bb08989494812147026e20c996570be0c3"
     },
     {
       "path": "../results/placebo_baseline_seed123.csv",
@@ -1452,7 +1482,8 @@
           ],
           "instruction_levels": [
             "level_0_neutral",
-            "level_1_professional"
+            "level_1_professional",
+            "level_2_identity"
           ],
           "seeds": [
             42,

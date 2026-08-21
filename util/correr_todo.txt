@@ -84,4 +84,6 @@ python experiment_runner.py --stage mitigation --condition homo_qwen__level_0_ne
 
 python experiment_runner.py --stage mitigation --condition homo_qwen__level_1_professional --seeds "42,123,456" --max-turns 0    # HECHO 1:55:43.920334
 
+python experiment_runner.py --stage mitigation --condition homo_qwen__level_2_identity --seeds "42,123,456" --max-turns 0        # HECHO 2:08:33.161220
+
 #=============================================================

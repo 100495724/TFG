@@ -165,6 +165,16 @@ def _require_scipy():
     return stats
 
 
+def _require_statsmodels():
+    try:
+        import statsmodels.api as sm
+    except ImportError as exc:  # pragma: no cover - environment issue
+        raise ImportError(
+            "statsmodels is required for the cluster-robust standard errors of T07."
+        ) from exc
+    return sm
+
+
 # ---------------------------------------------------------------------------
 # B.4 - core function: per-pair gaps
 # ---------------------------------------------------------------------------
@@ -1282,22 +1292,44 @@ def build_t06(
 # B.8 - T07: transmission slopes, gap_ciego(t+1) ~ gap_visible(t)
 # ---------------------------------------------------------------------------
 T07_COLS = [
-    "composition", "n_treatment", "slope_treatment", "se_treatment", "r_treatment",
-    "n_placebo", "slope_placebo", "se_placebo", "r_placebo",
+    "composition",
+    "n_treatment", "slope_treatment", "se_treatment", "se_ols_treatment",
+    "n_clusters_treatment", "r_treatment",
+    "n_placebo", "slope_placebo", "se_placebo", "se_ols_placebo",
+    "n_clusters_placebo", "r_placebo",
     "z_diff", "p_diff", "q_value", "sig_BH",
     "x_range_treatment", "x_range_placebo", "familia",
 ]
 T07_FAMILIA = "BH sobre las 6 pendientes de transmision (una por composicion, tratamiento vs placebo)"
 
 
-def _ols_slope(x: np.ndarray, y: np.ndarray) -> dict:
-    """Simple OLS slope of y on x, with its standard error. n < 3 -> NaN."""
+def _ols_slope(x: np.ndarray, y: np.ndarray, groups: np.ndarray | None = None) -> dict:
+    """OLS slope of y on x, with its standard error. n < 3 -> NaN.
+
+    The four turn transitions (0->1 .. 3->4) pooled per pair are the SAME
+    pair measured repeatedly along one autocorrelated trajectory, not four
+    independent draws - treating them as independent (classic OLS SE)
+    understates the standard error and inflates the treatment-vs-placebo z
+    test. When ``groups`` is given (here, ``pair_id`` x ``seed`` - one
+    complete trajectory of a pair within a single seed is the correlated
+    unit; two seeds of the same pair are independent runs and must NOT share
+    a cluster), the reported ``se`` is the cluster-robust (CR1) sandwich
+    estimate from statsmodels. The classic, non-clustered SE is still
+    returned as ``se_ols`` - a diagnostic of how much independence was
+    assumed away. The slope point estimate is identical in both cases (OLS
+    is still the estimator); only the standard error changes.
+    """
     x = np.asarray(x, dtype=float)
     y = np.asarray(y, dtype=float)
     mask = np.isfinite(x) & np.isfinite(y)
     x, y = x[mask], y[mask]
+    if groups is not None:
+        groups = np.asarray(groups)[mask]
     n = int(x.size)
-    out = {"slope": float("nan"), "se": float("nan"), "n": n, "r": float("nan"), "x_range": float("nan")}
+    out = {
+        "slope": float("nan"), "se": float("nan"), "se_ols": float("nan"),
+        "n": n, "n_clusters": 0, "r": float("nan"), "x_range": float("nan"),
+    }
     if n < 3:
         return out
     x_mean, y_mean = x.mean(), y.mean()
@@ -1310,9 +1342,30 @@ def _ols_slope(x: np.ndarray, y: np.ndarray) -> dict:
     intercept = y_mean - slope * x_mean
     resid = y - (slope * x + intercept)
     sse = float((resid ** 2).sum())
-    se = float(np.sqrt((sse / (n - 2)) / sxx)) if n > 2 else float("nan")
+    se_ols = float(np.sqrt((sse / (n - 2)) / sxx)) if n > 2 else float("nan")
     rho, _, _ = agg._pearson(x, y)
-    out.update({"slope": float(slope), "se": se, "r": rho})
+
+    se = se_ols
+    n_clusters = n
+    if groups is not None and n > 2:
+        sm = _require_statsmodels()
+        model = sm.OLS(y, sm.add_constant(x)).fit(
+            cov_type="cluster", cov_kwds={"groups": groups},
+        )
+        slope_cluster = float(model.params[1])
+        if not np.isclose(slope_cluster, slope, rtol=1e-6, atol=1e-8):
+            raise AssertionError(
+                f"cluster-robust OLS slope ({slope_cluster}) diverged from the "
+                f"closed-form slope ({slope}) - clustering must not change the "
+                "point estimate, only its standard error."
+            )
+        se = float(model.bse[1])
+        n_clusters = int(pd.unique(groups).size)
+
+    out.update({
+        "slope": float(slope), "se": se, "se_ols": se_ols,
+        "n_clusters": n_clusters, "r": rho,
+    })
     return out
 
 
@@ -1321,13 +1374,18 @@ def _lag_pairs_for_slope(df: pd.DataFrame, placebo: bool) -> pd.DataFrame:
     levels, attributes, seeds and pairs, per composition.
 
     Built on ``gap_por_pareja`` (turn-by-turn, unaveraged over seeds), never
-    on an aggregate that hides the pairing. With a single-turn CSV (Tarea C.3,
-    e.g. genesis-only mitigation runs) every ``turn+1`` slice is empty, so the
-    merge is empty for every ``t`` and this returns an empty typed frame - the
-    caller (``build_t07``) turns that into a graceful empty table, not an
-    exception.
+    on an aggregate that hides the pairing. Carries ``seed`` and ``pair_id``
+    through (not just ``x``/``y``) because ``build_t07`` needs them to form
+    the pair_id x seed cluster used for cluster-robust standard errors - the
+    four turn transitions pooled here are the same trajectory measured
+    repeatedly, not independent observations.
+
+    With a single-turn CSV (Tarea C.3, e.g. genesis-only mitigation runs)
+    every ``turn+1`` slice is empty, so the merge is empty for every ``t``
+    and this returns an empty typed frame - the caller (``build_t07``) turns
+    that into a graceful empty table, not an exception.
     """
-    columns = ["composition", "x", "y"]
+    columns = ["composition", "seed", "pair_id", "x", "y"]
     if df is None or df.empty:
         return _empty(columns)
     frames = []
@@ -1340,7 +1398,7 @@ def _lag_pairs_for_slope(df: pd.DataFrame, placebo: bool) -> pd.DataFrame:
         merged = vis.merge(bl, on=merge_keys, how="inner", suffixes=("_vis", "_bl"))
         if merged.empty:
             continue
-        frames.append(merged[["composition", "gap_vis", "gap_bl"]].rename(
+        frames.append(merged[["composition", "seed", "pair_id", "gap_vis", "gap_bl"]].rename(
             columns={"gap_vis": "x", "gap_bl": "y"}
         ))
     if not frames:
@@ -1364,6 +1422,20 @@ def build_t07(
     standard two-slope-difference z test, ``p_diff`` its two-sided p-value.
     Declared family: the 6 compositions, BH-corrected together.
 
+    ``se_treatment`` / ``se_placebo`` are cluster-robust (statsmodels,
+    ``cov_type="cluster"``), clustered on ``pair_id`` x ``seed``: the four
+    turn transitions (0->1 .. 3->4) pooled per pair are one autocorrelated
+    trajectory, not four independent observations, and treating them as
+    independent understates the standard error. Clustering on ``pair_id``
+    alone would be wrong the other way - it would assume two different
+    seeds of the same pair are correlated, but those are independent runs.
+    ``se_ols_treatment`` / ``se_ols_placebo`` are the classic, non-clustered
+    OLS standard errors, reported as a diagnostic of how much the
+    independence assumption was inflating the original z test.
+    ``n_clusters_treatment`` / ``n_clusters_placebo`` are the number of
+    distinct pair_id x seed groups the cluster SE was computed over. The
+    slope point estimates are unaffected - OLS is still the estimator.
+
     ``r_treatment`` / ``r_placebo`` and ``x_range_*`` are reported as
     diagnostics: the Pearson r of the same pairing, and the range of the
     predictor in each arm, so a restricted range in one arm relative to the
@@ -1372,20 +1444,28 @@ def build_t07(
     Degrades to an empty typed frame (never raises) when no (t, t+1) pair is
     available in EITHER arm - genesis-only CSVs (Tarea C.3) have no t+1.
     """
+    empty_lag_cols = ["composition", "seed", "pair_id", "x", "y"]
     lag_treat = _lag_pairs_for_slope(df, placebo=False)
-    lag_placebo = _lag_pairs_for_slope(df_placebo, placebo=True) if df_placebo is not None else _empty(["composition", "x", "y"])
+    lag_placebo = _lag_pairs_for_slope(df_placebo, placebo=True) if df_placebo is not None else _empty(empty_lag_cols)
     if lag_treat.empty:
         log.warning("build_t07: no (t, t+1) turn pairs in the treatment arm - "
                     "returning an empty table (genesis-only data?).")
         return _empty(T07_COLS)
 
     stats = _require_scipy()
+
+    def _clusters(sub: pd.DataFrame) -> np.ndarray:
+        return (sub["pair_id"].astype(str) + "::" + sub["seed"].astype(str)).to_numpy()
+
     rows = []
     for composition in sorted(lag_treat["composition"].dropna().unique().tolist()):
         sub_t = lag_treat[lag_treat["composition"] == composition]
-        fit_t = _ols_slope(sub_t["x"].to_numpy(), sub_t["y"].to_numpy())
+        fit_t = _ols_slope(sub_t["x"].to_numpy(), sub_t["y"].to_numpy(), groups=_clusters(sub_t))
         sub_p = lag_placebo[lag_placebo["composition"] == composition] if not lag_placebo.empty else lag_placebo
-        fit_p = _ols_slope(sub_p["x"].to_numpy(), sub_p["y"].to_numpy()) if sub_p is not None and not sub_p.empty else _ols_slope(np.array([]), np.array([]))
+        if sub_p is not None and not sub_p.empty:
+            fit_p = _ols_slope(sub_p["x"].to_numpy(), sub_p["y"].to_numpy(), groups=_clusters(sub_p))
+        else:
+            fit_p = _ols_slope(np.array([]), np.array([]))
 
         z_diff, p_diff = float("nan"), float("nan")
         if np.isfinite(fit_t["se"]) and np.isfinite(fit_p["se"]) and (fit_t["se"] ** 2 + fit_p["se"] ** 2) > 0:
@@ -1395,9 +1475,11 @@ def build_t07(
         rows.append({
             "composition": composition,
             "n_treatment": fit_t["n"], "slope_treatment": fit_t["slope"],
-            "se_treatment": fit_t["se"], "r_treatment": fit_t["r"],
+            "se_treatment": fit_t["se"], "se_ols_treatment": fit_t["se_ols"],
+            "n_clusters_treatment": fit_t["n_clusters"], "r_treatment": fit_t["r"],
             "n_placebo": fit_p["n"], "slope_placebo": fit_p["slope"],
-            "se_placebo": fit_p["se"], "r_placebo": fit_p["r"],
+            "se_placebo": fit_p["se"], "se_ols_placebo": fit_p["se_ols"],
+            "n_clusters_placebo": fit_p["n_clusters"], "r_placebo": fit_p["r"],
             "z_diff": z_diff, "p_diff": p_diff,
             "x_range_treatment": fit_t["x_range"], "x_range_placebo": fit_p["x_range"],
             "familia": T07_FAMILIA,
@@ -1642,9 +1724,54 @@ T12_COLS = [
     "composition", "instruction_level", "sensitive_attr", "vaccine",
     "n_pairs", "sd_visible", "sd_ciego", "F", "ci95_lo_F", "ci95_hi_F",
     "sd_visible_sin_vacuna", "F_sin_vacuna", "F_ratio_vacuna_vs_sin",
-    "p_diff_varianza", "mean_gap", "es_ancla_level2_sin_vacuna",
+    "mean_gap", "es_ancla_level2_sin_vacuna",
+    "R_vac", "ci95_lo_R_vac", "ci95_hi_R_vac", "n_pairs_R_vac",
 ]
-T12_ANCHOR_LEVEL = "level_2_identity"
+
+
+def _r_vac_paired_bootstrap(
+    vaccinated: pd.Series,
+    reference: pd.Series,
+    n_boot: int = N_BOOT,
+    seed: int = BOOTSTRAP_SEED,
+    lo: float = 2.5,
+    hi: float = 97.5,
+) -> tuple[float, float, float, int]:
+    """``R_vac = var(vaccinated) / var(reference)`` and its paired-bootstrap CI.
+
+    Both series must be indexed by ``pair_id``: ``vaccinated`` and
+    ``reference`` are the SAME 21 baskets measured under two conditions of
+    the visible arm (with vaccine vs. without), not visible vs. blind, so
+    they are matched samples and must not be treated as independent (that
+    was the bug in the old two-sample F test, ``p_diff_varianza``). Pairs
+    missing from either side are dropped before anything is computed; the
+    surviving count is returned as ``n_pairs``.
+
+    The bootstrap resamples PAIR IDENTIFIERS: each of the ``n_boot`` draws
+    picks one set of pair indices (with replacement) and applies that SAME
+    set to both conditions, so the correlation the pairing carries is
+    preserved instead of being averaged away by two independent resamples.
+    Percentiles 2.5/97.5, fixed seed - reproducible byte for byte.
+    """
+    common = vaccinated.index.intersection(reference.index)
+    n = len(common)
+    if n < 2:
+        return float("nan"), float("nan"), float("nan"), n
+    vac = vaccinated.loc[common].to_numpy(dtype=float)
+    ref = reference.loc[common].to_numpy(dtype=float)
+    var_ref = float(np.var(ref, ddof=1))
+    r_vac = float(np.var(vac, ddof=1)) / var_ref if var_ref > 0 else float("nan")
+
+    rng = np.random.default_rng(seed)
+    idx = rng.integers(0, n, size=(n_boot, n))
+    var_vac_boot = vac[idx].var(axis=1, ddof=1)
+    var_ref_boot = ref[idx].var(axis=1, ddof=1)
+    with np.errstate(divide="ignore", invalid="ignore"):
+        ratios = var_vac_boot / var_ref_boot
+    ratios = ratios[np.isfinite(ratios)]
+    if ratios.size == 0:
+        return r_vac, float("nan"), float("nan"), n
+    return r_vac, float(np.percentile(ratios, lo)), float(np.percentile(ratios, hi)), n
 
 
 def build_t12(
@@ -1664,16 +1791,16 @@ def build_t12(
 
     For every vaccinated cell: ``sd_visible``/``sd_ciego``/``F`` and its
     bootstrap CI (same machinery as T04/T06), the matched unvaccinated cell
-    from ``df_detection`` (``sd_visible_sin_vacuna``, ``F_sin_vacuna``), an F
-    test of ``sd_visible`` vaccinated vs. unvaccinated on the SAME pairs
-    (``p_diff_varianza``: has the vaccine changed the visible variance?), and
-    ``mean_gap`` as the secondary over-correction check the brief asks for.
+    from ``df_detection`` (``sd_visible_sin_vacuna``, ``F_sin_vacuna``),
+    ``R_vac = var(gap visible, con vacuna) / var(gap visible, sin vacuna)``
+    with its paired-bootstrap 95% CI (``_r_vac_paired_bootstrap``) - the two
+    conditions share the SAME 21 pairs, so the comparison is paired, not the
+    independent two-sample F test this replaced - and ``mean_gap`` as the
+    secondary over-correction check the brief asks for.
 
-    Explicitly includes the reference the brief calls out: for every
-    composition present, the level_2/UNVACCINATED cell from ``df_detection``
-    (F approx 0.9 in homo_llama), flagged ``es_ancla_level2_sin_vacuna=True`` -
-    "stabilisation already achieved by role specification", obtained without
-    running anything.
+    The level_2/no-vaccine anchor row this table used to carry has been
+    dropped: the reachable stabilisation reference is the heterogeneous
+    composition, already reported in T04.
     """
     if df_mitigation is None or df_mitigation.empty or "vaccine" not in df_mitigation.columns:
         return _empty(T12_COLS)
@@ -1693,7 +1820,6 @@ def build_t12(
         return _empty(T12_COLS)
 
     rows = []
-    anchors_done: set[str] = set()
     for vaccine in vaccines:
         sub = df_mitigation[df_mitigation["vaccine"].astype(str) == vaccine]
         vac_visible = promedio_entre_semillas(gap_por_pareja(sub, turn=turn, blind=False))
@@ -1724,17 +1850,13 @@ def build_t12(
                     ci_lo, ci_hi = _bootstrap_var_ratio_ci(v, pooled_vac["samples"])
 
                     vis_det = _cell_values(det_visible, composition, level, attr) if not det_visible.empty else pd.Series(dtype=float)
-                    f_det, sd_det, p_diff = float("nan"), float("nan"), float("nan")
+                    f_det, sd_det = float("nan"), float("nan")
+                    r_vac, r_lo, r_hi, n_pairs_r = float("nan"), float("nan"), float("nan"), 0
                     if pooled_det is not None and not vis_det.empty:
                         v_det = vis_det.to_numpy(dtype=float)
                         f_det, _ = _f_test_against_pooled(v_det, pooled_det["var"], pooled_det["df"])
                         sd_det = float(np.std(v_det, ddof=1))
-                        common = vis_vac.index.intersection(vis_det.index)
-                        if len(common) >= 2:
-                            _, p_diff = _f_test_var_ratio(
-                                vis_vac.loc[common].to_numpy(dtype=float),
-                                vis_det.loc[common].to_numpy(dtype=float),
-                            )
+                        r_vac, r_lo, r_hi, n_pairs_r = _r_vac_paired_bootstrap(vis_vac, vis_det)
 
                     rows.append({
                         "composition": composition, "instruction_level": level,
@@ -1747,33 +1869,12 @@ def build_t12(
                         "F_ratio_vacuna_vs_sin": (
                             f_stat / f_det if pd.notna(f_det) and f_det > 0 and pd.notna(f_stat) else float("nan")
                         ),
-                        "p_diff_varianza": p_diff,
                         "mean_gap": float(vis_vac.mean()),
                         "es_ancla_level2_sin_vacuna": False,
+                        "R_vac": r_vac,
+                        "ci95_lo_R_vac": r_lo, "ci95_hi_R_vac": r_hi,
+                        "n_pairs_R_vac": n_pairs_r,
                     })
-
-            if composition not in anchors_done and not det_ciego.empty:
-                pooled_anchor = _pooled_blind_variance(det_ciego, composition, T12_ANCHOR_LEVEL, attrs)
-                if pooled_anchor is not None:
-                    for anchor_attr in attrs:
-                        anchor_vis = _cell_values(det_visible, composition, T12_ANCHOR_LEVEL, anchor_attr)
-                        if anchor_vis.empty:
-                            continue
-                        a = anchor_vis.to_numpy(dtype=float)
-                        f_anchor, _ = _f_test_against_pooled(a, pooled_anchor["var"], pooled_anchor["df"])
-                        rows.append({
-                            "composition": composition, "instruction_level": T12_ANCHOR_LEVEL,
-                            "sensitive_attr": anchor_attr, "vaccine": "none",
-                            "n_pairs": int(len(anchor_vis)),
-                            "sd_visible": float(np.std(a, ddof=1)),
-                            "sd_ciego": float(np.sqrt(pooled_anchor["var"])),
-                            "F": f_anchor, "ci95_lo_F": float("nan"), "ci95_hi_F": float("nan"),
-                            "sd_visible_sin_vacuna": float("nan"), "F_sin_vacuna": float("nan"),
-                            "F_ratio_vacuna_vs_sin": float("nan"), "p_diff_varianza": float("nan"),
-                            "mean_gap": float(anchor_vis.mean()),
-                            "es_ancla_level2_sin_vacuna": True,
-                        })
-                anchors_done.add(composition)
 
     if not rows:
         return _empty(T12_COLS)

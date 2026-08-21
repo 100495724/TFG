@@ -160,6 +160,9 @@ hmargin=3cm
 %	font=small		
 %}
 
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc}
+\usepackage{adjustbox}
 
 % NOTAS A PIE DE PÁGINA
 \usepackage{chngcntr} %para numeración contínua de las notas al pie
@@ -359,6 +362,7 @@ hmargin=3cm
 \clearpage
 \pagenumbering{arabic} % numeración con múmeros arábigos para el resto de la publicación	
 
+\input{capitulos/glosario}
 \input{capitulos/01_introduccion}
 \input{capitulos/02_estado_arte}
 \input{capitulos/03_metodologia}

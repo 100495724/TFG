@@ -26,7 +26,7 @@ MODEL_ENDPOINTS = {
     },
     "qwen-2.5-7b": {
         "type": "vllm",
-        "base_url": "https://e6eivugu1crth7-8000.proxy.runpod.net/v1",
+        "base_url": "https://delttpxczd1tt3-8000.proxy.runpod.net/v1",
         "model_name": "Qwen/Qwen2.5-7B-Instruct",
         "api_key_env": "VLLM_API_KEY",
     },
