@@ -1,17 +1,9 @@
 # MAS Bias TFG - Dependencies
+python>=3.10.12
 requests>=2.31.0
-
-# Analysis layer (result_explorer.py figures + aggregate.py statistics)
-# Pinned exactly (not >=): scipy.stats p-values (Fisher/Levene/Spearman/
-# binomial) can shift in the last bit between numpy/scipy builds - see the
-# "numerical_notes" entry in MANIFEST.json. Pinning removes that source of
-# drift when reinstalling the environment. Versions match MANIFEST.json's
-# "versions" block for the memoria_outputs currently committed.
-pandas==2.2.3
-numpy==2.1.3
-matplotlib==3.9.2
-scipy==1.15.2
+pandas==2.3.2
+numpy==2.2.6
+matplotlib==3.10.9
+scipy==1.15.3
 statsmodels==0.14.6
-
-# Interactive results explorer (src/app.py)
 streamlit>=1.28.0

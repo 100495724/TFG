@@ -1724,7 +1724,8 @@ T12_COLS = [
     "composition", "instruction_level", "sensitive_attr", "vaccine",
     "n_pairs", "sd_visible", "sd_ciego", "F", "ci95_lo_F", "ci95_hi_F",
     "sd_visible_sin_vacuna", "F_sin_vacuna", "F_ratio_vacuna_vs_sin",
-    "mean_gap", "es_ancla_level2_sin_vacuna",
+    "mean_gap", "p_signflip_mean_gap", "ci95_lo_mean_gap", "ci95_hi_mean_gap",
+    "q_value_mean_gap", "es_ancla_level2_sin_vacuna",
     "R_vac", "ci95_lo_R_vac", "ci95_hi_R_vac", "n_pairs_R_vac",
 ]
 
@@ -1779,6 +1780,7 @@ def build_t12(
     df_detection: pd.DataFrame | None,
     attrs: tuple[str, ...] = SENSITIVE_ATTRS,
     turn: int = GENESIS_TURN,
+    fdr_q: float = DEFAULT_FDR_Q,
 ) -> pd.DataFrame:
     """T12 - mitigation table, variance-ratio endpoint (Tarea C.4).
 
@@ -1796,7 +1798,12 @@ def build_t12(
     with its paired-bootstrap 95% CI (``_r_vac_paired_bootstrap``) - the two
     conditions share the SAME 21 pairs, so the comparison is paired, not the
     independent two-sample F test this replaced - and ``mean_gap`` as the
-    secondary over-correction check the brief asks for.
+    secondary over-correction check the brief asks for, with the SAME
+    contrast T03 runs on it: a sign-flip permutation p-value
+    (``agg._signflip_p``) and a paired bootstrap 95% CI (``_bootstrap_ci_mean``),
+    reusing the T02/T03 machinery rather than reimplementing it. The 12
+    ``p_signflip_mean_gap`` values of this table are BH-corrected as their own
+    family - ``q_value_mean_gap`` - separate from T03's and T04's families.
 
     The level_2/no-vaccine anchor row this table used to carry has been
     dropped: the reachable stabilisation reference is the heterogeneous
@@ -1848,6 +1855,8 @@ def build_t12(
                     v = vis_vac.to_numpy(dtype=float)
                     f_stat, _ = _f_test_against_pooled(v, pooled_vac["var"], pooled_vac["df"])
                     ci_lo, ci_hi = _bootstrap_var_ratio_ci(v, pooled_vac["samples"])
+                    mean_ci_lo, mean_ci_hi = _bootstrap_ci_mean(v)
+                    p_signflip_mean = agg._signflip_p(v)
 
                     vis_det = _cell_values(det_visible, composition, level, attr) if not det_visible.empty else pd.Series(dtype=float)
                     f_det, sd_det = float("nan"), float("nan")
@@ -1870,6 +1879,8 @@ def build_t12(
                             f_stat / f_det if pd.notna(f_det) and f_det > 0 and pd.notna(f_stat) else float("nan")
                         ),
                         "mean_gap": float(vis_vac.mean()),
+                        "p_signflip_mean_gap": p_signflip_mean,
+                        "ci95_lo_mean_gap": mean_ci_lo, "ci95_hi_mean_gap": mean_ci_hi,
                         "es_ancla_level2_sin_vacuna": False,
                         "R_vac": r_vac,
                         "ci95_lo_R_vac": r_lo, "ci95_hi_R_vac": r_hi,
@@ -1881,6 +1892,10 @@ def build_t12(
     table = pd.DataFrame(rows).drop_duplicates(
         subset=["composition", "instruction_level", "sensitive_attr", "vaccine"]
     )
+    q_value, _ = agg.benjamini_hochberg(
+        table["p_signflip_mean_gap"].to_numpy(dtype=float), q=fdr_q
+    )
+    table["q_value_mean_gap"] = q_value
     return (
         table[T12_COLS]
         .sort_values(["composition", "instruction_level", "sensitive_attr", "vaccine"])
@@ -2444,7 +2459,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.stage in ("mitigation", "both"):
         log.info("Building T12 (mitigation, variance-ratio endpoint)...")
-        t12 = build_t12(df_mitigation, df_detection)
+        t12 = build_t12(df_mitigation, df_detection, fdr_q=args.fdr_q)
         _write_table(t12, out_dir, "T12")
         manifest.add_output(TABLE_FILENAMES["T12"], "build_t12", mitigation=df_mitigation, detection=df_detection)
 

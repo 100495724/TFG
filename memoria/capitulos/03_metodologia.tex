@@ -33,7 +33,7 @@ La primera variable experimental es la composición del comité, entendida como 
 
 Esta doble elección conecta dos aproximaciones al estudio del sesgo en sistemas multiagente. Nguyen et al.~\cite{nguyen2025social} estudian el efecto del modelo subyacente y de la especialización de los agentes sobre la robustez frente al sesgo, en sistemas cuyos agentes comparten el mismo LLM. Madigan et al.~\cite{madigan2025emergent}, por su parte, evalúan sistemas financieros heterogéneos formados por tres LLM distintos. Este diseño reúne ambos tipos de comité bajo una misma tarea y un mismo protocolo de interacción, de modo que su comportamiento pueda compararse con el resto de factores fijos. La Tabla~\ref{tab:composiciones} recoge todas las composiciones definidas, incluidas las que quedaron fuera de la campaña final.
 
-El conjunto evaluado comprende cuatro composiciones homogéneas: tres agentes Llama~3.1-8B-Instruct, tres Qwen~2.5-7B-Instruct, tres Mistral-7B-Instruct-v0.3 y tres GPT-4o-mini. A ellas se suman dos heterogéneas: la primera combina Llama~3.1-8B-Instruct, Qwen~2.5-7B-Instruct y Mistral-7B-Instruct-v0.3; la segunda, Llama~3.1-8B-Instruct, GPT-4o-mini y Mistral-7B-Instruct-v0.3.
+El conjunto evaluado comprende cuatro composiciones homogéneas: tres agentes Llama~3.1-8B-Instruct~\cite{grattafiori2024llama}, tres Qwen~2.5-7B-Instruct~\cite{yang2024qwen25}, tres Mistral-7B-Instruct-v0.3~\cite{mistral2024v03} y tres GPT-4o-mini~\cite{openai2024gpt4omini}. A ellas se suman dos heterogéneas: la primera combina Llama~3.1-8B-Instruct, Qwen~2.5-7B-Instruct y Mistral-7B-Instruct-v0.3; la segunda, Llama~3.1-8B-Instruct, GPT-4o-mini y Mistral-7B-Instruct-v0.3.
 
 Dentro de las composiciones heterogéneas, la asignación de modelos a agentes es fija. El primer agente, que actúa como agente ciego, utiliza Llama~3.1-8B-Instruct en ambos casos, y el tercero Mistral-7B-Instruct-v0.3. Solo el segundo agente cambia: Qwen~2.5-7B-Instruct en \textit{hetero\_local} y GPT-4o-mini en \textit{hetero\_api\_gpt}. Ambas configuraciones difieren, por tanto, en un único modelo asignado a un único rol.
 
@@ -41,7 +41,7 @@ De ahí surge un contraste especialmente controlado entre \textit{homo\_llama} y
 
 Los modelos locales se eligieron buscando una escala de parámetros comparable, entre 7B y 8B, y solapamiento con el estudio de Nguyen et al.~\cite{nguyen2025social}, que incluye Llama~3.1-8B-Instruct y Qwen~2.5-7B-Instruct entre los modelos evaluados.
 
-El diseño inicial contemplaba también una composición homogénea basada en Claude Haiku y otra heterogénea que lo incorporaba. Ambas quedaron implementadas en la infraestructura experimental, pero se excluyeron de la campaña final de detección por restricciones presupuestarias. La decisión y su impacto sobre el alcance del estudio se recogen en la Sección~\ref{sec:presupuesto}.
+El diseño inicial contemplaba también una composición homogénea basada en Claude Haiku 4.5~\cite{anthropic2025haiku45} y otra heterogénea que lo incorporaba. Ambas quedaron implementadas en la infraestructura experimental, pero se excluyeron de la campaña final de detección por restricciones presupuestarias. La decisión y su impacto sobre el alcance del estudio se recogen en la Sección~\ref{sec:presupuesto}.
 
 \subsection{Nivel de instrucción}
 \label{subsec:nivel_instruccion}
