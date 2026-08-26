@@ -2384,11 +2384,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.stage in ("detection", "both"):
         log.info("Building T01 (data quality)...")
         t01 = pd.concat(
-            [build_t01(df_detection, stage="detection"), build_t01(df_placebo, stage="placebo")],
+            [build_t01(df_detection, stage="detection"), build_t01(df_placebo, stage="placebo"), build_t01(df_mitigation, stage="mitigation")],
             ignore_index=True,
         ) if not df_placebo.empty else build_t01(df_detection, stage="detection")
         _write_table(t01, out_dir, "T01")
-        manifest.add_output(TABLE_FILENAMES["T01"], "build_t01", detection=df_detection, placebo=df_placebo)
+        manifest.add_output(TABLE_FILENAMES["T01"], "build_t01", detection=df_detection, placebo=df_placebo, mitigation=df_mitigation)
 
         log.info("Building T02 (placebo noise floor)...")
         t02 = build_t02(df_placebo)

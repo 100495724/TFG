@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-08-21T16:54:08.067402+00:00",
+  "timestamp": "2026-08-26T21:17:22.393848+00:00",
   "git": {
-    "commit": "3f8f4b5526904fff97f0a681cd8749a9391832e0",
+    "commit": "1b8375c562b440f0e402ba65be30940cb40ffd04",
     "dirty": true
   },
   "input_files": [
@@ -1151,6 +1151,21 @@
           ],
           "instruction_levels": [
             "level_1_professional"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "mitigation": {
+          "compositions": [
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_0_neutral",
+            "level_1_professional",
+            "level_2_identity"
           ],
           "seeds": [
             42,

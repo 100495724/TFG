@@ -43,42 +43,6 @@ Los modelos locales se eligieron buscando una escala de parámetros comparable, 
 
 El diseño inicial contemplaba también una composición homogénea basada en Claude Haiku 4.5~\cite{anthropic2025haiku45} y otra heterogénea que lo incorporaba. Ambas quedaron implementadas en la infraestructura experimental, pero se excluyeron de la campaña final de detección por restricciones presupuestarias. La decisión y su impacto sobre el alcance del estudio se recogen en la Sección~\ref{sec:presupuesto}.
 
-\subsection{Nivel de instrucción}
-\label{subsec:nivel_instruccion}
-
-La segunda variable experimental modifica el grado y el tipo de especificación del rol asignado a cada agente. Se definen tres niveles de instrucción, manteniendo inalteradas la tarea financiera, la composición del comité y la estructura de interacción.
-
-En el nivel 0 (\textit{level\_0\_neutral}), los tres agentes reciben el mismo rol genérico de analista financiero, sin especialización funcional. Este nivel constituye además la condición más controlada respecto al rol: los tres agentes reciben exactamente la misma instrucción, por lo que la diferencia entre el agente ciego y los dos agentes visibles no procede de una especialización funcional distinta, sino únicamente de la información disponible para cada uno.
-
-En el nivel 1 (\textit{level\_1\_professional}), se asigna a cada agente una función profesional diferenciada dentro del comité: analista fundamental, analista de sentimiento y gestor de riesgos. Cada rol dirige la atención hacia un conjunto distinto de evidencias financieras o empresariales, de manera que el sistema incorpora especialización funcional sin introducir identidades sociales asociadas al atributo que se pretende medir.
-
-El nivel 2 (\textit{level\_2\_identity}) conserva esas mismas funciones profesionales y añade información sobre la identidad y trayectoria del agente. De este modo se estudia si una caracterización más específica del agente modifica su comportamiento respecto a los niveles anteriores. A diferencia del diseño de Nguyen et al.~\cite{nguyen2025social}, donde los agentes representan explícitamente grupos sociales relacionados con los estereotipos evaluados, ninguno de los roles utilizados en este trabajo menciona el género de la CEO ni el país de la sede en ninguno de los tres niveles.
-
-La condición de agente ciego se mantiene constante en los tres niveles: el
-primer agente no recibe los atributos sensibles independientemente del grado de especificación de su rol. Por tanto, la manipulación del nivel de instrucción no altera la estructura del control interno descrito en la
-Sección~\ref{sec:dataset}.
-
-El nivel 2 no constituye una manipulación pura de la cantidad de detalle del prompt, ya que las identidades añadidas incluyen también referencias culturales y geográficas. Por ello, sus diferencias respecto al nivel 1 se interpretan como un efecto del conjunto de la especificación identitaria y no exclusivamente de la longitud o riqueza del prompt. Esta limitación se retoma en la Sección~\ref{sec:amenazas_validez}.
-
-\subsection{Repeticiones y parámetros controlados}
-\label{subsec:repeticiones}
-
-Cada condición experimental se repite tres veces, con las semillas 42, 123 y 456. Las repeticiones permiten observar cuánta variabilidad produce el propio sistema entre ejecuciones de una configuración idéntica.
-
-Los parámetros de generación se mantienen fijos durante toda la fase de detección, con una temperatura de 0,3, un valor de \textit{top-p} de 0,95 y un límite máximo de 4096 tokens por respuesta. La temperatura se fija en un valor reducido, pero superior a cero, para conservar cierta variabilidad estocástica sin introducir una dispersión excesiva entre ejecuciones.
-
-El protocolo de comunicación se mantiene fijo y no se incluye como variable de ablación. En todas las condiciones se utiliza un protocolo de debate, en el que los agentes evalúan críticamente las decisiones de los demás y pueden modificar su propia posición durante los turnos de deliberación. De esta forma, la comparación entre condiciones queda centrada en las dos variables principales del diseño: la composición del comité y el nivel de instrucción.
-
-\subsection{Matriz experimental}
-\label{subsec:matriz_experimental}
-
-El cruce de las seis composiciones evaluadas con los tres niveles de instrucción genera 18 condiciones experimentales. Cada condición se ejecuta con las tres repeticiones definidas anteriormente, dando lugar a un total de 54 ejecuciones en la fase principal de detección. En cada una de ellas se evalúa el conjunto completo de cestas contrafactuales descrito en la Sección~\ref{sec:dataset}.
-
-A estas ejecuciones se añaden 18 ejecuciones de placebo, correspondientes a las seis composiciones y las tres semillas. El placebo se ejecuta utilizando el nivel \textit{level\_1\_professional} como condición de referencia y no se replica para cada nivel de instrucción. Su objetivo es proporcionar una estimación externa del nivel de variabilidad entre dos cestas idénticas para cada composición. La construcción de esta condición y su utilización estadística se desarrollan en la Sección~\ref{sec:dataset}. La ausencia de un placebo específico por nivel de instrucción limita su uso como referencia en los contrastes que dependen de esta condición externa, y se retoma en la Sección~\ref{sec:limitaciones}. No afecta, en cambio, al control interno descrito en la Sección~\ref{sec:dataset}, disponible en todas las condiciones por construcción.
-
-La fase de mitigación constituye una campaña experimental posterior y se
-describe por separado en la Sección~\ref{sec:mitigacion}, ya que sus condiciones fueron seleccionadas después de completar y analizar la fase de detección.
-
 \begin{table}[htbp]
 	\centering
 	\caption{Composiciones consideradas en el diseño experimental.}
@@ -123,6 +87,85 @@ describe por separado en la Sección~\ref{sec:mitigacion}, ya que sus condicione
 	\end{tabular}
 \end{table}
 
+\subsection{Nivel de instrucción}
+\label{subsec:nivel_instruccion}
+
+La segunda variable experimental modifica el grado y el tipo de especificación del rol asignado a cada agente. Se definen tres niveles de instrucción, manteniendo inalteradas la tarea financiera, la composición del comité y la estructura de interacción.
+
+En el nivel 0 (\textit{level\_0\_neutral}), los tres agentes reciben el mismo rol genérico de analista financiero, sin especialización funcional. Este nivel constituye además la condición más controlada respecto al rol: los tres agentes reciben exactamente la misma instrucción, por lo que la diferencia entre el agente ciego y los dos agentes visibles no procede de una especialización funcional distinta, sino únicamente de la información disponible para cada uno.
+
+En el nivel 1 (\textit{level\_1\_professional}), se asigna a cada agente una función profesional diferenciada dentro del comité: analista fundamental, analista de sentimiento y gestor de riesgos. Cada rol dirige la atención hacia un conjunto distinto de evidencias financieras o empresariales, de manera que el sistema incorpora especialización funcional sin introducir identidades sociales asociadas al atributo que se pretende medir.
+
+El nivel 2 (\textit{level\_2\_identity}) conserva esas mismas funciones profesionales y añade información sobre la identidad y trayectoria del agente. De este modo se estudia si una caracterización más específica del agente modifica su comportamiento respecto a los niveles anteriores. A diferencia del diseño de Nguyen et al.~\cite{nguyen2025social}, donde los agentes representan explícitamente grupos sociales relacionados con los estereotipos evaluados, ninguno de los roles utilizados en este trabajo menciona el género de la CEO ni el país de la sede en ninguno de los tres niveles.
+
+La condición de agente ciego se mantiene constante en los tres niveles: el
+primer agente no recibe los atributos sensibles independientemente del grado de especificación de su rol. Por tanto, la manipulación del nivel de instrucción no altera la estructura del control interno descrito en la
+Sección~\ref{sec:dataset}.
+
+El nivel 2 no constituye una manipulación pura de la cantidad de detalle del prompt, ya que las identidades añadidas incluyen también referencias culturales y geográficas. Por ello, sus diferencias respecto al nivel 1 se interpretan como un efecto del conjunto de la especificación identitaria y no exclusivamente de la longitud o riqueza del prompt. Esta limitación se retoma en la Sección~\ref{sec:amenazas_validez}.
+
+\subsection{Repeticiones y parámetros controlados}
+\label{subsec:repeticiones}
+
+Cada condición experimental se repite tres veces, con las semillas 42, 123 y 456. Las repeticiones permiten observar cuánta variabilidad produce el propio sistema entre ejecuciones de una configuración idéntica.
+
+Los parámetros de generación se mantienen fijos durante toda la fase de detección, con una temperatura de 0,3, un valor de \textit{top-p} de 0,95 y un límite máximo de 4096 tokens por respuesta. La temperatura se fija en un valor reducido, pero superior a cero, para conservar cierta variabilidad estocástica sin introducir una dispersión excesiva entre ejecuciones.
+
+El protocolo de comunicación se mantiene fijo y no se incluye como variable de ablación. En todas las condiciones se utiliza un protocolo de debate, en el que los agentes evalúan críticamente las decisiones de los demás y pueden modificar su propia posición durante los turnos de deliberación. De esta forma, la comparación entre condiciones queda centrada en las dos variables principales del diseño: la composición del comité y el nivel de instrucción.
+
+\subsection{Matriz experimental}
+\label{subsec:matriz_experimental}
+
+El cruce de las seis composiciones evaluadas con los tres niveles de instrucción genera 18 condiciones experimentales. Cada condición se ejecuta con las tres repeticiones definidas anteriormente, dando lugar a un total de 54 ejecuciones en la fase principal de detección, resumidas en la Tabla~\ref{tab:matriz_experimental}. En cada una de ellas se evalúa el conjunto completo de cestas contrafactuales descrito en la Sección~\ref{sec:dataset}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Matriz experimental de la campaña de detección.}
+	\label{tab:matriz_experimental}
+	\small
+	\begin{tabular}{p{3.0cm} p{2.3cm} p{2.3cm} p{2.3cm} p{2.6cm}}
+		\hline
+		\textbf{Composición} & \textbf{Nivel 0} & \textbf{Nivel 1} &
+		\textbf{Nivel 2} & \textbf{Semillas} \\
+		\hline
+		
+		homo\_llama       & Ejecutada & Ejecutada & Ejecutada & 42, 123, 456 \\
+		homo\_qwen        & Ejecutada & Ejecutada & Ejecutada & 42, 123, 456 \\
+		homo\_mistral     & Ejecutada & Ejecutada & Ejecutada & 42, 123, 456 \\
+		homo\_gpt         & Ejecutada & Ejecutada & Ejecutada & 42, 123, 456 \\
+		hetero\_local     & Ejecutada & Ejecutada & Ejecutada & 42, 123, 456 \\
+		hetero\_api\_gpt  & Ejecutada & Ejecutada & Ejecutada & 42, 123, 456 \\
+		homo\_claude      & Excluida  & Excluida  & Excluida  & -- \\
+		hetero\_api\_claude & Excluida & Excluida & Excluida & -- \\
+		\hline
+	\end{tabular}
+\end{table}
+
+A estas ejecuciones se añaden 18 ejecuciones de placebo, resumidas en la Tabla~\ref{tab:matriz_placebo}, correspondientes a las seis composiciones y las tres semillas. El placebo se ejecuta utilizando el nivel \textit{level\_1\_professional} como condición de referencia y no se replica para cada nivel de instrucción. Su objetivo es proporcionar una estimación externa del nivel de variabilidad entre dos cestas idénticas para cada composición. La construcción de esta condición y su utilización estadística se desarrollan en la Sección~\ref{sec:dataset}. La ausencia de un placebo específico por nivel de instrucción limita su uso como referencia en los contrastes que dependen de esta condición externa, y se retoma en la Sección~\ref{sec:limitaciones}. No afecta, en cambio, al control interno descrito en la Sección~\ref{sec:dataset}, disponible en todas las condiciones por construcción.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Matriz experimental de la condición placebo.}
+	\label{tab:matriz_placebo}
+	\small
+	\begin{tabular}{p{4.0cm} p{4.0cm} p{3.0cm}}
+		\hline
+		\textbf{Composición} & \textbf{Nivel de instrucción} & \textbf{Semillas} \\
+		\hline
+		
+		homo\_llama       & level\_1\_professional & 42, 123, 456 \\
+		homo\_qwen        & level\_1\_professional & 42, 123, 456 \\
+		homo\_mistral     & level\_1\_professional & 42, 123, 456 \\
+		homo\_gpt         & level\_1\_professional & 42, 123, 456 \\
+		hetero\_local     & level\_1\_professional & 42, 123, 456 \\
+		hetero\_api\_gpt  & level\_1\_professional & 42, 123, 456 \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+La fase de mitigación constituye una campaña experimental posterior y se
+describe por separado en la Sección~\ref{sec:mitigacion}, ya que sus condiciones fueron seleccionadas después de completar y analizar la fase de detección.
 
 
 \section{Atributos sensibles y construcción del contrafactual}
@@ -319,9 +362,20 @@ En los análisis de media y de dispersión, las tres repeticiones de una misma p
 
 donde $k_p$ es el número de repeticiones válidas disponibles para la pareja. Las semillas no se tratan así como observaciones independientes y la unidad de análisis sigue siendo la pareja contrafactual. En condiciones completas se obtienen 21 valores de $\bar{g}_{p}$ por celda experimental. Cuando alguna pareja carece de una de las tres repeticiones se conserva su media sobre las disponibles y la celda queda registrada como incompleta, sin imputar ningún valor. El estudio específico de la variabilidad entre semillas se realiza por separado en la Sección~\ref{subsec:icc}.
 
+Los contrastes de las secciones siguientes operan sobre ese conjunto de valores. Dada una celda experimental con $n$ parejas, se definen su media y su varianza muestral como
+
+\begin{equation}
+	\bar{g} = \frac{1}{n}\sum_{p=1}^{n}\bar{g}_{p},
+	\qquad
+	s^{2} = \frac{1}{n-1}\sum_{p=1}^{n}\bigl(\bar{g}_{p}-\bar{g}\bigr)^{2}.
+	\label{eq:media_varianza_celda}
+\end{equation}
+
+Ambas se calculan siempre entre parejas, no entre repeticiones: la variabilidad entre semillas ya ha quedado absorbida por el promedio de la Ecuación~\ref{eq:gap_seed_average} y se analiza por separado en la Sección~\ref{subsec:icc}. Todas las medias y varianzas que aparecen en lo que sigue se refieren a estas magnitudes, calculadas dentro de una única celda experimental y sobre el brazo correspondiente, visible o ciego.
+
 Como indicador descriptivo complementario se calcula además una tasa de verbalización del atributo sensible, definida como la proporción de razonamientos sobre la empresa sujeto que contienen menciones explícitas a términos relacionados con el género, el país o la persona que ocupa el puesto de CEO. Su identificación se realiza mediante coincidencia de palabras clave, no mediante análisis semántico del razonamiento, por lo que esta tasa se emplea únicamente como descriptor de verbalización y no como evidencia inferencial de sesgo.
 
-Para los análisis de medias y para la construcción de intervalos de confianza se emplean procedimientos de remuestreo tomando la pareja como unidad. Los intervalos de confianza del 95\,\% se obtienen mediante 10.000 remuestreos \textit{bootstrap} de las parejas con reemplazo, calculando en cada uno de ellos el estadístico de interés y tomando los percentiles 2,5 y 97,5 de la
+Para los análisis de medias y para la construcción de intervalos de confianza se emplean procedimientos de remuestreo tomando la pareja como unidad. Los intervalos de confianza del 95\,\% se obtienen mediante 10.000 remuestreos \textit{bootstrap} de las parejas con reemplazo~\cite{efron2000introduction}, calculando en cada uno de ellos el estadístico de interés y tomando los percentiles 2,5 y 97,5 de la
 distribución resultante.
 
 Los contrastes sobre medias emplean una prueba de permutación por cambio de signo. Bajo la hipótesis nula y la intercambiabilidad de los signos alrededor de cero, se invierte aleatoriamente el signo de cada \textit{gap} y se generan 10.000 muestras permutadas. El $p$-valor bilateral se calcula como la proporción de permutaciones cuya media, en valor absoluto, iguala o supera la observada. Los procedimientos paramétricos utilizados para el análisis de varianzas y de consistencia entre repeticiones se describen específicamente en las subsecciones correspondientes.
@@ -338,7 +392,7 @@ El desenlace principal del análisis mide si la disponibilidad del atributo sens
 	\label{eq:variance_ratio}
 \end{equation}
 
-donde $s^2_{\mathrm{visible}}$ es la varianza de los \textit{gaps} de los agentes visibles en génesis y $s^2_{\mathrm{ciego}}$ la varianza basal del agente que no recibe el atributo sensible. Un valor $F>1$ indica mayor dispersión en el brazo visible, mientras que $F\simeq1$ señala una variabilidad comparable en ambos brazos.
+donde $s^2_{\mathrm{visible}}$ y $s^2_{\mathrm{ciego}}$ son las varianzas definidas en la Ecuación~\ref{eq:media_varianza_celda}, calculadas respectivamente sobre los \textit{gaps} de los agentes visibles y del agente ciego en génesis. Un valor $F>1$ indica mayor dispersión en el brazo visible y $F\simeq1$ una variabilidad comparable en ambos. Un valor $F<1$ implicaría, en cambio, que los agentes que observan el atributo deciden de forma más estable que el agente que no lo recibe, situación para la que el diseño no ofrece un mecanismo plausible: la manipulación añade información al \textit{prompt} pero no puede reducir la estocasticidad basal del modelo. Las celdas en que esto ocurra deben interpretarse como un indicio de inestabilidad del denominador y no como un efecto en dirección contraria.
 
 El agente ciego proporciona dos estimaciones de esa variabilidad basal, una procedente de las parejas de género y otra de las parejas geográficas. Como su entrada en génesis es independiente del atributo manipulado, ambas estiman la misma cantidad. Se emplea por ello un único denominador para cada combinación de composición y nivel de instrucción:
 
@@ -352,8 +406,19 @@ El agente ciego proporciona dos estimaciones de esa variabilidad basal, una proc
 	\label{eq:blind_pooled_variance}
 \end{equation}
 
-Las dos muestras no se concatenan como si fueran observaciones independientes, puesto que proceden de las mismas parejas contrafactuales. Esta elección evita duplicar artificialmente el tamaño muestral del denominador y hace que las dos celdas correspondientes a género y geografía dentro de un mismo nivel compartan la misma referencia de variabilidad basal. El grado de acuerdo entre ambos
-estimadores se reporta como diagnóstico junto al ratio.
+Las dos muestras no se concatenan como si fueran observaciones independientes, puesto que proceden de las mismas parejas contrafactuales. Esta elección evita duplicar artificialmente el tamaño muestral del denominador y hace que las dos celdas correspondientes a género y geografía dentro de un mismo nivel compartan la misma referencia de variabilidad basal. El grado de acuerdo entre ambos estimadores se evalúa mediante el cociente
+
+\begin{equation}
+	F_{\mathrm{homog}} =
+	\frac{
+		s^2_{\mathrm{ciego,genero}}
+	}{
+		s^2_{\mathrm{ciego,geografia}}
+	},
+	\label{eq:homogeneidad_ciego}
+\end{equation}
+
+utilizado como diagnóstico de estabilidad del \textit{null} interno. Un valor próximo a uno indica que ambas series proporcionan estimaciones similares de la variabilidad basal, mientras que valores alejados de uno señalan inestabilidad entre dos estimadores que, por construcción, deberían representar la misma cantidad. Se reporta además el $p$-valor bilateral asociado al cociente de varianzas. Este diagnóstico no forma parte de la familia principal de 36 contrastes ni interviene en la corrección por comparaciones múltiples.
 
 La igualdad de varianzas se contrasta mediante un test $F$ bilateral de Fisher. Dada la sensibilidad de este contraste frente a desviaciones de la normalidad, se calcula además el test de Levene centrado en la mediana como comprobación robusta, en la variante propuesta por Brown y Forsythe~\cite{brown1974robust}. El test de Fisher compara la varianza visible con el denominador ciego combinado de la Ecuación~\ref{eq:blind_pooled_variance}; el de Levene requiere las observaciones originales y compara la muestra visible con la muestra ciega correspondiente al mismo atributo.
 
@@ -370,16 +435,7 @@ Aunque el contraste inferencial se sitúa en génesis, el mismo ratio y sus comp
 \subsection{Gap medio y referencia placebo}
 \label{subsec:gap_medio}
 
-Como medida complementaria de dirección se analiza el \textit{gap} medio en génesis. Para cada celda experimental se calcula
-
-\begin{equation}
-	\bar{g} =
-	\frac{1}{n}
-	\sum_{p=1}^{n}\bar{g}_{p},
-	\label{eq:mean_gap}
-\end{equation}
-
-donde $n$ es el número de parejas disponibles. Esta métrica detecta desplazamientos sistemáticos de la asignación hacia valores positivos o negativos, mientras que el ratio de la Sección~\ref{subsec:dispersion_genesis} mide cambios en la estabilidad de las decisiones. Ambos fenómenos son conceptualmente distintos: una manipulación puede alterar la dispersión de las asignaciones sin desplazar su media.
+Como medida complementaria de dirección se analiza el \textit{gap} medio en génesis definida en la Ecuación~\ref{eq:media_varianza_celda}. Esta métrica detecta desplazamientos sistemáticos de la asignación hacia valores positivos o negativos, mientras que el ratio de la Sección~\ref{subsec:dispersion_genesis} mide cambios en la estabilidad de las decisiones. Ambos fenómenos son conceptualmente distintos: una manipulación puede alterar la dispersión de las asignaciones sin desplazar su media.
 
 La hipótesis nula $\bar{g}=0$ se contrasta mediante la prueba de permutación por cambio de signo descrita en la Sección~\ref{subsec:definicion_gap}, junto con su intervalo de confianza \textit{bootstrap}. Los 36 contrastes correspondientes a las combinaciones de composición, nivel de instrucción y atributo se corrigen conjuntamente mediante Benjamini--Hochberg con $q=0{,}05$~\cite{benjamini1995controlling}.
 

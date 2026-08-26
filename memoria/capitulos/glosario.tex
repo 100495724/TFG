@@ -28,6 +28,10 @@
 	
 	\item[P/E] \textit{Price-to-Earnings ratio}. Relación entre el precio de la
 	acción y el beneficio por acción.
+	
+	\item[vLLM] Motor de inferencia para modelos de lenguaje, empleado para
+	servir los modelos abiertos de la campaña experimental.
+	
 \end{description}
 
 \chapter*{Glosario de términos}
@@ -37,6 +41,11 @@
 	\item[Agente ciego] Agente del comité cuyo \textit{prompt} omite el atributo
 	sensible, de modo que su entrada es idéntica en las variantes de una misma
 	pareja. Actúa como \textit{null} interno del diseño.
+	
+	\item[Alias] Identificador neutro (\textit{Company 1} a \textit{Company 4})
+	con el que se presentan las empresas a los agentes, en sustitución de su
+	nombre real y su \textit{ticker}, que se conservan únicamente en el registro
+	experimental.
 	
 	\item[Arquetipo] Combinación de un sector económico y un perfil financiero
 	que define una empresa sujeto y su cesta asociada. El diseño emplea 21
@@ -53,6 +62,11 @@
 	\item[Composición] Combinación de modelos de lenguaje asignada a los tres
 	agentes del comité. Es homogénea cuando los tres comparten el mismo modelo y
 	heterogénea cuando pertenecen a familias distintas.
+	
+	\item[Contrafactual pareado] Comparación entre dos evaluaciones de una misma
+	empresa que solo difieren en el valor del atributo sensible, manteniendo
+	constante toda la información relevante para la decisión. Constituye el
+	principio de comparación sobre el que se construye el diseño experimental.
 	
 	\item[Empresa de contexto] Cada una de las tres empresas que acompañan a la
 	empresa sujeto dentro de una cesta y que se mantienen constantes entre las
