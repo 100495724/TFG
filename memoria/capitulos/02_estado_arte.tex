@@ -6,6 +6,17 @@
 \section{Fundamentos de los modelos de lenguaje relevantes para este trabajo}
 \label{sec:fundamentos_llm}
 
+Los modelos de lenguaje utilizados en este trabajo pertenecen a la familia de modelos basados en la arquitectura \textit{Transformer}, introducida por Vaswani et al.~\cite{vaswani2017attention}. Esta arquitectura sustituye las dependencias recurrentes tradicionales por mecanismos de atención, permitiendo modelar relaciones entre los elementos de una secuencia con independencia de su distancia. Sobre esta base se han desarrollado los modelos de lenguaje autorregresivos modernos, que generan una respuesta estimando sucesivamente la distribución de probabilidad del siguiente token condicionada por el contexto precedente~\cite{brown2020language}.
+
+Esta naturaleza probabilística resulta especialmente relevante para el diseño experimental del presente trabajo. Cuando la generación emplea estrategias de muestreo, una misma entrada no determina necesariamente una única continuación: la respuesta se obtiene seleccionando tokens de una distribución cuya forma depende tanto del modelo como de los parámetros de decodificación. Técnicas
+como \textit{nucleus sampling} restringen el muestreo al conjunto de tokens que concentra una determinada masa de probabilidad, permitiendo mantener diversidad en la generación sin recurrir a una selección puramente determinista~\cite{holtzman2019curious}. Parámetros como la temperatura y
+\textit{top-p} permiten controlar esta distribución y, por tanto, constituyen variables experimentales que deben mantenerse constantes cuando se comparan distintas condiciones.
+
+Otra propiedad central es la capacidad de los modelos de adaptar su comportamiento a la información proporcionada en el contexto. Brown et al.~\cite{brown2020language} mostraron que un modelo puede realizar nuevas tareas a partir de instrucciones y ejemplos incluidos directamente en la entrada, sin necesidad de actualizar sus parámetros. Esta capacidad de condicionamiento contextual permite utilizar el \textit{prompt} no solo para describir la tarea, sino también para asignar funciones, proporcionar información específica o establecer restricciones sobre el comportamiento esperado. En este trabajo constituye la base tanto de los distintos niveles de instrucción asignados a los agentes como de las intervenciones de mitigación evaluadas posteriormente.
+
+A esta capacidad se suma el desarrollo de modelos específicamente ajustados para seguir instrucciones. Procedimientos de ajuste supervisado y aprendizaje a partir de preferencias humanas han demostrado que el comportamiento de un modelo preentrenado puede orientarse hacia el cumplimiento de las intenciones expresadas por el usuario~\cite{ouyang2022training}. Esto no implica que el modelo abandone las asociaciones adquiridas durante el preentrenamiento, pero sí que la formulación de las instrucciones puede alterar sustancialmente la respuesta generada. Esta sensibilidad al contexto y a las instrucciones resulta fundamental para estudiar, en las secciones siguientes, tanto la aparición de diferencias asociadas a atributos sensibles como la posibilidad
+de intervenir sobre ellas mediante el propio \textit{prompt}.
+
 \section{Sesgo y fairness en modelos de lenguaje}
 \label{sec:sesgo_fairness}
 

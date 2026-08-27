@@ -1,5 +1,5 @@
 % !TeX root = ../main.tex
-
+\pagenumbering{gobble} % Las páginas de los anexos no se numeran
 \appendix
 
 \chapter{Prompts experimentales}
@@ -48,6 +48,133 @@
 
 \section{Figuras complementarias}
 \label{anexo:figuras_complementarias}
+
+Las Figuras~\ref{fig:f05_hetero_api_gpt}--\ref{fig:f05_homo_qwen} recogen las trayectorias completas del \textit{gap} medio durante los cinco turnos para las seis composiciones y los dos atributos sensibles. En cada panel se muestran los tres niveles de instrucción y la condición placebo, junto con sus respectivos intervalos de confianza \textit{bootstrap} del 95\,\%.
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_hetero_api_gpt_country.png}
+		\caption{Geografía.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_hetero_api_gpt_gender.png}
+		\caption{Género.}
+	\end{subfigure}
+	
+	\caption{Trayectoria del \textit{gap} medio durante la deliberación para
+		\textit{hetero\_api\_gpt}.}
+	\label{fig:f05_hetero_api_gpt}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_hetero_local_country.png}
+		\caption{Geografía.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_hetero_local_gender.png}
+		\caption{Género.}
+	\end{subfigure}
+	
+	\caption{Trayectoria del \textit{gap} medio durante la deliberación para
+		\textit{hetero\_local}.}
+	\label{fig:f05_hetero_local}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_gpt_country.png}
+		\caption{Geografía.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_gpt_gender.png}
+		\caption{Género.}
+	\end{subfigure}
+	
+	\caption{Trayectoria del \textit{gap} medio durante la deliberación para
+		\textit{homo\_gpt}.}
+	\label{fig:f05_homo_gpt}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_llama_country.png}
+		\caption{Geografía.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_llama_gender.png}
+		\caption{Género.}
+	\end{subfigure}
+	
+	\caption{Trayectoria del \textit{gap} medio durante la deliberación para
+		\textit{homo\_llama}.}
+	\label{fig:f05_homo_llama}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_mistral_country.png}
+		\caption{Geografía.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_mistral_gender.png}
+		\caption{Género.}
+	\end{subfigure}
+	
+	\caption{Trayectoria del \textit{gap} medio durante la deliberación para
+		\textit{homo\_mistral}.}
+	\label{fig:f05_homo_mistral}
+\end{figure}
+
+
+\begin{figure}[htbp]
+	\centering
+	
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_qwen_country.png}
+		\caption{Geografía.}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.48\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{imagenes/F05_trayectoria_gap_homo_qwen_gender.png}
+		\caption{Género.}
+	\end{subfigure}
+	
+	\caption{Trayectoria del \textit{gap} medio durante la deliberación para
+		\textit{homo\_qwen}.}
+	\label{fig:f05_homo_qwen}
+\end{figure}
 
 
 \chapter{Reproducibilidad}

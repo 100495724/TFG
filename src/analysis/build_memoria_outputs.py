@@ -1968,8 +1968,8 @@ def build_f02(t06: pd.DataFrame, output_path: Path) -> Path | None:
         ax.plot(by_turn.index, by_turn.to_numpy(), marker="o", label=composition, color=cmap(i % 10))
     ax.axhline(1.0, color="grey", linestyle="--", linewidth=1, label="F=1 (sin exceso)")
     ax.set_xlabel("Turno (0 = genesis)")
-    ax.set_ylabel("F = var(visible)/var(ciego), media sobre niveles y atributos")
-    ax.set_title("F02 - decaimiento del exceso de varianza por turno")
+    ax.set_ylabel("Ratio de varianzas F, media sobre niveles y atributos")
+    ax.set_title("F02 - evolución de la dispersión relativa durante la deliberación")
     ax.legend(fontsize=7, ncol=2)
     fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1978,7 +1978,7 @@ def build_f02(t06: pd.DataFrame, output_path: Path) -> Path | None:
     return output_path
 
 
-def build_f03(t03: pd.DataFrame, output_path: Path) -> Path | None:
+def build_f03(t03: pd.DataFrame, t02: pd.DataFrame, output_path: Path) -> Path | None:
     """F03 - forest plot of the 36 genesis means, IC95 and zero line: the
     visual evidence of the null result T03 documents."""
     if t03 is None or t03.empty:
@@ -1988,6 +1988,21 @@ def build_f03(t03: pd.DataFrame, output_path: Path) -> Path | None:
     table = t03.sort_values(["sensitive_attr", "composition", "instruction_level"]).reset_index(drop=True)
     y = np.arange(len(table))
     fig, ax = plt.subplots(figsize=(8, max(4, 0.28 * len(table))))
+    if t02 is not None and not t02.empty:
+        placebo_t0 = t02[t02["turn"] == GENESIS_TURN]
+
+        if not placebo_t0.empty:
+            placebo_lo = placebo_t0["ci95_lo"].min()
+            placebo_hi = placebo_t0["ci95_hi"].max()
+
+            ax.axvspan(
+                placebo_lo,
+                placebo_hi,
+                color="green",
+                alpha=0.10,
+                label="Envolvente IC 95% placebo",
+                zorder=0,
+            )
     colors = ["#c0392b" if s else "#7f8c8d" for s in table["sig_BH"]]
     # matplotlib's errorbar takes ONE ecolor, not a per-point list, so the
     # whiskers are drawn neutral and the BH significance is carried by the
@@ -2007,7 +2022,7 @@ def build_f03(t03: pd.DataFrame, output_path: Path) -> Path | None:
     ax.set_yticklabels(labels, fontsize=6)
     ax.invert_yaxis()
     ax.set_xlabel("Media del gap (EUR), IC 95% bootstrap")
-    ax.set_title("F03 - forest plot de las 36 medias de genesis (resultado nulo)")
+    ax.set_title("F03 - forest plot de las 36 medias de genesis")
     fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=150)
@@ -2080,8 +2095,17 @@ def build_f04(
     ax.scatter(treatment["icc"], y, c=colors, s=28, zorder=2)
     ax.axvline(0, color="grey", linestyle="--", linewidth=1)
     if not placebo_rows.empty:
-        placebo_icc = float(placebo_rows["icc"].mean())
-        ax.axvline(placebo_icc, color="#2980b9", linestyle=":", linewidth=1.5, label=f"placebo ICC={placebo_icc:.3f}")
+        placebo_lo = float(placebo_rows["icc"].min())
+        placebo_hi = float(placebo_rows["icc"].max())
+
+        ax.axvspan(
+            placebo_lo,
+            placebo_hi,
+            color="#2980b9",
+            alpha=0.12,
+            label=f"rango placebo [{placebo_lo:.3f}, {placebo_hi:.3f}]",
+            zorder=0,
+        )
         ax.legend(fontsize=8)
     labels = [
         f"{r['composition']} / {LEVEL_SHORT.get(r['instruction_level'], r['instruction_level'])} / {r['sensitive_attr']}"
@@ -2100,8 +2124,8 @@ def build_f04(
 
 
 def build_f05(df: pd.DataFrame, df_placebo: pd.DataFrame | None, output_dir: Path) -> list[Path]:
-    """F05 - gap trajectory with the placebo band, one file per
-    (composition, sensitive_attr): ``trajectory_with_placebo`` reused as-is."""
+    """F05 - gap trajectory with bootstrap 95% CIs for treatment and placebo,
+    one file per (composition, sensitive_attr)."""
     written: list[Path] = []
     if df is None or df.empty or "composition" not in df.columns:
         return written
@@ -2123,7 +2147,7 @@ def build_f05(df: pd.DataFrame, df_placebo: pd.DataFrame | None, output_dir: Pat
                 ax.fill_between(frame["turn"], frame["ci_lo"], frame["ci_hi"], alpha=0.15)
             placebo_frame = traj.dropna(subset=["placebo_mean"]).drop_duplicates("turn").sort_values("turn")
             if not placebo_frame.empty:
-                ax.plot(placebo_frame["turn"], placebo_frame["placebo_mean"], color="grey", linestyle="--", label="placebo")
+                ax.plot(placebo_frame["turn"], placebo_frame["placebo_mean"], color="grey", linestyle="--", label="placebo (IC 95%)")
                 ax.fill_between(
                     placebo_frame["turn"], placebo_frame["placebo_lo"], placebo_frame["placebo_hi"],
                     color="grey", alpha=0.12,
@@ -2450,8 +2474,8 @@ def main(argv: list[str] | None = None) -> int:
             manifest.add_output(FIGURE_FILENAMES["F01"], "build_f01", detection=df_detection)
         if build_f02(t06, out_dir / "figures" / FIGURE_FILENAMES["F02"]) is not None:
             manifest.add_output(FIGURE_FILENAMES["F02"], "build_f02", detection=df_detection)
-        if build_f03(t03, out_dir / "figures" / FIGURE_FILENAMES["F03"]) is not None:
-            manifest.add_output(FIGURE_FILENAMES["F03"], "build_f03", detection=df_detection)
+        if build_f03(t03, t02, out_dir / "figures" / FIGURE_FILENAMES["F03"]) is not None:
+            manifest.add_output(FIGURE_FILENAMES["F03"], "build_f03", detection=df_detection, placebo=df_placebo)
         if build_f04(df_detection, df_placebo, t05, out_dir / "figures" / FIGURE_FILENAMES["F04"]) is not None:
             manifest.add_output(FIGURE_FILENAMES["F04"], "build_f04", detection=df_detection, placebo=df_placebo)
         for figure_path in build_f05(df_detection, df_placebo, out_dir / "figures"):

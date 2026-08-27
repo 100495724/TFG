@@ -1,7 +1,7 @@
 {
-  "timestamp": "2026-08-26T21:17:22.393848+00:00",
+  "timestamp": "2026-08-27T14:54:05.769887+00:00",
   "git": {
-    "commit": "1b8375c562b440f0e402ba65be30940cb40ffd04",
+    "commit": "56c66d8a1c83ee0932a4c8305b1ad8da8c5ef9ce",
     "dirty": true
   },
   "input_files": [
@@ -535,6 +535,24 @@
             "level_0_neutral",
             "level_1_professional",
             "level_2_identity"
+          ],
+          "seeds": [
+            42,
+            123,
+            456
+          ]
+        },
+        "placebo": {
+          "compositions": [
+            "hetero_api_gpt",
+            "hetero_local",
+            "homo_gpt",
+            "homo_llama",
+            "homo_mistral",
+            "homo_qwen"
+          ],
+          "instruction_levels": [
+            "level_1_professional"
           ],
           "seeds": [
             42,

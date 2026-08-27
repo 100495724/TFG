@@ -814,59 +814,163 @@ def trajectory_with_placebo(
     attr: str,
     include_errors: bool = False,
 ) -> pd.DataFrame:
-    """Per-turn gap trajectory (mean +/- bootstrap CI, seeds grouped) with the
-    placebo band overlaid, ready to plot.
+    """Per-turn gap trajectory with bootstrap 95% CIs.
 
-    Columns: ``turn, mean_gap, ci_lo, ci_hi, placebo_mean, placebo_lo,
-    placebo_hi`` per (composition, instruction_level, sensitive_attr).
+    Treatment and placebo are aggregated consistently:
+    agent gaps -> visible committee per pair/seed -> seed average per pair ->
+    mean + bootstrap CI over pairs.
 
-    The placebo band is joined by (composition, turn) ONLY - never by
-    instruction_level - so the single per-composition placebo (currently only
-    level_1) is broadcast to every instruction_level of that composition.
+    Columns:
+    composition, instruction_level, sensitive_attr, turn,
+    mean_gap, ci_lo, ci_hi,
+    placebo_mean, placebo_lo, placebo_hi.
     """
     columns = [
-        "composition", "instruction_level", "sensitive_attr", "turn",
-        "mean_gap", "ci_lo", "ci_hi", "placebo_mean", "placebo_lo", "placebo_hi",
+        "composition",
+        "instruction_level",
+        "sensitive_attr",
+        "turn",
+        "mean_gap",
+        "ci_lo",
+        "ci_hi",
+        "placebo_mean",
+        "placebo_lo",
+        "placebo_hi",
     ]
-    long = _treatment_agent_gap_long(df, attr, include_errors=include_errors)
+
+    # ---------------------------------------------------------
+    # Treatment
+    # ---------------------------------------------------------
+    long = _treatment_agent_gap_long(
+        df,
+        attr,
+        include_errors=include_errors,
+    )
+
     if long.empty:
         return _empty(columns)
-    long = long.copy()
-    long["gap"] = pd.to_numeric(long["gap"], errors="coerce")
-    long["turn"] = pd.to_numeric(long["turn"], errors="coerce")
 
-    ckeys = rex._present(long, ["composition", "instruction_level", "seed", "pair_id", "turn"])
-    committee = long.groupby(ckeys, dropna=False)["gap"].mean().reset_index()
-    gkeys = rex._present(committee, ["composition", "instruction_level", "turn"])
     rows = []
-    for keys, frame in committee.groupby(gkeys, dropna=False):
-        if not isinstance(keys, tuple):
-            keys = (keys,)
-        meta = dict(zip(gkeys, keys))
-        vals = frame["gap"].dropna().to_numpy(dtype=float)
-        lo, hi = _bootstrap_ci(vals)
-        meta["mean_gap"] = float(np.mean(vals)) if vals.size else float("nan")
-        meta["ci_lo"] = lo
-        meta["ci_hi"] = hi
-        rows.append(meta)
+
+    turns = sorted(
+        pd.to_numeric(long["turn"], errors="coerce")
+        .dropna()
+        .astype(int)
+        .unique()
+        .tolist()
+    )
+
+    for turn in turns:
+        _, seed_avg = _seed_avg_pair_gaps(
+            long,
+            turn=turn,
+            visible_only=True,
+        )
+
+        if seed_avg.empty:
+            continue
+
+        for level, frame in seed_avg.groupby(
+            "instruction_level",
+            dropna=False,
+        ):
+            vals = (
+                pd.to_numeric(frame["gap"], errors="coerce")
+                .dropna()
+                .to_numpy(dtype=float)
+            )
+
+            if vals.size == 0:
+                continue
+
+            lo, hi = _bootstrap_ci(vals)
+
+            rows.append({
+                "composition": (
+                    df["composition"].iloc[0]
+                    if "composition" in df.columns
+                    else "unknown"
+                ),
+                "instruction_level": level,
+                "sensitive_attr": attr,
+                "turn": turn,
+                "mean_gap": float(vals.mean()),
+                "ci_lo": lo,
+                "ci_hi": hi,
+            })
+
     traj = pd.DataFrame(rows)
+
     if traj.empty:
         return _empty(columns)
-    traj["sensitive_attr"] = attr
 
-    band = placebo_band(df_placebo, include_errors=include_errors) if df_placebo is not None else _empty([])
-    if not band.empty:
-        # placebo_band gap is (placebo_a - placebo_b) with lo=q05, hi=q95;
-        # negate to (placebo_b - placebo_a): mean -> -mean, [lo,hi] -> [-hi,-lo].
-        pb = pd.DataFrame({
-            "composition": band["composition"].to_numpy(),
-            "turn": pd.to_numeric(band["turn"], errors="coerce").to_numpy(),
-            "placebo_mean": -band["mean_gap"].to_numpy(dtype=float),
-            "placebo_lo": -band["hi"].to_numpy(dtype=float),
-            "placebo_hi": -band["lo"].to_numpy(dtype=float),
-        })
-        join_keys = rex._present(traj, ["composition", "turn"])
-        traj = traj.merge(pb, on=join_keys, how="left")
+    # ---------------------------------------------------------
+    # Placebo
+    # ---------------------------------------------------------
+    placebo_rows = []
+
+    if df_placebo is not None and not df_placebo.empty:
+        placebo_long = _placebo_agent_gap_long(
+            df_placebo,
+            include_errors=include_errors,
+        )
+
+        if not placebo_long.empty:
+            placebo_turns = sorted(
+                pd.to_numeric(
+                    placebo_long["turn"],
+                    errors="coerce",
+                )
+                .dropna()
+                .astype(int)
+                .unique()
+                .tolist()
+            )
+
+            for turn in placebo_turns:
+                _, placebo_seed_avg = _seed_avg_pair_gaps(
+                    placebo_long,
+                    turn=turn,
+                    visible_only=True,
+                )
+
+                if placebo_seed_avg.empty:
+                    continue
+
+                vals = (
+                    pd.to_numeric(
+                        placebo_seed_avg["gap"],
+                        errors="coerce",
+                    )
+                    .dropna()
+                    .to_numpy(dtype=float)
+                )
+
+                if vals.size == 0:
+                    continue
+
+                lo, hi = _bootstrap_ci(vals)
+
+                placebo_rows.append({
+                    "composition": (
+                        df_placebo["composition"].iloc[0]
+                        if "composition" in df_placebo.columns
+                        else "unknown"
+                    ),
+                    "turn": turn,
+                    "placebo_mean": float(vals.mean()),
+                    "placebo_lo": lo,
+                    "placebo_hi": hi,
+                })
+
+    if placebo_rows:
+        pb = pd.DataFrame(placebo_rows)
+
+        traj = traj.merge(
+            pb,
+            on=["composition", "turn"],
+            how="left",
+        )
     else:
         traj["placebo_mean"] = np.nan
         traj["placebo_lo"] = np.nan
@@ -874,6 +978,7 @@ def trajectory_with_placebo(
 
     ordered = [c for c in columns if c in traj.columns]
     remaining = [c for c in traj.columns if c not in ordered]
+
     return traj[ordered + remaining]
 
 

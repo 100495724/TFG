@@ -3,6 +3,10 @@
 \chapter{Resultados}
 \label{chap:resultados}
 
+Este capítulo presenta los resultados obtenidos en las campañas de detección, placebo y mitigación. El análisis parte de la calidad y cobertura de los datos y examina posteriormente las distintas manifestaciones del efecto estudiado: la dispersión y el desplazamiento medio en génesis, su posible asociación con cestas concretas, su evolución durante la deliberación y la transmisión de diferencias entre agentes. Finalmente, se evalúa el efecto de las instrucciones de mitigación sobre la variabilidad observada.
+
+Los resultados se presentan de acuerdo con los contrastes y criterios inferenciales definidos en el Capítulo~\ref{chap:metodologia}, teniendo en cuenta las restricciones identificadas durante la validación del instrumento en el Capítulo~\ref{chap:validacion}. Su interpretación conjunta, su relación con la literatura previa y las limitaciones que condicionan su alcance se desarrollan en el Capítulo~\ref{chap:discusion}.
+
 \section{Calidad y cobertura de los datos}
 \label{sec:resultados_calidad}
 
@@ -104,16 +108,10 @@ En conjunto, las tres campañas presentan una cobertura prácticamente completa.
 \section{Exceso de dispersión en génesis}
 \label{sec:resultados_dispersion}
 
-Esta sección presenta el resultado principal del estudio: si la presencia del atributo sensible incrementa la dispersión de las decisiones respecto a la variabilidad basal estimada por el agente ciego. El análisis se realiza sobre las 36 celdas definidas por el cruce de seis composiciones, tres niveles de instrucción y dos atributos sensibles. La Figura~\ref{fig:f01_sd_visible_ciego} resume visualmente la relación entre la desviación típica visible y la del agente ciego en cada una de ellas.
+Esta sección presenta el desenlace principal definido en la Sección~\ref{subsec:dispersion_genesis}: si la presencia del atributo sensible incrementa la dispersión de las decisiones respecto a la variabilidad basal estimada por el agente ciego. El análisis se realiza sobre las 36 celdas definidas por el cruce de seis composiciones, tres niveles de instrucción y dos atributos sensibles. La Figura~\ref{fig:f01_sd_visible_ciego} resume visualmente la relación entre la desviación típica visible y la del agente ciego en cada una de ellas.
 
-\begin{figure}[htbp]
-	\centering
-	\includegraphics[width=\textwidth]{imagenes/F01_varianza_visible_vs_ciego.png}
-	\caption{Desviación típica del \textit{gap} visible y ciego en génesis
-		por composición, nivel de instrucción y atributo sensible. Los asteriscos
-		indican las celdas significativas tras la corrección de BH sobre la familia global de 36 contrastes, definida en la Sección~\ref{subsec:dispersion_genesis}.}
-	\label{fig:f01_sd_visible_ciego}
-\end{figure}
+En términos prácticos, una mayor dispersión significa que los \textit{gaps} varían más entre unas parejas y otras: cuando este patrón aparece, la presencia del atributo sensible se asocia con diferencias de asignación menos homogéneas respecto al control, aunque estas no tengan necesariamente una dirección común. Por tanto, un aumento de dispersión no implica por sí mismo una
+penalización o una bonificación media de la variante.
 
 \subsection{Suelo de ruido placebo}
 \label{subsec:resultados_placebo}
@@ -131,7 +129,7 @@ La Tabla~\ref{tab:placebo_genesis} resume los resultados en génesis ($t=0$). Ca
 		\hline
 		\textbf{Composición} &
 		\textbf{Media del \textit{gap}} &
-		\textbf{SD} &
+		\textbf{Desv. típica} &
 		\textbf{IC 95\,\%} &
 		\textbf{$p$} \\
 		\hline
@@ -165,7 +163,16 @@ Estos valores sirven como referencia externa: aun comparando cestas gemelas, las
 
 La Figura~\ref{fig:f01_sd_visible_ciego} muestra una separación nítida entre composiciones. Los asteriscos señalan las celdas que sobreviven a la corrección de Benjamini--Hochberg sobre la familia completa de 36 contrastes, definida en la Sección~\ref{subsec:dispersion_genesis}. En total, 14 celdas resultan significativas según este criterio.
 
-No obstante, dos de esas celdas corresponden a \textit{homo\_gpt} con nivel profesional, la condición declarada no interpretable en la Sección~\ref{sec:celdas_excluidas} por inestabilidad de la referencia ciega. Por ello, el resultado sustantivo del estudio se apoya en 12 celdas interpretables con evidencia de exceso de dispersión.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth]{imagenes/F01_varianza_visible_vs_ciego.png}
+	\caption{Desviación típica del \textit{gap} visible y ciego en génesis
+		por composición, nivel de instrucción y atributo sensible. Los asteriscos
+		indican las celdas significativas tras la corrección de BH sobre la familia global de 36 contrastes, definida en la Sección~\ref{subsec:dispersion_genesis}.}
+	\label{fig:f01_sd_visible_ciego}
+\end{figure}
+
+No obstante, dos de esas catorce celdas corresponden a \textit{homo\_gpt} con nivel profesional, con ratios $F=0{,}26$ y $F=0{,}17$. Su significación no indica un exceso de dispersión sino una varianza visible sustancialmente inferior a la del agente ciego, lectura que la Sección~\ref{subsec:dispersion_genesis} descarta y que la Sección~\ref{sec:celdas_excluidas} atribuye a la inestabilidad de la referencia ciega en esa condición. El resultado sustantivo se apoya, por tanto, en 12 celdas con evidencia de exceso de dispersión.
 
 En las 12 celdas interpretables que sobreviven al criterio principal, los ratios de varianzas se sitúan entre $F=3{,}10$ y $F=8{,}22$. La Tabla~\ref{tab:dispersion_significativa} recoge estos resultados. La columna $q$ global corresponde al valor $p$ ajustado mediante el procedimiento de
 Benjamini--Hochberg sobre la familia completa de 36 contrastes, según lo definido en la Sección~\ref{subsec:dispersion_genesis}. Se incluye además el $p$-valor del contraste de Levene como comprobación de robustez.
@@ -207,7 +214,7 @@ Benjamini--Hochberg sobre la familia completa de 36 contrastes, según lo defini
 La magnitud máxima aparece en \textit{homo\_qwen} con nivel profesional y atributo geográfico, donde la varianza visible supera en más de ocho veces la referencia ciega ($F=8{,}22$). El patrón no se concentra, sin embargo, en una única configuración: aparece en los tres modelos locales homogéneos, en ambos atributos sensibles y en distintos niveles de instrucción.
 
 El contraste de Levene, descrito en la Sección~\ref{subsec:dispersion_genesis}, actúa como comprobación robusta de la diferencia de varianzas. Un valor $p_{\mathrm{Levene}}<0{,}05$ permite
-rechazar, al nivel del 5\,\%, la hipótesis de que la muestra visible y la muestra ciega correspondiente presentan la misma varianza. En las celdas de la Tabla~\ref{tab:dispersion_significativa}, donde además $F>1$, este resultado respalda que la mayor dispersión observada en el brazo visible no depende únicamente del contraste $F$ de Fisher. Diez de las doce celdas interpretables cumplen también este criterio. Las dos excepciones son \textit{homo\_llama} con nivel neutral y atributo de género ($p_{\mathrm{Levene}}=0{,}066$) y \textit{homo\_qwen} en la misma combinación de nivel y atributo ($p_{\mathrm{Levene}}=0{,}051$). En estas dos celdas, el contraste de Levene no alcanza el umbral de significación del 5\,\%. Por tanto, aunque ambas siguen siendo significativas según el contraste principal de Fisher tras la corrección BH, esta conclusión no queda confirmada por la comprobación robusta de Levene.
+rechazar, al nivel del 5\,\%, la hipótesis de que la muestra visible y la muestra ciega correspondiente presentan la misma varianza. En las celdas de la Tabla~\ref{tab:dispersion_significativa}, donde además $F>1$, este resultado respalda que la mayor dispersión observada en el brazo visible no depende únicamente del contraste $F$ de Fisher. Diez de las doce celdas interpretables cumplen también este criterio. Las dos excepciones son \textit{homo\_llama} con nivel neutral y atributo de género ($p_{\mathrm{Levene}}=0{,}066$) y \textit{homo\_qwen} en la misma combinación de nivel y atributo ($p_{\mathrm{Levene}}=0{,}051$). En estas dos celdas, el contraste de Levene no alcanza el umbral de significación del 5\,\%. Por tanto, aunque ambas siguen siendo significativas según el contraste principal de Fisher tras la corrección BH, esta conclusión no queda confirmada por la comprobación robusta de Levene. Además, las dos celdas no interpretables de \textit{homo\_gpt} presentan además $p_{\mathrm{Levene}}$ de 0,241 y 0,342, de modo que el contraste robusto tampoco las confirma.
 
 Como comprobación secundaria, la corrección BH se aplicó también por separado a los seis contrastes de cada composición. Este análisis no modifica la clasificación obtenida con la familia global de 36 contrastes: ninguna celda pierde significación y tampoco aparece ninguna celda adicional. Ambos procedimientos identifican, por tanto, las mismas 14 celdas.
 
@@ -236,7 +243,7 @@ El análisis de dispersión se definió tras observar este fenómeno en la compo
 		& 0/6 & 0/6 & Ninguna \\
 		
 		\textit{homo\_gpt}
-		& 2/6 & 0/6 & Nivel 1 en género y geografía, no interpretables \\
+		& 2/6 & 0/6 & Nivel 1 en género y geografía, con $F<1$; no interpretables \\
 		
 		\textit{homo\_llama}
 		& 4/6 & 4/6 & Nivel 0 en género y geografía; nivel 1 en género y geografía \\
@@ -264,15 +271,450 @@ El patrón global que deja esta sección puede resumirse en tres puntos. Primero
 \section{Gap medio en génesis}
 \label{sec:resultados_gap_medio}
 
+El análisis anterior muestra que la presencia del atributo sensible puede incrementar la dispersión de las decisiones. Una cuestión distinta es si esa variabilidad adicional se traduce en un desplazamiento sistemático de la asignación media. Para comprobarlo se analiza el \textit{gap} medio en las mismas 36 celdas experimentales. Conforme a la definición de la Sección~\ref{subsec:definicion_gap}, valores negativos indican una menor asignación a la variante sensible respecto al control y valores positivos una asignación mayor.
+
+La Figura~\ref{fig:f03_medias_genesis} representa las medias observadas y sus intervalos de confianza \textit{bootstrap} del 95\,\%. Consideradas en conjunto, las 36 celdas no muestran un desplazamiento medio uniforme en una misma dirección. No obstante, al separar los resultados por atributo sensible aparece una asimetría descriptiva, especialmente en las variantes geográficas, que se analiza más adelante en esta sección.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth, height=0.95\textheight, keepaspectratio]{imagenes/F03_genesis_forest_medias.png}
+	\caption{Media del \textit{gap} en génesis para las 36 celdas
+		experimentales. Las barras representan los intervalos de confianza
+		\textit{bootstrap} del 95\,\% definidos en la
+		Sección~\ref{subsec:definicion_gap}; la línea discontinua indica ausencia
+		de desplazamiento medio ($\bar{g}=0$). La zona sombreada representa el rango abarcado 		por los intervalos de confianza del 95\,\% de la media placebo en génesis para
+		las seis composiciones y se incluye como referencia descriptiva externa del ruido.}
+	\label{fig:f03_medias_genesis}
+\end{figure}
+
+El contraste principal sobre las medias es la prueba de cambio de signo definida en la Sección~\ref{subsec:definicion_gap}. Antes de corregir por comparaciones múltiples, cuatro de las 36 celdas presentan $p<0{,}05$. Sin embargo, ninguna conserva la significación tras aplicar la corrección de Benjamini--Hochberg sobre la familia completa de contrastes. El menor valor ajustado es $q=0{,}2457$, por encima del umbral de $q=0{,}05$ fijado en la metodología.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Celdas con $p<0{,}05$ antes de la corrección por comparaciones
+		múltiples en el análisis del \textit{gap} medio.}
+	\label{tab:gap_medio_nominal}
+	\small
+	\begin{tabular}{p{3.1cm} c c c c c}
+		\hline
+		\textbf{Composición} &
+		\textbf{Nivel} &
+		\textbf{Atributo} &
+		\textbf{Media} &
+		\textbf{$p$} &
+		\textbf{$q$ BH} \\
+		\hline
+		
+		\textit{homo\_llama}
+		& 2 & Género & 2.393~€ & 0,0088 & 0,2457 \\
+		
+		\textit{homo\_mistral}
+		& 1 & Geografía & -1.982~€ & 0,0172 & 0,2457 \\
+		
+		\textit{hetero\_local}
+		& 2 & Geografía & -2.045~€ & 0,0241 & 0,2457 \\
+		
+		\textit{homo\_llama}
+		& 0 & Geografía & -4.375~€ & 0,0273 & 0,2457 \\
+		
+		\hline
+	\end{tabular}
+	
+	\begin{minipage}{0.92\linewidth}
+		\vspace{0.3cm}
+		\footnotesize
+		\textit{Nota:} los cuatro contrastes presentan el mismo valor $q$ debido
+		al ajuste conjunto y al requisito de monotonicidad del procedimiento
+		Benjamini--Hochberg sobre los 36 contrastes.
+	\end{minipage}
+\end{table}
+
+La Tabla~\ref{tab:gap_medio_nominal} muestra que los cuatro resultados que alcanzan significación nominal tampoco siguen una única dirección. Tres corresponden a reducciones de la asignación en la variante geográfica, mientras que el restante corresponde a un aumento en la variante de género. Tras la corrección conjunta de los 36 contrastes, ninguno conserva significación.
+
+Más allá de estas cuatro celdas, la separación por atributo revela un patrón descriptivo diferente. En geografía, 16 de las 18 celdas presentan un \textit{gap} medio negativo y solo dos una media positiva. En género ocurre lo contrario: 12 de las 18 medias son positivas y seis negativas. La
+Figura~\ref{fig:f03_medias_genesis} refleja esta asimetría, con un mayor predominio de desplazamientos negativos en las variantes geográficas y valores más centrados alrededor de cero en las de género.
+
+Esta pauta no modifica, sin embargo, la conclusión inferencial principal. Las celdas comparten parejas y condiciones experimentales, por lo que el recuento de signos entre las 18 celdas de cada atributo se utiliza únicamente como descripción del patrón y no como un nuevo contraste estadístico. Ninguna de las 36 comparaciones individuales de media conserva significación tras la corrección BH.
+
+Como comprobación de sensibilidad, se evaluó también qué ocurriría al aplicar la corrección BH por separado a los 18 contrastes de cada atributo. Esta partición no modifica la conclusión: los menores valores ajustados serían $q=0{,}164$ en geografía y $q=0{,}158$ en género, ambos por encima del umbral de 0,05. La familia inferencial principal se mantiene, no obstante, en los 36 contrastes definidos conjuntamente en la metodología.
+
+La condición placebo aporta una referencia externa para interpretar la magnitud de estos desplazamientos. La zona sombreada de la Figura~\ref{fig:f03_medias_genesis} abarca desde aproximadamente $-1.121$~€ hasta $1.584$~€, correspondientes a los extremos de los intervalos de
+confianza de las seis composiciones placebo en génesis mostrados en la Tabla~\ref{tab:placebo_genesis}. Varias medias experimentales, especialmente en el eje geográfico, se sitúan fuera de esta región. Esta comparación es únicamente descriptiva: permite contextualizar visualmente el nivel de ruido presente en el sistema e identificar qué \textit{gaps} experimentales se sitúan fuera del rango observado en la condición placebo.
+
+El resultado complementa el hallazgo de la Sección~\ref{sec:resultados_dispersion}. El efecto observado en génesis no adopta la forma de una penalización o bonificación media generalizada, ya que
+ninguna celda individual conserva significación tras la corrección BH. Sí aparece, a nivel descriptivo, una diferencia de dirección entre atributos: las variantes geográficas presentan mayoritariamente \textit{gaps} negativos, mientras que las de género se distribuyen de forma más próxima a cero y con mayor frecuencia hacia valores positivos. La evidencia estadística más sólida del experimento continúa correspondiendo, por tanto, al aumento de dispersión identificado en la sección anterior.
+
 \section{Localización del efecto: ejecución frente a cesta}
 \label{sec:resultados_icc}
+
+El aumento de dispersión identificado en la Sección~\ref{sec:resultados_dispersion} puede proceder de diferencias persistentes entre las cestas o de la variabilidad propia de cada ejecución. Si determinadas parejas generan de forma consistente \textit{gaps} similares en las tres semillas, parte de la variación observada podría estar asociada a características propias de esas cestas. En ese caso tendría sentido estudiar posteriormente qué rasgos comparten las parejas que producen los
+\textit{gaps} más elevados.
+
+Esta consistencia se evalúa mediante el coeficiente de correlación intraclase (ICC) definido en la Sección~\ref{subsec:icc}. En términos prácticos, un ICC elevado indica que las diferencias entre parejas se reproducen entre semillas: las mismas cestas tienden a ocupar posiciones similares en cuanto a la magnitud de sus \textit{gaps}. Un ICC próximo a cero indica, por el contrario, que esa ordenación no es estable entre repeticiones y que la variabilidad observada depende en mayor medida de cada ejecución concreta.
+
+La Figura~\ref{fig:f04_icc_semillas} representa el ICC estimado para las 36 celdas experimentales junto con sus intervalos de confianza \textit{bootstrap} del 95\,\%. La zona sombreada proporciona como referencia externa el recorrido observado en las seis composiciones placebo, cuyos ICC se sitúan entre $-0{,}162$ y $0{,}119$.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=\textwidth, height=0.95\textheight, keepaspectratio]{imagenes/F04_icc_entre_semillas.png}
+	\caption{ICC entre semillas para las 36 celdas experimentales, con
+		intervalos de confianza \textit{bootstrap} del 95\,\%. La zona sombreada
+		representa el recorrido de los ICC obtenidos en las seis composiciones
+		placebo, entre $-0{,}162$ y $0{,}119$, utilizado como referencia externa.
+		El coeficiente y su procedimiento de estimación se definen en la
+		Sección~\ref{subsec:icc}.}
+	\label{fig:f04_icc_semillas}
+\end{figure}
+
+Los valores estimados muestran una consistencia generalmente baja entre semillas. En las 36 celdas experimentales, los ICC se sitúan entre aproximadamente $-0{,}21$ y $0{,}37$, y la mayoría de sus intervalos de confianza incluyen valores próximos a cero. Los valores negativos no se interpretan como una correlación estable en sentido inverso, sino como estimaciones compatibles con una ausencia de estructura reproducible entre parejas bajo este modelo de componentes de varianza.
+
+Antes de aplicar la corrección por comparaciones múltiples, cuatro celdas presentan $p<0{,}05$. La Tabla~\ref{tab:icc_nominal} recoge estos casos. El mayor ICC corresponde a \textit{homo\_gpt} con nivel de identidad y atributo de género, con $\mathrm{ICC}=0{,}375$. Le siguen las dos celdas de \textit{hetero\_local} en nivel neutral y la celda geográfica de \textit{homo\_mistral} en ese mismo nivel.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Celdas con $p<0{,}05$ antes de la corrección múltiple en el
+		análisis de consistencia entre semillas.}
+	\label{tab:icc_nominal}
+	\small
+	\begin{tabular}{p{3.2cm} c c c c c}
+		\hline
+		\textbf{Composición} &
+		\textbf{Nivel} &
+		\textbf{Atributo} &
+		\textbf{ICC} &
+		\textbf{$p$} &
+		\textbf{$q$ BH} \\
+		\hline
+		
+		\textit{homo\_gpt}
+		& 2 & Género
+		& 0,375 & 0,0025 & 0,1034 \\
+		
+		\textit{hetero\_local}
+		& 0 & Geografía
+		& 0,318 & 0,0083 & 0,1597 \\
+		
+		\textit{hetero\_local}
+		& 0 & Género
+		& 0,303 & 0,0114 & 0,1597 \\
+		
+		\textit{homo\_mistral}
+		& 0 & Geografía
+		& 0,252 & 0,0282 & 0,2960 \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+Ninguna de las cuatro celdas mantiene significación tras aplicar la corrección Benjamini--Hochberg sobre la familia de 42 contrastes definida en la Sección~\ref{subsec:icc}. El menor valor ajustado es $q=0{,}103$, por encima del umbral de 0,05. En consecuencia, no se identifican cestas cuya respuesta se reproduzca de forma estable entre las tres semillas.
+
+Las cuatro señales nominales se concentran además en composiciones para las que el Capítulo~\ref{chap:validacion} ya documentó alguna incidencia de reproducibilidad. El mayor ICC aparece en \textit{homo\_gpt}, cuya referencia ciega mostró discrepancias entre repeticiones, mientras que dos de los cuatro casos corresponden a \textit{hetero\_local} con nivel neutral, condición en la que se observó una discrepancia aislada del agente ciego. Esta coincidencia no establece una relación causal, pero refuerza la lectura de estas señales nominales como variabilidad de ejecución antes que como estructura de las cestas.
+
+La referencia placebo conduce a una lectura similar. Los seis ICC placebo se sitúan entre $-0{,}162$ y $0{,}119$ y ninguno presenta significación corregida. Este intervalo, representado como zona sombreada en la Figura~\ref{fig:f04_icc_semillas}, muestra que valores de ICC próximos a cero, tanto positivos como negativos, aparecen también al comparar cestas idénticas.
+
+La condición \textit{homo\_gpt} con nivel profesional constituye la única excepción en cuanto a cobertura. Como se explicó en la Sección~\ref{sec:resultados_calidad}, el análisis dispone de 20 parejas para género y 19 para geografía, frente a las 21 previstas. Ambas celdas presentan ICC negativos y no muestran evidencia de consistencia entre repeticiones, por lo que esta pérdida de cobertura no modifica la conclusión general de la sección.
+
+Estos resultados no demuestran que la composición de las cestas carezca de influencia sobre las decisiones. Con solo tres semillas, la estimación de la consistencia entre repeticiones tiene una precisión limitada y varios intervalos de confianza son amplios. Lo que sí muestran es que, bajo el
+protocolo empleado, no se detecta una estructura suficientemente estable por pareja como para sobrevivir al control de comparaciones múltiples. El exceso de dispersión observado en génesis se asocia, por tanto, más a la variabilidad entre ejecuciones que a un conjunto de cestas que produzcan sistemáticamente los mismos \textit{gaps}.
 
 \section{Evolución durante la deliberación}
 \label{sec:resultados_dinamica}
 
-% Se incorpora solo tras validar el análisis corregido de T07.
-% \subsection{Transmisión durante la deliberación}
-% \label{subsec:resultados_transmision}
+El análisis principal de las secciones anteriores se concentra en génesis, antes de que los agentes intercambien información. Los cuatro turnos posteriores permiten observar cómo evoluciona la dispersión una vez comienza la deliberación. Para ello se calcula en cada turno el mismo ratio de varianzas $F$ definido en la Sección~\ref{subsec:dispersion_genesis}.
+
+Este ratio no conserva, sin embargo, el mismo significado después de génesis. En $t=0$, el agente ciego todavía no ha observado las decisiones de sus compañeros y su varianza proporciona la referencia interna utilizada en el desenlace principal. Desde $t=1$, el agente ciego participa en la deliberación y recibe información procedente de los agentes visibles. La varianza ciega deja entonces de representar una referencia aislada de la manipulación, por lo que los valores de $F$ en los turnos posteriores no son directamente comparables con el endpoint inferencial de génesis. Se utilizan únicamente para describir cómo cambia la relación entre ambas dispersiones durante la interacción.
+
+La Figura~\ref{fig:f02_varianza_turno} muestra la evolución del ratio, promediado para cada composición sobre sus tres niveles de instrucción y los dos atributos sensibles. La línea $F=1$ representa igualdad entre la varianza visible y la varianza ciega.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.92\textwidth]{imagenes/F02_varianza_por_turno.png}
+	\caption{Evolución descriptiva del ratio de varianzas $F$ entre génesis
+		($t=0$) y el último turno de deliberación. Para cada composición se muestra
+		la media de sus seis celdas, correspondientes a tres niveles de instrucción
+		y dos atributos sensibles. La línea discontinua $F=1$ representa igualdad
+		entre la varianza visible y la varianza ciega. A partir de $t=1$, el agente
+		ciego participa en la deliberación y el ratio deja de tener la
+		interpretación de \textit{null} interno empleada en génesis.}
+	\label{fig:f02_varianza_turno}
+\end{figure}
+
+La caída del ratio tras el primer intercambio es especialmente pronunciada en las composiciones homogéneas en las que se había detectado exceso de dispersión. Como muestra la Tabla~\ref{tab:f_por_turno}, \textit{homo\_llama}, \textit{homo\_mistral} y \textit{homo\_qwen} parten de ratios medios de 2,62, 3,25 y 4,30 en génesis, respectivamente, y descienden a 0,53, 0,67 y 0,61 en $t=1$. Las composiciones heterogéneas, que ya partían de valores próximos o inferiores a uno, también reducen el ratio en ese primer turno.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Evolución del ratio medio de varianzas $F$ por composición.}
+	\label{tab:f_por_turno}
+	\small
+	\begin{tabular}{p{3.3cm} c c c c c}
+		\hline
+		\textbf{Composición} &
+		\textbf{$t=0$} &
+		\textbf{$t=1$} &
+		\textbf{$t=2$} &
+		\textbf{$t=3$} &
+		\textbf{$t=4$} \\
+		\hline
+		
+		\textit{hetero\_api\_gpt}
+		& 0,88 & 0,45 & 0,55 & 0,52 & 0,81 \\
+		
+		\textit{hetero\_local}
+		& 0,97 & 0,40 & 0,43 & 0,46 & 0,87 \\
+		
+		\textit{homo\_gpt}
+		& 0,87 & 0,50 & 0,79 & 0,94 & 1,27 \\
+		
+		\textit{homo\_llama}
+		& 2,62 & 0,53 & 0,98 & 0,58 & 1,00 \\
+		
+		\textit{homo\_mistral}
+		& 3,25 & 0,67 & 0,73 & 0,64 & 0,79 \\
+		
+		\textit{homo\_qwen}
+		& 4,30 & 0,61 & 1,00 & 0,93 & 0,98 \\
+		
+		\hline
+	\end{tabular}
+	
+	\begin{minipage}{0.92\linewidth}
+		\vspace{0.3cm}
+		\footnotesize
+		\textit{Nota:} cada valor corresponde a la media descriptiva de las
+		seis celdas de la composición. Los valores posteriores a génesis no
+		se emplean como nuevos contrastes del \textit{null} interno.
+	\end{minipage}
+\end{table}
+
+La Tabla~\ref{tab:sd_por_turno} permite comprobar que la reducción de $F$ no implica que la deliberación estabilice las decisiones. Al promediar las 36 celdas experimentales, la desviación típica de los \textit{gaps} visibles pasa de 4.303~€ en génesis a 4.495~€ en $t=1$, un aumento aproximado del 4\,\%. La desviación típica del agente ciego, en cambio, pasa de 3.776~€ a 6.505~€ en ese mismo intervalo, un incremento de aproximadamente el 72\,\%. La relación entre ambos grupos se invierte: el agente ciego parte siendo menos variable que los visibles y, tras recibir las primeras decisiones de sus compañeros, pasa a ser considerablemente más variable.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Evolución de la desviación típica media de los \textit{gaps} durante la deliberación.}
+	\label{tab:sd_por_turno}
+	\small
+	\begin{tabular}{c c c c}
+		\hline
+		\textbf{Turno} &
+		\textbf{Visible} &
+		\textbf{Ciego} &
+		\textbf{Placebo} \\
+		\hline
+		$t=0$ & 4.303~€ & 3.776~€ & 2.296~€ \\
+		$t=1$ & 4.495~€ & 6.505~€ & 2.841~€ \\
+		$t=2$ & 5.070~€ & 6.184~€ & 3.701~€ \\
+		$t=3$ & 5.359~€ & 6.940~€ & 4.344~€ \\
+		$t=4$ & 5.874~€ & 6.387~€ & 4.257~€ \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Este cambio muestra empíricamente por qué la referencia ciega deja de ser un \textit{null} interno válido después de génesis. La caída del ratio no procede de una reducción de la dispersión visible, sino principalmente del fuerte aumento de la variabilidad del agente ciego una vez comienza a incorporar información del resto del comité. La limitación metodológica establecida en el Capítulo~\ref{chap:metodologia} se manifiesta, por tanto, directamente en los datos.
+
+El aumento de la variabilidad aparece también en la condición placebo. La desviación típica del \textit{gap}, calculado entre cestas idénticas, pasa de 2.296~€ en génesis a 2.841~€ en $t=1$ y alcanza 4.344~€ en $t=3$. La deliberación incrementa, por tanto, la variabilidad del sistema
+incluso en ausencia de cualquier manipulación sensible. Este comportamiento sitúa el aumento observado en el agente ciego dentro de una dinámica más general del protocolo de interacción, y no como un fenómeno exclusivo de los contrafactuales de género o geografía.
+
+Las trayectorias del \textit{gap} medio muestran igualmente una evolución heterogénea. Algunas configuraciones mantienen durante varios turnos la dirección observada en génesis, otras se aproximan a cero y otras cambian de signo. No aparece una trayectoria común que permita interpretar la deliberación como un proceso uniforme de convergencia o amplificación. Las doce figuras correspondientes al cruce de seis composiciones y dos atributos se incluyen en el Anexo~\ref{anexo:figuras_complementarias}, donde se representan por separado los tres niveles de instrucción junto con la referencia placebo.
+
+En conjunto, el exceso relativo de dispersión que caracteriza a varias composiciones homogéneas en génesis desaparece ya en el primer turno y no reaparece de forma sostenida durante la deliberación. Esta caída del ratio no representa una reducción general de la variabilidad: tanto los \textit{gaps}
+visibles como, especialmente, los del agente ciego se ensanchan durante la interacción, y el placebo muestra que parte de ese aumento pertenece a la dinámica basal del sistema. El comportamiento específico del agente ciego durante la deliberación se analiza en la Sección~\ref{sec:resultados_transmision}.
+
+
+\section{Transmisión durante la deliberación}
+\label{sec:resultados_transmision}
+
+El fuerte aumento de la variabilidad del agente ciego observado tras el primer intercambio plantea una cuestión adicional: si las diferencias manifestadas previamente por los agentes visibles se trasladan posteriormente a sus decisiones. Si los \textit{gaps} visibles elevados en un turno tienden a ir seguidos de \textit{gaps} también elevados del agente ciego en el turno siguiente, existiría una asociación compatible con la transmisión de esas diferencias durante la deliberación. En términos prácticos, esto implicaría que un agente que inicialmente no recibe el atributo sensible podría acabar reflejando parte de las diferencias presentes en las decisiones de los agentes que sí tuvieron acceso a él.
+
+Para evaluar esta posibilidad se estima, para cada composición, la pendiente de la regresión entre el \textit{gap} visible en el turno $t$ y el \textit{gap} del agente ciego en $t+1$. Una pendiente positiva indica que mayores diferencias visibles tienden a asociarse con mayores diferencias posteriores en el agente ciego. Sin embargo, esta asociación puede surgir también por la propia dinámica de deliberación. Por ello se ajusta la misma relación sobre las ejecuciones placebo y el contraste relevante no es la existencia de una pendiente positiva, sino que esta sea mayor en las condiciones contrafactuales que en la dinámica basal del protocolo.
+
+Las pendientes estimadas para las seis composiciones y su comparación con la referencia placebo se recogen en la Tabla~\ref{tab:transmision}. Todas las composiciones presentan pendientes positivas tanto en tratamiento como en placebo, por lo que la existencia de una asociación temporal entre las
+decisiones visibles y las posteriores decisiones del agente ciego no puede interpretarse por sí sola como transmisión del efecto asociado al atributo sensible.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Pendientes de transmisión durante la deliberación.}
+	\label{tab:transmision}
+	\small
+	\begin{tabular}{p{3.0cm} c c c c c}
+		\hline
+		\textbf{Composición} &
+		\textbf{$\beta_{\mathrm{trat.}}$} &
+		\textbf{$\beta_{\mathrm{plac.}}$} &
+		\textbf{$z$} &
+		\textbf{$p$} &
+		\textbf{$q$ BH} \\
+		\hline
+		
+		\textit{hetero\_api\_gpt}
+		& 0,906 & 1,004 & -0,606 & 0,545 & 0,840 \\
+		
+		\textit{hetero\_local}
+		& 0,772 & 0,744 & 0,202 & 0,840 & 0,840 \\
+		
+		\textit{homo\_gpt}
+		& 0,746 & 0,649 & 0,649 & 0,516 & 0,840 \\
+		
+		\textit{homo\_llama}
+		& 0,936 & 0,961 & -0,232 & 0,817 & 0,840 \\
+		
+		\textit{homo\_mistral}
+		& 0,833 & 0,547 & 2,853 & 0,004 & \textbf{0,026} \\
+		
+		\textit{homo\_qwen}
+		& 0,944 & 0,990 & -0,438 & 0,662 & 0,840 \\
+		
+		\hline
+	\end{tabular}
+	
+	\begin{minipage}{0.94\linewidth}
+		\vspace{0.3cm}
+		\footnotesize
+		\textit{Nota:} $\beta_{\mathrm{trat.}}$ y
+		$\beta_{\mathrm{plac.}}$ representan la pendiente de
+		$g_{\mathrm{ciego},t+1}$ sobre $g_{\mathrm{visible},t}$.
+		Los errores estándar utilizados en el contraste son robustos por
+		clúster pareja$\times$semilla. Los valores $q$ corresponden a la
+		corrección BH sobre las seis composiciones.
+	\end{minipage}
+\end{table}
+
+Únicamente \textit{homo\_mistral} presenta una diferencia estadísticamente significativa entre la asociación observada en tratamiento y en placebo. Su singularidad no reside en una pendiente de tratamiento especialmente elevada: el valor de 0,833 es el cuarto de las seis composiciones, por debajo de \textit{homo\_qwen} (0,944), \textit{homo\_llama} (0,936) y \textit{hetero\_api\_gpt} (0,906). La diferencia procede principalmente de una pendiente placebo notablemente menor, 0,547, frente a valores comprendidos entre 0,649 y 1,004 en las cinco composiciones restantes. Como resultado, la diferencia entre ambas pendientes alcanza 0,286 ($z=2{,}853$, $p=0{,}0043$) y mantiene significación tras la corrección Benjamini--Hochberg sobre las seis composiciones ($q=0{,}026$).
+
+El resultado señala, por tanto, una asociación diferencial respecto al placebo solo en \textit{homo\_mistral}, y no porque esta composición transmita con especial intensidad, sino porque su dinámica basal entre cestas idénticas es notablemente más débil que la del resto. Ningún otro modelo reproduce el patrón.
 
 \section{Mitigación por instrucción}
 \label{sec:resultados_mitigacion}
+
+Una vez identificado el exceso de dispersión en la fase de detección, se evaluó si una intervención exclusivamente basada en instrucciones podía reducirlo sin modificar la información financiera disponible para los agentes. La campaña de mitigación se realizó sobre \textit{homo\_qwen}, composición que había mostrado uno de los patrones más consistentes de exceso de dispersión, y comprendió los tres niveles de instrucción, los dos atributos sensibles y dos formulaciones de mitigación: pasiva y activa. En total se ejecutaron 18 configuraciones, correspondientes a tres niveles, dos formulaciones y tres semillas.
+
+El análisis se limita a génesis. En consecuencia, la formulación activa todavía no puede ejercer su componente específico de identificación y corrección de posibles efectos procedentes de las decisiones de otros agentes, ya que en ese momento no ha comenzado la deliberación. La comparación entre ambas formulaciones debe interpretarse, por tanto, como la evaluación de dos formas distintas de introducir una instrucción explícita de neutralización, y no como un contraste completo entre mecanismos pasivos y activos.
+
+La eficacia de la intervención se cuantifica mediante el ratio $R_{\mathrm{vac}}$ definido en la Sección~\ref{subsec:mitigacion_instruccion}, que compara directamente la varianza de los \textit{gaps} visibles bajo mitigación con la obtenida para las mismas parejas sin mitigación. Un valor inferior a uno indica una reducción de la dispersión visible, mientras que un valor superior a uno indica un aumento. Por ejemplo, $R_{\mathrm{vac}}=0{,}5$ representa aproximadamente una reducción a la mitad de la varianza.
+
+Esta comparación directa es especialmente importante porque las instrucciones de mitigación se aplican también al agente ciego. Por tanto, la intervención puede modificar simultáneamente la varianza visible y la varianza ciega, haciendo que una reducción del ratio $F$ no implique necesariamente una estabilización equivalente de los agentes visibles. Los resultados de $R_{\mathrm{vac}}$ se recogen en la Tabla~\ref{tab:mitigacion_rvac}, junto con el valor de $F$ observado en la condición equivalente sin mitigación.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Efecto de las instrucciones de mitigación sobre la dispersión
+		visible en \textit{homo\_qwen}.}
+	\label{tab:mitigacion_rvac}
+	\small
+	\resizebox{\textwidth}{!}{
+		\begin{tabular}{p{2.3cm} p{1.8cm} c c c c}
+			\hline
+			\textbf{Nivel} &
+			\textbf{Atributo} &
+			\textbf{$F$ sin vacuna} &
+			\textbf{$R_{\mathrm{vac}}$ pasiva} &
+			\textbf{$R_{\mathrm{vac}}$ activa} &
+			\textbf{$q_{\bar g}$ pas./act.} \\
+			\hline
+			
+			Neutral &
+			Geografía &
+			4,19 &
+			0,51 [0,21--1,37] &
+			0,87 [0,39--2,04] &
+			0,968 / 0,968 \\
+			
+			Neutral &
+			Género &
+			3,10 &
+			1,07 [0,46--2,86] &
+			1,49 [0,52--4,22] &
+			0,968 / 0,968 \\
+			
+			Profesional &
+			Geografía &
+			8,22 &
+			0,56 [0,23--1,66] &
+			0,76 [0,22--2,38] &
+			0,121 / 0,121 \\
+			
+			Profesional &
+			Género &
+			4,69 &
+			1,43 [0,46--5,81] &
+			0,38 [0,13--1,39] &
+			0,968 / 0,968 \\
+			
+			Identidad &
+			Geografía &
+			4,88 &
+			\textbf{0,51 [0,23--0,99]} &
+			0,31 [0,12--1,13] &
+			0,968 / 0,968 \\
+			
+			Identidad &
+			Género &
+			0,69 &
+			1,37 [0,44--3,91] &
+			0,90 [0,37--2,53] &
+			0,968 / 0,968 \\
+			
+			\hline
+		\end{tabular}
+	}
+	
+	\begin{minipage}{0.95\linewidth}
+		\vspace{0.3cm}
+		\footnotesize
+		\textit{Nota:} entre corchetes se muestra el intervalo de confianza
+		\textit{bootstrap} pareado del 95\,\% de $R_{\mathrm{vac}}$.
+		Valores inferiores a uno indican menor varianza visible que en la
+		condición equivalente sin mitigación. Se resalta la única celda cuyo
+		intervalo permanece completamente por debajo de uno.
+		$q_{\bar g}$ corresponde al valor $p$ del contraste sobre el
+		\textit{gap} medio tras la corrección Benjamini--Hochberg sobre las
+		doce celdas de mitigación; en la última columna se muestran, en ese
+		orden, las formulaciones pasiva y activa.
+	\end{minipage}
+\end{table}
+
+La intervención reduce la varianza visible en ocho de las doce celdas. El patrón es especialmente consistente para geografía: las seis combinaciones entre nivel de instrucción y formulación de mitigación presentan $R_{\mathrm{vac}}<1$. En género, por el contrario, el comportamiento es mixto, con reducciones en algunas configuraciones y aumentos en otras.
+
+La incertidumbre de estas estimaciones es, sin embargo, elevada. Solo una de las doce comparaciones presenta un intervalo de confianza completamente por debajo de uno: la mitigación pasiva para geografía en el nivel con identidad, con $R_{\mathrm{vac}}=0{,}512$ e IC95 $[0{,}231,\,0{,}986]$. En esta celda, la varianza visible queda aproximadamente un 49\,\% por debajo de la observada sin mitigación. La formulación activa del mismo nivel presenta una reducción puntual todavía mayor, $R_{\mathrm{vac}}=0{,}308$, pero su intervalo $[0{,}123,\,1{,}131]$ incluye el valor de referencia
+$R_{\mathrm{vac}}=1$.
+
+El nivel con identidad permite además una referencia útil para valorar la especificidad de la intervención. En la fase sin mitigación, geografía presentaba un exceso claro de dispersión en \textit{homo\_qwen} ($F=4{,}88$), mientras que género no mostraba ese patrón ($F=0{,}69$). En geografía, ambas formulaciones reducen la varianza visible, con $R_{\mathrm{vac}}=0{,}512$ para la mitigación pasiva y $R_{\mathrm{vac}}=0{,}308$ para la activa. En género, donde no existía previamente exceso de dispersión, la respuesta es menos consistente: la formulación activa produce una reducción ligera ($R_{\mathrm{vac}}=0{,}90$), mientras que la pasiva incrementa la varianza hasta $R_{\mathrm{vac}}=1{,}37$.
+
+El único efecto respaldado por el intervalo de confianza se concentra, por tanto, en una condición en la que existía previamente exceso de dispersión. Este contraste es compatible con cierta especificidad de la intervención, pero la respuesta irregular observada en género y el hecho de que, incluso en geografía, solo una de las formulaciones excluya el valor de referencia $R_{\mathrm{vac}}=1$ impiden establecer que la mitigación actúe de forma selectiva únicamente cuando existe el fenómeno que pretende corregir.
+
+Los resultados muestran también por qué $R_{\mathrm{vac}}$ es más adecuado que $F$ para evaluar esta campaña. En el nivel profesional para geografía, por ejemplo, $F$ pasa de 8,22 sin mitigación a 0,61 con la formulación pasiva. Sin embargo, la comparación directa de la varianza visible con su condición sin mitigación proporciona $R_{\mathrm{vac}}=0{,}56$. La caída del ratio visible/ciego es, por tanto, mucho mayor que la reducción observada en la propia varianza visible, lo que indica que parte de ese descenso procede de cambios en la referencia ciega. Este comportamiento refuerza la necesidad de evaluar la eficacia mediante una comparación directa con la condición sin mitigación y no únicamente mediante $F$.
+
+La intervención afecta, además, a la variabilidad del propio agente ciego, pese a que este no recibe el atributo sensible que pretende neutralizarse. Como muestra la Tabla~\ref{tab:mitigacion_ciego}, en el nivel neutral su desviación típica pasa de 2.102~€ sin mitigación a 3.118~€ con la formulación activa y 2.911~€ con la pasiva. El efecto es aún más acusado en el nivel profesional, donde aumenta desde 1.368~€ hasta 2.767~€ y 3.769~€, respectivamente. En el nivel con identidad este patrón no se
+reproduce: la desviación típica desciende a 2.265~€ con la formulación activa y permanece prácticamente estable con la pasiva (2.877~€ frente a 2.900~€ sin mitigación).
+
+\begin{table}[htbp]
+	\centering
+	\caption{Desviación típica del \textit{gap} del agente ciego en la campaña
+		de mitigación.}
+	\label{tab:mitigacion_ciego}
+	\small
+	\begin{tabular}{p{3cm} c c c}
+		\hline
+		\textbf{Nivel} &
+		\textbf{Sin mitigación} &
+		\textbf{Activa} &
+		\textbf{Pasiva} \\
+		\hline
+		
+		Neutral      & 2.102~€ & 3.118~€ & 2.911~€ \\
+		Profesional  & 1.368~€ & 2.767~€ & 3.769~€ \\
+		Identidad    & 2.900~€ & 2.265~€ & 2.877~€ \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+Estos resultados muestran que una instrucción diseñada para neutralizar información sensible puede modificar también el comportamiento de un agente que no dispone de dicha información. En esta campaña, el incremento de variabilidad del agente ciego aparece en los niveles neutral y profesional,
+pero no en el nivel con identidad. Dado que los tres niveles difieren también en la especificidad y caracterización de los roles asignados, no puede atribuirse esta diferencia únicamente a la presencia de una identidad. Añadir una instrucción de neutralización a un agente que no dispone del
+atributo que debe neutralizar incrementa, no obstante, su variabilidad en dos de los tres niveles evaluados.
+
+Por último, la reducción de la dispersión no viene acompañada de un desplazamiento medio sistemático del \textit{gap}. Como muestra la Tabla~\ref{tab:mitigacion_rvac}, ninguna de las doce celdas de mitigación mantiene significación tras la corrección Benjamini--Hochberg, siendo $q=0{,}121$ el menor valor ajustado. Los resultados no proporcionan, por tanto, evidencia de que las instrucciones reduzcan la variabilidad a costa de introducir de forma general una penalización o bonificación media de alguna de las variantes.
+
+En conjunto, la mitigación por instrucción reduce descriptivamente la dispersión en varias configuraciones, con un patrón especialmente consistente para geografía. Sin embargo, la evidencia inferencial directa queda limitada a una de las doce comparaciones, por lo que la intervención no puede considerarse una solución robusta y general al fenómeno detectado.
+
+La intervención puede además modificar de forma sustancial la variabilidad del agente ciego. Este resultado refuerza la necesidad de evaluar su eficacia mediante comparaciones directas con la condición equivalente sin mitigación, como $R_{\mathrm{vac}}$, y no únicamente mediante el ratio $F$.
+
+Finalmente, estos resultados contrastan descriptivamente con la ausencia de exceso de dispersión observada de forma consistente en las composiciones heterogéneas. Ambas evidencias proceden, sin embargo, de diseños distintos y no constituyen una comparación causal entre estrategias de mitigación. Esta diferencia entre intervenciones sobre el \textit{prompt} y heterogeneidad estructural se retoma en el Capítulo~\ref{chap:discusion}.
