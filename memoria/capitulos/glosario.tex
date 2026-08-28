@@ -5,6 +5,11 @@
 \addcontentsline{toc}{chapter}{Lista de acrónimos y siglas}
 
 \begin{description}
+	
+	\item[API] \textit{Application Programming Interface}. Interfaz mediante la
+	que se accede a un modelo alojado por un proveedor externo, sin acceso a sus
+	parámetros.
+	
 	\item[BH] Benjamini--Hochberg. Procedimiento de control de la tasa de falsos
 	descubrimientos en contrastes múltiples.
 	
@@ -47,6 +52,11 @@
 	nombre real y su \textit{ticker}, que se conservan únicamente en el registro
 	experimental.
 	
+	\item[\textit{Arbitrariedad}] Propiedad de un sistema cuyas decisiones no son
+	reproducibles entre ejecuciones equivalentes. Se distingue del sesgo
+	direccional en que no implica un desplazamiento sostenido a favor o en contra
+	de ningún grupo, y puede coexistir con métricas agregadas favorables.
+	
 	\item[Arquetipo] Combinación de un sector económico y un perfil financiero
 	que define una empresa sujeto y su cesta asociada. El diseño emplea 21
 	arquetipos.
@@ -76,6 +86,10 @@
 	manipulación contrafactual y sobre la que se mide el \textit{gap} de
 	asignación.
 	
+	\item[\textit{Fairness}] Criterio normativo sobre qué propiedades de una
+	asignación deben permanecer invariantes entre individuos o grupos. No existe
+	una formulación única; este trabajo adopta la perspectiva contrafactual.
+	
 	\item[\textit{Gap}] Diferencia entre la cantidad asignada a la empresa sujeto
 	en una variante y la asignada en su condición de control, expresada en euros.
 	Un valor negativo indica una penalización de la variante.
@@ -90,8 +104,7 @@
 	e identitario (\textit{level\_2\_identity}).
 	
 	\item[\textit{Null} externo] Referencia empírica del ruido del sistema
-	obtenida de la condición placebo, que emplea un conjunto de cestas distinto
-	del brazo contrafactual.
+	obtenida de la condición placebo.
 	
 	\item[\textit{Null} interno] Referencia empírica del ruido del sistema
 	obtenida del agente ciego, que opera sobre las mismas cestas y las mismas
@@ -107,6 +120,10 @@
 	\item[Placebo] Condición de control formada por parejas de cestas gemelas
 	idénticas (\textit{placebo\_a} y \textit{placebo\_b}), sin manipulación de
 	ningún atributo sensible.
+	
+	\item[\textit{Prompt}] Texto de entrada que recibe un modelo de lenguaje. En
+	este diseño incluye el rol del agente, la información de la cesta, el formato
+	de salida y, en la campaña de mitigación, la instrucción de neutralización.
 	
 	\item[Ratio de varianzas] Cociente entre la varianza del \textit{gap} de los
 	agentes visibles y la del agente ciego en génesis. Constituye el desenlace
