@@ -319,7 +319,7 @@ hmargin=3cm
 \renewcommand\abstractname{\large\bfseries\filcenter\uppercase{Abstract}}
 \begin{abstract}
 	\thispagestyle{plain}
-	\setcounter{page}{4}
+	\setcounter{page}{3}
 	
 	Large language models are increasingly deployed as components of systems that deliberate and decide, rather than merely as text generators. This work examines whether attributes unrelated to a company's financial performance alter the decisions of a three-agent LLM-based committee allocating a fixed budget across several firms, and what form that alteration takes.
 	
@@ -394,9 +394,16 @@ hmargin=3cm
 %	TRABAJO
 %----------	
 \clearpage
+
+\pagenumbering{gobble}
+\input{capitulos/glosario}
+\newpage % página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+\clearpage
+
 \pagenumbering{arabic} % numeración con múmeros arábigos para el resto de la publicación	
 
-\input{capitulos/glosario}
 \input{capitulos/01_introduccion}
 \input{capitulos/02_estado_arte}
 \input{capitulos/03_metodologia}
