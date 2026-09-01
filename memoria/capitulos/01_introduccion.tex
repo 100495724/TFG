@@ -18,6 +18,159 @@ El ámbito financiero ofrece un escenario apropiado para estudiar estas cuestion
 
 Sobre ese escenario, la pregunta que se plantea es si un comité formado por varios agentes podría asignar, en una decisión financiera, menos capital a empresas teniendo en cuenta factores externos a los fundamentos financieros, como el género del CEO o la ubicación geográfica de la sede. Esta formulación presupone que la discriminación adopta la forma de un desplazamiento sostenido de la media de capital asignado. Este trabajo examina esa posibilidad, pero también otra distinta, la de que el atributo no incline la decisión en una dirección concreta, sino que la desestabilice de manera que una misma empresa reciba asignaciones muy dispares según la ejecución. Un sistema con ese comportamiento podría superar una auditoría basada únicamente en diferencias medias, es por ello que este trabajo no solo se centra en la dirección del efecto y estudia también la estabilidad de las decisiones.
 
+La Figura~\ref{fig:esquema_experimento} resume el diseño empleado para
+aislar el efecto de los atributos estudiados y distinguirlo de la
+variabilidad propia del sistema.
+
+\begin{figure}[htbp]
+	\centering
+	\resizebox{\linewidth}{!}{%
+		\begin{tikzpicture}[
+			font=\small,
+			caja/.style={
+				draw=black!70,
+				rounded corners=2pt,
+				align=left,
+				inner sep=6pt,
+				minimum height=1.55cm
+			},
+			entrada/.style={caja, text width=3.1cm},
+			ejecucion/.style={caja, text width=3.7cm},
+			salida/.style={
+				caja,
+				text width=3cm,
+				align=center
+			},
+			flecha/.style={
+				-{Latex[length=2mm]},
+				thick,
+				draw=black!75
+			}
+			]
+			
+			% Tres condiciones del mismo caso financiero
+			\node[entrada, fill=blue!7] (control) at (0,5) {
+				\textbf{Cesta de control}\\[-1pt]
+				Datos financieros reales\\
+				CEO: hombre\\
+				Sede: Estados Unidos
+			};
+			
+			\node[entrada, fill=orange!10] (genero) at (0,0) {
+				\textbf{Cesta: variante de género}\\[-1pt]
+				Mismos datos financieros\\
+				CEO: mujer\\
+				Sede: Estados Unidos
+			};
+			
+			\node[entrada, fill=green!10] (geografia) at (0,-5) {
+				\textbf{Cesta: variante geográfica}\\[-1pt]
+				Mismos datos financieros\\
+				CEO: hombre\\
+				Sede: fuera de EE.\,UU.
+			};
+			
+			% Ejecuciones independientes
+			\node[ejecucion, fill=blue!4] (runcontrol) at (4.8,5) {
+				\textbf{Ejecución de control}\\[-1pt]
+				Agente 1: \textbf{ciego}\\
+				Agentes 2 y 3: visibles\\
+				Génesis $+$ 4 rondas de deliberación
+			};
+			
+			\node[ejecucion, fill=orange!5] (rungenero) at (4.8,0) {
+				\textbf{Ejecución de género}\\[-1pt]
+				Agente 1: \textbf{ciego}\\
+				Agentes 2 y 3: visibles\\
+				Génesis $+$ 4 rondas de deliberación
+			};
+			
+			\node[ejecucion, fill=green!5] (rungeografia) at (4.8,-5) {
+				\textbf{Ejecución geográfica}\\[-1pt]
+				Agente 1: \textbf{ciego}\\
+				Agentes 2 y 3: visibles\\
+				Génesis $+$ 4 rondas de deliberación
+			};
+			
+			\node[
+			draw=black!55,
+			dashed,
+			rounded corners=3pt,
+			fit=(runcontrol)(rungenero)(rungeografia),
+			inner xsep=8pt,
+			inner ysep=7pt,
+			label={[font=\small]above:
+				\textbf{Misma configuración del comité}}
+			] (comites) {};
+			
+			% Asignaciones
+			\node[salida, fill=black!4] (outcontrol) at (9.4,5) {
+				\textbf{Asignaciones}\\
+				$A^{\mathrm{ctrl}}_{a,t}$\\[-1pt]
+				\scriptsize 100.000\,\euro{} / 4 empresas
+			};
+			
+			\node[salida, fill=black!4] (outgenero) at (9.4,0) {
+				\textbf{Asignaciones}\\
+				$A^{\mathrm{gen}}_{a,t}$\\[-1pt]
+				\scriptsize 100.000\,\euro{} / 4 empresas
+			};
+			
+			\node[salida, fill=black!4] (outgeografia) at (9.4,-5) {
+				\textbf{Asignaciones}\\
+				$A^{\mathrm{geo}}_{a,t}$\\[-1pt]
+				\scriptsize 100.000\,\euro{} / 4 empresas
+			};
+			
+			% Flujo experimental
+			\draw[flecha] (control.east) -- (runcontrol.west);
+			\draw[flecha] (genero.east) -- (rungenero.west);
+			\draw[flecha] (geografia.east) -- (rungeografia.west);
+			
+			\draw[flecha] (runcontrol.east) -- (outcontrol.west);
+			\draw[flecha] (rungenero.east) -- (outgenero.west);
+			\draw[flecha] (rungeografia.east) -- (outgeografia.west);
+			
+			% Comparaciones contra el mismo control
+			\node[
+			caja,
+			text width=6.4cm,
+			align=center,
+			fill=black!3
+			] (comparacion) at (15.5,0) {
+				\textbf{Métricas de análisis}\\[1pt]
+				\textit{Gap} medio: dirección del efecto\\
+				Ratio de varianzas $F$: dispersión\\
+				ICC(1,1): consistencia entre repeticiones\\
+				Evolución del \textit{gap} y de $F$ por turno\\
+				Pendiente $\beta$: transmisión al agente ciego\\
+				Tasa de verbalización del atributo\\
+				Referencia de variabilidad placebo
+			};
+			
+			\draw[flecha, dashed]
+			(outcontrol.east) -- (comparacion.north west);
+			\draw[flecha, dashed]
+			(outgenero.east) -- (comparacion.west);
+			\draw[flecha, dashed]
+			(outgeografia.east) -- (comparacion.south west);
+			
+		\end{tikzpicture}%
+	}
+	
+	\caption{Esquema del diseño experimental. Cada cesta base da lugar a tres
+		ejecuciones emparejadas con la misma configuración del comité: control,
+		variante de género y variante geográfica. La primera variante modifica
+		solo el género del CEO y la segunda únicamente la sede; el resto de la
+		información permanece constante. A partir de las asignaciones de cada agente y ronda se calculan las métricas de dirección, dispersión, consistencia, dinámica temporal, transmisión y verbalización descritas en la
+		Sección~\ref{sec:metricas}.}
+	\label{fig:esquema_experimento}
+\end{figure}
+
+\FloatBarrier
+
+\FloatBarrier
+
 \section{Problema}
 \label{sec:problema}
 
@@ -30,6 +183,17 @@ Los antecedentes disponibles abordan partes de esta dificultad sin resolverla en
 La arquitectura multiagente además añade una dimensión temporal y una pregunta propia. Una diferencia presente antes de cualquier comunicación puede desvanecerse, reforzarse o extenderse a otros miembros durante la deliberación, de modo que observar únicamente la decisión final del comité resulta insuficiente. Cabe preguntarse además qué ocurre con un agente que nunca recibe el atributo y solo accede a los razonamientos de quienes sí lo han visto. Si sus decisiones empiezan a reflejar una posible manipulación, el efecto habrá viajado a él a través de la deliberación y no de la información de entrada. Responder a esto exige distinguir el comportamiento previo a la interacción del que emerge durante los intercambios, y disponer de referencias que separen la sensibilidad al atributo de la variabilidad propia del sistema.
 
 El problema no consiste, por tanto, en decidir si un modelo concreto es sesgado en términos absolutos. La pregunta es bajo qué configuraciones una modificación contrafactual de la información asociada a una empresa cambia el comportamiento de un sistema multiagente y, qué forma adopta ese cambio, cómo evoluciona durante la interacción y en qué medida puede reducirse mediante intervenciones sobre el sistema.
+
+El problema no consiste, por tanto, en decidir si un modelo concreto es sesgado en términos absolutos:
+
+\begin{center}
+	\fbox{\begin{minipage}{0.88\textwidth}
+			\textbf{Pregunta de investigación.} ¿Bajo qué configuraciones una
+			modificación contrafactual de la información asociada a una empresa altera
+			el comportamiento de un sistema multiagente, qué forma adopta ese cambio,
+			cómo evoluciona durante la interacción entre agentes y en qué medida puede reducirse?
+	\end{minipage}}
+\end{center}
 
 \section{Objetivos}
 \label{sec:objetivos}
