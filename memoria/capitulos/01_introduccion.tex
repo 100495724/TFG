@@ -6,21 +6,32 @@
 \section{Contexto y motivación}
 \label{sec:contexto_motivacion}
 
-Los modelos de lenguaje de gran escala han dejado de ser únicamente generadores de texto para convertirse en componentes de sistemas que razonan, planifican y deciden. El desarrollo de arquitecturas basadas en \textit{Transformers}~\cite{vaswani2017attention} y su escalado posterior~\cite{brown2020language} permiten emplearlos como núcleo de agentes que reciben información, adoptan un rol y producen una decisión. Sobre ellos se construyen ya sistemas que intervienen en el cribado de candidatos, en la concesión de crédito o en la selección de inversiones, y una arquitectura recurrente consiste en reunir varios de estos agentes en un comité que delibera antes de emitir una respuesta conjunta. La consecuencia es que los errores y sesgos de estos modelos se desplazan desde el contenido que generan hacia las decisiones que producen.
+Los modelos de lenguaje de gran escala han dejado de ser únicamente generadores de texto para convertirse en componentes de sistemas que razonan, planifican y deciden. El desarrollo de arquitecturas basadas en \textit{Transformers}~\cite{vaswani2017attention} y su escalado posterior~\cite{brown2020language} permiten emplearlos como núcleo de agentes que reciben información, adoptan un rol y producen una decisión. A partir de estos modelos se construyen sistemas multiagente cuyos miembros deliberan antes de emitir una respuesta. Estos sistemas pueden aplicarse a distintas áreas como la selección de candidatos, el apoyo a decisiones médicas, la concesión de crédito o la inversión. La consecuencia es que los errores y sesgos de estos modelos dejan de afectar únicamente  al contenido que generan y pueden trasladarse a las decisiones que toman. En concreto, este trabajo estudia un comité de inversión formado por tres agentes basados en LLM que deben distribuir un presupuesto fijo de 100.000~\euro{} en una cesta formada por cuatro empresas.
 
 La presencia de sesgos en modelos de lenguaje está ampliamente documentada, y puede manifestarse tanto en asociaciones lingüísticas como en el tratamiento diferencial de personas o entidades según la información que aparece en el contexto~\cite{gallegos2024bias}. Interesa aquí la segunda forma en su versión implícita. No la que surge de instruir al modelo a favor o en contra de un colectivo, sino la que puede activarse por la mera presencia de una característica en la entrada, sin que nada en la tarea invite a tenerla en cuenta. Cuando la salida del sistema tiene consecuencias materiales, esa diferencia deja de expresarse como una preferencia verbal y pasa a traducirse en recursos, en oportunidades o en accesos desiguales.
 
-El problema adquiere otra dimensión cuando varios modelos participan en una misma decisión. La comunicación introduce dependencias que no existen al evaluar cada componente por separado, ya que una respuesta inicial puede condicionar las siguientes, verse reforzada por otros miembros o alcanzar a agentes que nunca recibieron la información que la originó. Los trabajos disponibles muestran que el sesgo puede aparecer, propagarse o amplificarse durante estas interacciones, y que las propiedades del sistema completo no se deducen de las de sus integrantes considerados aisladamente~\cite{nguyen2025social,madigan2025emergent}. La unidad que conviene auditar deja de ser el modelo y pasa a ser la arquitectura deliberativa en la que se integra. Sobre sistemas multiagente, sin embargo, la evidencia es todavía escasa comparada con la acumulada sobre modelos individuales.
+El problema adquiere otra dimensión cuando varios modelos participan en una misma decisión. La comunicación introduce dependencias que no existen al evaluar cada componente por separado, ya que una respuesta inicial puede condicionar las siguientes, verse reforzada por otras o alcanzar a agentes que nunca recibieron la información que la originó. Los trabajos disponibles muestran que el sesgo puede aparecer, propagarse o amplificarse durante estas interacciones, y que evaluar a cada integrante por separado no permite anticipar el comportamiento del sistema completo~\cite{nguyen2025social,madigan2025emergent}. La unidad que conviene auditar deja de ser el modelo y pasa a ser la arquitectura deliberativa en la que se integra. Sobre sistemas multiagente, sin embargo, la evidencia es todavía escasa comparada con la acumulada sobre modelos individuales.
 
-A ello se suma el carácter estocástico de la generación, es decir, dos ejecuciones de una misma configuración pueden producir decisiones distintas sin que haya cambiado nada en la entrada. Una evaluación basada solo en resultados medios puede pasar por alto que una condición determinada vuelve al sistema más variable, sobre todo cuando las diferencias positivas y negativas se cancelan al promediarse. La literatura sobre arbitrariedad y no determinismo ha insistido en caracterizar esa variabilidad junto a las métricas agregadas habituales~\cite{cooper2024arbitrariness,song2025good}, y la advertencia resulta especialmente pertinente en sistemas donde las diferencias iniciales pueden además interactuar con la comunicación posterior.
+A ello se suma la variabilidad propia de la generación, es decir, dos ejecuciones de una misma configuración pueden producir decisiones distintas sin que haya cambiado nada en la entrada. Una evaluación basada solo en resultados medios puede pasar por alto que una condición determinada vuelve al sistema más variable, sobre todo cuando las diferencias positivas y negativas se cancelan al promediarse. La literatura sobre arbitrariedad y no determinismo señala que esta variabilidad debe medirse junto con las métricas agregadas habituales~\cite{cooper2024arbitrariness,song2025good}. Esto es especialmente importante en sistemas multiagente, donde las diferencias iniciales pueden cambiar a medida que los agentes intercambian información.
 
-El ámbito financiero ofrece un escenario apropiado para estudiar estas cuestiones. Los modelos de lenguaje se emplean ya de forma experimental para analizar noticias, seleccionar activos y emitir recomendaciones de inversión, y varios trabajos han detectado diferencias demográficas y geográficas en dichas decisiones~\cite{winder2025biased,wang2026invests}. La asignación de un presupuesto fijo entre empresas añade dos ventajas para la medida. La primera, que las métricas financieras permiten construir contrafactuales exactos, en los que dos empresas comparten cifras idénticas y difieren solo en el atributo bajo estudio. Y la segunda es que el resultado se expresa en euros, de modo que cualquier diferencia de trato queda cuantificada en la misma unidad en la que se manifestaría un despliegue real.
+La inversión se utiliza como caso de estudio, pero el objetivo del trabajo
+no es construir una estrategia rentable ni predecir el comportamiento del
+mercado. La tarea financiera permite observar con claridad cómo responde
+el sistema ante información que no debería influir en la decisión. Para
+ello se presentan varias versiones de una misma cesta, donde los datos
+financieros permanecen iguales y solo cambia el género de la persona que
+ocupa el puesto de CEO o el país de la sede. Además, como la salida es una
+cantidad de dinero, cualquier diferencia puede medirse directamente en
+euros. El mismo planteamiento podría adaptarse a otros ámbitos en los que varios
+agentes toman una decisión conjunta, como un comité médico o un proceso de
+selección de personal. En esos casos cambiarían la tarea, los atributos y
+la medida del resultado. Las conclusiones de esta memoria, sin embargo,
+se limitan al escenario de inversión evaluado.
 
-Sobre ese escenario, la pregunta que se plantea es si un comité formado por varios agentes podría asignar, en una decisión financiera, menos capital a empresas teniendo en cuenta factores externos a los fundamentos financieros, como el género del CEO o la ubicación geográfica de la sede. Esta formulación presupone que la discriminación adopta la forma de un desplazamiento sostenido de la media de capital asignado. Este trabajo examina esa posibilidad, pero también otra distinta, la de que el atributo no incline la decisión en una dirección concreta, sino que la desestabilice de manera que una misma empresa reciba asignaciones muy dispares según la ejecución. Un sistema con ese comportamiento podría superar una auditoría basada únicamente en diferencias medias, es por ello que este trabajo no solo se centra en la dirección del efecto y estudia también la estabilidad de las decisiones.
+Sobre ese escenario, la pregunta que se plantea es si un comité formado por varios agentes podría asignar, en una decisión financiera, menos capital a empresas teniendo en cuenta factores externos a los fundamentos financieros. Esta formulación presupone que la discriminación adopta la forma de un desplazamiento en la media de capital asignado. Este trabajo examina esa posibilidad, pero también otra distinta, la de que el atributo no incline la decisión en una dirección concreta, sino que la desestabilice de manera que una misma empresa reciba asignaciones muy dispares según la ejecución. Un sistema con ese comportamiento podría superar una auditoría basada únicamente en diferencias medias, es por ello que este trabajo no solo se centra en la dirección del efecto y estudia también la estabilidad de las decisiones.
 
-La Figura~\ref{fig:esquema_experimento} resume el diseño empleado para
-aislar el efecto de los atributos estudiados y distinguirlo de la
-variabilidad propia del sistema.
+Para estudiar ambas posibilidades, cada configuración del comité evalúa por separado tres versiones de una misma cesta: una de control, una variante de género y una variante geográfica. Los agentes realizan primero una asignación independiente y participan después en cuatro rondas de deliberación. La Figura~\ref{fig:esquema_experimento} muestra cómo se organizan estas ejecuciones y qué aspectos se analizan a partir de sus resultados. El diseño experimental y las métricas se desarrollan en el Capítulo~\ref{chap:metodologia}.
+
 
 \begin{figure}[htbp]
 	\centering
@@ -158,7 +169,7 @@ variabilidad propia del sistema.
 		\end{tikzpicture}%
 	}
 	
-	\caption{Esquema del diseño experimental. Cada cesta base da lugar a tres
+	\caption[Esquema del diseño experimental.]{Esquema del diseño experimental. Cada cesta base da lugar a tres
 		ejecuciones emparejadas con la misma configuración del comité: control,
 		variante de género y variante geográfica. La primera variante modifica
 		solo el género del CEO y la segunda únicamente la sede; el resto de la
@@ -167,30 +178,27 @@ variabilidad propia del sistema.
 	\label{fig:esquema_experimento}
 \end{figure}
 
-\FloatBarrier
+
 
 \FloatBarrier
 
 \section{Problema}
 \label{sec:problema}
 
-Auditar el sesgo de un sistema de decisión basado en LLM obliga a separar las diferencias que pudieran ser producidas por el atributo estudiado de aquellas que aparecerían igualmente por el carácter estocástico de la generación. La dificultad se agrava cuando la salida no es una categoría sino una cantidad continua, ya que dos ejecuciones pueden asignar importes distintos a la misma empresa sin que exista ningún efecto del atributo. Sin una referencia de lo que el sistema hace cuando nada cambia, cualquier diferencia observada resulta difícil de interpretar.
+Auditar el sesgo de un sistema de decisión basado en LLM obliga a separar las diferencias que pudieran ser producidas por el atributo estudiado de aquellas que aparecerían igualmente por la variabilidad propia de la generación. A esto se le añade que la salida es una cantidad continua, no una categoría, por lo que dos ejecuciones pueden asignar importes distintos a la misma empresa sin necesidad de que exista ningún efecto del atributo. Sin una referencia de lo que el sistema hace cuando nada cambia, cualquier diferencia observada resulta difícil de interpretar.
 
-Conviene precisar también sobre quién recae el atributo manipulado. En las auditorías habituales de equidad algorítmica, la característica sensible pertenece a una persona evaluada que resulta admitida o rechazada. Sin embargo, aquí no ocurre así, el género señalado mediante la identidad de la dirección ejecutiva y la localización de la sede pertenecen a la empresa sobre la que el comité decide, y ninguna persona recibe directamente el resultado. El fenómeno se corresponde por ello con lo que suele denominarse discriminación por asociación, en la que una entidad recibe un trato distinto por su vínculo con una característica protegida. El daño resultante no es individual sino distributivo, ya que afecta al reparto agregado de capital entre empresas según una característica ajena a su desempeño. Esta distinción se desarrolla en la Sección~\ref{sec:sesgo_fairness} y condiciona qué nociones de equidad resultan aplicables.
+Conviene precisar también sobre quién recae el atributo manipulado. En las auditorías habituales la característica sensible pertenece a una persona evaluada que resulta admitida o rechazada. Sin embargo, aquí no ocurre así, el género señalado mediante la identidad de la dirección ejecutiva y la localización de la sede pertenecen a la empresa sobre la que el comité decide, y ninguna persona recibe directamente el resultado. El fenómeno se corresponde por ello con lo que suele denominarse discriminación por asociación, en la que una entidad recibe un trato distinto por su vínculo con una característica protegida. El daño resultante no es individual sino distributivo, ya que afecta al reparto agregado de capital entre empresas según una característica ajena a su desempeño financiero. Esta distinción se desarrolla en la Sección~\ref{sec:sesgo_fairness} y condiciona qué nociones de equidad resultan aplicables.
 
-Los antecedentes disponibles abordan partes de esta dificultad sin resolverla en conjunto. Existen auditorías financieras que modifican características demográficas manteniendo constante la información económica~\cite{wang2026invests}, estudios que documentan cómo la interacción entre agentes altera o propaga comportamientos individuales~\cite{nguyen2025social,madigan2025emergent} y advertencias sobre la variabilidad que queda oculta al reducir la evaluación a una única respuesta o a una medida agregada~\cite{cooper2024arbitrariness,song2025good}. Como ninguno de ellos reúne estas tres dimensiones sobre un mismo instrumento, el problema que aborda esta memoria surge de esa combinación. Se trata de determinar si, con los fundamentales financieros de una empresa fijados, modificar un atributo asociado a ella altera las decisiones de inversión de un comité de agentes, y de qué forma lo hace. La respuesta no se limita en comprobar si la variante recibe sistemáticamente más o menos capital que su control, porque como ya se ha comentado, un efecto puede existir sin inclinar la decisión en ninguna dirección concreta.
+Los antecedentes disponibles abordan partes de esta dificultad sin resolverla en conjunto. Existen auditorías financieras que modifican características demográficas manteniendo constante la información económica~\cite{wang2026invests}, estudios que documentan cómo la interacción entre agentes altera o propaga comportamientos individuales~\cite{nguyen2025social,madigan2025emergent} y advertencias sobre la variabilidad que queda oculta al reducir la evaluación a una única respuesta o a una medida agregada~\cite{cooper2024arbitrariness,song2025good}. Como ninguno de ellos reúne estas dimensiones sobre un mismo instrumento, el problema que aborda esta memoria surge de esa combinación. Se trata de determinar si, con los fundamentales financieros de una empresa fijados, modificar un atributo asociado a ella altera las decisiones de inversión de un comité de agentes, y de qué forma lo hace. La respuesta no se limita en comprobar si la variante recibe sistemáticamente más o menos capital que su control, porque como ya se ha comentado, un efecto puede existir sin inclinar la decisión en ninguna dirección concreta. Esta diferencia respecto a los trabajos existentes se analiza con más detalle en el Capítulo~\ref{chap:estado_arte} y se resume en la Tabla~\ref{tab:comparativa_estado_arte}.
 
 La arquitectura multiagente además añade una dimensión temporal y una pregunta propia. Una diferencia presente antes de cualquier comunicación puede desvanecerse, reforzarse o extenderse a otros miembros durante la deliberación, de modo que observar únicamente la decisión final del comité resulta insuficiente. Cabe preguntarse además qué ocurre con un agente que nunca recibe el atributo y solo accede a los razonamientos de quienes sí lo han visto. Si sus decisiones empiezan a reflejar una posible manipulación, el efecto habrá viajado a él a través de la deliberación y no de la información de entrada. Responder a esto exige distinguir el comportamiento previo a la interacción del que emerge durante los intercambios, y disponer de referencias que separen la sensibilidad al atributo de la variabilidad propia del sistema.
-
-El problema no consiste, por tanto, en decidir si un modelo concreto es sesgado en términos absolutos. La pregunta es bajo qué configuraciones una modificación contrafactual de la información asociada a una empresa cambia el comportamiento de un sistema multiagente y, qué forma adopta ese cambio, cómo evoluciona durante la interacción y en qué medida puede reducirse mediante intervenciones sobre el sistema.
 
 El problema no consiste, por tanto, en decidir si un modelo concreto es sesgado en términos absolutos:
 
 \begin{center}
 	\fbox{\begin{minipage}{0.88\textwidth}
-			\textbf{Pregunta de investigación.} ¿Bajo qué configuraciones una
-			modificación contrafactual de la información asociada a una empresa altera
-			el comportamiento de un sistema multiagente, qué forma adopta ese cambio,
+			\textbf{Pregunta de investigación.} ¿Bajo qué configuraciones un cambio aislado de un atributo de una empresa altera
+			el comportamiento de un sistema multiagente y, qué forma adopta ese cambio,
 			cómo evoluciona durante la interacción entre agentes y en qué medida puede reducirse?
 	\end{minipage}}
 \end{center}
@@ -203,13 +211,13 @@ El objetivo general de esta memoria es caracterizar la existencia, la magnitud y
 Este objetivo general se concreta en cuatro objetivos específicos.
 
 \begin{enumerate}
-	\item[\textbf{O1.}] Diseñar un banco de pruebas contrafactual para decisiones de inversión que aísle el atributo manipulado de los factores financieros, posicionales y onomásticos capaces de producir diferencias por sí mismos, y dotarlo de dos referencias independientes con las que estimar la variabilidad propia del sistema. Estas son, un agente ciego sin acceso al atributo sensible dentro del propio comité, y una condición de control formada por cestas idénticas.
+	\item[\textbf{O1.}] Diseñar un banco de pruebas basado en parejas de control y variante para decisiones de inversión que aísle el atributo manipulado de los factores financieros, posicionales y relacionados con los nombres propios utilizados, capaces de producir diferencias por sí mismos, y dotarlo de dos referencias independientes con las que estimar la variabilidad propia del sistema. Estas son, un agente ciego sin acceso al atributo sensible dentro del propio comité, y una condición de control formada por cestas idénticas.
 	
 	\item[\textbf{O2.}] Caracterizar el efecto de las manipulaciones de género y localización geográfica sobre las diferencias de asignaciones de capital (\textit{gaps}), atendiendo tanto al desplazamiento de la media como a la dispersión entre ejecuciones repetidas, y examinar cómo varía según la composición del comité y el nivel de especificación de los roles de los agentes.
 	
-	\item[\textbf{O3.}] Analizar si las diferencias observadas en los agentes que reciben el atributo se reflejan posteriormente en las decisiones del agente ciego durante la deliberación, distinguiendo una posible transmisión del patrón temporal que aparece también en ausencia de manipulación.
+	\item[\textbf{O3.}] Analizar si las diferencias observadas en los agentes que reciben el atributo sensible se propagan a las decisiones del agente ciego durante la deliberación, y comprobar si esta relación difiere de la que aparece cuando no se modifica ningún atributo.
 	
-	\item[\textbf{O4.}] Evaluar dos vías de reducción del efecto, una basada en la composición del comité y otra en la introducción de instrucciones de neutralización, comprobando en ambos casos que no introducen distorsiones direccionales adicionales.
+	\item[\textbf{O4.}] Evaluar dos vías de reducción del efecto, una basada en la composición del comité y otra en la introducción de instrucciones de neutralización, comprobando en ambos casos que no introducen una preferencia sistemática a favor o en contra de las variantes.
 \end{enumerate}
 
 \section{Hipótesis}
@@ -219,13 +227,13 @@ A partir del problema planteado se establecen dos hipótesis de trabajo. La prim
 
 \begin{enumerate}
 	
-	\item[\textbf{H1.}] La modificación contrafactual de un atributo asociado a la empresa altera la asignación de capital del comité respecto a la condición de control, ya sea mediante un desplazamiento sistemático de las cantidades asignadas o mediante un aumento de la dispersión entre ejecuciones, en ambos casos por encima de la variabilidad que el sistema presenta cuando no se manipula nada.
+	\item[\textbf{H1.}] La modificación aislada de un atributo asociado a la empresa altera la asignación de capital del comité respecto a la condición de control, ya sea mediante un desplazamiento sistemático de las cantidades asignadas o mediante un aumento de la dispersión entre ejecuciones, en ambos casos por encima de la variabilidad que el sistema presenta cuando no se manipula nada.
 	
 	\item[\textbf{H2.}] La deliberación modifica la sensibilidad observada en la primera ronda, antes de la comunicación entre agentes, de modo que las diferencias asociadas al atributo pueden cambiar de magnitud a medida que los agentes intercambian sus decisiones.
 	
 \end{enumerate}
 
-La formulación de estas hipótesis requiere una precisión sobre su cronología. El planteamiento inicial de H1 consideraba el efecto del atributo sobre la asignación, pero la dispersión entre ejecuciones se incorporó como segunda forma posible de ese efecto tras observar el comportamiento de la primera composición de agentes evaluada, \textit{homo\_llama}. Desde ese momento quedaron fijados el desenlace de dispersión y su procedimiento de análisis antes de examinar las cinco composiciones restantes. La evidencia de \textit{homo\_llama} tiene por ello carácter exploratorio respecto a esta ampliación de H1, mientras que su evaluación en las otras cinco composiciones constituye una replicación prospectiva. Esta distinción se desarrolla en el Capítulo~\ref{chap:metodologia} y se retoma entre las amenazas a la validez en la Sección~\ref{sec:amenazas_validez}.
+La formulación de estas hipótesis requiere una precisión sobre su cronología. El planteamiento inicial de H1 consideraba el efecto del atributo sobre la asignación, pero la dispersión entre ejecuciones se incorporó como segunda forma posible de ese efecto tras observar el comportamiento de la primera composición de agentes evaluada, \textit{homo\_llama}. Desde ese momento quedaron fijados la medida de dispersión y su procedimiento de análisis antes de examinar las cinco composiciones restantes. La evidencia de \textit{homo\_llama} tiene por ello carácter exploratorio respecto a esta ampliación de H1, mientras que las otras cinco composiciones permiten comprobar si el patrón se repite con la hipótesis y el procedimiento de análisis ya definidos. Esta distinción se desarrolla en el Capítulo~\ref{chap:metodologia} y se retoma entre las amenazas a la validez en la Sección~\ref{sec:amenazas_validez}.
 
 \section{Contribuciones}
 \label{sec:contribuciones}
@@ -234,7 +242,7 @@ Las aportaciones de esta memoria se sitúan tanto en el instrumento de medida co
 
 \begin{enumerate}
 	
-	\item[\textbf{C1.}] \textbf{Un desenlace de dispersión con referencia interna.}
+	\item[\textbf{C1.}] \textbf{Una medida de dispersión con referencia interna.}
 	La evaluación habitual, basada en diferencias de medias, se amplía con el
 	análisis de la dispersión de los \textit{gaps} entre ejecuciones repetidas. Esa
 	perspectiva distingue una preferencia direccional consistente de una
@@ -242,23 +250,19 @@ Las aportaciones de esta memoria se sitúan tanto en el instrumento de medida co
 	promediarse. Para ello se incorpora un \textit{agente ciego}, que no recibe
 	los atributos manipulados y cuya entrada es idéntica en ambos brazos de la
 	comparación. La variabilidad de sus \textit{gaps} constituye el denominado
-	\textit{null} interno, frente a la que se estima el exceso de
-	dispersión observado en los agentes con acceso al atributo. El criterio se
-	identificó durante la primera fase experimental y quedó fijado antes de
-	evaluar las cinco composiciones restantes.
+	\textit{null} interno, frente a la que se compara el exceso de
+	dispersión observado en los agentes con acceso al atributo.
 	
-	\item[\textbf{C2.}] \textbf{Una referencia empírica de ruido en lugar del cero teórico.} Al \textit{null} interno se suma una condición de control formada por parejas de cestas idénticas, sin manipulación de ningún atributo, denominada como condición placebo. Esta referencia permite
-	interpretar las diferencias observadas frente a un nivel empírico de ruido, en
-	lugar de asumir que cualquier desviación respecto de cero representa un efecto
+	\item[\textbf{C2.}] \textbf{Una referencia de ruido en lugar del cero teórico.} Al \textit{null} interno se suma una condición de control formada por parejas de cestas idénticas, sin manipulación de ningún atributo, denominada como condición \textit{placebo}. Esta referencia permite interpretar las diferencias observadas frente a un nivel de ruido medido en el propio sistema, en	lugar de asumir que cualquier desviación respecto de cero representa un efecto
 	del atributo.
 	
-	\item[\textbf{C3.}] \textbf{Sesgo implícito sobre un desenlace continuo sin respuesta correcta.} El atributo pertenece a la empresa sobre la que se decide y no a los agentes que deciden, cuyos roles son profesionales y ajenos tanto al género de la dirección ejecutiva como a la localización de la sede. La salida es una cantidad de capital para la que no existe un valor correcto conocido, de modo que el análisis no puede apoyarse en tasas de acierto ni en etiquetas observadas y debe construirse sobre la comparación entre pares contrafactuales.
+	\item[\textbf{C3.}] \textbf{Sesgo implícito sobre una medida continua sin respuesta correcta.} El atributo pertenece a la empresa sobre la que se decide y no a los agentes que deciden, cuyos roles son profesionales y ajenos tanto al género de la dirección ejecutiva como a la localización de la sede. La salida es una cantidad de capital para la que no existe un valor correcto conocido, de modo que el análisis no puede apoyarse en tasas de acierto ni en etiquetas observadas, y debe construirse sobre la comparación entre las parejas de control y variante.
 	
-	\item[\textbf{C4.}] \textbf{La composición del comité como mecanismo de estabilización.} La comparación de configuraciones de agentes homogéneas, en las que el comité esta formado por agentes que utilizan el mismo modelo, y heterogéneas, bajo un protocolo idéntico muestra que la estabilidad de las decisiones frente al atributo depende de qué modelos integran el sistema, con independencia del protocolo de deliberación empleado. Esta vía de reducción del efecto no se planteó como intervención, sino que surgió del análisis de las configuraciones evaluadas, y se presenta por ello como hipótesis explicativa generada por los resultados antes que como eficacia demostrada.
+	\item[\textbf{C4.}] \textbf{La composición del comité como mecanismo de estabilización.} La comparación bajo un protocolo idéntico de configuraciones de agentes homogéneas, en las que el comité esta formado por agentes que utilizan el mismo modelo, y heterogéneas con varios modelos, muestra que la estabilidad de las decisiones frente al atributo depende de qué modelos integran el sistema, con independencia del protocolo de deliberación empleado. Esta vía de reducción del efecto no se planteó como intervención, sino que surgió del análisis de las configuraciones evaluadas, y se presenta por ello como hipótesis generada por los resultados antes que como eficacia demostrada.
 	
 \end{enumerate}
 
-A estas contribuciones se añade la separación explícita entre la decisión previa a cualquier comunicación y la dinámica posterior de deliberación, que permite situar en el tiempo la aparición del efecto y estudiar si alcanza a un agente que nunca recibió el atributo. La evaluación de instrucciones de mitigación adaptadas a un escenario sin atacante deliberado completa el trabajo, si bien su alcance experimental es reducido y sus resultados se presentan como indicio antes que como demostración.
+A estas contribuciones se añade la adaptación al escenario financiero de la separación propuesta por Nguyen \textit{et al.}~\cite{nguyen2025social} entre una decisión inicial independiente y las rondas posteriores de deliberación. Esta estructura permite situar en el tiempo la aparición del efecto y estudiar si alcanza a un agente que nunca recibió el atributo. La evaluación de instrucciones de mitigación adaptadas a un escenario sin atacante deliberado, a diferencia del trabajo de Nguyen, completa el estudio. El alcance experimental es reducido y sus resultados se presentan como indicio antes que como demostración.
 
 \section{Estructura de la memoria}
 \label{sec:estructura_memoria}
