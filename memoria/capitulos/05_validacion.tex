@@ -3,30 +3,30 @@
 \chapter{Validación del instrumento y control de variables de confusión}
 \label{chap:validacion}
 
-Los capítulos anteriores han definido el diseño experimental y la implementación empleada para ejecutarlo. Antes de interpretar los resultados obtenidos, es necesario comprobar que las diferencias observadas no puedan atribuirse a defectos del instrumento de medida. Esta validación resulta especialmente importante en un experimento contrafactual, donde pequeñas diferencias no controladas entre dos variantes pueden confundirse con el efecto del atributo sensible.
+Los capítulos anteriores han definido el diseño experimental y la implementación empleada para ejecutarlo. Antes de interpretar los resultados obtenidos, es necesario comprobar que las diferencias observadas no puedan atribuirse a defectos del instrumento de medida. Esta validación resulta especialmente importante porque el experimento compara parejas de cestas que deberían diferir únicamente en el atributo sensible. Cualquier otra diferencia entre ellas podría confundirse con el efecto de dicho atributo.
 
-Este capítulo presenta las comprobaciones realizadas sobre el \textit{null} interno y documenta las principales variables de confusión identificadas durante el desarrollo del sistema, junto con el efecto que producían y la corrección aplicada. Finalmente, se delimitan las celdas cuyo comportamiento impide una interpretación fiable de los contrastes posteriores. El objetivo no es presentar todavía los resultados sustantivos del experimento, sino establecer qué evidencia permite considerarlos interpretables.
+Este capítulo presenta las comprobaciones realizadas sobre el \textit{null} interno y documenta las principales variables de confusión identificadas durante el desarrollo del sistema, junto con el efecto que producían y la corrección aplicada. Finalmente, se delimitan las celdas cuyo comportamiento impide una interpretación fiable de los contrastes posteriores. El objetivo no es presentar todavía los resultados del experimento, sino establecer qué evidencia permite considerarlos interpretables.
 
-\section{Validación del null interno}
+\section{Validación del \textit{null} interno}
 \label{sec:validacion_null}
 
-El endpoint principal definido en la Sección~\ref{subsec:dispersion_genesis} utiliza la variabilidad del agente ciego como referencia frente a la que se mide el exceso de dispersión de los agentes visibles. Esta comparación solo es interpretable si se cumplen dos condiciones distintas. En primer lugar, el agente ciego debe recibir exactamente la misma información entre los brazos contrafactuales, de forma que ninguna diferencia en su comportamiento pueda atribuirse a una fuga del atributo sensible. En segundo lugar, la dispersión de sus respuestas debe proporcionar una estimación suficientemente estable del ruido basal. Por este motivo, la validación del null interno se realiza tanto sobre las entradas recibidas por el agente como sobre las decisiones que produce en génesis.
+El análisis principal definido en la Sección~\ref{subsec:dispersion_genesis} utiliza la variabilidad del agente ciego como referencia para medir el exceso de dispersión de los agentes visibles. Esta comparación solo puede interpretarse si se cumplen dos condiciones. En primer lugar, el agente ciego debe recibir exactamente la misma información en las dos variantes de cada pareja y no tener acceso al atributo sensible. En segundo lugar, la dispersión de sus respuestas debe proporcionar una estimación estable de la variabilidad propia del sistema. Por este motivo, la validación de esta referencia interna examina tanto las entradas recibidas por el agente como las decisiones que produce en génesis.
 
-\paragraph{Identidad de las entradas.}
-La primera comprobación se realiza directamente sobre las trazas de ejecución almacenadas en \texttt{prompt\_responses.jsonl}. Para cada combinación de pareja, composición, nivel de instrucción y semilla se agrupan las entradas de génesis correspondientes a control, género y geografía y se comprueba su identidad. La auditoría de la campaña final de detección comprende 1.134 grupos comparables y encuentra identidad byte a byte en los 1.134.
+\paragraph{Coincidencia de las entradas.}
+La primera comprobación se realiza directamente sobre las trazas de ejecución almacenadas en \texttt{prompt\_responses.jsonl}. Para cada combinación de pareja, composición, nivel de instrucción y semilla se agrupan las entradas de génesis correspondientes a control, género y geografía y se comprueba que sean exactamente iguales. La auditoría de la campaña final de detección comprende 1.134 grupos comparables y confirma que las entradas coinciden byte a byte en todos.
 
-La misma comprobación se aplica de forma independiente a la campaña de mitigación, incorporando además la vacuna como parte de la condición experimental. Sus tres niveles de instrucción, dos variantes de mitigación, tres semillas y 21 parejas producen 378 grupos comparables adicionales, todos ellos idénticos entre los tres brazos contrafactuales. En conjunto, la validación cubre 1.512 grupos de entradas de detección y mitigación sin encontrar ninguna discrepancia.
+La misma comprobación se aplica de forma independiente a la campaña de mitigación, incorporando además la vacuna como parte de la condición experimental. Sus tres niveles de instrucción, dos variantes de mitigación, tres semillas y 21 parejas producen 378 grupos comparables adicionales, todos ellos idénticos entre las variantes. En conjunto, la validación cubre 1.512 grupos de entradas de detección y mitigación sin encontrar ninguna diferencia.
 
-La comprobación no se limita a verificar la ausencia explícita de los campos sensibles. Se compara el mensaje completo recibido por el modelo y el mapa que relaciona los alias \texttt{Company 1}, \ldots, \texttt{Company 4} con las empresas reales. En las ejecuciones de mitigación se verifica además el prompt de sistema correspondiente a cada vacuna, que permanece constante entre control, género y geografía. La aplicación de la instrucción de mitigación no rompe, por tanto, la equivalencia informativa del agente ciego.
+La comprobación no se limita a verificar la ausencia explícita de los campos sensibles, se compara el mensaje completo recibido por el modelo y el mapa que relaciona los alias \texttt{Company 1}, \ldots, \texttt{Company 4} con las empresas reales. En las ejecuciones de mitigación se verifica además el \textit{prompt} de sistema correspondiente a cada vacuna, que permanece constante entre control, género y geografía. Por tanto, la instrucción de mitigación no modifica la información que recibe el agente ciego entre las condiciones de control, género y geografía.
 
-\paragraph{Reproducción del comportamiento ciego.}
-La segunda comprobación utiliza las propias decisiones producidas por el agente en la campaña de detección. Para cada una de las 18 combinaciones de composición y nivel de instrucción se comparan pareja a pareja los gaps ciegos obtenidos para el eje de género y para el eje geográfico. Puesto que ambos atributos se eliminan de la entrada del agente, los dos vectores constituyen estimaciones distintas del mismo proceso basal de decisión.
+\paragraph{Consistencia de las decisiones del agente ciego.}
+La segunda comprobación utiliza las decisiones producidas por el agente en la campaña de detección. Para cada una de las 18 combinaciones de composición y nivel de instrucción se comparan pareja a pareja los \textit{gaps} ciegos obtenidos para la variante de género y para la geográfica. Como el agente ciego no recibe información sobre ninguno de los dos atributos, ambos vectores miden la variabilidad de sus decisiones ante entradas equivalentes.
 
-La Tabla~\ref{tab:validacion_null} resume conjuntamente la validación de las entradas y la comprobación conductual realizada sobre la campaña de detección. En 13 de las 18 celdas los dos vectores son idénticos pareja a pareja, con una tolerancia numérica de $10^{-9}$. En todas ellas coinciden las 21 parejas, la correlación entre ambos vectores es igual a 1 y la diferencia absoluta máxima es cero. Esta reproducción exacta constituye una validación conductual adicional del \textit{null} interno: una vez eliminados los atributos sensibles, el sistema reproduce el mismo gap para cada pareja en la mayor parte de las condiciones experimentales.
+La Tabla~\ref{tab:validacion_null} resume la comprobación de las entradas y las decisiones del agente ciego en la campaña de detección. En 13 de las 18 celdas, los vectores obtenidos para género y geografía coinciden pareja a pareja. En estas celdas coinciden las 21 parejas, la correlación entre ambos vectores es igual a 1 y la diferencia absoluta máxima es cero. Estos resultados respaldan el uso del agente ciego como referencia interna, ya que en la mayoría de las condiciones produce exactamente los mismos \textit{gaps} en ambas comparaciones.
 
 \begin{table}[htbp]
 	\centering
-	\caption{Resumen de la validación del null interno en génesis.}
+	\caption{Resumen de la validación del \textit{null} interno en génesis.}
 	\label{tab:validacion_null}
 	\small
 	\begin{tabular}{p{6.2cm} p{3.0cm} p{4.2cm}}
@@ -44,11 +44,11 @@ La Tabla~\ref{tab:validacion_null} resume conjuntamente la validación de las en
 		& 378 / 378
 		& Las vacunas preservan la equivalencia informativa \\
 		
-		Gap ciego idéntico entre atributos en detección
+		\textit{Gap} ciego idéntico entre atributos en detección
 		& 13 / 18 celdas
 		& Reproducción exacta pareja a pareja \\
 		
-		Gap ciego no idéntico entre atributos en detección
+		\textit{Gap} ciego no idéntico entre atributos en detección
 		& 5 / 18 celdas
 		& Requiere comprobar la estabilidad del estimador \\
 		
@@ -56,33 +56,30 @@ La Tabla~\ref{tab:validacion_null} resume conjuntamente la validación de las en
 	\end{tabular}
 \end{table}
 
-Las cinco celdas restantes de la campaña de detección corresponden a los tres niveles de \textit{homo\_gpt} y al nivel neutral de las dos composiciones heterogéneas. Estas discrepancias no invalidan por sí mismas el \textit{null}, puesto que la auditoría anterior demuestra que no existe ninguna diferencia observable en la entrada. Sí obligan, en cambio, a distinguir entre la validez estructural del control interno y la estabilidad empírica de la varianza ciega utilizada como referencia basal.
+Las cinco celdas restantes de la campaña de detección corresponden a los tres niveles de \textit{homo\_gpt} y al nivel neutral de las dos composiciones heterogéneas. Como las entradas del agente ciego son exactamente iguales, estas discrepancias no pueden atribuirse al atributo sensible y no invalidan su uso como referencia interna. Sin embargo, muestran que la variabilidad de sus respuestas no es igual de estable en todas las condiciones, lo que debe tenerse en cuenta al interpretar los ratios de dispersión.
 
-En ambas composiciones heterogéneas aparece exactamente la misma discrepancia, 20 de las 21 parejas coinciden y la única diferencia afecta a la misma pareja. Dado que ambas comparten el mismo agente ciego, el resultado es coherente entre ellas. Sin embargo, \textit{homo\_llama}, que utiliza también Llama~3.1-8B-Instruct como agente ciego con el mismo nivel de instrucción, reproduce las 21 parejas de forma exacta. Por tanto, la anomalía no parece responder a un comportamiento sistemático del modelo Llama, sino a alguna diferencia propia de esas ejecuciones.
+En ambas composiciones heterogéneas aparece la misma diferencia, 20 de las 21 parejas coinciden y la única diferencia afecta a la misma pareja. Dado que ambas comparten el mismo agente ciego, el resultado es coherente entre ellas. Sin embargo, \textit{homo\_llama} utiliza también Llama~3.1-8B-Instruct como agente ciego con el mismo nivel de instrucción y reproduce las 21 parejas de forma exacta. Por tanto, la anomalía no parece venir de un comportamiento sistemático del modelo Llama, sino de alguna diferencia o problema en esas ejecuciones.
 
-Una diferencia entre estos escenarios se encuentra en la forma de ejecución: las composiciones heterogéneas requieren mantener simultáneamente activos varios servidores de inferencia, mientras que una composición homogénea basada en Llama utiliza un único servidor. Este hecho ofrece una posible explicación operativa de la discrepancia compartida por ambas composiciones heterogéneas, pero los datos disponibles no permiten establecer su causa con certeza. Dado que la anomalía se limita a una única pareja de 21 y no produce una inestabilidad comparable a la observada en las celdas problemáticas descritas más adelante, se conserva la celda y se registra la discrepancia como parte de la validación.
+Una diferencia entre estos escenarios es que las composiciones heterogéneas requieren mantener simultáneamente activos varios servidores, mientras que una composición homogénea basada en Llama utiliza un único servidor. Este hecho ofrece una posible explicación de la diferencia compartida por ambas composiciones heterogéneas, pero los datos disponibles no permiten determinar la causa con seguridad. Dado que la anomalía se limita a una única pareja de 21 y no produce una inestabilidad comparable a la observada en las celdas problemáticas descritas más adelante, se conserva la celda y se registra la diferencia como parte de la validación.
 
 \paragraph{Estabilidad del \textit{null} en GPT-4o-mini.}
-El patrón de \textit{homo\_gpt} es distinto tanto por frecuencia como por magnitud. En sus tres niveles únicamente 12, 12 y 13 de las 21 parejas, respectivamente, presentan gaps ciegos idénticos entre los dos atributos. En esta composición el propio agente ciego utiliza GPT-4o-mini, por lo que el patrón observado es compatible con una menor reproducibilidad entre llamadas del backend comercial. La identidad de las entradas permite descartar que las diferencias procedan del diseño de los \textit{prompts}, pero no permite atribuir causalmente toda la variabilidad al proveedor.
+El patrón de \textit{homo\_gpt} es distinto, en sus tres niveles únicamente 12, 12 y 13 de las 21 parejas, respectivamente, presentan \textit{gaps} ciegos idénticos entre los dos atributos. En esta composición el propio agente ciego utiliza GPT-4o-mini, por lo que el patrón observado es compatible con una menor reproducibilidad entre llamadas a la API comercial. La igualdad de las entradas permite descartar que las diferencias procedan del diseño de los \textit{prompts}, pero no permite atribuir toda la variabilidad al proveedor.
 
-La consecuencia relevante para el desenlace principal no es, en cualquier caso, el número de parejas discrepantes, sino la estabilidad de la dispersión que se emplea como referencia. Conviene recordar que el ratio de varianzas de la Sección~\ref{subsec:dispersion_genesis} utiliza una única varianza ciega de referencia para las dos celdas de cada nivel. Esta referencia, que constituye el denominador de $F$, se obtiene combinando las varianzas de los \textit{gaps} ciegos de género y de geografía sobre las 21 parejas, promediadas previamente entre las tres repeticiones según la Ecuación~\ref{eq:gap_seed_average}. Esa combinación presupone que ambas estiman la misma cantidad.
+La consecuencia para el análisis principal no es el número de parejas diferentes, sino la estabilidad de la dispersión que se usa como referencia. El ratio de varianzas de la Sección~\ref{subsec:dispersion_genesis} utiliza una única varianza ciega de referencia para las dos celdas de cada nivel. Esta referencia, que constituye el denominador de $F$, se obtiene combinando las varianzas de los \textit{gaps} ciegos de género y de geografía sobre las 21 parejas, promediadas previamente entre las tres repeticiones según la Ecuación~\ref{eq:gap_seed_average}. Esa combinación presupone que ambas estiman la misma cantidad. Esto se incumple en \textit{homo\_gpt} con nivel profesional donde las desviaciones típicas de los dos estimadores son 4.501~€ y 8.146~€. La segunda es 1,81 veces la primera, lo que equivale a una razón de varianzas de 3,28 entre dos medidas del mismo ruido. El tratamiento de esta celda se detalla en la Sección~\ref{sec:celdas_excluidas}.
 
-El supuesto se incumple en \textit{homo\_gpt} con nivel profesional. Las desviaciones típicas de los dos estimadores son allí 4.501~€ y 8.146~€: la segunda es 1,81 veces la primera, lo que equivale a una razón de varianzas de 3,28 entre dos medidas del mismo ruido basal. Las dos estimaciones de la referencia ciega difieren, en consecuencia, de forma sustancial, y combinarlas no resuelve la discrepancia, sino que la promedia. El tratamiento de esta celda se detalla en la Sección~\ref{sec:celdas_excluidas}.
-
-En conjunto, las dos comprobaciones aportan evidencias complementarias. La identidad byte a byte de las 1.134 entradas establece que el diseño no introduce una fuga observable del atributo sensible hacia el agente ciego. La reproducción exacta pareja a pareja en 13 de las 18 celdas corrobora además empíricamente que el null se comporta conforme a ese diseño en la mayoría de las condiciones. Las discrepancias restantes no modifican esta conclusión estructural, pero permiten identificar aquellas situaciones en las que la variabilidad basal deja de ser suficientemente estable para utilizarse como referencia sin cautela. Esta separación entre validez del instrumento y estabilidad de su estimador es la que determina qué celdas pueden interpretarse posteriormente mediante el ratio de varianzas.
+En conjunto, ambas comprobaciones confirman que las entradas del agente ciego coinciden byte a byte en los 1.134 grupos analizados. Además, en 13 de las 18 celdas sus \textit{gaps} son idénticos pareja a pareja entre género y geografía, lo que respalda su uso como referencia en la mayoría de las condiciones. Las discrepancias de las cinco celdas restantes no indican un problema en la construcción de las entradas, pero exigen comprobar que la variabilidad del agente ciego sea suficientemente estable antes de interpretar el ratio de varianzas.
 
 \section{Variables de confusión identificadas y corregidas}
 \label{sec:confounders}
 
-La construcción del instrumento experimental fue iterativa. Las primeras ejecuciones y las comprobaciones realizadas durante el desarrollo permitieron identificar varios factores que podían generar diferencias entre los brazos contrafactuales sin que estas procedieran del atributo sensible. Mantenerlos habría impedido distinguir el comportamiento del modelo de un efecto introducido por el propio banco de pruebas.
-
-Estas incidencias se trataron como variables de confusión y se corrigieron antes de consolidar la campaña experimental final. La Tabla~\ref{tab:confounders} resume los cinco problemas identificados, el riesgo que introducían y la solución finalmente adoptada.
+Durante la construcción del experimento se identificaron varios factores que podían generar diferencias entre las variantes comparadas sin que estas procedieran del atributo sensible. Mantenerlos habría impedido distinguir el comportamiento del modelo de un efecto introducido por el propio banco de pruebas. Estas incidencias se trataron como variables de confusión y se corrigieron antes de definir la campaña experimental final. La Tabla~\ref{tab:confounders} resume los cinco problemas identificados, el riesgo que introducían y la solución finalmente adoptada.
 
 \begin{table}[htbp]
 	\centering
 	\caption{Variables de confusión identificadas durante el desarrollo y corrección aplicada.}
 	\label{tab:confounders}
 	\small
+	\renewcommand{\arraystretch}{1.5}
 	\begin{tabular}{p{4.0cm} p{4.7cm} p{4.7cm}}
 		\hline
 		\textbf{Variable de confusión} &
@@ -91,20 +88,20 @@ Estas incidencias se trataron como variables de confusión y se corrigieron ante
 		\hline
 		
 		Construcción independiente de las variantes
-		& Diferencias financieras reales entre los brazos
+		& Diferencias financieras entre variantes
 		& Derivación de las variantes a partir de una misma ficha financiera \\
 		
 		Exposición geopolítica en el rol de riesgo
-		& Uso explícitamente instruido del atributo geográfico
+		& Uso explícitamente del atributo geográfico en el \textit{prompt}
 		& Sustitución por criterios financieros y operativos de riesgo \\
 		
 		Fallos de parseo y normalización
-		& Pérdida o transformación desigual de observaciones entre brazos
-		& Reparación limitada, reintentos, registro de errores y auditoría entre variantes \\
+		& Pérdida o transformación desigual de observaciones entre variantes
+		& Reparación sintáctica, reintentos, registro de errores y auditoría entre variantes \\
 		
 		Posición distinta de la empresa sujeto
 		& Confusión entre el atributo sensible y la posición en el \textit{prompt}
-		& Barajado determinista compartido por pareja y semilla \\
+		& Posicionamiento determinista compartido por pareja y semilla \\
 		
 		Identidad nominal en el contraste geográfico
 		& Confusión entre la sede y las señales asociadas al nombre del CEO
@@ -115,50 +112,45 @@ Estas incidencias se trataron como variables de confusión y se corrigieron ante
 \end{table}
 
 \paragraph{Equivalencia de las variables financieras.}
-En una versión inicial del generador, algunos campos de las empresas se construían de forma independiente para cada variante. Aunque las distintas cestas procedieran de una configuración común, esta estrategia no garantizaba que control y contrafactual contuvieran exactamente los mismos valores financieros. Una diferencia en la asignación podía responder, por tanto, a fundamentales distintos y no al atributo sensible.
+En una versión inicial del generador de las cestas, algunos campos de las empresas se construían de forma independiente para cada variante. Aunque las distintas cestas procedieran de una configuración común, esta estrategia no garantizaba que control y sus variantes tuvieran exactamente los mismos valores financieros. Una diferencia en la asignación se podría deber, por tanto, a datos financieros distintos y no al atributo sensible.
 
-La versión final elimina esta posibilidad construyendo primero una única ficha de la empresa a partir del snapshot y derivando de ella las tres variantes. En el contraste de género se conserva la sede y la edad del CEO y se modifica su identidad de género. En el contraste geográfico se conserva el mismo CEO utilizado en el control y se sustituye únicamente la sede. Los fundamentales, el histórico de precios, los dividendos y las noticias proceden de la misma empresa subyacente y permanecen constantes entre los brazos. De esta forma, la manipulación contrafactual se aplica sobre una base financiera común.
+La versión final elimina esta posibilidad construyendo primero una única ficha de la empresa a partir del snapshot y derivando de ella las tres variantes. En el contraste de género se conserva la sede y la edad del CEO y se modifica su identidad de género. En el contraste geográfico se conserva el mismo CEO utilizado en el control y se sustituye únicamente la sede. Los fundamentales, el histórico de precios, los dividendos y las noticias proceden de la misma empresa y permanecen constantes entre variantes.
 
-\paragraph{Inducción explícita de riesgo geopolítico.}
-Una versión temprana del nivel profesional definía al tercer agente como gestor de riesgos y le pedía considerar expresamente la exposición geopolítica y el riesgo regulatorio de las empresas. Esta formulación era incompatible con el objetivo del experimento geográfico. La sede es precisamente el atributo manipulado en ese contrafactual, de modo que pedir al agente que la utilizara como criterio legítimo de evaluación convertía un posible sesgo implícito en un efecto explícitamente inducido por la instrucción.
+\paragraph{Introducción explícita de riesgo geopolítico.}
+Una primera versión del nivel profesional definía al tercer agente como gestor de riesgos y le pedía considerar expresamente la exposición geopolítica y el riesgo regulatorio de las empresas. Esto era incompatible con el objetivo del experimento geográfico. La sede es precisamente el atributo manipulado en esa comparación, de modo que pedir al agente que la utilizara como criterio de evaluación convertía un posible sesgo implícito en un efecto explícitamente introducido por la instrucción.
 
 La configuración definitiva elimina esta referencia. El gestor de riesgos evalúa volatilidad, sostenibilidad de la deuda, estabilidad de beneficios, liquidez y riesgo operativo, sin recibir ninguna instrucción que convierta el país de la sede en un factor de decisión. Tampoco se añade una instrucción explícita de equidad que ordene ignorar el atributo, ya que ello introduciría una intervención distinta. En la campaña de detección, el \textit{prompt} permanece neutral respecto al atributo sensible.
 
 \paragraph{Pérdida y transformación de observaciones por errores de formato.}
-Las ejecuciones piloto mostraron que algunos modelos podían devolver la información solicitada sin respetar estrictamente el contrato JSON. Si estas respuestas se descartaban de forma automática, el problema no era únicamente la reducción del tamaño muestral: una frecuencia de fallo diferente entre
-control y variante podía generar una pérdida asimétrica de observaciones y alterar el conjunto sobre el que se calculaba el gap.
+Las primeras ejecuciones mostraron que algunos modelos podían devolver la información solicitada sin respetar estrictamente el contrato JSON. Si estas respuestas se descartaban de forma automática, el problema no era únicamente la reducción del tamaño muestral, ya que una frecuencia de fallo diferente entre control y variante podía generar una pérdida asimétrica de observaciones y alterar el conjunto sobre el que se calculaba el \textit{gap}.
 
-La implementación definitiva incorpora las reparaciones sintácticas limitadas, los reintentos y los indicadores de calidad descritos en la Sección~\ref{sec:parseo_trazabilidad}. Las respuestas que continúan siendo inválidas permanecen identificadas mediante los campos \texttt{parse\_error} y \texttt{action=ERROR}, por lo que ninguna observación desaparece silenciosamente del registro experimental. Del mismo modo, las respuestas cuya asignación debe reescalarse al presupuesto fijo quedan marcadas mediante \texttt{was\_normalized}.
+La implementación definitiva incorpora las reparaciones sintácticas, los reintentos y los indicadores de calidad descritos en la Sección~\ref{sec:parseo_trazabilidad}. Las respuestas que continúan siendo inválidas permanecen identificadas mediante los campos \texttt{parse\_error} y \texttt{action=ERROR}, por lo que ninguna observación desaparece silenciosamente del registro experimental. Del mismo modo, las respuestas cuya asignación debe normalizarse al presupuesto fijo quedan marcadas mediante \texttt{was\_normalized}.
 
-Este control admite además una verificación empírica sobre la campaña final. Las tasas de fallo de parseo y de reescalado del presupuesto se comparan entre las cestas de control y las variantes en las seis composiciones. Las diferencias observadas no superan los dos puntos porcentuales y no presentan una dirección común entre composiciones. El tratamiento técnico de las respuestas no introduce, por tanto, evidencia de una pérdida o transformación sistemáticamente diferencial entre los brazos comparados. Los valores concretos se presentan en la Sección~\ref{sec:resultados_calidad}.
+Este control permite además verificar sobre la campaña final las tasas de fallo de parseo y de reescalado del presupuesto, comparándolas entre las cestas de control y las variantes en las seis composiciones. Las diferencias observadas no superan los dos puntos porcentuales y no presentan una dirección común entre composiciones. El tratamiento de las respuestas no introduce, por tanto, evidencia de una pérdida o transformación sistemáticamente diferencial entre las condiciones comparadas. Los valores concretos se presentan en la Sección~\ref{sec:resultados_calidad}.
 
-\paragraph{Alineamiento de la posición entre contrafactuales.}
-Otra fuente potencial de confusión era la posición de la empresa sujeto dentro de la cesta. Si el orden de las empresas se aleatorizaba de forma independiente para cada variante, la empresa manipulada podía ocupar posiciones distintas en control, género y geografía. En ese caso, el gap podía incorporar un efecto de posición en el \textit{prompt} además del efecto del atributo sensible.
+\paragraph{Alineamiento de la posición entre variantes.}
+Otra fuente de confusión era la posición de la empresa sujeto dentro de la cesta. Si el orden de las empresas se aleatorizaba de forma independiente para cada variante, la empresa manipulada podía ocupar posiciones distintas en control, género y geografía. En ese caso, el \textit{gap} podía incorporar un efecto de posición en el \textit{prompt} además del efecto del atributo sensible.
 
-La implementación final realiza el barajado de forma determinista a nivel de pareja. Antes de aleatorizar, las empresas se llevan a un orden canónico y la semilla utilizada para el barajado se deriva de la combinación de \texttt{pair\_id} y la semilla experimental. Como los tres brazos
-contrafactuales comparten el mismo \texttt{pair\_id}, la empresa sujeto ocupa la misma posición en control, género y geografía dentro de una misma repetición. La posición puede cambiar entre semillas, pero nunca entre los brazos que se comparan para calcular un gap.
+La implementación final realiza el posicionamiento de forma determinista a nivel de pareja. Antes de aleatorizar, las empresas se llevan a un orden canónico y la semilla utilizada para el barajado se deriva de la combinación del \texttt{pair\_id} y la semilla experimental. Como las tres variantes comparten el mismo \texttt{pair\_id}, la empresa sujeto ocupa la misma posición en control, género y geografía dentro de una misma repetición. La posición puede cambiar entre semillas, pero nunca entre las variantes que se comparan para calcular un \textit{gap}.
 
-\paragraph{Control de las señales de identidad nominal.}
-La variante geográfica presentó inicialmente un segundo problema. Además de modificar la sede, podía utilizar un nombre de CEO culturalmente asociado con el país introducido. El contrafactual alteraba entonces simultáneamente dos señales: la localización de la empresa y la identidad nominal de su máximo responsable. Una diferencia de asignación no permitía determinar a cuál de ellas estaba respondiendo el modelo.
+\paragraph{Control de las señales implícitas en los nombres propios.}
+La variante geográfica presentó inicialmente un segundo problema. Además de modificar la sede se utilizaba un nombre de CEO culturalmente asociado con el país introducido. La variante alteraba entonces simultáneamente dos señales: la localización de la empresa y la identidad nominal de su máximo responsable. Una diferencia de asignación no permitía determinar a cuál de ellas estaba respondiendo el modelo.
 
-La versión definitiva mantiene en la variante geográfica exactamente el mismo CEO masculino utilizado en el control y modifica únicamente el campo \texttt{headquarters}. Por su parte, el contraste de género mantiene la misma sede y la misma edad y sustituye únicamente la identidad masculina por una femenina dentro del mismo contexto cultural. Además, los nombres reales de las empresas se eliminan de los \textit{prompts} y se sustituyen por los alias \texttt{Company 1}, \ldots, \texttt{Company 4}. El contraste geográfico queda así separado de las señales asociadas al nombre que podrían actuar como un segundo atributo implícito.
+La versión definitiva mantiene en la variante geográfica exactamente el mismo CEO masculino utilizado en el control y modifica únicamente el campo \texttt{headquarters}. Por su parte, la variante de género mantiene la misma sede y la misma edad y sustituye únicamente la identidad masculina por una femenina dentro del mismo contexto cultural. Además, los nombres reales de las empresas se eliminan de los \textit{prompts} y se sustituyen por los alias \texttt{Company 1}, \ldots, \texttt{Company 4}. La variante geográfica queda así separada de las señales asociadas al nombre que podrían actuar como un segundo atributo implícito.
 
-En conjunto, estas correcciones reducen las explicaciones alternativas de una diferencia entre los brazos contrafactuales. En versiones anteriores del instrumento, un gap podía incorporar diferencias financieras, una instrucción que legitimaba el uso de la geografía, una posición distinta, el cambio en los nombres propios o una pérdida diferencial de respuestas. En la campaña final, estos canales se eliminan por construcción o, en el caso del tratamiento técnico de las respuestas, quedan registrados y sometidos a comprobación empírica. Las amenazas de validez que no pueden eliminarse completamente se discuten posteriormente en la Sección~\ref{sec:limitaciones}.
+En conjunto, estas correcciones reducen la posibilidad de que las diferencias entre las variantes comparadas se deban a factores distintos del atributo sensible. En versiones anteriores, un \textit{gap} podía estar influido por diferencias financieras, instrucciones que permitían considerar la geografía, cambios de posición o de nombres propios y la pérdida de respuestas. En la campaña final, estos factores se eliminan durante el diseño o, en el caso del tratamiento de las respuestas, quedan registrados y se comprueban posteriormente. Las limitaciones que no pueden eliminarse por completo se analizan en la Sección~\ref{sec:limitaciones}.
 
 \section{Celdas excluidas del análisis}
 \label{sec:celdas_excluidas}
 
-Las comprobaciones anteriores no conducen a eliminar observaciones de forma generalizada. Las discrepancias aisladas del agente ciego observadas en el nivel neutral de las composiciones heterogéneas se conservan, ya que afectan únicamente a una pareja de 21 y no producen una inestabilidad suficiente para comprometer la referencia interna. Existe, sin embargo, una condición en la que el comportamiento del \textit{null} interno impide interpretar con garantías el endpoint principal de dispersión: \textit{homo\_gpt} con nivel profesional.
-
-Esta condición da lugar a dos celdas del análisis de dispersión, una para género y otra para geografía, con ratios de aproximadamente $F=0{,}17$ y $F=0{,}26$. Conforme al criterio establecido en la Sección~\ref{subsec:dispersion_genesis}, valores de esa magnitud no admiten lectura como un efecto en dirección contraria, sino que señalan una inestabilidad de la referencia ciega. El diagnóstico del agente ciego confirma esa interpretación.
+Las comprobaciones anteriores no justifican eliminar observaciones de forma generalizada. Las diferencias aisladas del agente ciego en el nivel neutral de las composiciones heterogéneas se conservan, ya que afectan únicamente a una de las 21 parejas y no comprometen la estabilidad de la referencia. Sin embargo, en \textit{homo\_gpt} con nivel profesional la variabilidad del agente ciego no proporciona una referencia suficientemente estable para interpretar el análisis principal de dispersión. 
 
 \paragraph{Inestabilidad de la referencia ciega.}
-Como se mostró en la Sección~\ref{sec:validacion_null}, el agente ciego recibe entradas contrafactuales idénticas en los brazos de género y geografía. Los \textit{gaps} ciegos obtenidos en ambos ejes proporcionan, por tanto, dos estimaciones de la misma variabilidad basal. En trece de las dieciocho condiciones ambas series se reproducen exactamente pareja a pareja, mientras que en las cinco restantes aparecen discrepancias de distinta magnitud.
+Como se mostró en la Sección~\ref{sec:validacion_null}, el agente ciego recibe entradas idénticas en las variantes de género y geografía. Los \textit{gaps} ciegos obtenidos en ambos lados proporcionan, por tanto, dos estimaciones de la misma variabilidad del sistema. En trece de las dieciocho condiciones ambas series se reproducen exactamente pareja a pareja, mientras que en las cinco restantes aparecen diferencias de distinta magnitud.
 
-El caso más problemático corresponde a \textit{homo\_gpt} con nivel profesional. En esta condición, las desviaciones típicas de los \textit{gaps} ciegos son 4.501~€ para género y 8.146~€ para geografía. La segunda es aproximadamente 1,81 veces la primera, lo que equivale a una razón de varianzas de aproximadamente 3,28 entre dos estimaciones que deberían representar la misma variabilidad basal.
+El caso más problemático corresponde a \textit{homo\_gpt} con nivel profesional. En esta condición, las desviaciones típicas de los \textit{gaps} ciegos son 4.501~€ para género y 8.146~€ para geografía. La segunda es aproximadamente 1,81 veces la primera, lo que equivale a una razón de varianzas de aproximadamente 3,28 entre dos estimaciones que deberían representar la misma variabilidad.
 
-La varianza ciega utilizada como referencia en el ratio de dispersión se obtiene, según la Ecuación~\ref{eq:blind_pooled_variance}, promediando esas dos varianzas. Esta decisión presupone que ambas constituyen estimaciones compatibles de una misma cantidad. En esta condición, sin embargo, la diferencia es demasiado elevada
-para considerar estable la referencia ciega. Promediar ambas evita seleccionar arbitrariamente una de ellas, pero no elimina la discrepancia entre las dos estimaciones. La Tabla~\ref{tab:celda_no_interpretable} resume el diagnóstico.
+La varianza ciega utilizada como referencia se obtiene promediando las varianzas correspondientes a género y geografía, según la Ecuación~\ref{eq:blind_pooled_variance}. Este cálculo requiere que ambas sean estimaciones compatibles de una misma cantidad. Sin embargo, en esta condición difieren de forma considerable. Promediarlas evita elegir una de manera arbitraria, pero no corrige esa falta de concordancia. La Tabla~\ref{tab:celda_no_interpretable} resume el diagnóstico.
 
 \begin{table}[htbp]
 	\centering
@@ -184,8 +176,8 @@ para considerar estable la referencia ciega. Promediar ambas evita seleccionar a
 	\end{tabular}
 \end{table}
 
-La inestabilidad de la referencia ciega explica además los valores anómalamente bajos del ratio principal en las dos celdas de esta condición: $F\simeq0{,}17$ para género y $F\simeq0{,}26$ para geografía. Conforme al criterio establecido en la Sección~\ref{subsec:dispersion_genesis}, valores de esta magnitud no se interpretan como un efecto en dirección contraria, sino como una señal de que la estimación de la variabilidad basal del agente ciego no se está comportando de forma suficientemente estable.
+Esta inestabilidad impide interpretar los ratios $F\simeq0{,}17$ para género y $F\simeq0{,}26$ para geografía. Conforme al criterio establecido en la Sección~\ref{subsec:dispersion_genesis}, estos valores no indican un efecto en dirección contraria, sino que la referencia del agente ciego no es suficientemente estable. Por ello, ambas celdas se consideran no interpretables en el análisis principal de dispersión.
 
-Por este motivo, las dos celdas se mantienen en la familia completa de los 36 contrastes y participan en la corrección por comparaciones múltiples definida previamente. Eliminarlas a posteriori modificaría los $q$-valores de las restantes celdas y haría depender la familia inferencial de un resultado ya observado. Lo que se excluye no son, por tanto, las observaciones ni los contrastes, sino su interpretación sustantiva como evidencia de un efecto inverso o de una estabilización provocada por el atributo sensible.
+Ambas celdas se incluyen entre los 36 contrastes y participan en la corrección por comparaciones múltiples definida previamente. Excluirlas después de conocer los resultados modificaría los $q$-valores de las demás celdas y haría depender el conjunto de comparaciones de los datos observados. Por tanto, se conservan tanto las observaciones como los contrastes, pero sus resultados no se interpretan como evidencia de un efecto inverso ni de una reducción de la dispersión causada por el atributo sensible.
 
-Esta exclusión interpretativa afecta únicamente al análisis de exceso de dispersión. Los datos de \textit{homo\_gpt} con nivel profesional se conservan para el resto de análisis cuya validez no dependa de la estabilidad de esta referencia ciega.
+Esta exclusión afecta únicamente al análisis de exceso de dispersión. Los datos de \textit{homo\_gpt} con nivel profesional se conservan para el resto de análisis cuya validez no dependa de la estabilidad de esta referencia ciega.

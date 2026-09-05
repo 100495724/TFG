@@ -1,52 +1,117 @@
-
 % !TeX root = ../main.tex
 
 \begin{figure}[htbp]
 	\centering
 	\begin{tikzpicture}[
-		font = \footnotesize,
-		ag/.style     = {rectangle, rounded corners=2pt, draw, thick,
-			minimum width=26mm, minimum height=7mm, align=center},
-		ciego/.style  = {ag, very thick, fill=black!8},
-		estado/.style = {rectangle, draw, dashed, minimum width=88mm,
-			minimum height=6mm, align=center, fill=black!3},
-		fl/.style     = {-{Stealth[length=1.8mm]}}
+		font=\footnotesize,
+		ag/.style={
+			rectangle,
+			rounded corners=2pt,
+			draw,
+			thick,
+			minimum width=39mm,
+			minimum height=10mm,
+			align=center
+		},
+		ciego/.style={
+			ag,
+			very thick,
+			fill=black!8
+		},
+		estado/.style={
+			rectangle,
+			draw,
+			dashed,
+			minimum width=120mm,
+			minimum height=7mm,
+			align=center,
+			fill=black!3
+		},
+		nota/.style={
+			rectangle,
+			draw,
+			dotted,
+			minimum width=120mm,
+			minimum height=7mm,
+			align=center
+		},
+		fl/.style={
+			-{Stealth[length=1.8mm]}
+		}
 		]
 		
 		% Génesis
-		\node[ciego] (g1) at (0,0)   {\texttt{agent\_1} (ciego)};
-		\node[ag]    (g2) at (3.2,0) {\texttt{agent\_2}};
-		\node[ag]    (g3) at (6.4,0) {\texttt{agent\_3}};
-		\node[left=3mm of g1, align=right] {$t=0$\\génesis};
+		\node[ciego] (g1) at (0,0)
+		{\texttt{agent\_1} (ciego)\\
+			$\text{cesta}\rightarrow r_1^{(0)}$};
 		
-		\node[estado] (e0) at (3.2,-1.3) {estado $t=0$};
+		\node[ag] (g2) at (4.3,0)
+		{\texttt{agent\_2}\\
+			$\text{cesta}\rightarrow r_2^{(0)}$};
+		
+		\node[ag] (g3) at (8.6,0)
+		{\texttt{agent\_3}\\
+			$\text{cesta}\rightarrow r_3^{(0)}$};
+		
+		\node[left=3mm of g1, align=right]
+		{$t=0$\\génesis};
+		
+		\node[estado] (e0) at (4.3,-1.5)
+		{Estado $t=0$:
+			$\{r_1^{(0)},r_2^{(0)},r_3^{(0)}\}$};
+		
 		\draw[fl] (g1) -- (e0);
 		\draw[fl] (g2) -- (e0);
 		\draw[fl] (g3) -- (e0);
 		
-		% Turno 1
-		\node[ciego] (a1) at (0,-2.6)   {\texttt{agent\_1} (ciego)};
-		\node[ag]    (a2) at (3.2,-2.6) {\texttt{agent\_2}};
-		\node[ag]    (a3) at (6.4,-2.6) {\texttt{agent\_3}};
-		\node[left=3mm of a1, align=right] {$t=1$};
+		% Primer turno
+		\node[ciego] (a1) at (0,-3.2)
+		{\texttt{agent\_1} (ciego)\\
+			$\text{cesta} + r_2^{(0)} + r_3^{(0)}
+			\rightarrow r_1^{(1)}$};
+		
+		\node[ag] (a2) at (4.3,-3.2)
+		{\texttt{agent\_2}\\
+			$\text{cesta} + r_1^{(0)} + r_3^{(0)}
+			\rightarrow r_2^{(1)}$};
+		
+		\node[ag] (a3) at (8.6,-3.2)
+		{\texttt{agent\_3}\\
+			$\text{cesta} + r_1^{(0)} + r_2^{(0)}
+			\rightarrow r_3^{(1)}$};
+		
+		\node[left=3mm of a1, align=right]
+		{$t=1$};
 		
 		\draw[fl] (e0) -- (a1);
 		\draw[fl] (e0) -- (a2);
 		\draw[fl] (e0) -- (a3);
 		
-		\node[estado] (e1) at (3.2,-3.9) {estado $t=1$};
+		\node[estado] (e1) at (4.3,-4.7)
+		{Estado $t=1$:
+			$\{r_1^{(1)},r_2^{(1)},r_3^{(1)}\}$};
+		
 		\draw[fl] (a1) -- (e1);
 		\draw[fl] (a2) -- (e1);
 		\draw[fl] (a3) -- (e1);
 		
-		\node at (3.2,-4.6) {$\vdots$};
-		\node at (3.2,-5.2) {$t=2,3,4$};
+		\node[nota] (continuacion) at (4.3,-5.9)
+		{$t=2,3,4$: se repite el esquema utilizando
+			únicamente las respuestas ajenas de $t-1$.};
+		
+		\draw[fl] (e1) -- (continuacion);
 		
 	\end{tikzpicture}
-	\caption[Protocolo de deliberación]{Secuencia de interacción del comité. En
-		génesis los tres agentes deciden de forma independiente. En cada turno
-		posterior, los tres reciben el estado del turno anterior y sus respuestas
-		no lo sustituyen hasta que los tres han respondido, de modo que la
-		actualización es síncrona.}
+	
+	\caption[Protocolo de deliberación]{
+		Secuencia de interacción del comité, donde $r_i^{(t)}$
+		representa la respuesta del agente $i$ en el turno $t$.
+		En génesis, los agentes deciden de forma independiente.
+		En los turnos posteriores, cada agente recibe la cesta y
+		las respuestas de los otros dos agentes en el turno anterior,
+		pero no su propia respuesta ni las de rondas previas.
+		El estado se actualiza después de que los tres hayan respondido,
+		por lo que la actualización es síncrona.
+	}
 	\label{fig:protocolo_deliberacion}
 \end{figure}

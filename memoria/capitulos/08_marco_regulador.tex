@@ -3,7 +3,7 @@
 \chapter{Marco regulador y entorno socioeconómico}
 \label{chap:marco_regulador}
 
-Este capítulo sitúa el trabajo en su contexto normativo y económico. La primera sección examina qué obligaciones alcanzarían a un despliegue real del tipo de sistema estudiado y bajo qué condiciones se ha desarrollado el propio experimento, atendiendo tanto a la regulación europea sobre inteligencia artificial como a las licencias de los modelos y datos empleados. La segunda recoge las decisiones éticas que el diseño del banco de pruebas obliga a explicitar. Las tres restantes componen el entorno socioeconómico, con el presupuesto del trabajo, el impacto que cabría esperar de la aplicación de sus resultados y la planificación seguida durante su desarrollo.
+Este capítulo sitúa el trabajo en su contexto normativo y económico. La primera sección examina qué obligaciones alcanzarían a un despliegue real del tipo de sistema estudiado y bajo qué condiciones se ha desarrollado el propio experimento, atendiendo tanto a la regulación europea sobre inteligencia artificial como a las licencias de los modelos y datos empleados. La segunda recoge las decisiones éticas que el diseño del banco de pruebas obliga a comentar. Las tres restantes componen el entorno socioeconómico, con el presupuesto del trabajo, el impacto que cabría esperar de la aplicación de sus resultados y la planificación seguida durante su desarrollo.
 
 \section{Marco regulador}
 \label{sec:marco_regulador}
@@ -14,7 +14,7 @@ El encuadre normativo de este trabajo plantea dos preguntas distintas. La primer
 
 El marco de referencia en la Unión Europea es el Reglamento (UE) 2024/1689, conocido como Reglamento de Inteligencia Artificial~\cite{ue2024ai_act}. Su redacción vigente incorpora la modificación introducida por el Reglamento (UE) 2026/1744~\cite{ue2026omnibus}, publicado el 24 de julio de 2026, que retrasa hasta el 2 de diciembre de 2027 la aplicación de las obligaciones previstas para los sistemas de alto riesgo. El motivo del retraso fue que las normas armonizadas y las autoridades nacionales de supervisión no estaban disponibles en el plazo original. El resto del Reglamento mantiene su calendario, incluidas las prohibiciones, la alfabetización en materia de inteligencia artificial y las obligaciones de transparencia del artículo 50, vigentes desde el 2 de agosto de 2026.
 
-Conviene precisar el encaje del escenario estudiado. El Anexo III del Reglamento incluye entre los usos de alto riesgo la evaluación de la solvencia crediticia de personas físicas, pero no la asignación de inversión entre sociedades, que es la tarea empleada aquí. El sistema analizado queda por tanto fuera de esa categoría, y los requisitos que se examinan a continuación se emplean como referencia regulatoria y no como obligaciones directamente exigibles. La proximidad funcional es considerable, ya que ambas situaciones consisten en repartir un recurso financiero a partir de información heterogénea, y la extensión del banco de pruebas a la concesión de crédito propuesta en la Sección~\ref{sec:trabajo_futuro} lo situaría dentro del ámbito regulado siempre que la evaluación recayera sobre personas físicas.
+El Anexo III del Reglamento incluye entre los usos de alto riesgo la evaluación de la solvencia crediticia de personas físicas, pero no la asignación de inversión entre sociedades, que es la tarea empleada aquí. El sistema analizado queda por tanto fuera de esa categoría, y los requisitos que se examinan a continuación se emplean como referencia regulatoria y no como obligaciones directamente exigibles. La proximidad funcional es considerable, ya que ambas situaciones consisten en repartir un recurso financiero a partir de información heterogénea, y la extensión del banco de pruebas a la concesión de crédito propuesta en la Sección~\ref{sec:trabajo_futuro} lo situaría dentro del ámbito regulado siempre que la evaluación recayera sobre personas físicas.
 
 La discusión sobre sesgo suele remitirse al artículo 10, que exige examinar los conjuntos de datos en busca de posibles sesgos y adoptar medidas para detectarlos y atenuarlos. Ese encuadre resulta insuficiente para el fenómeno documentado aquí. El exceso de dispersión se observa en el comportamiento del sistema durante la inferencia y no puede atribuirse, a partir de este diseño experimental, a ninguna característica concreta de los datos de entrenamiento. Se manifiesta además como inestabilidad ante entradas equivalentes y no como una preferencia sostenida por un grupo.
 
@@ -46,7 +46,7 @@ La aportación propia consiste en un procedimiento experimental y en el software
 \section{Consideraciones éticas}
 \label{sec:consideraciones_eticas}
 
-El diseño del banco de pruebas incorpora simplificaciones que conviene mencionar. El género se representa mediante dos categorías y el eje geográfico contrapone la sede estadounidense a cinco localizaciones alternativas, situadas en Lagos, Bombay, São Paulo, Ciudad Ho Chi Minh y Karachi. Ambas decisiones responden a la necesidad de disponer de observaciones suficientes para el contraste, no a una descripción del mundo. Los cinco emplazamientos difieren entre sí en desarrollo económico, marco institucional, tradición jurídica y contexto cultural tanto como cualquiera de ellos difiere de la referencia estadounidense, de manera que su tratamiento conjunto constituye una construcción experimental sin correspondencia con ningún colectivo real. Las conclusiones se refieren por tanto a las manipulaciones construidas y no a los grupos o territorios que estas nombran.
+El diseño del banco de pruebas incorpora simplificaciones que conviene mencionar. El género se representa mediante dos categorías y el eje geográfico contrapone la sede estadounidense a cinco localizaciones alternativas, situadas en Lagos, Bombay, São Paulo, Ciudad Ho Chi Minh y Karachi. Ambas decisiones responden a la necesidad de disponer de observaciones suficientes para el contraste, no a una descripción del mundo. Las cinco localizaciones difieren entre sí en desarrollo económico, marco institucional, tradición jurídica y contexto cultural tanto como cualquiera de ellos difiere de la referencia estadounidense, de manera que su tratamiento conjunto constituye una construcción experimental sin correspondencia con ningún colectivo real. Las conclusiones se refieren por tanto a las manipulaciones construidas y no a los grupos o territorios que estas nombran.
 
 El uso de atributos sintéticos reduce unos riesgos e introduce otros. Las identidades de la dirección ejecutiva se generan para el experimento, de modo que ninguna persona real es objeto de la comparación. Ahora bien, señalar el género mediante nombres propios o elegir determinadas sedes como contraste consiste precisamente en activar asociaciones culturales que los modelos han aprendido. Un instrumento construido para detectar sensibilidad ante esas asociaciones puede acabar reforzando las mismas categorías que audita si sus resultados se leen fuera del contexto experimental. Las etiquetas empleadas son variables operativas del banco de pruebas y no juicios sobre lo que representan.
 
@@ -105,10 +105,8 @@ Conviene distinguir las horas facturadas de las horas de experimento. Las campa�
 
 \subsection{Amortización del equipo}
 
-El desarrollo, el análisis y la redacción se realizaron sobre un equipo
-portátil personal. Considerando un coste de adquisición de 870~\euro, una vida
-útil de cinco años y un periodo de dedicación de siete meses, la amortización
-imputable al proyecto asciende a 101,50~\euro.
+El desarrollo, el análisis y la redacción se realizaron sobre un equipo portátil personal. Considerando un coste de adquisición de 870~\euro, una vida útil de cinco años y un periodo de dedicación de nueve meses, la amortización imputable al proyecto asciende a 130,50~\euro.
+
 
 \subsection{Coste total}
 
@@ -125,12 +123,12 @@ En la Tabla~\ref{tab:presupuesto_total} se calcula el coste total.
 		\hline
 		Personal & 7.500,00 \\
 		Cómputo & 78,60 \\
-		Amortización de equipo & 101,50 \\
+		Amortización de equipo & 130,50 \\
 		\hline
-		Subtotal de costes directos & 7.680,10 \\
-		Costes indirectos (15\,\%) & 1.152,02 \\
+		Subtotal de costes directos & 7.709,10 \\
+		Costes indirectos (15\,\%) & 1.156,37 \\
 		\hline
-		\textbf{Total} & \textbf{8.832,12} \\
+		\textbf{Total} & \textbf{8.865,47} \\
 		\hline
 	\end{tabular}
 \end{table}
@@ -157,9 +155,14 @@ Más allá de la inversión, el mismo esquema se traslada a cualquier decisión 
 
 \subsection{Impacto económico}
 
-El coste de aplicar el procedimiento resulta modesto. La campaña completa de esta memoria, con seis composiciones, tres niveles de instrucción, dos atributos y tres repeticiones, consumió 78,60~\euro{} de cómputo según el desglose de la Sección~\ref{sec:presupuesto}. Una auditoría dirigida a una única configuración antes de su despliegue costaría una fracción de esa cifra, muy por debajo del esfuerzo de ingeniería necesario para integrarla. La barrera de adopción no es económica, sino de conocimiento del procedimiento, que es precisamente lo que este trabajo aporta. Por la misma razón, la huella ambiental asociada es reducida. Las 292,8 horas de GPU consumidas equivalen a un consumo eléctrico marginal frente al de entrenar o ajustar cualquiera de los modelos evaluados.
+El coste de aplicar el procedimiento resulta modesto. La campaña completa de esta memoria, con seis composiciones, tres niveles de instrucción, dos atributos y tres repeticiones, consumió 78,60~\euro{} de cómputo según el desglose de la Sección~\ref{sec:presupuesto}. Una auditoría dirigida a una única configuración antes de su despliegue costaría una fracción de esa cifra, muy por debajo del esfuerzo de ingeniería necesario para integrarla. La barrera de adopción no es económica, sino de conocimiento del procedimiento, que es precisamente lo que este trabajo aporta. 
 
 Al coste de auditar se contrapone el de no hacerlo. Una entidad que despliegue un comité de agentes sobre decisiones de asignación y verifique únicamente la paridad de medias puede concluir que el sistema es neutral cuando su comportamiento resulta inestable ante el atributo. El coste de esa omisión no se manifiesta como una desviación media detectable, sino como decisiones individuales difíciles de justificar ante un cliente, un supervisor o un tribunal, y como un riesgo reputacional y de litigio que aumenta con el volumen de decisiones automatizadas.
+
+\subsection{Impacto medioambiental}
+
+El impacto medioambiental del trabajo procede principalmente del consumo energético asociado a la ejecución de los modelos. La campaña acumuló 292,8 horas de GPU, aunque este dato no permite calcular por sí solo el consumo eléctrico ni las emisiones generadas, ya que no se dispone de información completa sobre la infraestructura y las fuentes de energía empleadas. El proyecto reutiliza modelos ya entrenados y no incluye procesos de entrenamiento o ajuste, por lo que el cómputo se limita a la inferencia necesaria para los experimentos. Este enfoque se relaciona con el uso eficiente de los recursos promovido por el ODS 12 y con la acción por el clima recogida en el ODS 13~\cite{pnud_ods}.
+
 
 \subsection{Impacto social y recomendación aplicable}
 

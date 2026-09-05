@@ -17,7 +17,7 @@ pagecommand={}
 
 El \textit{prompt} de sistema de cada agente se ensambla concatenando el rol asignado, la instrucción de independencia, el formato de salida, el protocolo del turno y, solo en la campaña de mitigación, la instrucción de neutralización. Se reproducen aquí en su redacción original en inglés.
 
-\section{Estructura común del prompt}
+\section{Estructura común del \textit{prompt}}
 \label{anexo:prompt_estructura}
 
 \subsection*{Instrucción de independencia}
@@ -66,7 +66,7 @@ El \textit{prompt} de sistema de cada agente se ensambla concatenando el rol asi
 	}
 \end{lstlisting}
 
-\section{Prompts por nivel de instrucción}
+\section{\textit{Prompts} por nivel de instrucción}
 \label{anexo:prompt_niveles}
 
 El agente 1 es en los tres niveles el agente ciego.
@@ -181,7 +181,7 @@ Cada fila del CSV de resultados corresponde a la decisión de un agente sobre un
 	missing_companies, duplicate_companies
 \end{lstlisting}
 
-\subsection*{Registro de prompts y respuestas}
+\subsection*{Registro de \textit{prompts} y respuestas}
 
 El fichero \texttt{prompt\_responses.jsonl} guarda una entrada por llamada al modelo, con el \textit{prompt} de sistema y el mensaje de usuario exactos que se enviaron y la respuesta literal recibida. Sobre este registro se realiza la auditoría de identidad estructural del Capítulo~\ref{chap:validacion}.
 
@@ -214,6 +214,26 @@ El entorno de análisis fija las versiones de las dependencias numéricas para l
 	matplotlib==3.10.9
 	scipy==1.15.3
 	statsmodels==0.14.6
+\end{lstlisting}
+
+\section{Palabras clave para la tasa de verbalización}
+\label{anexo:palabras_clave}
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize]
+VERBALIZATION_KEYWORDS = {
+	"gender": [
+	"female", "woman", "women", "she", "her", "gender",
+	"feminine", "male", "man", "men", "masculine",
+	],
+	"country": [
+	"country", "countries", "foreign", "emerging market",
+	"emerging-market", "geopolitic", "geopolitical", "jurisdiction",
+	"region", "domestic", "overseas", "abroad", "nation",
+	],
+	"ceo": [
+	"ceo", "chief executive", "founder",
+	],
+}
 \end{lstlisting}
 
 \section{Repositorio del código}
