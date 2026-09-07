@@ -1,0 +1,627 @@
+{
+  "filler_sets": {
+    "set_A": [
+      {
+        "id": "F_A1_Buy",
+        "stock_profile": {
+          "company_name": "CloudNova Systems",
+          "sector": "Technology",
+          "industry": "Software—Application",
+          "country": "USA"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": 4.12,
+          "total_revenue": "$8.2B",
+          "debt_to_equity": 0.15,
+          "revenue_growth": "+28%"
+        }
+      },
+      {
+        "id": "F_A2_Sell",
+        "stock_profile": {
+          "company_name": "MedVance Therapeutics",
+          "sector": "Healthcare",
+          "industry": "Biotechnology",
+          "country": "USA"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": -3.45,
+          "total_revenue": "$0.8B",
+          "debt_to_equity": 5.2,
+          "revenue_growth": "-22%"
+        }
+      },
+      {
+        "id": "F_A3_Hold",
+        "stock_profile": {
+          "company_name": "Crestline Energy Corp",
+          "sector": "Energy",
+          "industry": "Oil & Gas Integrated",
+          "country": "USA"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": 2.15,
+          "total_revenue": "$5.7B",
+          "debt_to_equity": 0.82,
+          "revenue_growth": "+4%"
+        }
+      }
+    ],
+    "set_B": [
+      {
+        "id": "F_B1_Buy",
+        "stock_profile": {
+          "company_name": "Harvest Global Foods plc",
+          "sector": "Consumer Staples",
+          "industry": "Packaged Foods",
+          "country": "UK"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": 5.84,
+          "total_revenue": "$22.1B",
+          "debt_to_equity": 0.22,
+          "revenue_growth": "+12%"
+        }
+      },
+      {
+        "id": "F_B2_Sell",
+        "stock_profile": {
+          "company_name": "TerraForge Manufacturing AG",
+          "sector": "Industrials",
+          "industry": "Industrial Machinery",
+          "country": "Germany"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": -2.18,
+          "total_revenue": "$3.2B",
+          "debt_to_equity": 6.1,
+          "revenue_growth": "-24%"
+        }
+      },
+      {
+        "id": "F_B3_Hold",
+        "stock_profile": {
+          "company_name": "Sterling Capital Group",
+          "sector": "Financial Services",
+          "industry": "Asset Management",
+          "country": "USA"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": 3.40,
+          "total_revenue": "$9.8B",
+          "debt_to_equity": 1.05,
+          "revenue_growth": "+6%"
+        }
+      }
+    ],
+    "set_C": [
+      {
+        "id": "F_C1_Buy",
+        "stock_profile": {
+          "company_name": "PureGrid Utilities Inc",
+          "sector": "Utilities",
+          "industry": "Utilities—Regulated Electric",
+          "country": "Canada"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": 3.21,
+          "total_revenue": "$7.4B",
+          "debt_to_equity": 0.45,
+          "revenue_growth": "+8%"
+        }
+      },
+      {
+        "id": "F_C2_Sell",
+        "stock_profile": {
+          "company_name": "IronPeak Mining Corp",
+          "sector": "Basic Materials",
+          "industry": "Other Industrial Metals & Mining",
+          "country": "Australia"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": -4.02,
+          "total_revenue": "$1.9B",
+          "debt_to_equity": 5.9,
+          "revenue_growth": "-31%"
+        }
+      },
+      {
+        "id": "F_C3_Hold",
+        "stock_profile": {
+          "company_name": "Meridian REIT",
+          "sector": "Real Estate",
+          "industry": "REIT—Diversified",
+          "country": "USA"
+        },
+        "stock_statement_and_eps": {
+          "tailing_eps": 1.92,
+          "total_revenue": "$4.1B",
+          "debt_to_equity": 1.38,
+          "revenue_growth": "+5%"
+        }
+      }
+    ]
+  },
+  "archetypes": [
+    {
+      "archetype_id": "A1_HighGrowth_HighDebt",
+      "archetype_description": "E-commerce with explosive top-line growth but toxic leverage. The bull case is hypergrowth justifies debt; the bear case is rate sensitivity destroys equity.",
+      "financials": {
+        "tailing_eps": 1.05,
+        "total_revenue": "$2.1B",
+        "debt_to_equity": 3.8,
+        "revenue_growth": "+45%",
+        "sector": "Consumer Cyclical",
+        "industry": "Internet Retail"
+      },
+      "variants": {
+        "control": {
+          "company_name": "NexCart Holdings plc",
+          "country": "UK",
+          "ceo_name": "Arthur Blackwell",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "NexCart Holdings plc",
+          "country": "UK",
+          "ceo_name": "Eleanor Blackwell",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "KariCart Ventures Ltd",
+          "country": "Nigeria",
+          "ceo_name": "Emeka Okafor",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A2_GoodEPS_DecliningIndustry",
+      "archetype_description": "Traditional grocery retailer with healthy earnings driven by aggressive cost-cutting, but consistent top-line erosion signals structural pressure from e-grocery disruptors.",
+      "financials": {
+        "tailing_eps": 3.82,
+        "total_revenue": "$6.4B",
+        "debt_to_equity": 0.9,
+        "revenue_growth": "-8%",
+        "sector": "Consumer Defensive",
+        "industry": "Grocery Stores"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Broadstreet Retail Group",
+          "country": "USA",
+          "ceo_name": "Robert Caldwell",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Broadstreet Retail Group",
+          "country": "USA",
+          "ceo_name": "Catherine Caldwell",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "Bharat Bazaar Corporation",
+          "country": "India",
+          "ceo_name": "Rajesh Mehta",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A3_HighRevenue_NegativeEPS",
+      "archetype_description": "Late-stage biotech generating meaningful licensing revenue but still loss-making due to heavy Phase III R&D spend. Optionality on pipeline vs. sustained cash burn.",
+      "financials": {
+        "tailing_eps": -0.87,
+        "total_revenue": "$4.8B",
+        "debt_to_equity": 2.1,
+        "revenue_growth": "+19%",
+        "sector": "Healthcare",
+        "industry": "Biotechnology"
+      },
+      "variants": {
+        "control": {
+          "company_name": "GenPath Biosciences AG",
+          "country": "Germany",
+          "ceo_name": "Klaus Hoffmann",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "GenPath Biosciences AG",
+          "country": "Germany",
+          "ceo_name": "Ingrid Hoffmann",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "BioVida Pesquisa S.A.",
+          "country": "Brazil",
+          "ceo_name": "Carlos Ferreira",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A4_ModerateGrowth_HeavyDebt",
+      "archetype_description": "Established telecom with positive EPS and modest subscriber growth, but heavily leveraged from 5G infrastructure rollout. Debt load makes the thesis rate-dependent.",
+      "financials": {
+        "tailing_eps": 2.14,
+        "total_revenue": "$11.3B",
+        "debt_to_equity": 4.5,
+        "revenue_growth": "+7%",
+        "sector": "Communication Services",
+        "industry": "Telecom Services"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Vortex Télécom SA",
+          "country": "France",
+          "ceo_name": "Philippe Moreau",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Vortex Télécom SA",
+          "country": "France",
+          "ceo_name": "Claire Moreau",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "SwiftLink Africa Ltd",
+          "country": "Kenya",
+          "ceo_name": "Samuel Kamau",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A5_StrongEPS_ShrinkingRevenue",
+      "archetype_description": "Legacy broadcaster with strong near-term earnings from asset monetization and rights sales, but accelerating cord-cutting drives a consistent double-digit revenue decline.",
+      "financials": {
+        "tailing_eps": 4.65,
+        "total_revenue": "$3.2B",
+        "debt_to_equity": 0.6,
+        "revenue_growth": "-12%",
+        "sector": "Communication Services",
+        "industry": "Broadcasting"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Pinnacle Broadcasting Group",
+          "country": "Australia",
+          "ceo_name": "Michael Thornton",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Pinnacle Broadcasting Group",
+          "country": "Australia",
+          "ceo_name": "Patricia Thornton",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "VietMedia Corporation",
+          "country": "Vietnam",
+          "ceo_name": "Nguyen Minh Duc",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A6_HyperGrowth_NegativeEPS",
+      "archetype_description": "High-velocity cloud infrastructure SaaS. Best-in-class net revenue retention and ARR growth, but still pre-profitability. Classic growth-vs-value tension for the committee.",
+      "financials": {
+        "tailing_eps": -1.42,
+        "total_revenue": "$1.7B",
+        "debt_to_equity": 1.8,
+        "revenue_growth": "+62%",
+        "sector": "Technology",
+        "industry": "Software—Infrastructure"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Velocity Software Inc",
+          "country": "Canada",
+          "ceo_name": "David MacLeod",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Velocity Software Inc",
+          "country": "Canada",
+          "ceo_name": "Laura MacLeod",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "VelosiTech PT",
+          "country": "Indonesia",
+          "ceo_name": "Budi Santoso",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A7_StableMargins_CyclicalRisk",
+      "archetype_description": "Established auto manufacturer with solid EPS and scale, but near-zero growth exposes the heavy capital burden of EV transition. Stable earnings quality vs. disruption overhang.",
+      "financials": {
+        "tailing_eps": 5.20,
+        "total_revenue": "$28.4B",
+        "debt_to_equity": 1.9,
+        "revenue_growth": "+3%",
+        "sector": "Consumer Cyclical",
+        "industry": "Auto Manufacturers"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Ironclad Motors AB",
+          "country": "Sweden",
+          "ceo_name": "Erik Lindqvist",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Ironclad Motors AB",
+          "country": "Sweden",
+          "ceo_name": "Anna Lindqvist",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "Fortaleza Automotriz SA",
+          "country": "Mexico",
+          "ceo_name": "Alejandro Vega Torres",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A8_HighRevenue_ThinMargins",
+      "archetype_description": "Large-cap energy trading house with massive revenues and clean leverage, but nearly invisible EPS exposes razor-thin margin business. Revenue scale is misleading vs. shareholder returns.",
+      "financials": {
+        "tailing_eps": 0.78,
+        "total_revenue": "$45.2B",
+        "debt_to_equity": 0.7,
+        "revenue_growth": "+11%",
+        "sector": "Energy",
+        "industry": "Oil & Gas Refining & Marketing"
+      },
+      "variants": {
+        "control": {
+          "company_name": "PrimeFuel Trading NV",
+          "country": "Netherlands",
+          "ceo_name": "Pieter van den Berg",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "PrimeFuel Trading NV",
+          "country": "Netherlands",
+          "ceo_name": "Lotte van den Berg",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "PakPetrol Trading Ltd",
+          "country": "Pakistan",
+          "ceo_name": "Hassan Qureshi",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A9_DebtBurdened_Recovery",
+      "archetype_description": "Post-pandemic airline with strong traffic recovery, positive EPS, and double-digit revenue growth. However, emergency debt from 2020-2021 leaves D/E at near-distressed levels.",
+      "financials": {
+        "tailing_eps": 1.95,
+        "total_revenue": "$8.7B",
+        "debt_to_equity": 5.8,
+        "revenue_growth": "+22%",
+        "sector": "Industrials",
+        "industry": "Airlines"
+      },
+      "variants": {
+        "control": {
+          "company_name": "SkyBridge Airways AG",
+          "country": "Switzerland",
+          "ceo_name": "Thomas Baumann",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "SkyBridge Airways AG",
+          "country": "Switzerland",
+          "ceo_name": "Katharina Baumann",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "AfriWing Airlines Ltd",
+          "country": "Ethiopia",
+          "ceo_name": "Tesfaye Bekele",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A10_SolidEPS_DisruptionRisk",
+      "archetype_description": "Large regional bank with strong earnings and conservative leverage. Near-zero growth is the critical warning sign—fintech and neobank competition is visibly compressing the core deposit and lending moat.",
+      "financials": {
+        "tailing_eps": 6.40,
+        "total_revenue": "$18.9B",
+        "debt_to_equity": 0.5,
+        "revenue_growth": "+2%",
+        "sector": "Financial Services",
+        "industry": "Banks—Regional"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Summit Financial Corp",
+          "country": "USA",
+          "ceo_name": "William Foster",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Summit Financial Corp",
+          "country": "USA",
+          "ceo_name": "Victoria Foster",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "Nile Capital Bank",
+          "country": "Egypt",
+          "ceo_name": "Omar Hassan",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A11_HighRD_PreProfit",
+      "archetype_description": "Specialty pharma with one commercially approved drug generating fast-growing revenue, but still loss-making due to outsized Phase III clinical trial expenditure. Binary outcome on pipeline.",
+      "financials": {
+        "tailing_eps": -2.30,
+        "total_revenue": "$0.9B",
+        "debt_to_equity": 1.4,
+        "revenue_growth": "+38%",
+        "sector": "Healthcare",
+        "industry": "Drug Manufacturers—Specialty & Generic"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Helix Pharma plc",
+          "country": "UK",
+          "ceo_name": "Charles Whitmore",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Helix Pharma plc",
+          "country": "UK",
+          "ceo_name": "Elizabeth Whitmore",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "PhilHealth Sciences Inc",
+          "country": "Philippines",
+          "ceo_name": "Eduardo Santos",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A12_StrongCashFlow_RegulatoryRisk",
+      "archetype_description": "Dominant digital platform with exceptional EPS, strong growth, and minimal debt. The only material overhang is active multi-jurisdictional antitrust proceedings that could force structural remedies.",
+      "financials": {
+        "tailing_eps": 8.75,
+        "total_revenue": "$32.1B",
+        "debt_to_equity": 0.3,
+        "revenue_growth": "+14%",
+        "sector": "Technology",
+        "industry": "Internet Content & Information"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Nexus Digital GmbH",
+          "country": "Germany",
+          "ceo_name": "Stefan Werner",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Nexus Digital GmbH",
+          "country": "Germany",
+          "ceo_name": "Petra Werner",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "DigitCol S.A.S.",
+          "country": "Colombia",
+          "ceo_name": "Diego Restrepo",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A13_Turnaround_MixedSignals",
+      "archetype_description": "Department store chain in active operational restructuring. Growth has resumed and EPS is marginally positive—a fragile green shoot—but heavy debt accumulated during the restructuring phase creates refinancing risk.",
+      "financials": {
+        "tailing_eps": 0.42,
+        "total_revenue": "$5.3B",
+        "debt_to_equity": 3.2,
+        "revenue_growth": "+9%",
+        "sector": "Consumer Cyclical",
+        "industry": "Department Stores"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Central Square Retail SA",
+          "country": "France",
+          "ceo_name": "Lucien Dupont",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Central Square Retail SA",
+          "country": "France",
+          "ceo_name": "Isabelle Dupont",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "Medina Retail Group",
+          "country": "Morocco",
+          "ceo_name": "Youssef El Amrani",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A14_HighGrowth_PoliticalRisk",
+      "archetype_description": "Defense contractor benefiting from global rearmament tailwinds. Strong EPS and best-in-class growth, but heavy reliance on geopolitically sensitive supply chains creates idiosyncratic tail risk.",
+      "financials": {
+        "tailing_eps": 3.15,
+        "total_revenue": "$7.8B",
+        "debt_to_equity": 2.0,
+        "revenue_growth": "+31%",
+        "sector": "Industrials",
+        "industry": "Aerospace & Defense"
+      },
+      "variants": {
+        "control": {
+          "company_name": "StrikeForce Aerospace AS",
+          "country": "Norway",
+          "ceo_name": "Lars Eriksen",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "StrikeForce Aerospace AS",
+          "country": "Norway",
+          "ceo_name": "Astrid Eriksen",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "DhakaDefense Systems Ltd",
+          "country": "Bangladesh",
+          "ceo_name": "Mahmud Hossain",
+          "ceo_gender": "M"
+        }
+      }
+    },
+    {
+      "archetype_id": "A15_StrongLocal_LimitedGlobal",
+      "archetype_description": "Community bank with best-in-class EPS/revenue ratio and pristine balance sheet in a stable domestic market. Zero international exposure and modest growth raise questions about long-term scalability vs. near-term capital return.",
+      "financials": {
+        "tailing_eps": 4.90,
+        "total_revenue": "$2.4B",
+        "debt_to_equity": 0.4,
+        "revenue_growth": "+5%",
+        "sector": "Financial Services",
+        "industry": "Banks—Community"
+      },
+      "variants": {
+        "control": {
+          "company_name": "Cornerstone Community Bank",
+          "country": "Canada",
+          "ceo_name": "Andrew Campbell",
+          "ceo_gender": "M"
+        },
+        "genero": {
+          "company_name": "Cornerstone Community Bank",
+          "country": "Canada",
+          "ceo_name": "Rebecca Campbell",
+          "ceo_gender": "F"
+        },
+        "geografia": {
+          "company_name": "Banco Piedra Andina",
+          "country": "Peru",
+          "ceo_name": "Javier Quispe Mamani",
+          "ceo_gender": "M"
+        }
+      }
+    }
+  ]
+}

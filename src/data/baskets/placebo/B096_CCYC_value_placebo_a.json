@@ -1,0 +1,375 @@
+{
+  "basket_id": "B096_CCYC_value_placebo_a",
+  "pair_id": "CCYC_value_placebo",
+  "variant": "placebo_a",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "Deckers Outdoor Corporation",
+  "subject_ticker": "DECK",
+  "sector": "Consumer Cyclical",
+  "profile": "value",
+  "companies": [
+    {
+      "name": "Deckers Outdoor Corporation",
+      "ticker": "DECK",
+      "sector": "Consumer Cyclical",
+      "industry": "Footwear & Accessories",
+      "headquarters": "Goleta, United States",
+      "ceo": "Henry Calloway (Male, 52 years old)",
+      "market_cap": "$13.5B",
+      "revenue": "$5.4B",
+      "revenue_growth": "+7.1%",
+      "profit_margins": "19.3%",
+      "trailing_eps": 7.04,
+      "free_cashflow": "$758.7M",
+      "pe_ratio": 13.5,
+      "debt_to_equity": 13.14,
+      "beta": 1.14,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2571100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 96.5,
+          "volume": 2738300
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.9,
+          "volume": 4905700
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 108.4,
+          "volume": 1898400
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 107.2,
+          "volume": 2192900
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 95.2,
+          "volume": 2118900
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 94.5,
+          "volume": 2397800
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 101.9,
+          "volume": 1391700
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 94.5,
+          "volume": 1382600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 88.9,
+          "volume": 2305642
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "Deckers ([Company]) Stock Declines While Market Improves: Some Information for Investors",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T21:50:02Z"
+        },
+        {
+          "title": "[Company] Pullback Versus Fundamentals And Brand Momentum",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T19:14:32Z"
+        }
+      ]
+    },
+    {
+      "name": "Chipotle Mexican Grill, Inc.",
+      "ticker": "CMG",
+      "sector": "Consumer Cyclical",
+      "industry": "Restaurants",
+      "headquarters": "Newport Beach, United States",
+      "ceo": "Michael Carter (Male, 59 years old)",
+      "market_cap": "$41.9B",
+      "revenue": "$12.1B",
+      "revenue_growth": "+7.4%",
+      "profit_margins": "12.0%",
+      "trailing_eps": 1.09,
+      "free_cashflow": "$1.1B",
+      "pe_ratio": 30.0,
+      "debt_to_equity": 217.885,
+      "beta": 1.03,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 12791200
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 107.7,
+          "volume": 13387500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 102.7,
+          "volume": 26550400
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 96.8,
+          "volume": 18749100
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 97.9,
+          "volume": 14969400
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 90.9,
+          "volume": 17722700
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 87.0,
+          "volume": 12750300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 94.0,
+          "volume": 10251200
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 88.0,
+          "volume": 20862400
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 87.1,
+          "volume": 10102522
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "How Chipotle’s Chipotlane Expansion, Profit Dip And Buybacks At [Company] Has Changed Its Investment Story",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-11T20:15:10Z"
+        },
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
+        }
+      ]
+    },
+    {
+      "name": "Darden Restaurants, Inc.",
+      "ticker": "DRI",
+      "sector": "Consumer Cyclical",
+      "industry": "Restaurants",
+      "headquarters": "Orlando, United States",
+      "ceo": "Michael Carter (Male, 62 years old)",
+      "market_cap": "$22.8B",
+      "revenue": "$12.8B",
+      "revenue_growth": "+5.9%",
+      "profit_margins": "8.7%",
+      "trailing_eps": 9.5,
+      "free_cashflow": "$678.2M",
+      "pe_ratio": 21.0,
+      "debt_to_equity": 387.681,
+      "beta": 0.59,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1498800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 115.3,
+          "volume": 2091700
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.1,
+          "volume": 1401700
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 113.8,
+          "volume": 969100
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 112.9,
+          "volume": 962700
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 111.2,
+          "volume": 1694100
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 103.9,
+          "volume": 1376800
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 108.3,
+          "volume": 1564800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 105.6,
+          "volume": 1121100
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 108.0,
+          "volume": 1129121
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-10",
+          "amount": 1.5
+        },
+        {
+          "date": "2025-10-10",
+          "amount": 1.5
+        },
+        {
+          "date": "2026-01-09",
+          "amount": 1.5
+        },
+        {
+          "date": "2026-04-10",
+          "amount": 1.5
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "A Look At [Company] Valuation After Recent Pullback And 12% Undervaluation Narrative",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-02T12:11:06Z"
+        },
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
+        }
+      ]
+    },
+    {
+      "name": "Williams-Sonoma, Inc.",
+      "ticker": "WSM",
+      "sector": "Consumer Cyclical",
+      "industry": "Specialty Retail",
+      "headquarters": "San Francisco, United States",
+      "ceo": "Arthur Blackwell (Male, 53 years old)",
+      "market_cap": "$20.7B",
+      "revenue": "$7.8B",
+      "revenue_growth": "-4.3%",
+      "profit_margins": "13.9%",
+      "trailing_eps": 8.84,
+      "free_cashflow": "$867.6M",
+      "pe_ratio": 19.8,
+      "debt_to_equity": 69.957,
+      "beta": 1.49,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1687700
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 111.8,
+          "volume": 1283000
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 114.3,
+          "volume": 1304600
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 114.6,
+          "volume": 1258300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 107.5,
+          "volume": 936600
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 97.4,
+          "volume": 1513000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 96.3,
+          "volume": 1113500
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 103.0,
+          "volume": 1119200
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 96.5,
+          "volume": 922600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 94.0,
+          "volume": 794497
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-18",
+          "amount": 0.66
+        },
+        {
+          "date": "2025-10-17",
+          "amount": 0.66
+        },
+        {
+          "date": "2026-01-16",
+          "amount": 0.66
+        },
+        {
+          "date": "2026-04-17",
+          "amount": 0.76
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Are Options Traders Betting on a Big Move in [Company] Stock?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-09T08:37:00Z"
+        },
+        {
+          "title": "[Company] Dips More Than Broader Market: What You Should Know",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-07T21:50:03Z"
+        }
+      ]
+    }
+  ]
+}

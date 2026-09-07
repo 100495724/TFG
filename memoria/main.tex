@@ -1,0 +1,457 @@
+%----------
+%   IMPORTANTE
+%----------
+
+% Si nunca has utilizado LaTeX es conveniente que aprendas una serie de conceptos básicos antes de utilizar esta plantilla. Te aconsejamos que leas previamente algún tutorial (puedes encontar muchos en Internet).
+
+% Esta plantilla está basada en las recomendaciones de la guía "Trabajo fin de Grado: Escribir el TFG", que encontrarás en http://uc3m.libguides.com/TFG/escribir
+% contiene recomendaciones de la Biblioteca basadas principalmente en estilos APA e IEEE, pero debes seguir siempre las orientaciones de tu Tutor de TFG y la normativa de TFG para tu titulación.
+
+% Encontrarás un ejemplo de TFG realizado con esta misma plantilla en la carpeta "_ejemplo_TFG_2019". Consúltalo porque contiene ejemplos útiles para incorporar tablas, figuras, listados de código, bibliografía, etc.
+
+
+%----------
+%	CONFIGURACIÓN DEL DOCUMENTO
+%----------
+
+% Definimos las características del documento y añadimos una serie de paquetes (\usepackage{package}) que agregan funcionalidades a LaTeX.
+
+\documentclass[12pt]{report} %fuente a 12pt
+
+% MÁRGENES: 2,5 cm sup. e inf.; 3 cm izdo. y dcho.
+\usepackage[
+a4paper,
+vmargin=2.5cm,
+hmargin=3cm
+]{geometry}
+
+% INTERLINEADO: Estrecho (6 ptos./interlineado 1,15) o Moderado (6 ptos./interlineado 1,5)
+\renewcommand{\baselinestretch}{1.15}
+\parskip=6pt
+
+% DEFINICIÓN DE COLORES para portada y listados de código
+\usepackage[table]{xcolor}
+\definecolor{azulUC3M}{RGB}{0,0,102}
+\definecolor{gray97}{gray}{.97}
+\definecolor{gray75}{gray}{.75}
+\definecolor{gray45}{gray}{.45}
+
+% Soporte para GENERAR PDF/A --es importante de cara a su inclusión en e-Archivo porque es el formato óptimo de preservación y a la generación de metadatos, tal y como se describe en http://uc3m.libguides.com/ld.php?content_id=31389625. En la carpeta incluímos el archivo plantilla_tfg_2017.xmpdata en el que puedes incluir los metadatos que se incorporarán al archivo PDF cuando lo compiles. Ese archivo debe llamarse igual que tu archivo .tex. Puedes ver un ejemplo en esta misma carpeta.
+\usepackage[a-1b]{pdfx}
+
+% ENLACES
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+	linkcolor=black, % enlaces a partes del documento (p.e. índice) en color negro
+	urlcolor=blue} % enlaces a recursos fuera del documento en azul
+
+% EXPRESIONES MATEMATICAS
+\usepackage{amsmath,amssymb,amsfonts,amsthm}
+
+\usepackage{txfonts} 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[spanish, es-tabla]{babel} 
+\usepackage[babel, spanish=spanish]{csquotes}
+\AtBeginEnvironment{quote}{\small}
+
+% diseño de PIE DE PÁGINA
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\rfoot{\thepage}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+
+% DISEÑO DE LOS TÍTULOS de las partes del trabajo (capítulos y epígrafes o subcapítulos)
+\usepackage{titlesec}
+\usepackage{titletoc}
+\titleformat{\chapter}[block]
+{\large\bfseries\filcenter}
+{\thechapter.}
+{5pt}
+{\MakeUppercase}
+{}
+\titlespacing{\chapter}{0pt}{0pt}{*3}
+\titlecontents{chapter}
+[0pt]                                               
+{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace\uppercase}
+{\contentsmargin{0pt}\uppercase}                        
+{\titlerule*[.7pc]{.}\contentspage}                 
+
+\titleformat{\section}
+{\bfseries}
+{\thesection.}
+{5pt}
+{}
+\titlecontents{section}
+[5pt]                                               
+{}
+{\contentsmargin{0pt}\thecontentslabel.\enspace}
+{\contentsmargin{0pt}}
+{\titlerule*[.7pc]{.}\contentspage}
+
+\titleformat{\subsection}
+{\normalsize\bfseries}
+{\thesubsection.}
+{5pt}
+{}
+\titlecontents{subsection}
+[10pt]                                               
+{}
+{\contentsmargin{0pt}                          
+	\thecontentslabel.\enspace}
+{\contentsmargin{0pt}}                        
+{\titlerule*[.7pc]{.}\contentspage}  
+
+
+% DISEÑO DE TABLAS. Puedes elegir entre el estilo para ingeniería o para ciencias sociales y humanidades. Por defecto, está activado el estilo de ingeniería. Si deseas utilizar el otro, comenta las líneas del diseño de ingeniería y descomenta las del diseño de ciencias sociales y humanidades
+\usepackage{multirow} % permite combinar celdas 
+\usepackage{caption} % para personalizar el título de tablas y figuras
+\usepackage{floatrow} % utilizamos este paquete y sus macros \ttabbox y \ffigbox para alinear los nombres de tablas y figuras de acuerdo con el estilo definido. Para su uso ver archivo de ejemplo 
+\usepackage{array} % con este paquete podemos definir en la siguiente línea un nuevo tipo de columna para tablas: ancho personalizado y contenido centrado
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\DeclareCaptionFormat{upper}{#1#2\uppercase{#3}\par}
+
+% Diseño de tabla para ingeniería
+\captionsetup[table]{
+	%format=upper,
+	name=Tabla,
+	justification=centering,
+	labelsep=period,
+	width=.75\linewidth,
+	labelfont=small,
+	font=small,
+}
+
+%Diseño de tabla para ciencias sociales y humanidades
+%\captionsetup[table]{
+%	justification=raggedright,
+%	labelsep=period,
+%	labelfont=small,
+%	singlelinecheck=false,
+%	font={small,bf}
+%}
+
+
+% DISEÑO DE FIGURAS. Puedes elegir entre el estilo para ingeniería o para ciencias sociales y humanidades. Por defecto, está activado el estilo de ingeniería. Si deseas utilizar el otro, comenta las líneas del diseño de ingeniería y descomenta las del diseño de ciencias sociales y humanidades
+\usepackage{graphicx}
+\graphicspath{{imagenes/}} %ruta a la carpeta de imágenes
+
+% Diseño de figuras para ingeniería
+\captionsetup[figure]{
+	format=hang,
+	name=Fig.,
+	singlelinecheck=off,
+	labelsep=period,
+	labelfont=small,
+	font=small		
+}
+
+% Diseño de figuras para ciencias sociales y humanidades
+%\captionsetup[figure]{
+%	format=hang,
+%	name=Figura,
+%	singlelinecheck=off,
+%	labelsep=period,
+%	labelfont=small,
+%	font=small		
+%}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, fit, positioning, calc, babel}
+\usepackage{adjustbox}
+\usepackage{subcaption}
+\usepackage{eurosym}
+\usepackage{pgfgantt}
+\usepackage{pdfpages}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{placeins}
+
+% NOTAS A PIE DE PÁGINA
+\usepackage{chngcntr} %para numeración contínua de las notas al pie
+\counterwithout{footnote}{chapter}
+
+% LISTADOS DE CÓDIGO
+% soporte y estilo para listados de código. Más información en https://es.wikibooks.org/wiki/Manual_de_LaTeX/Listados_de_código/Listados_con_listings
+\usepackage{listings}
+
+% definimos un estilo de listings
+\lstdefinestyle{estilo}{ frame=Ltb,
+	framerule=0pt,
+	aboveskip=0.5cm,
+	framextopmargin=3pt,
+	framexbottommargin=3pt,
+	framexleftmargin=0.4cm,
+	framesep=0pt,
+	rulesep=.4pt,
+	backgroundcolor=\color{gray97},
+	rulesepcolor=\color{black},
+	%
+	basicstyle=\ttfamily\footnotesize,
+	keywordstyle=\bfseries,
+	stringstyle=\ttfamily,
+	showstringspaces = false,
+	commentstyle=\color{gray45},     
+	%
+	numbers=left,
+	numbersep=15pt,
+	numberstyle=\tiny,
+	numberfirstline = false,
+	breaklines=true,
+	xleftmargin=\parindent
+}
+
+\captionsetup[lstlisting]{font=small, labelsep=period}
+% fijamos el estilo a utilizar 
+\lstset{style=estilo}
+\renewcommand{\lstlistingname}{\uppercase{Código}}
+
+
+%BIBLIOGRAFÍA - PUEDES ELEGIR ENTRE ESTILO IEEE O APA. POR DEFECTO ESTÁ CONFIGURADO IEEE. SI DESEAS USAR APA, COMENTA LAS LÍNEA DE IEEE Y DESCOMENTA LAS DE APA. Si haces cambios en la configuración de la bibliografía y no obtienes los resultados esperados, es recomendable limpiar los archivos auxiliares y volver a compilar en este orden: COMPILAR-BIBLIOGRAFIA-COMPILAR
+
+% Tienes más información sobre cómo generar bibliografía y CONFIGURAR TU EDITOR DE TEXTO para compilar con biber en http://tex.stackexchange.com/questions/154751/biblatex-with-biber-configuring-my-editor-to-avoid-undefined-citations , https://www.overleaf.com/learn/latex/Bibliography_management_in_LaTeX y en http://www.ctan.org/tex-archive/macros/latex/exptl/biblatex-contrib
+% También te recomendamos consultar la guía temática de la Biblioteca sobre citas bibliográficas: http://uc3m.libguides.com/guias_tematicas/citas_bibliograficas/inicio
+
+% CONFIGURACIÓN PARA LA BIBLIOGRAFÍA IEEE
+\usepackage[backend=biber, style=ieee, isbn=false,sortcites, maxbibnames=5, minbibnames=1]{biblatex} % Configuración para el estilo de citas de IEEE, recomendado para el área de ingeniería. "maxbibnames" indica que a partir de 5 autores trunque la lista en el primero (minbibnames) y añada "et al." tal y como se utiliza en el estilo IEEE.
+
+%CONFIGURACIÓN PARA LA BIBLIOGRAFÍA APA
+%\usepackage[style=apa, backend=biber, natbib=true, hyperref=true, uniquelist=false, sortcites]{biblatex}
+%\DeclareLanguageMapping{spanish}{spanish-apa}
+
+% Añadimos las siguientes indicaciones para mejorar la adaptación de los estilos en español
+\DefineBibliographyStrings{spanish}{%
+	andothers = {et\addabbrvspace al\adddot}
+}
+\DefineBibliographyStrings{spanish}{
+	url = {\adddot\space[En línea]\adddot\space Disponible en:}
+}
+\DefineBibliographyStrings{spanish}{
+	urlseen = {Acceso:}
+}
+\DefineBibliographyStrings{spanish}{
+	pages = {pp\adddot},
+	page = {p.\adddot}
+}
+
+\addbibresource{bibliografia/bibliografia.bib} % llama al archivo bibliografia.bib en el que debería estar la bibliografía utilizada
+
+
+%-------------
+%	DOCUMENTO
+%-------------
+
+\begin{document}
+\pagenumbering{roman} % Se utilizan cifras romanas en la numeración de las páginas previas al cuerpo del trabajo
+	
+%----------
+%	PORTADA
+%----------	
+\begin{titlepage}
+	\begin{sffamily}
+	\color{azulUC3M}
+	\begin{center}
+		\begin{figure}[H] %incluimos el logotipo de la Universidad
+			\makebox[\textwidth][c]{\includegraphics[width=16cm]{Portada_Logo.png}}
+		\end{figure}
+		\vspace{2.5cm}
+		\begin{Large}
+			Grado Universitario en Ingeniería Informática\\			
+			2025-2026\\
+			\vspace{2cm}		
+			\textsl{Trabajo Fin de Grado}
+			\bigskip
+			
+		\end{Large}
+		 	{\Huge ``Caracterización y mitigación de sesgo en agentic AI utilizando LLM''}\\
+		 	\vspace*{0.5cm}
+	 		\rule{10.5cm}{0.1mm}\\
+			\vspace*{0.9cm}
+			{\LARGE Álex Rodríguez Carbonero}\\ 
+			\vspace*{1cm}
+		\begin{Large}
+			Tutor/es\\
+			José María de Fuentes García Romero de Tejada\\
+			Leganés, Septiembre 2026\\
+		\end{Large}
+	\end{center}
+	\vfill
+	\color{black}
+	% si nuestro trabajo se va a publicar con una licencia Creative Commons, incluir estas líneas. Es la opción recomendada.
+	\includegraphics[width=4.2cm]{imagenes/creativecommons.png}\\ %incluimos el logotipo de creativecommons
+	\emph\\  % BORRAR ESTA LÍNEA
+	Esta obra se encuentra sujeta a la licencia Creative Commons \textbf{Reconocimiento - No Comercial - Sin Obra Derivada}
+	\end{sffamily}
+\end{titlepage}
+
+\newpage %página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+
+%----------
+%	RESUMEN Y PALABRAS CLAVE
+%----------	
+\renewcommand\abstractname{\large\bfseries\filcenter\uppercase{Resumen}}
+\begin{abstract}
+\thispagestyle{plain}
+\setcounter{page}{3}
+	
+	En la actualidad, los modelos de lenguaje de gran escala son empleados cada vez de forma más frecuente como componentes de sistemas que deliberan y deciden, y no solo como generadores de texto. Este trabajo estudia un sistema multiagente formado por tres agentes basados en LLM que actúan como un comité de inversión que debe distribuir un presupuesto fijo de 100.000~\euro{} entre cuatro empresas. El objetivo es estudiar si atributos ajenos al desempeño financiero de una empresa alteran las asignaciones de capital. 
+	
+	Se construyó un banco de pruebas basado en parejas de control y variante en el que cada empresa aparece en tres versiones que comparten cifras financieras y difieren únicamente en el género de su CEO o en la localización de su sede. Se evaluaron seis composiciones de comité, cuatro formadas por un solo modelo y dos que combinan modelos de familias distintas, bajo tres niveles de especificación de los roles de cada agente y con repeticiones independientes de cada condición. El diseño incorpora dos referencias de ruido del sistema: un agente que nunca recibe los atributos manipulados y una condición de control formada por parejas de empresas idénticas. Los agentes primero toman una decisión independiente, y participan después en cuatro rondas de deliberación en las que cada agente ve las respuestas de los demás. Esta separación permite distinguir si las diferencias aparecen antes de la interacción, si cambian durante el intercambio de respuestas y si llegan al agente que no recibió los atributos manipulados. El análisis considera tanto el desplazamiento medio de las asignaciones como su dispersión entre ejecuciones, y las familias principales de contrastes se corrigen por comparaciones múltiples.
+	
+	Ninguna de las pruebas sobre la diferencia media de capital asignado sobrevive a la corrección, de modo que no se observa una preferencia sostenida por ninguna condición. La evidencia aparece en la dispersión, ya que en doce combinaciones de composición, nivel y atributo, la variabilidad de las diferencias entre ejecuciones repetidas supera con holgura la de la referencia interna. El fenómeno se concentra en los comités formados por un solo modelo, no aparece en ninguno de los mixtos, resulta máximo antes de cualquier intercambio de información entre agentes y se diluye durante la deliberación. Una intervención mediante instrucciones de neutralización reduce la variabilidad de forma consistente en las variantes geográficas, aunque con evidencia limitada.
+	
+	En consecuencia, este trabajo muestra que el sesgo puede manifestarse como inestabilidad y no como desplazamiento, quedando invisible a las auditorías construidas sobre diferencias de medias. Caracterizarlo exige repeticiones y referencias empíricas de ruido, y la composición del sistema resulta tan determinante para su comportamiento como los modelos que lo integran.
+	
+	\textbf{Palabras clave:}
+	procesamiento del lenguaje natural; equidad algorítmica; análisis contrafactual; toma de decisiones; sistemas multiagente.
+	
+	\vfill
+\end{abstract}
+	\newpage % página en blanco o de cortesía
+	\thispagestyle{empty}
+	\mbox{}
+	
+\renewcommand\abstractname{\large\bfseries\filcenter\uppercase{Abstract}}
+\begin{abstract}
+	\thispagestyle{plain}
+	\setcounter{page}{3}
+	
+	Large language models are increasingly used as components of systems that deliberate and make decisions, rather than solely as text generators. This work studies a multi-agent system composed of three LLM-based agents acting as an investment committee that must allocate a fixed budget of 100,000~\euro{} among four companies. The aim is to determine whether attributes unrelated to a company's financial performance affect capital allocations.
+	
+	A benchmark based on matched control and variant pairs was constructed. Each target company appears in three versions that share the same financial figures and differ only in the gender of its CEO or the location of its headquarters. Six committee compositions were evaluated: four single-model committees and two combining models from different families. Each composition was tested under three levels of agent-role specification, with independent repetitions of every condition. The design includes two references for the system's inherent variability: an agent that never receives the manipulated attributes and a control condition consisting of pairs of identical baskets. The agents first make an independent decision and then participate in four rounds of deliberation in which each agent observes the responses of the others. This separation makes it possible to determine whether differences arise before interaction, change during the exchange of responses, or reach the agent that did not receive the manipulated attributes. The analysis considers both shifts in mean allocations and their dispersion across runs, and the main families of statistical tests are corrected for multiple comparisons.
+	
+	None of the tests for mean differences in allocated capital remains significant after correction, indicating no sustained preference for any condition. The evidence instead appears in the dispersion: in twelve combinations of committee composition, role level, and attribute, the variability of the differences across repeated runs substantially exceeds that of the internal reference. This effect is concentrated in single-model committees, does not appear in any mixed-model committee, reaches its maximum before any exchange of information between agents, and diminishes during deliberation. An intervention based on neutralization instructions consistently reduces variability in the geographical variants, although the supporting evidence is limited.
+	
+	These results show that bias can manifest as instability rather than as a systematic shift, making it invisible to audits based solely on mean differences. Detecting this form of bias requires repeated runs and empirical references for the system's inherent variability. Furthermore, how the models are combined within the system is as important to its behavior as the individual models themselves.
+	
+	\textbf{Keywords:}
+	natural language processing; algorithmic fairness; counterfactual analysis; decision-making; multi-agent systems.
+
+	
+	\vfill
+\end{abstract}
+\newpage % página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+
+
+%----------
+%	DEDICATORIA
+%----------	
+\chapter*{Dedicatoria}
+
+\setcounter{page}{5}
+	
+	% ESCRIBIR LA DEDICATORIA AQUÍ	
+		En primer lugar a mis padres, Rocío y Fernando, por darme siempre su cariño y apoyo sin pedir nada a cambio y por quererme incondicionalmente.
+		
+		A mi hermano, Álvaro, por ser un pilar fundamental en mi vida y servirme de apoyo durante todo este tiempo.
+		
+		A mi familia, por estar siempre a mi lado y demostrarme que puedo contar con ella para lo que necesite.
+
+		
+		A mis amigos de la carrera, por haberme acompañado, ayudado y apoyado en esta etapa en la universidad. De ella me llevo un título, pero, sobre todo, amistades para toda la vida.
+		
+		A mis amigos de Candeleda, por estar conmigo desde siempre y demostrarme que puedo contar con ellos para lo que necesite.
+		
+		A mi tutor, Chema, por su orientación, dedicación y ayuda durante la realización de este trabajo.
+		
+		Finalmente, a la Universidad Carlos III de Madrid y a su personal docente, por la formación recibida a lo largo de estos años y por haberme permitido llegar hasta aquí y decir, por fin, que soy ingeniero.
+		
+	\vfill
+	
+	\newpage % página en blanco o de cortesía
+	\thispagestyle{empty}
+	\mbox{}
+	
+
+%----------
+%	ÍNDICES
+%----------	
+
+%--
+% Índice general
+%-
+\tableofcontents
+\thispagestyle{fancy}
+
+\newpage % página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+
+%--
+% Índice de figuras. Si no se incluyen, comenta las líneas siguientes
+%-
+\listoffigures
+\thispagestyle{fancy}
+
+\newpage % página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+
+%--
+% Índice de tablas. Si no se incluyen, comenta las líneas siguientes
+%-
+\listoftables
+\thispagestyle{fancy}
+
+\newpage % página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+
+
+%----------
+%	TRABAJO
+%----------	
+\clearpage
+
+\pagenumbering{gobble}
+\input{capitulos/glosario}
+\newpage % página en blanco o de cortesía
+\thispagestyle{empty}
+\mbox{}
+\clearpage
+
+\pagenumbering{arabic} % numeración con múmeros arábigos para el resto de la publicación	
+
+\input{capitulos/01_introduccion}
+\input{capitulos/02_estado_arte}
+\input{capitulos/03_metodologia}
+\input{capitulos/04_implementacion}
+\input{capitulos/05_validacion}
+\input{capitulos/06_resultados}
+\input{capitulos/07_discusion}
+\input{capitulos/08_marco_regulador}
+\input{capitulos/09_conclusiones}
+
+
+%----------
+%	BIBLIOGRAFÍA
+%----------	
+
+\nocite{*} % Si quieres que aparezcan en la bibliografía todos los documentos que la componen (también los que no estén citados en el texto) descomenta está lína
+
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliografía}
+\setquotestyle[english]{british} % Cambiamos el tipo de cita porque en el estilo IEEE se usan las comillas inglesas.
+\printbibliography
+
+
+
+%----------
+%	ANEXOS
+%----------	
+
+% Si tu trabajo incluye anexos, puedes descomentar las siguientes líneas
+%\chapter* {Anexo x}
+%\pagenumbering{gobble} % Las páginas de los anexos no se numeran
+\input{capitulos/anexos}
+
+
+\end{document}

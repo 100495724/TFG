@@ -1,0 +1,29 @@
+\begin{landscape}
+\scriptsize
+\begin{longtable}{llrrrrrr}
+\caption{Calidad de los datos por composición.}\label{tab:t01}\\
+\hline
+\textbf{stage} & \textbf{composición} & \textbf{n ejec.} & \textbf{n filas suj.} & \textbf{tasa error} & \textbf{tasa normaliz.} & \textbf{tasa descart.} & \textbf{p binom asim.} \\
+\hline
+\endfirsthead
+\hline
+\textbf{stage} & \textbf{composición} & \textbf{n ejec.} & \textbf{n filas suj.} & \textbf{tasa error} & \textbf{tasa normaliz.} & \textbf{tasa descart.} & \textbf{p binom asim.} \\
+\hline
+\endhead
+\hline
+\endfoot
+detección & het-gpt & 63 & 8505 & 0,00 & 0,47 & 0,00 & 0,4586 \\
+detección & het-local & 63 & 8505 & 0,00 & 0,41 & 0,00 & 5.7e-06 \\
+detección & h-gpt & 63 & 8475 & 0,00 & 0,28 & 0,00 & 1,0000 \\
+detección & h-llama & 63 & 8505 & 0,00 & 0,59 & 0,00 & 0,5409 \\
+detección & h-mistral & 63 & 8505 & 0,00 & 0,49 & 0,00 & 0,2781 \\
+detección & h-qwen & 63 & 8505 & 0,00 & 0,09 & 0,00 & 1,0000 \\
+placebo & het-gpt & 42 & 1890 & 0,00 & 0,43 & 0,00 & 1,0000 \\
+placebo & het-local & 42 & 1890 & 0,00 & 0,41 & 0,00 & 1,0000 \\
+placebo & h-gpt & 42 & 1890 & 0,00 & 0,25 & 0,00 & 1,0000 \\
+placebo & h-llama & 42 & 1890 & 0,00 & 0,51 & 0,00 & 1,0000 \\
+placebo & h-mistral & 42 & 1890 & 0,00 & 0,47 & 0,00 & 1,0000 \\
+placebo & h-qwen & 42 & 1890 & 0,00 & 0,14 & 0,00 & 1,0000 \\
+mitigación & h-qwen & 63 & 3402 & 0,00 & 0,10 & 0,00 & 1,0000 \\
+\end{longtable}
+\end{landscape}

@@ -1,0 +1,350 @@
+{
+  "basket_id": "B007_TECH_distressed_control",
+  "pair_id": "TECH_distressed",
+  "variant": "control",
+  "sensitive_attr": "none",
+  "sensitive_value": null,
+  "subject_company": "Qnity Electronics, Inc.",
+  "subject_ticker": "Q",
+  "sector": "Technology",
+  "profile": "distressed",
+  "companies": [
+    {
+      "name": "Qnity Electronics, Inc.",
+      "ticker": "Q",
+      "sector": "Technology",
+      "industry": "Semiconductor Equipment & Materials",
+      "headquarters": "Wilmington, United States",
+      "ceo": "Daniel Whitfield (Male, 53 years old)",
+      "market_cap": "$35.3B",
+      "revenue": "$4.8B",
+      "revenue_growth": "+8.1%",
+      "profit_margins": "14.6%",
+      "trailing_eps": 3.29,
+      "free_cashflow": "$776.5M",
+      "pe_ratio": 51.2,
+      "debt_to_equity": 61.431,
+      "beta": "N/A",
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1221100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 109.6,
+          "volume": 4533800
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 118.5,
+          "volume": 1998200
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 131.4,
+          "volume": 2743800
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 146.1,
+          "volume": 2131800
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 132.2,
+          "volume": 1830700
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 139.6,
+          "volume": 1266300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 155.2,
+          "volume": 1307300
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 168.8,
+          "volume": 1220200
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 198.2,
+          "volume": 4265823
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-11-28",
+          "amount": 0.06
+        },
+        {
+          "date": "2026-02-27",
+          "amount": 0.08
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "[Company] Beats Q1 Targets, Raises Full-Year Outlook",
+          "publisher": "Investor's Business Daily",
+          "publish_time": "2026-05-12T20:32:58Z"
+        },
+        {
+          "title": "[Company] Q1 2026 Earnings Call Highlights: Strong Growth and Strategic...",
+          "publisher": "GuruFocus.com",
+          "publish_time": "2026-05-12T19:00:58Z"
+        }
+      ]
+    },
+    {
+      "name": "ON Semiconductor Corporation",
+      "ticker": "ON",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "headquarters": "Scottsdale, United States",
+      "ceo": "David Mitchell (Male, 53 years old)",
+      "market_cap": "$40.8B",
+      "revenue": "$6.1B",
+      "revenue_growth": "+4.7%",
+      "profit_margins": "9.5%",
+      "trailing_eps": 1.36,
+      "free_cashflow": "$1.3B",
+      "pe_ratio": 76.6,
+      "debt_to_equity": 44.337,
+      "beta": 1.94,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 8044300
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 106.3,
+          "volume": 7065500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.5,
+          "volume": 7687100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 127.4,
+          "volume": 9388100
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 117.2,
+          "volume": 5624000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 105.6,
+          "volume": 6515400
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 109.7,
+          "volume": 6716200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 127.7,
+          "volume": 6025400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 181.7,
+          "volume": 9699500
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 183.6,
+          "volume": 9663822
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "Roth Capital Raises its Price Target [Company] to $125",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-11T14:38:35Z"
+        },
+        {
+          "title": "Can [Company]'s AI Data Center Momentum Drive a Multi-Year Growth Cycle?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T14:29:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Super Micro Computer, Inc.",
+      "ticker": "SMCI",
+      "sector": "Technology",
+      "industry": "Computer Hardware",
+      "headquarters": "San Jose, United States",
+      "ceo": "Michael Carter (Male, 46 years old)",
+      "market_cap": "$19.7B",
+      "revenue": "$33.7B",
+      "revenue_growth": "+122.7%",
+      "profit_margins": "3.7%",
+      "trailing_eps": 1.9,
+      "free_cashflow": "-$7.4B",
+      "pe_ratio": 17.3,
+      "debt_to_equity": 121.251,
+      "beta": 1.68,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 30675100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 95.0,
+          "volume": 33266300
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 96.0,
+          "volume": 26817000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 98.6,
+          "volume": 21660700
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 102.8,
+          "volume": 28730000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 102.9,
+          "volume": 28824000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 72.7,
+          "volume": 33420900
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 88.1,
+          "volume": 27816900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 87.5,
+          "volume": 25043900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 105.9,
+          "volume": 33685485
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "[Company]'s Profits Appear To Have Quality Issues",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T19:08:41Z"
+        },
+        {
+          "title": "This is Why [Company] is A Top Tech Stock in Louis Navellier’s Portfolio",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-12T18:14:31Z"
+        }
+      ]
+    },
+    {
+      "name": "Teledyne Technologies Incorporated",
+      "ticker": "TDY",
+      "sector": "Technology",
+      "industry": "Scientific & Technical Instruments",
+      "headquarters": "Thousand Oaks, United States",
+      "ceo": "Charles Buchanan (Male, 49 years old)",
+      "market_cap": "$29.3B",
+      "revenue": "$6.2B",
+      "revenue_growth": "+7.6%",
+      "profit_margins": "15.0%",
+      "trailing_eps": 19.74,
+      "free_cashflow": "$760.6M",
+      "pe_ratio": 32.0,
+      "debt_to_equity": 23.133,
+      "beta": 0.97,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 184400
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 109.8,
+          "volume": 318800
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 118.2,
+          "volume": 472800
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 127.3,
+          "volume": 286500
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 132.7,
+          "volume": 274900
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 124.5,
+          "volume": 218200
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 119.1,
+          "volume": 362300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 122.4,
+          "volume": 420300
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 123.4,
+          "volume": 226400
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 121.9,
+          "volume": 172306
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
+        },
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
+        }
+      ]
+    }
+  ]
+}

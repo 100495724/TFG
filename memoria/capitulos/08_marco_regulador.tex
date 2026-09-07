@@ -1,0 +1,233 @@
+% !TeX root = ../main.tex
+
+\chapter{Marco regulador y entorno socioeconómico}
+\label{chap:marco_regulador}
+
+Este capítulo sitúa el trabajo en su contexto normativo y económico. La primera sección examina qué obligaciones alcanzarían a un despliegue real del tipo de sistema estudiado y bajo qué condiciones se ha desarrollado el propio experimento, atendiendo tanto a la regulación europea sobre inteligencia artificial como a las licencias de los modelos y datos empleados. La segunda recoge las decisiones éticas que el diseño del banco de pruebas obliga a comentar. Las tres restantes componen el entorno socioeconómico, con el presupuesto del trabajo, el impacto que cabría esperar de la aplicación de sus resultados y la planificación seguida durante su desarrollo.
+
+\section{Marco regulador}
+\label{sec:marco_regulador}
+
+El encuadre normativo de este trabajo plantea dos preguntas distintas. La primera es qué obligaciones recaerían sobre un despliegue real del tipo de sistema aquí estudiado, cuestión que determina si los resultados tienen relevancia más allá del ámbito académico. La segunda es qué régimen se aplica al propio trabajo experimental, condicionado por las licencias de los modelos empleados y por el origen de los datos financieros.
+
+\subsection{Régimen aplicable a un despliegue real}
+
+El marco de referencia en la Unión Europea es el Reglamento (UE) 2024/1689, conocido como Reglamento de Inteligencia Artificial~\cite{ue2024ai_act}. Su redacción vigente incorpora la modificación introducida por el Reglamento (UE) 2026/1744~\cite{ue2026omnibus}, publicado el 24 de julio de 2026, que retrasa hasta el 2 de diciembre de 2027 la aplicación de las obligaciones previstas para los sistemas de alto riesgo. El motivo del retraso fue que las normas armonizadas y las autoridades nacionales de supervisión no estaban disponibles en el plazo original. El resto del Reglamento mantiene su calendario, incluidas las prohibiciones, la alfabetización en materia de inteligencia artificial y las obligaciones de transparencia del artículo 50, vigentes desde el 2 de agosto de 2026.
+
+El Anexo III del Reglamento incluye entre los usos de alto riesgo la evaluación de la solvencia crediticia de personas físicas, pero no la asignación de inversión entre sociedades, que es la tarea empleada aquí. El sistema analizado queda por tanto fuera de esa categoría, y los requisitos que se examinan a continuación se emplean como referencia regulatoria y no como obligaciones directamente exigibles. La proximidad funcional es considerable, ya que ambas situaciones consisten en repartir un recurso financiero a partir de información heterogénea, y la extensión del banco de pruebas a la concesión de crédito propuesta en la Sección~\ref{sec:trabajo_futuro} lo situaría dentro del ámbito regulado siempre que la evaluación recayera sobre personas físicas.
+
+La discusión sobre sesgo suele remitirse al artículo 10, que exige examinar los conjuntos de datos en busca de posibles sesgos y adoptar medidas para detectarlos y atenuarlos. Ese encuadre resulta insuficiente para el fenómeno documentado aquí. El exceso de dispersión se observa en el comportamiento del sistema durante la inferencia y no puede atribuirse, a partir de este diseño experimental, a ninguna característica concreta de los datos de entrenamiento. Se manifiesta además como inestabilidad ante entradas equivalentes y no como una preferencia sostenida por un grupo.
+
+Resulta más pertinente el artículo 15, que exige un nivel adecuado de precisión y solidez, así como un rendimiento coherente a lo largo del ciclo de vida del sistema. Un sistema que asigna cantidades muy distintas a la misma empresa según la ejecución, con una variabilidad que depende de una característica ajena a los fundamentales, plantea un problema de solidez antes que de discriminación estadística. La consecuencia práctica es que una auditoría limitada a diferencias de medias o de tasas podría no detectar este comportamiento, ya que en las configuraciones identificadas no existe evidencia corregida de desplazamiento medio pese a que la dispersión contrafactual se multiplica por un factor de entre tres y ocho. De ahí se sigue una recomendación concreta para los procedimientos de conformidad y de vigilancia poscomercialización de sistemas generativos, que deberían incorporar medidas de dispersión entre ejecuciones repetidas junto a los indicadores de paridad agregada. El artículo 9 apunta en la misma dirección al exigir una gestión de riesgos continua e iterativa, difícil de satisfacer materialmente mediante una única generación por caso cuando el sistema evaluado es estocástico.
+
+Un despliegue en el ámbito financiero quedaría además sujeto a normativa sectorial. La Directiva 2014/65/UE, conocida como MiFID II~\cite{ue2014mifid2}, impone obligaciones de idoneidad y de actuación en el mejor interés del cliente, difíciles de acreditar ante un sistema cuyas recomendaciones varían de forma apreciable sobre la misma información. La supervisión bancaria dispone además de marcos consolidados de validación de los métodos cuantitativos empleados en decisiones financieras, como la declaración supervisora SS1/23 de la Prudential Regulation Authority británica~\cite{pra2023ss123} o la guía SR 26-2 de la Reserva Federal estadounidense~\cite{fed2026sr262}, emitida en abril de 2026 junto a la OCC y la FDIC. Esta última resulta reveladora por lo que deja fuera, ya que excluye expresamente de su ámbito la inteligencia artificial generativa y agéntica por considerarlas tecnologías novedosas y en rápida evolución. El aparato de validación más asentado del sector no cubre, por tanto, la clase de sistema analizada aquí, y su gobernanza queda remitida a las prácticas internas de cada entidad.
+
+\subsection{Protección de datos}
+
+El Reglamento (UE) 2016/679~\cite{ue2016rgpd} resulta relevante en dos planos. Respecto al experimento realizado, el diseño evita emplear identidades personales reales como atributo experimental. Las identidades asociadas a la dirección ejecutiva son sintéticas y sin correspondencia con personas concretas, las empresas se presentan mediante alias y los indicadores financieros proceden de información pública de mercado. Fue una decisión de diseño y no una consecuencia accidental.
+
+Respecto a un despliegue real la valoración cambia. El género de quien ocupa la dirección ejecutiva de una sociedad cotizada constituye un dato personal, aunque sea de acceso público, y su uso como entrada de un sistema automatizado quedaría sujeto a los principios generales del Reglamento. La aplicación del artículo 22 exigiría no obstante que la decisión produjera efectos jurídicos o significativamente similares sobre la propia persona interesada, condición que una decisión de inversión sobre la sociedad no satisface necesariamente.
+
+El resultado con mayor implicación para la auditoría procede del análisis de verbalización, que muestra cómo la influencia de un atributo no tiene por qué aparecer de forma explícita en el razonamiento generado. Inspeccionar las explicaciones textuales del sistema no constituye, por sí solo, un mecanismo suficiente para detectar esta forma de sensibilidad.
+
+\subsection{Estándares técnicos}
+
+Además de la normativa, existen estándares técnicos que orientan la gestión de riesgos en sistemas de inteligencia artificial. A fecha de redacción, las normas armonizadas previstas para apoyar la aplicación del Reglamento de Inteligencia Artificial continúan en desarrollo en el marco de CEN-CENELEC. Mientras tanto, estándares como ISO/IEC 42001~\cite{iso42001}, sobre sistemas de gestión de inteligencia artificial, e ISO/IEC 23894~\cite{iso23894}, sobre gestión del riesgo, ofrecen marcos generales de organización y supervisión. Su aplicación a un sistema generativo como el estudiado exigiría integrar la evaluación de su variabilidad dentro de los procesos de seguimiento
+y gestión del riesgo, aunque estos estándares no prescriben una métrica estadística concreta para hacerlo.
+
+\subsection{Licencias y propiedad intelectual}
+
+Los modelos empleados se distribuyen bajo condiciones heterogéneas. \texttt{Qwen2.5-7B-Instruct} y \texttt{Mistral-7B-Instruct-v0.3} se publican bajo licencia Apache 2.0~\cite{apache2004license}, que permite uso, modificación y redistribución con requisitos mínimos de atribución. \texttt{Llama-3.1-8B-Instruct} se distribuye bajo la Llama 3.1 Community License~\cite{meta2024llamalicense}, que autoriza el uso comercial por debajo de un umbral de setecientos millones de usuarios activos mensuales e impone requisitos de atribución y de denominación de los modelos derivados. El modelo \texttt{gpt-4o-mini} se consume mediante una interfaz de programación sujeta a las condiciones de servicio del proveedor, que no otorgan derecho alguno sobre los pesos. El uso dado a los cuatro modelos es de evaluación con fines de investigación, sin redistribución de pesos ni entrenamiento de modelos derivados, y se ajusta a lo permitido por estos regímenes.
+
+Los datos financieros proceden de una instantánea del índice S\&P 500 obtenida mediante la biblioteca \texttt{yfinance}~\cite{yfinance}. Conviene distinguir dos planos. La biblioteca se distribuye bajo licencia Apache 2.0, mientras que los derechos sobre los datos descargados corresponden a Yahoo Finance y se rigen por sus propias condiciones de uso~\cite{yahoo_tos}, orientadas al acceso personal. El propio proyecto advierte de esa distinción y describe la herramienta como destinada a investigación y fines educativos. Por ese motivo la reproducibilidad del trabajo se sustenta en la publicación del código, del manifiesto de procedencia y del procedimiento de reconstrucción de la instantánea, y no en la redistribución de los datos brutos.
+
+La aportación propia consiste en un procedimiento experimental y en el software que lo implementa. El código queda protegido por derechos de autor, y su publicación bajo una licencia libre facilitaría la reproducción y verificación del procedimiento por terceros, requisito sin el cual la contribución metodológica perdería buena parte de su valor.
+
+\section{Consideraciones éticas}
+\label{sec:consideraciones_eticas}
+
+El diseño del banco de pruebas incorpora simplificaciones que conviene mencionar. El género se representa mediante dos categorías y el eje geográfico contrapone la sede estadounidense a cinco localizaciones alternativas, situadas en Lagos, Bombay, São Paulo, Ciudad Ho Chi Minh y Karachi. Ambas decisiones responden a la necesidad de disponer de observaciones suficientes para el contraste, no a una descripción del mundo. Las cinco localizaciones difieren entre sí en desarrollo económico, marco institucional, tradición jurídica y contexto cultural tanto como cualquiera de ellos difiere de la referencia estadounidense, de manera que su tratamiento conjunto constituye una construcción experimental sin correspondencia con ningún colectivo real. Las conclusiones se refieren por tanto a las manipulaciones construidas y no a los grupos o territorios que estas nombran.
+
+El uso de atributos sintéticos reduce unos riesgos e introduce otros. Las identidades de la dirección ejecutiva se generan para el experimento, de modo que ninguna persona real es objeto de la comparación. Ahora bien, señalar el género mediante nombres propios o elegir determinadas sedes como contraste consiste precisamente en activar asociaciones culturales que los modelos han aprendido. Un instrumento construido para detectar sensibilidad ante esas asociaciones puede acabar reforzando las mismas categorías que audita si sus resultados se leen fuera del contexto experimental. Las etiquetas empleadas son variables operativas del banco de pruebas y no juicios sobre lo que representan.
+
+Queda por último qué se considera un daño. La ausencia de desplazamiento medio no garantiza un tratamiento equivalente, ya que una mayor dispersión implica que unas ejecuciones favorecen notablemente a una empresa mientras otras la penalizan, aunque ambos efectos se cancelen al promediarse. La literatura sobre arbitrariedad ha señalado que la igualdad en métricas agregadas puede convivir con diferencias sustanciales en la consistencia de las decisiones~\cite{cooper2024arbitrariness}. Este trabajo no atribuye a esa variabilidad la condición de discriminación en sentido jurídico ni demuestra perjuicio económico alguno, pero sí la considera una propiedad éticamente relevante cuando aparece asociada a información ajena a los fundamentales. Coherentemente con ello, el sistema desarrollado tiene finalidad de auditoría y sus resultados no sustentan clasificaciones generales de modelos, países o grupos más allá de las configuraciones evaluadas. La trazabilidad de las ejecuciones y la publicación del procedimiento de análisis permiten someterlos a revisión por terceros, dentro de las restricciones de licencia descritas en la Sección~\ref{sec:marco_regulador}.
+
+\section{Presupuesto}
+\label{sec:presupuesto}
+
+El coste del trabajo se descompone en tres partidas: la dedicación personal, los recursos de cómputo consumidos y la amortización del equipo empleado. El software utilizado es en su totalidad de código abierto o de uso gratuito, por lo que no genera coste de licencia.
+
+\subsection{Costes de personal}
+
+El desarrollo abarcó desde enero hasta septiembre de 2026 e incluyó la revisión bibliográfica, el diseño experimental, la implementación del sistema, la ejecución y supervisión de las campañas, el análisis estadístico y la redacción de la memoria. La dedicación estimada asciende a 375 horas, valoradas a la tarifa de un ingeniero junior. La Tabla~\ref{tab:presupuesto_personal} muestra los costes de personal.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Costes de personal.}
+	\label{tab:presupuesto_personal}
+	\small
+	\begin{tabular}{p{5.5cm} r r r}
+		\hline
+		\textbf{Concepto} & \textbf{Horas} & \textbf{Tarifa (\euro/h)} & \textbf{Importe (\euro)} \\
+		\hline
+		Ingeniero junior & 375 & 20,00 & 7.500,00 \\
+		\hline
+		\textbf{Total} & & & \textbf{7.500,00} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Costes de cómputo}
+
+Los tres modelos abiertos se ejecutaron sobre servidores \textit{vLLM} alojados en instancias GPU bajo demanda de RunPod, mientras que el modelo comercial se consumió mediante su interfaz de programación. El servicio facturó 292,8 horas de pod entre el 23 de febrero y el 21 de agosto de 2026, repartidas principalmente entre dos tarjetas, una NVIDIA RTX A5000 a 0,27~\euro/h y una NVIDIA GeForce RTX 3090 a 0,23~\euro/h. El resto del consumo corresponde a instancias puntuales empleadas en pruebas y verificaciones, utilizadas principalmente cuando las GPU anteriores no se
+encontraban disponibles para alquiler.
+
+Conviene distinguir las horas facturadas de las horas de experimento. Las campañas registradas suman 149,8 horas de reloj, de las cuales 118,6 corresponden a la detección, 25,1 a la condición placebo y 6,2 a la mitigación. La diferencia con lo facturado se explica porque las composiciones heterogéneas requieren tres servidores simultáneos, de modo que cada hora de ejecución consume tres horas de pod, y porque la descarga de los pesos, el arranque de los servidores y los intervalos entre lanzamientos también se facturan. En la Tabla~\ref{tab:presupuesto_computo} se resumen los gastos de cómputo.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Costes de cómputo.}
+	\label{tab:presupuesto_computo}
+	\small
+	\begin{tabular}{p{5.5cm} r r}
+		\hline
+		\textbf{Recurso} & \textbf{Horas} & \textbf{Importe (\euro)} \\
+		\hline
+		NVIDIA RTX A5000 & 123,9 & 33,41 \\
+		NVIDIA GeForce RTX 3090 & 135,1 & 29,70 \\
+		Otras instancias GPU & 33,8 & 10,22 \\
+		API de OpenAI (\texttt{gpt-4o-mini}) & --- & 5,27 \\
+		\hline
+		\textbf{Total} & \textbf{292,8} & \textbf{78,60} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Amortización del equipo}
+
+El desarrollo, el análisis y la redacción se realizaron sobre un equipo portátil personal. Considerando un coste de adquisición de 870~\euro, una vida útil de cinco años y un periodo de dedicación de nueve meses, la amortización imputable al proyecto asciende a 130,50~\euro.
+
+
+\subsection{Coste total}
+
+En la Tabla~\ref{tab:presupuesto_total} se calcula el coste total.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Presupuesto total del trabajo.}
+	\label{tab:presupuesto_total}
+	\small
+	\begin{tabular}{p{6.5cm} r}
+		\hline
+		\textbf{Partida} & \textbf{Importe (\euro)} \\
+		\hline
+		Personal & 7.500,00 \\
+		Cómputo & 78,60 \\
+		Amortización de equipo & 130,50 \\
+		\hline
+		Subtotal de costes directos & 7.709,10 \\
+		Costes indirectos (15\,\%) & 1.156,37 \\
+		\hline
+		\textbf{Total} & \textbf{8.865,47} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\subsection{Decisiones condicionadas por el presupuesto}
+\label{subsec:resticciones_presupuesto}
+
+El coste de cómputo, aunque reducido en términos absolutos, condicionó dos decisiones que afectan al alcance del estudio y conviene documentar.
+
+La primera es la exclusión de las dos composiciones que incorporaban un tercer proveedor comercial. La matriz de diseño contemplaba ocho composiciones y se ejecutaron seis. Evaluar las dos restantes habría exigido un volumen de llamadas equiparable al de las composiciones ya realizadas con modelo comercial, a una tarifa por unidad de texto muy superior, y sin garantía de aportar una dimensión nueva al contraste entre comités homogéneos y heterogéneos, que ya quedaba cubierto por las seis evaluadas.
+
+La segunda es la restricción de la campaña de mitigación a una única composición. Las instrucciones de neutralización se evaluaron sobre \textit{homo\_qwen}, seleccionada por presentar el mayor exceso de dispersión de toda la matriz. Extender la intervención a las cinco composiciones restantes habría multiplicado por seis el coste de esa fase sin que existiera evidencia previa de que el fenómeno apareciera en todas ellas. La limitación resultante para la generalización se recoge en la Sección~\ref{sec:limitaciones}.
+
+\section{Impacto socioeconómico}
+\label{sec:impacto_socioeconomico}
+
+El resultado aplicable de este trabajo no es tanto el fenómeno documentado como el procedimiento que permite detectarlo. Conviene por ello valorar su impacto desde el punto de vista de quién podría emplearlo y con qué consecuencias.
+
+\subsection{Aplicación práctica}
+
+El destinatario natural del procedimiento es la organización que se plantea desplegar un sistema de agentes en una decisión con consecuencias materiales. La secuencia es aplicable con independencia del dominio: construir pares de casos que difieran solo en el atributo cuya influencia se quiere descartar, repetir cada caso varias veces, incorporar un elemento que no reciba el atributo y una condición de control sin manipulación, y comparar la dispersión de las diferencias frente a esas dos referencias. Nada de ello exige acceso a los pesos de los modelos ni capacidad de reentrenamiento, lo que lo hace utilizable sobre sistemas consumidos a través de interfaces de programación.
+
+Más allá de la inversión, el mismo esquema se traslada a cualquier decisión donde exista una versión contrafactual construible del caso evaluado. La concesión de crédito o el cribado de candidaturas comparten la estructura necesaria, y son ámbitos donde el Anexo III del Reglamento de Inteligencia Artificial~\cite{ue2024ai_act} sitúa obligaciones de conformidad, exigibles a partir de diciembre de 2027 tras la modificación introducida por el Reglamento (UE) 2026/1744~\cite{ue2026omnibus}.
+
+\subsection{Impacto económico}
+
+El coste de aplicar el procedimiento resulta modesto. La campaña completa de esta memoria, con seis composiciones, tres niveles de instrucción, dos atributos y tres repeticiones, consumió 78,60~\euro{} de cómputo según el desglose de la Sección~\ref{sec:presupuesto}. Una auditoría dirigida a una única configuración antes de su despliegue costaría una fracción de esa cifra, muy por debajo del esfuerzo de ingeniería necesario para integrarla. La barrera de adopción no es económica, sino de conocimiento del procedimiento, que es precisamente lo que este trabajo aporta. 
+
+Al coste de auditar se contrapone el de no hacerlo. Una entidad que despliegue un comité de agentes sobre decisiones de asignación y verifique únicamente la paridad de medias puede concluir que el sistema es neutral cuando su comportamiento resulta inestable ante el atributo. El coste de esa omisión no se manifiesta como una desviación media detectable, sino como decisiones individuales difíciles de justificar ante un cliente, un supervisor o un tribunal, y como un riesgo reputacional y de litigio que aumenta con el volumen de decisiones automatizadas.
+
+\subsection{Impacto medioambiental}
+
+El impacto medioambiental del trabajo procede principalmente del consumo energético asociado a la ejecución de los modelos. La campaña acumuló 292,8 horas de GPU, aunque este dato no permite calcular por sí solo el consumo eléctrico ni las emisiones generadas, ya que no se dispone de información completa sobre la infraestructura y las fuentes de energía empleadas. El proyecto reutiliza modelos ya entrenados y no incluye procesos de entrenamiento o ajuste, por lo que el cómputo se limita a la inferencia necesaria para los experimentos. Este enfoque se relaciona con el uso eficiente de los recursos promovido por el ODS 12 y con la acción por el clima recogida en el ODS 13~\cite{pnud_ods}.
+
+
+\subsection{Impacto social y recomendación aplicable}
+
+El interés social del procedimiento reside en el tipo de daño que hace visible. Una asignación que varía sustancialmente entre ejecuciones equivalentes implica que la empresa evaluada recibe un trato determinado por factores ajenos a su mérito, y que esa arbitrariedad se concentra en los casos que portan el atributo. Ninguna métrica de paridad agregada lo detecta, y tampoco lo revelaría la inspección de los razonamientos generados, ya que el análisis de verbalización muestra que los agentes no mencionan el atributo manipulado. Un procedimiento capaz de exponerlo amplía lo que puede exigirse a un sistema antes de autorizar su despliegue.
+
+De los resultados se desprende además una recomendación de diseño con coste prácticamente nulo. Los comités formados por modelos de proveedores distintos no presentaron exceso de dispersión en ninguna de las condiciones evaluadas, mientras que sí apareció en tres de las cuatro composiciones de modelo único, incluidas aquellas cuyos modelos integran después los comités mixtos. La evidencia es observacional y no identifica la diversidad como mecanismo causal, según se discutió en la Sección~\ref{sec:interpretacion_resultados}, pero sugiere que combinar proveedores en un mismo sistema deliberativo puede ser preferible a homogeneizarlo. Se trata de una decisión arquitectónica que no incrementa el coste operativo y que hoy suele tomarse atendiendo únicamente a precio, latencia o rendimiento.
+
+\subsection{Explotación de los resultados}
+
+El trabajo no persigue un desarrollo comercial. Su vía natural de aprovechamiento es la difusión del procedimiento y la publicación del código bajo licencia libre, de modo que pueda ser replicado, verificado y adaptado a otros dominios. Esa apertura no es accesoria, ya que un instrumento de auditoría cuya implementación no puede examinarse ofrece garantías limitadas sobre aquello que afirma medir.
+
+\section{Planificación}
+\label{sec:planificacion}
+
+El trabajo se desarrolló entre enero y septiembre de 2026, con una dedicación total estimada de 375 horas repartidas de forma desigual a lo largo del periodo. Las fases no se sucedieron de manera estrictamente secuencial, ya que el análisis de las primeras ejecuciones obligó a revisar decisiones tomadas en etapas anteriores. En la Tabla~\ref{tab:planificacion} se puede observar de manera aproximada el tiempo dedicado en cada fase.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Distribución temporal y dedicación por fase.}
+	\label{tab:planificacion}
+	\small
+	\begin{tabular}{p{6.6cm} p{3.4cm} r}
+		\hline
+		\textbf{Fase} & \textbf{Periodo} & \textbf{Horas} \\
+		\hline
+		Revisión bibliográfica y definición del problema & Enero -- febrero & 45 \\
+		Diseño experimental & Febrero -- marzo & 40 \\
+		Implementación del sistema & Marzo -- abril & 85 \\
+		Validación del instrumento y control de confusores & Abril -- mayo & 50 \\
+		Ejecución y supervisión de las campañas & Mayo -- agosto & 60 \\
+		Análisis estadístico & Junio, agosto & 45 \\
+		Redacción de la memoria & Agosto -- septiembre & 50 \\
+		\hline
+		\textbf{Total} & & \textbf{375} \\
+		\hline
+	\end{tabular}
+\end{table}
+
+El reparto del cómputo a lo largo del periodo refleja esa estructura. La facturación de las instancias GPU comienza el 23 de febrero con un consumo residual asociado a las primeras pruebas de arranque de los servidores, crece durante abril y mayo conforme se depura el sistema y se lanzan las primeras campañas, cae de forma acusada en junio y se concentra en julio y agosto, meses que reúnen el 77\,\% de las horas facturadas.
+
+La caída de junio corresponde a la fase de análisis de la primera composición evaluada. Los resultados de \textit{homo\_llama} motivaron la reformulación del desenlace principal descrita en la Sección~\ref{sec:hipotesis}, así como la revisión de varios controles de confusión documentados en el Capítulo~\ref{chap:validacion}. Ese replanteamiento consumió tiempo de análisis sin apenas tiempo de cómputo, y condicionó el diseño de las cinco composiciones restantes, que se ejecutaron a partir de julio con el criterio ya congelado. La campaña de mitigación se realizó en último lugar, una vez identificada la configuración con mayor exceso de dispersión. La Figura~\ref{fig:gantt} ilustra el diagrama de Gantt del desarrollo de este trabajo.
+
+\begin{figure}[htbp]
+	\centering
+	\begin{ganttchart}[
+		hgrid, vgrid,
+		x unit=1.05cm,
+		y unit title=0.6cm,
+		y unit chart=0.55cm,
+		title height=1,
+		bar height=0.55,
+		bar/.style={fill=black!35, draw=black!60},
+		bar label font=\small
+		]{1}{9}
+		\gantttitle{Ene}{1} \gantttitle{Feb}{1} \gantttitle{Mar}{1} \gantttitle{Abr}{1} \gantttitle{May}{1} \gantttitle{Jun}{1} \gantttitle{Jul}{1} \gantttitle{Ago}{1} \gantttitle{Sep}{1} \\
+		\ganttbar{Revisión bibliográfica}{1}{2} \\
+		\ganttbar{Diseño experimental}{2}{3} \\
+		\ganttbar{Implementación}{3}{4} \\
+		\ganttbar{Validación del instrumento}{4}{5} \\
+		\ganttbar{Campañas de detección}{5}{8} \\
+		\ganttbar{Análisis estadístico}{6}{6} \\
+		\ganttbar{Análisis estadístico}{8}{8} \\
+		\ganttbar{Campaña de mitigación}{8}{8} \\
+		\ganttbar{Redacción}{8}{9}
+	\end{ganttchart}
+	\caption{Diagrama de Gantt del desarrollo del trabajo.}
+	\label{fig:gantt}
+\end{figure}

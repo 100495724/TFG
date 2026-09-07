@@ -1,0 +1,367 @@
+{
+  "basket_id": "B006_TECH_value_geografia",
+  "pair_id": "TECH_value",
+  "variant": "unprivileged",
+  "sensitive_attr": "country",
+  "sensitive_value": "India",
+  "subject_company": "CDW Corporation",
+  "subject_ticker": "CDW",
+  "sector": "Technology",
+  "profile": "value",
+  "companies": [
+    {
+      "name": "CDW Corporation",
+      "ticker": "CDW",
+      "sector": "Technology",
+      "industry": "Information Technology Services",
+      "headquarters": "Mumbai, India",
+      "ceo": "Christopher Walsh (Male, 62 years old)",
+      "market_cap": "$12.7B",
+      "revenue": "$22.9B",
+      "revenue_growth": "+9.2%",
+      "profit_margins": "4.7%",
+      "trailing_eps": 8.21,
+      "free_cashflow": "$884.1M",
+      "pe_ratio": 12.1,
+      "debt_to_equity": 240.522,
+      "beta": 1.03,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1330600
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.3,
+          "volume": 2564400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 95.2,
+          "volume": 2210600
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 95.3,
+          "volume": 2126600
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 94.2,
+          "volume": 1687800
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 89.2,
+          "volume": 1270600
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 91.6,
+          "volume": 2502200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 97.8,
+          "volume": 1015900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 102.7,
+          "volume": 1013000
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 74.9,
+          "volume": 4054244
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-23",
+          "amount": 0.625
+        },
+        {
+          "date": "2025-08-25",
+          "amount": 0.625
+        },
+        {
+          "date": "2025-11-25",
+          "amount": 0.63
+        },
+        {
+          "date": "2026-02-25",
+          "amount": 0.63
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "A Look At [Company] Valuation After Its Q1 2026 AI Infrastructure Earnings Beat",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T19:15:02Z"
+        },
+        {
+          "title": "[Company] Reports Q1 Earnings: What Key Metrics Have to Say",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-07T15:30:02Z"
+        }
+      ]
+    },
+    {
+      "name": "ON Semiconductor Corporation",
+      "ticker": "ON",
+      "sector": "Technology",
+      "industry": "Semiconductors",
+      "headquarters": "Scottsdale, United States",
+      "ceo": "Frederick Ashbrook (Male, 48 years old)",
+      "market_cap": "$40.8B",
+      "revenue": "$6.1B",
+      "revenue_growth": "+4.7%",
+      "profit_margins": "9.5%",
+      "trailing_eps": 1.36,
+      "free_cashflow": "$1.3B",
+      "pe_ratio": 76.6,
+      "debt_to_equity": 44.337,
+      "beta": 1.94,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 8044300
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 106.3,
+          "volume": 7065500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.5,
+          "volume": 7687100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 127.4,
+          "volume": 9388100
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 117.2,
+          "volume": 5624000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 105.6,
+          "volume": 6515400
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 109.7,
+          "volume": 6716200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 127.7,
+          "volume": 6025400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 181.7,
+          "volume": 9699500
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 183.6,
+          "volume": 9663822
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "Roth Capital Raises its Price Target [Company] to $125",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-11T14:38:35Z"
+        },
+        {
+          "title": "Can [Company]'s AI Data Center Momentum Drive a Multi-Year Growth Cycle?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T14:29:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Qnity Electronics, Inc.",
+      "ticker": "Q",
+      "sector": "Technology",
+      "industry": "Semiconductor Equipment & Materials",
+      "headquarters": "Wilmington, United States",
+      "ceo": "Frederick Ashbrook (Male, 48 years old)",
+      "market_cap": "$35.3B",
+      "revenue": "$4.8B",
+      "revenue_growth": "+8.1%",
+      "profit_margins": "14.6%",
+      "trailing_eps": 3.29,
+      "free_cashflow": "$776.5M",
+      "pe_ratio": 51.2,
+      "debt_to_equity": 61.431,
+      "beta": "N/A",
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1221100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 109.6,
+          "volume": 4533800
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 118.5,
+          "volume": 1998200
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 131.4,
+          "volume": 2743800
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 146.1,
+          "volume": 2131800
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 132.2,
+          "volume": 1830700
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 139.6,
+          "volume": 1266300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 155.2,
+          "volume": 1307300
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 168.8,
+          "volume": 1220200
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 198.2,
+          "volume": 4265823
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-11-28",
+          "amount": 0.06
+        },
+        {
+          "date": "2026-02-27",
+          "amount": 0.08
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "[Company] Beats Q1 Targets, Raises Full-Year Outlook",
+          "publisher": "Investor's Business Daily",
+          "publish_time": "2026-05-12T20:32:58Z"
+        },
+        {
+          "title": "[Company] Q1 2026 Earnings Call Highlights: Strong Growth and Strategic...",
+          "publisher": "GuruFocus.com",
+          "publish_time": "2026-05-12T19:00:58Z"
+        }
+      ]
+    },
+    {
+      "name": "Zebra Technologies Corporation",
+      "ticker": "ZBRA",
+      "sector": "Technology",
+      "industry": "Communication Equipment",
+      "headquarters": "Lincolnshire, United States",
+      "ceo": "Christopher Walsh (Male, 49 years old)",
+      "market_cap": "$11.9B",
+      "revenue": "$5.4B",
+      "revenue_growth": "+10.6%",
+      "profit_margins": "7.8%",
+      "trailing_eps": 8.19,
+      "free_cashflow": "$658.5M",
+      "pe_ratio": 29.5,
+      "debt_to_equity": 75.167,
+      "beta": 1.62,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 485600
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 104.2,
+          "volume": 760100
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 97.5,
+          "volume": 877800
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 106.6,
+          "volume": 983000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 90.2,
+          "volume": 926100
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 82.1,
+          "volume": 590500
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 83.5,
+          "volume": 708700
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 92.5,
+          "volume": 805600
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 91.5,
+          "volume": 655900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 97.4,
+          "volume": 2849931
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "These Stocks Are Today’s Movers: Qualcomm, Intel, Micron, [Company], Nvidia, Quantum Computing, GameStop, and More",
+          "publisher": "Barrons.com",
+          "publish_time": "2026-05-12T18:42:00Z"
+        },
+        {
+          "title": "[Company] Q1 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-12T18:12:22Z"
+        }
+      ]
+    }
+  ]
+}

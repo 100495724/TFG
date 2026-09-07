@@ -1,0 +1,409 @@
+{
+  "basket_id": "B105_CDEF_distressed_placebo_b",
+  "pair_id": "CDEF_distressed_placebo",
+  "variant": "placebo_b",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "The Kraft Heinz Company",
+  "subject_ticker": "KHC",
+  "sector": "Consumer Defensive",
+  "profile": "distressed",
+  "companies": [
+    {
+      "name": "The Kraft Heinz Company",
+      "ticker": "KHC",
+      "sector": "Consumer Defensive",
+      "industry": "Packaged Foods",
+      "headquarters": "Pittsburgh, United States",
+      "ceo": "David Mitchell (Male, 58 years old)",
+      "market_cap": "$27.7B",
+      "revenue": "$25.0B",
+      "revenue_growth": "+0.8%",
+      "profit_margins": "-23.0%",
+      "trailing_eps": -4.86,
+      "free_cashflow": "$3.2B",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 50.258,
+      "beta": 0.05,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 12839500
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.4,
+          "volume": 11696200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 96.4,
+          "volume": 11862000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 101.7,
+          "volume": 13890000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 100.5,
+          "volume": 16074400
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 94.7,
+          "volume": 14454300
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 92.8,
+          "volume": 10617900
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 91.8,
+          "volume": 13469800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 93.8,
+          "volume": 14253500
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 97.4,
+          "volume": 13812654
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-30",
+          "amount": 0.4
+        },
+        {
+          "date": "2025-08-29",
+          "amount": 0.4
+        },
+        {
+          "date": "2025-11-28",
+          "amount": 0.4
+        },
+        {
+          "date": "2026-03-06",
+          "amount": 0.4
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Snackables Launch Tests [Company] Efforts To Refresh Lunchables Growth",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T13:20:31Z"
+        },
+        {
+          "title": "[Company]’s biggest portfolio campaign to date celebrates America250",
+          "publisher": "Marketing Dive",
+          "publish_time": "2026-05-12T10:55:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Conagra Brands, Inc.",
+      "ticker": "CAG",
+      "sector": "Consumer Defensive",
+      "industry": "Packaged Foods",
+      "headquarters": "Chicago, United States",
+      "ceo": "Christopher Walsh (Male, 57 years old)",
+      "market_cap": "$6.7B",
+      "revenue": "$11.2B",
+      "revenue_growth": "-1.9%",
+      "profit_margins": "-0.4%",
+      "trailing_eps": -0.1,
+      "free_cashflow": "$654.7M",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 89.813,
+      "beta": -0.03,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 10643600
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 100.4,
+          "volume": 12414100
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.3,
+          "volume": 11387000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 116.5,
+          "volume": 10732000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 113.1,
+          "volume": 10419000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 94.5,
+          "volume": 17215900
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 91.5,
+          "volume": 31215200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 83.1,
+          "volume": 19305800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 85.0,
+          "volume": 10354600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 84.6,
+          "volume": 11370443
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-30",
+          "amount": 0.35
+        },
+        {
+          "date": "2025-10-30",
+          "amount": 0.35
+        },
+        {
+          "date": "2026-01-27",
+          "amount": 0.35
+        },
+        {
+          "date": "2026-04-30",
+          "amount": 0.35
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Is [Company] Now An Opportunity After Its Steep Share Price Slide?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T06:18:31Z"
+        },
+        {
+          "title": "Historic SNAP Cuts And ESG Push Might Change The Case For Investing In [Company]",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T03:12:20Z"
+        }
+      ]
+    },
+    {
+      "name": "Kimberly-Clark Corporation",
+      "ticker": "KMB",
+      "sector": "Consumer Defensive",
+      "industry": "Household & Personal Products",
+      "headquarters": "Dallas, United States",
+      "ceo": "Thomas Brennan (Male, 51 years old)",
+      "market_cap": "$32.3B",
+      "revenue": "$16.6B",
+      "revenue_growth": "+2.7%",
+      "profit_margins": "12.8%",
+      "trailing_eps": 5.17,
+      "free_cashflow": "$1.1B",
+      "pe_ratio": 18.8,
+      "debt_to_equity": 371.264,
+      "beta": 0.31,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 4347900
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.0,
+          "volume": 5939100
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 98.1,
+          "volume": 6355500
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 107.9,
+          "volume": 5233700
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 108.2,
+          "volume": 3075100
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 100.1,
+          "volume": 3407100
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 97.4,
+          "volume": 4287500
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 96.7,
+          "volume": 3043800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 97.5,
+          "volume": 4872400
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 97.2,
+          "volume": 5347597
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-06",
+          "amount": 1.26
+        },
+        {
+          "date": "2025-09-05",
+          "amount": 1.26
+        },
+        {
+          "date": "2025-12-05",
+          "amount": 1.26
+        },
+        {
+          "date": "2026-03-06",
+          "amount": 1.28
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Here’s Why [Company] is an Undervalued Stocks to Buy Under $100",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-12T17:48:16Z"
+        },
+        {
+          "title": "[Company] Valuation Check After Mixed Recent Share Performance And Reported Intrinsic Discount",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-07T14:20:39Z"
+        }
+      ]
+    },
+    {
+      "name": "The J. M. Smucker Company",
+      "ticker": "SJM",
+      "sector": "Consumer Defensive",
+      "industry": "Packaged Foods",
+      "headquarters": "Orrville, United States",
+      "ceo": "William Hayes (Male, 55 years old)",
+      "market_cap": "$10.7B",
+      "revenue": "$8.9B",
+      "revenue_growth": "+7.0%",
+      "profit_margins": "-14.1%",
+      "trailing_eps": -11.79,
+      "free_cashflow": "$884.5M",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 143.204,
+      "beta": 0.24,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1773300
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 108.4,
+          "volume": 1186200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.4,
+          "volume": 1704800
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 115.5,
+          "volume": 2109900
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 119.9,
+          "volume": 2713200
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 109.7,
+          "volume": 2150000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 99.8,
+          "volume": 1845200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 97.7,
+          "volume": 1774600
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 101.4,
+          "volume": 1087300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 104.9,
+          "volume": 1967166
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-16",
+          "amount": 1.08
+        },
+        {
+          "date": "2025-08-15",
+          "amount": 1.1
+        },
+        {
+          "date": "2025-11-14",
+          "amount": 1.1
+        },
+        {
+          "date": "2026-02-13",
+          "amount": 1.1
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "It Might Not Be A Great Idea To Buy [Company] For Its Next Dividend",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-11T10:55:20Z"
+        },
+        {
+          "title": "How [Company] Investment Story Is Shifting With Activism And Coffee Tailwinds",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-04T18:13:32Z"
+        }
+      ]
+    }
+  ]
+}

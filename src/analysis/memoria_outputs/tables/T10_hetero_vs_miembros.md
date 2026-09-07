@@ -1,0 +1,14 @@
+| hetero_composition | instruction_level | sensitive_attr | n_pairs | mean_diff | ci95_lo | ci95_hi | p_signflip | member_compositions |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| hetero_api_gpt | level_0_neutral | country | 21 | 308.72222222222223 | -1398.0561507936509 | 2137.269312169312 | 0.7513 | homo_llama,homo_gpt,homo_mistral |
+| hetero_api_gpt | level_0_neutral | gender | 21 | 433.99735449735454 | -1201.0535714285713 | 1986.0484126984127 | 0.624 | homo_llama,homo_gpt,homo_mistral |
+| hetero_api_gpt | level_1_professional | country | 21 | 776.7671957671957 | -746.070238095238 | 2364.974735449734 | 0.347 | homo_llama,homo_gpt,homo_mistral |
+| hetero_api_gpt | level_1_professional | gender | 21 | -808.8108465608466 | -2142.59117063492 | 382.07384259259203 | 0.2364 | homo_llama,homo_gpt,homo_mistral |
+| hetero_api_gpt | level_2_identity | country | 21 | -934.8042328042326 | -2621.525 | 777.0683201058193 | 0.2987 | homo_llama,homo_gpt,homo_mistral |
+| hetero_api_gpt | level_2_identity | gender | 21 | -318.22751322751327 | -1690.8792989417989 | 1003.5607804232804 | 0.6585 | homo_llama,homo_gpt,homo_mistral |
+| hetero_local | level_0_neutral | country | 21 | 168.43650793650804 | -1386.3527777777776 | 1573.0753306878303 | 0.8352 | homo_llama,homo_qwen,homo_mistral |
+| hetero_local | level_0_neutral | gender | 21 | -323.0925925925926 | -2017.2714947089949 | 1328.9496031746019 | 0.7269 | homo_llama,homo_qwen,homo_mistral |
+| hetero_local | level_1_professional | country | 21 | 699.0291005291003 | -927.1683862433861 | 2257.5410714285704 | 0.418 | homo_llama,homo_qwen,homo_mistral |
+| hetero_local | level_1_professional | gender | 21 | -450.24603174603163 | -1992.590939153439 | 976.7959656084655 | 0.5699 | homo_llama,homo_qwen,homo_mistral |
+| hetero_local | level_2_identity | country | 21 | -1442.6904761904761 | -2746.936441798942 | -166.54761904761935 | 0.0468 | homo_llama,homo_qwen,homo_mistral |
+| hetero_local | level_2_identity | gender | 21 | -1174.5158730158732 | -2471.1458994708996 | 87.24530423280393 | 0.0932 | homo_llama,homo_qwen,homo_mistral |

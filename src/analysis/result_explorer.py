@@ -1,9 +1,12 @@
 # %% Imports
-"""Notebook-friendly Act 1 result explorer.
+"""Notebook-friendly detection result explorer.
 
 This module is intentionally offline-only: it reads existing CSV outputs,
 filters to subject-company rows, and builds plots/tables for basket-level
 inspection. It can be imported from a notebook or executed as a CLI script.
+
+The bias endpoint is the genesis turn (t=0); the final turn (t=4) documents the
+dissolution of the gap into generic debate noise.
 """
 
 from __future__ import annotations
@@ -23,11 +26,22 @@ if TYPE_CHECKING:
 
 # %% Configuration
 NUMERIC_COLUMNS = ("turn", "seed", "allocation", "subject_position")
+# (display_label, sensitive_attr). The label drives figure titles only; all
+# filtering is done on the `sensitive_attr` column (never on `variant`, whose
+# only values are control/unprivileged).
 DEFAULT_VARIANT_SPECS = (
     ("control", "none"),
     ("gender", "gender"),
-    ("geo", "country"),
+    ("country", "country"),
 )
+# Canonical instruction-level labels. Older result CSVs were written with the
+# alias `level_1_professional_fairness` for the prompt now named
+# `level_1_professional`; normalize it at load so merge/group keys stay aligned.
+# Note: `level_1_professional_geopolitical` was a different prompt (removed) and
+# is intentionally NOT remapped here.
+INSTRUCTION_LEVEL_ALIASES = {
+    "level_1_professional_fairness": "level_1_professional",
+}
 SUPPORTED_TABLE_FIELDS = {
     "action",
     "allocation",
@@ -86,6 +100,12 @@ def _natural_key(value: object) -> tuple:
 
 
 def _pair_short_id(pair_id: str) -> str:
+    """Best-effort shorthand for a pair_id (e.g. "A1" from "A1_HighGrowth").
+
+    Only collapses ids whose first token matches a letter+digit code (A1, B12).
+    Free-form ids (e.g. "TECH_growth") have no such prefix and are returned
+    unchanged, so exact-match resolution always works for them.
+    """
     text = str(pair_id)
     first = text.split("_", 1)[0]
     return first if re.fullmatch(r"[A-Za-z]+\d+", first) else text
@@ -144,6 +164,23 @@ def _coerce_numeric_columns(df: pd.DataFrame) -> pd.DataFrame:
     return cleaned
 
 
+def _normalize_instruction_level(df: pd.DataFrame) -> pd.DataFrame:
+    """Map legacy instruction_level aliases to their canonical labels.
+
+    Applied once at load time so MERGE_KEYS / PAIR_KEYS group consistently
+    across CSVs written under old and new naming schemes.
+    """
+    if "instruction_level" not in df.columns:
+        return df
+    cleaned = df.copy()
+    cleaned["instruction_level"] = (
+        cleaned["instruction_level"].map(
+            lambda value: INSTRUCTION_LEVEL_ALIASES.get(value, value)
+        )
+    )
+    return cleaned
+
+
 def _require_columns(df: pd.DataFrame, columns: Iterable[str]) -> None:
     missing = [column for column in columns if column not in df.columns]
     if missing:
@@ -194,7 +231,7 @@ def load_result_csvs(paths_or_globs: list[str]) -> pd.DataFrame:
     Load multiple CSV files from explicit paths or glob patterns.
 
     Example:
-        load_result_csvs(["src/results/act1_baseline_seed*.csv"])
+        load_result_csvs(["src/results/detection_baseline_seed*.csv"])
     """
     csv_paths = _expand_csv_paths(paths_or_globs)
     if not csv_paths:
@@ -210,6 +247,7 @@ def load_result_csvs(paths_or_globs: list[str]) -> pd.DataFrame:
 
     df = pd.concat(frames, ignore_index=True)
     df = _coerce_numeric_columns(df)
+    df = _normalize_instruction_level(df)
 
     parse_error_rows = (
         int(_truthy(df["parse_error"]).sum()) if "parse_error" in df.columns else 0
@@ -295,8 +333,9 @@ def plot_subject_allocation_evolution(
                 "pass seed=... to avoid a cluttered plot."
             )
 
-    if variant is not None and "variant" in plot_df.columns:
-        plot_df = plot_df[plot_df["variant"].astype(str) == variant]
+    # Filtering is done on `sensitive_attr` only. `variant` is kept as a
+    # display-only label (its values are control/unprivileged, which do not
+    # correspond to the gender/country counterfactuals being plotted).
     if sensitive_attr is not None and "sensitive_attr" in plot_df.columns:
         plot_df = plot_df[plot_df["sensitive_attr"].astype(str) == sensitive_attr]
 
@@ -776,10 +815,14 @@ def _committee_snapshot(
 def compute_committee_pair_gap_table(
     df: pd.DataFrame,
     attr: str = "gender",
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
 ) -> pd.DataFrame:
-    """Compute final-turn committee control-vs-test gaps by pair and seed."""
+    """Compute committee control-vs-test gaps by pair and seed at ``final_turn``.
+
+    The bias endpoint is the genesis turn (``final_turn=0``, the default); pass
+    ``final_turn=4`` to inspect the dissolved final-turn gap instead.
+    """
     committee = _committee_snapshot(
         df,
         final_turn=final_turn,
@@ -871,7 +914,12 @@ def compute_dynamic_pair_summary(
     attr: str = "gender",
     include_errors: bool = False,
 ) -> pd.DataFrame:
-    """Compute turn-0 to turn-4 gap dynamics per pair and seed."""
+    """Compute turn-0 to turn-4 gap dynamics per pair and seed.
+
+    Genesis (t=0) is the bias endpoint; t=4 documents the dissolution of the gap
+    into generic debate noise. This helper keeps both fixed endpoints so
+    ``delta_gap`` measures exactly that t0 -> t4 dissolution.
+    """
     gaps = compute_agent_pair_gap_table(
         df,
         attr=attr,
@@ -954,11 +1002,16 @@ def _export_metric_table(table: pd.DataFrame, output_path: Path) -> None:
 def build_pair_metric_report(
     df: pd.DataFrame,
     output_dir: str | Path | None = None,
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
     export: bool = False,
 ) -> dict[str, pd.DataFrame]:
-    """Compute per-pair metric reports, optionally exporting them."""
+    """Compute per-pair metric reports, optionally exporting them.
+
+    ``final_turn`` sets the committee gap endpoint (default 0 = genesis, the
+    bias endpoint; pass 4 for the dissolved final-turn view). The dynamic
+    summary always reports the fixed t0 -> t4 dissolution.
+    """
     base_dir = Path(output_dir or "src/analysis/tables/pair_metrics")
     report: dict[str, pd.DataFrame] = {}
 
@@ -994,10 +1047,14 @@ def build_pair_metric_report(
 
 def display_pair_metric_report(
     df: pd.DataFrame,
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
 ) -> dict[str, pd.DataFrame]:
-    """Display per-pair metric reports in a notebook without saving files."""
+    """Display per-pair metric reports in a notebook without saving files.
+
+    ``final_turn`` defaults to 0 (genesis, the bias endpoint); pass 4 for the
+    dissolved final-turn committee gap.
+    """
     report = build_pair_metric_report(
         df,
         final_turn=final_turn,
@@ -1014,10 +1071,13 @@ def display_pair_metrics_for_basket(
     df: pd.DataFrame,
     pair_id: str,
     seed: int | None = None,
-    final_turn: int = 4,
+    final_turn: int = 0,
     include_errors: bool = False,
 ) -> dict[str, pd.DataFrame]:
     """Display the three metric tables filtered to a single basket (pair_id).
+
+    ``final_turn`` defaults to 0 (genesis, the bias endpoint); pass 4 for the
+    dissolved final-turn committee gap.
 
     Convenience wrapper for notebook use: it computes the global metric
     tables once, then filters each one to the requested pair_id (and seed,
@@ -1099,13 +1159,13 @@ def _field_was_supplied(argv: list[str]) -> bool:
 
 def build_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Explore Act 1 subject-company results from existing CSV files.",
+        description="Explore detection subject-company results from existing CSV files.",
     )
     parser.add_argument(
         "--results",
         nargs="+",
         required=True,
-        help="One or more CSV paths/globs, e.g. src/results/act1_baseline_seed*.csv",
+        help="One or more CSV paths/globs, e.g. src/results/detection_baseline_seed*.csv",
     )
     parser.add_argument("--seed", type=int, default=None, help="Seed to inspect.")
     parser.add_argument("--pair-id", default=None, help="Pair id, e.g. A2.")

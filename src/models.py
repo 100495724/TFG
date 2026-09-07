@@ -34,6 +34,9 @@ class BaseLLM(ABC):
     def __init__(self, model_name: str, params: dict):
         self.model_name = model_name
         self.params = params
+        # Set by generate() on each call; None if the backend didn't expose it
+        # or the call failed before a response was received.
+        self.last_finish_reason = None
 
     @abstractmethod
     def generate(self, system_prompt: str, user_message: str) -> str:
@@ -66,6 +69,8 @@ class VLLMModel(BaseLLM):
         if requests is None:
             raise ImportError("The 'requests' package is required for VLLMModel.generate()")
 
+        self.last_finish_reason = None
+
         def _call():
             payload = {
                 "model": self.model_name,
@@ -93,6 +98,7 @@ class VLLMModel(BaseLLM):
             )
             response.raise_for_status()
             data = response.json()
+            self.last_finish_reason = data.get("choices", [{}])[0].get("finish_reason")
             return data["choices"][0]["message"]["content"]
 
         return self._retry_with_backoff(_call)
@@ -111,6 +117,8 @@ class AnthropicModel(BaseLLM):
     def generate(self, system_prompt: str, user_message: str) -> str:
         if requests is None:
             raise ImportError("The 'requests' package is required for AnthropicModel.generate()")
+
+        self.last_finish_reason = None
 
         def _call():
             payload = {
@@ -135,6 +143,10 @@ class AnthropicModel(BaseLLM):
             )
             response.raise_for_status()
             data = response.json()
+            # Anthropic names this field "stop_reason" rather than
+            # "finish_reason"; surfaced under the same attribute for a
+            # uniform trace field across backends.
+            self.last_finish_reason = data.get("stop_reason")
             return data["content"][0]["text"]
 
         return self._retry_with_backoff(_call)
@@ -153,6 +165,8 @@ class OpenAIModel(BaseLLM):
     def generate(self, system_prompt: str, user_message: str) -> str:
         if requests is None:
             raise ImportError("The 'requests' package is required for OpenAIModel.generate()")
+
+        self.last_finish_reason = None
 
         def _call():
             payload = {
@@ -179,6 +193,7 @@ class OpenAIModel(BaseLLM):
             )
             response.raise_for_status()
             data = response.json()
+            self.last_finish_reason = data.get("choices", [{}])[0].get("finish_reason")
             return data["choices"][0]["message"]["content"]
 
         return self._retry_with_backoff(_call)

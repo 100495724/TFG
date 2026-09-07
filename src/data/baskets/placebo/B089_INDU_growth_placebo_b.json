@@ -1,0 +1,392 @@
+{
+  "basket_id": "B089_INDU_growth_placebo_b",
+  "pair_id": "INDU_growth_placebo",
+  "variant": "placebo_b",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "EMCOR Group, Inc.",
+  "subject_ticker": "EME",
+  "sector": "Industrials",
+  "profile": "growth",
+  "companies": [
+    {
+      "name": "EMCOR Group, Inc.",
+      "ticker": "EME",
+      "sector": "Industrials",
+      "industry": "Engineering & Construction",
+      "headquarters": "Norwalk, United States",
+      "ceo": "Thomas Brennan (Male, 59 years old)",
+      "market_cap": "$41.2B",
+      "revenue": "$17.7B",
+      "revenue_growth": "+19.7%",
+      "profit_margins": "7.5%",
+      "trailing_eps": 29.81,
+      "free_cashflow": "$891.5M",
+      "pe_ratio": 31.0,
+      "debt_to_equity": 13.355,
+      "beta": 1.17,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 286100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 106.9,
+          "volume": 454700
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 114.6,
+          "volume": 252200
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 125.5,
+          "volume": 309500
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 115.3,
+          "volume": 411900
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 113.8,
+          "volume": 302000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 119.0,
+          "volume": 252900
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 125.9,
+          "volume": 282900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 141.6,
+          "volume": 326300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 145.0,
+          "volume": 342544
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-15",
+          "amount": 0.25
+        },
+        {
+          "date": "2025-10-15",
+          "amount": 0.25
+        },
+        {
+          "date": "2026-01-14",
+          "amount": 0.4
+        },
+        {
+          "date": "2026-04-16",
+          "amount": 0.4
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Is It Too Late To Consider [Company] After Its Strong 1 Year Share Price Run?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T03:14:54Z"
+        },
+        {
+          "title": "Here is Why [Company] is Among the 10 Best Construction Stocks for Data Center Infrastructure",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-09T10:54:19Z"
+        }
+      ]
+    },
+    {
+      "name": "Copart, Inc.",
+      "ticker": "CPRT",
+      "sector": "Industrials",
+      "industry": "Specialty Business Services",
+      "headquarters": "Dallas, United States",
+      "ceo": "Daniel Whitfield (Male, 51 years old)",
+      "market_cap": "$32.2B",
+      "revenue": "$4.6B",
+      "revenue_growth": "-3.6%",
+      "profit_margins": "33.8%",
+      "trailing_eps": 1.59,
+      "free_cashflow": "$1.0B",
+      "pe_ratio": 21.0,
+      "debt_to_equity": 0.98,
+      "beta": 1.02,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 8608100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 109.2,
+          "volume": 12156400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 105.1,
+          "volume": 9874100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 99.3,
+          "volume": 9365300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 101.4,
+          "volume": 9592000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 89.7,
+          "volume": 11510200
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 87.4,
+          "volume": 6103500
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 88.3,
+          "volume": 7729800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 88.1,
+          "volume": 7234000
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 88.5,
+          "volume": 5671109
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "[Company] Gains As Market Dips: What You Should Know",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-07T22:15:01Z"
+        },
+        {
+          "title": "Is It Time To Reassess [Company] After A 45% One Year Share Price Slide?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-05T21:21:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Expeditors International of Washington, Inc.",
+      "ticker": "EXPD",
+      "sector": "Industrials",
+      "industry": "Integrated Freight & Logistics",
+      "headquarters": "Bellevue, United States",
+      "ceo": "Robert Sullivan (Male, 54 years old)",
+      "market_cap": "$20.2B",
+      "revenue": "$11.2B",
+      "revenue_growth": "+4.4%",
+      "profit_margins": "7.5%",
+      "trailing_eps": 6.19,
+      "free_cashflow": "$783.2M",
+      "pe_ratio": 24.9,
+      "debt_to_equity": 24.708,
+      "beta": 1.03,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 845200
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 107.8,
+          "volume": 1953200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 107.7,
+          "volume": 1327400
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 96.5,
+          "volume": 3059400
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 95.9,
+          "volume": 1578000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 94.0,
+          "volume": 931500
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 95.0,
+          "volume": 917000
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 94.8,
+          "volume": 823500
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 97.0,
+          "volume": 706600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 101.7,
+          "volume": 885998
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2024-06-03",
+          "amount": 0.73
+        },
+        {
+          "date": "2024-12-02",
+          "amount": 0.73
+        },
+        {
+          "date": "2025-06-02",
+          "amount": 0.77
+        },
+        {
+          "date": "2025-12-01",
+          "amount": 0.77
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "DHLGY vs. [Company]: Which Stock Is the Better Value Option?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T15:40:02Z"
+        },
+        {
+          "title": "Why [Company] Might be Well Poised for a Surge",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T16:20:02Z"
+        }
+      ]
+    },
+    {
+      "name": "Westinghouse Air Brake Technologies Corporation",
+      "ticker": "WAB",
+      "sector": "Industrials",
+      "industry": "Railroads",
+      "headquarters": "Pittsburgh, United States",
+      "ceo": "Charles Buchanan (Male, 61 years old)",
+      "market_cap": "$45.6B",
+      "revenue": "$11.5B",
+      "revenue_growth": "+13.0%",
+      "profit_margins": "10.5%",
+      "trailing_eps": 7.08,
+      "free_cashflow": "$1.1B",
+      "pe_ratio": 38.0,
+      "debt_to_equity": 62.03,
+      "beta": 0.97,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 470400
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 105.7,
+          "volume": 645200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.0,
+          "volume": 688000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 118.4,
+          "volume": 1067000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 122.1,
+          "volume": 861300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 110.7,
+          "volume": 586100
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 118.5,
+          "volume": 1545700
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 119.1,
+          "volume": 1835900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 122.7,
+          "volume": 664300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 124.5,
+          "volume": 782664
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-27",
+          "amount": 0.25
+        },
+        {
+          "date": "2025-08-14",
+          "amount": 0.25
+        },
+        {
+          "date": "2025-11-12",
+          "amount": 0.25
+        },
+        {
+          "date": "2026-02-17",
+          "amount": 0.31
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Should You Investigate [Company] At US$266?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T11:00:14Z"
+        },
+        {
+          "title": "[Company] Technologies Insiders Sell US$43m Of Stock, Possibly Signalling Caution",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-06T11:00:09Z"
+        }
+      ]
+    }
+  ]
+}

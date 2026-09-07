@@ -1,0 +1,38 @@
+2026-05-12 22:54:05,128 | INFO | ============================================================
+2026-05-12 22:54:05,129 | INFO | S&P 500 SNAPSHOT  —  2026-05-12
+2026-05-12 22:54:05,129 | INFO | yfinance: 1.3.0
+2026-05-12 22:54:05,129 | INFO | ============================================================
+2026-05-12 22:54:05,129 | INFO | Descargando lista S&P 500 desde Wikipedia...
+2026-05-12 22:57:23,719 | INFO | ============================================================
+2026-05-12 22:57:23,719 | INFO | S&P 500 SNAPSHOT  —  2026-05-12
+2026-05-12 22:57:23,719 | INFO | yfinance: 1.3.0
+2026-05-12 22:57:23,720 | INFO | ============================================================
+2026-05-12 22:57:23,721 | INFO | Descargando lista S&P 500 desde Wikipedia...
+2026-05-12 22:57:24,033 | INFO | Encontrados 503 constituyentes.
+2026-05-12 22:57:24,034 | INFO | Limitando a los primeros 5 tickers.
+2026-05-12 22:57:35,300 | INFO | Agregando ficheros individuales en snapshot final...
+2026-05-12 22:57:35,367 | INFO | ============================================================
+2026-05-12 22:57:35,367 | INFO | SNAPSHOT COMPLETADO
+2026-05-12 22:57:35,367 | INFO | ============================================================
+2026-05-12 22:57:35,368 | INFO |   Tickers procesados esta ejecucion : 5
+2026-05-12 22:57:35,368 | INFO |   Tickers saltados (--resume)       : 0
+2026-05-12 22:57:35,368 | INFO |   Fallos                            : 0
+2026-05-12 22:57:35,368 | INFO |   Total en snapshot                 : 5
+2026-05-12 22:57:35,368 | INFO |   Ficheros por ticker               : data\snapshots\2026-05-12\companies
+2026-05-12 22:57:35,369 | INFO |   Snapshot agregado                 : data\snapshots\2026-05-12\sp500_snapshot_2026-05-12.json
+2026-05-12 23:00:00,493 | INFO | ============================================================
+2026-05-12 23:00:00,493 | INFO | S&P 500 SNAPSHOT  —  2026-05-12
+2026-05-12 23:00:00,494 | INFO | yfinance: 1.3.0
+2026-05-12 23:00:00,494 | INFO | ============================================================
+2026-05-12 23:00:00,494 | INFO | Descargando lista S&P 500 desde Wikipedia...
+2026-05-12 23:00:00,759 | INFO | Encontrados 503 constituyentes.
+2026-05-12 23:13:48,814 | INFO | Agregando ficheros individuales en snapshot final...
+2026-05-12 23:13:54,693 | INFO | ============================================================
+2026-05-12 23:13:54,694 | INFO | SNAPSHOT COMPLETADO
+2026-05-12 23:13:54,694 | INFO | ============================================================
+2026-05-12 23:13:54,694 | INFO |   Tickers procesados esta ejecucion : 503
+2026-05-12 23:13:54,694 | INFO |   Tickers saltados (--resume)       : 0
+2026-05-12 23:13:54,694 | INFO |   Fallos                            : 0
+2026-05-12 23:13:54,695 | INFO |   Total en snapshot                 : 503
+2026-05-12 23:13:54,695 | INFO |   Ficheros por ticker               : data\snapshots\2026-05-12\companies
+2026-05-12 23:13:54,695 | INFO |   Snapshot agregado                 : data\snapshots\2026-05-12\sp500_snapshot_2026-05-12.json

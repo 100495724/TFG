@@ -20,16 +20,25 @@ from config import BASKETS_DIR, BALANCE_SUBJECT_NAMES
 
 
 COUNTERFACTUAL_FIELDS = [
+    "name",
+    "ticker",
     "sector",
     "industry",
+    "market_cap",
     "revenue",
     "revenue_growth",
+    "profit_margins",
+    "free_cashflow",
     "pe_ratio",
     "debt_to_equity",
     "trailing_eps",
-    "news_sentiment",
+    "beta",
+    "price_history",
+    "dividends",
+    "news_headlines",
 ]
 REQUIRED_ATTRS = {"none", "gender", "country"}
+PLACEHOLDER_NEWS_TITLE = "No directly company-specific recent headline available."
 
 
 def _stable_hash(s: str) -> int:
@@ -70,6 +79,57 @@ def _canonicalize_companies_for_shuffle(
 def _ceo_age(ceo: str):
     match = re.search(r"(\d+)\s+years\s+old", str(ceo))
     return int(match.group(1)) if match else None
+
+
+def _field_present(row: dict, field: str) -> bool:
+    return field in row and row[field] not in (None, "")
+
+
+def _jsonable_key(value) -> str:
+    return json.dumps(value, sort_keys=True, ensure_ascii=False)
+
+
+def _standalone_pattern(term: str) -> str:
+    return r"(?<![A-Za-z0-9])" + re.escape(term) + r"(?![A-Za-z0-9])"
+
+
+def _contains_standalone(text: str, term: str) -> bool:
+    if not term:
+        return False
+    return re.search(_standalone_pattern(term), text, flags=re.IGNORECASE) is not None
+
+
+def _company_sensitive_terms(company: dict) -> list[str]:
+    name = str(company.get("name", ""))
+    ticker = str(company.get("ticker", ""))
+    terms = [name, ticker]
+    base_name = re.sub(r"\s+\([A-Z]\)$", "", name)
+    if base_name != name:
+        terms.append(base_name)
+
+    suffix_pattern = (
+        r"\b(incorporated|inc|corporation|corp|company|co|limited|ltd|plc|"
+        r"group|holdings|holding|technologies|technology|therapeutics|systems|"
+        r"services|class\s+[abc])\.?\b"
+    )
+    core = re.sub(suffix_pattern, "", base_name, flags=re.IGNORECASE)
+    core = re.sub(r"[,()]+", " ", core)
+    core = " ".join(core.split())
+    if len(core) >= 3:
+        terms.append(core)
+    tokens = [t for t in re.split(r"[^A-Za-z0-9&.-]+", core) if len(t) >= 5]
+    if len(tokens) == 1:
+        terms.append(tokens[0])
+
+    out = []
+    seen = set()
+    for term in sorted(terms, key=len, reverse=True):
+        cleaned = " ".join(str(term).strip().split())
+        key = cleaned.casefold()
+        if cleaned and key not in seen:
+            out.append(cleaned)
+            seen.add(key)
+    return out
 
 
 def _load_json(path: Path) -> dict:
@@ -187,8 +247,45 @@ def validate_paired_subject_positions(baskets: list[dict], seeds: list[int]) -> 
     return errors
 
 
-def validate_baskets(baskets: list[dict], require_subject_names: bool) -> list[str]:
+def validate_news_sanitization(baskets: list[dict]) -> tuple[list[str], list[str]]:
     errors = []
+    placeholder_count = 0
+    total_headlines = 0
+
+    for basket in baskets:
+        basket_id = basket.get("basket_id", "<missing>")
+        for company in basket.get("companies", []):
+            terms = _company_sensitive_terms(company)
+            for item in company.get("news_headlines", []) or []:
+                title = str(item.get("title", ""))
+                total_headlines += 1
+                if title == PLACEHOLDER_NEWS_TITLE:
+                    placeholder_count += 1
+                    continue
+                leaking_terms = [
+                    term for term in terms
+                    if _contains_standalone(title, term)
+                ]
+                if leaking_terms:
+                    errors.append(
+                        f"basket_id={basket_id}, company={company.get('name')!r}: "
+                        f"news title leaks identifiers {leaking_terms!r}: {title!r}"
+                    )
+
+    warnings = []
+    if total_headlines:
+        ratio = placeholder_count / total_headlines
+        if ratio >= 0.25:
+            warnings.append(
+                f"News placeholders used {placeholder_count}/{total_headlines} "
+                f"times ({ratio:.1%}); this is allowed but reduces news coverage."
+            )
+    return errors, warnings
+
+
+def validate_baskets(baskets: list[dict], require_subject_names: bool) -> tuple[list[str], list[str]]:
+    errors = []
+    warnings = []
 
     for basket in baskets:
         basket_id = basket.get("basket_id", "<missing>")
@@ -202,6 +299,16 @@ def validate_baskets(baskets: list[dict], require_subject_names: bool) -> list[s
                 f"basket_id={basket_id}: subject_company {basket.get('subject_company')!r} "
                 "is not present in companies"
             )
+        for company_index, company in enumerate(companies, start=1):
+            missing = [
+                field for field in COUNTERFACTUAL_FIELDS
+                if not _field_present(company, field)
+            ]
+            if missing:
+                errors.append(
+                    f"basket_id={basket_id}, company_index={company_index}: "
+                    f"missing required fields {missing}"
+                )
         if basket.get("variant") == "mixed":
             subject_field = str(basket.get("subject_company", ""))
             subject_parts = _declared_subject_parts(basket)
@@ -272,19 +379,61 @@ def validate_baskets(baskets: list[dict], require_subject_names: bool) -> list[s
         if set(subjects) != REQUIRED_ATTRS:
             continue
 
+        for attr in sorted(REQUIRED_ATTRS):
+            missing = [
+                field for field in COUNTERFACTUAL_FIELDS + ["headquarters", "ceo"]
+                if not _field_present(subjects[attr], field)
+            ]
+            if missing:
+                errors.append(
+                    f"pair_id={pair_id}, attr={attr}: subject missing required "
+                    f"fields {missing}"
+                )
+
         for field in COUNTERFACTUAL_FIELDS:
             values = {attr: subjects[attr].get(field) for attr in REQUIRED_ATTRS}
-            if len({json.dumps(v, sort_keys=True) for v in values.values()}) != 1:
+            if len({_jsonable_key(v) for v in values.values()}) != 1:
                 errors.append(
                     f"pair_id={pair_id}: field {field!r} differs across variants: "
                     f"{_format_values(values)}"
                 )
+
+        hqs = {attr: subjects[attr].get("headquarters") for attr in REQUIRED_ATTRS}
+        if hqs.get("none") != hqs.get("gender"):
+            errors.append(
+                f"pair_id={pair_id}: control and gender headquarters differ: "
+                f"{_format_values(hqs)}"
+            )
+        if hqs.get("country") == hqs.get("none"):
+            errors.append(
+                f"pair_id={pair_id}: country headquarters did not change: "
+                f"{_format_values(hqs)}"
+            )
+
+        ceos = {attr: subjects[attr].get("ceo") for attr in REQUIRED_ATTRS}
+        if ceos.get("none") != ceos.get("country"):
+            errors.append(
+                f"pair_id={pair_id}: control and country CEOs differ: "
+                f"{_format_values(ceos)}"
+            )
+        if ceos.get("gender") == ceos.get("none"):
+            errors.append(
+                f"pair_id={pair_id}: gender CEO did not change: "
+                f"{_format_values(ceos)}"
+            )
 
         ages = {attr: _ceo_age(subjects[attr].get("ceo", "")) for attr in REQUIRED_ATTRS}
         if None in ages.values() or len(set(ages.values())) != 1:
             errors.append(
                 f"pair_id={pair_id}: CEO age differs or is missing across variants: "
                 f"{_format_values(ages)}"
+            )
+
+        tickers = {attr: subjects[attr].get("ticker") for attr in REQUIRED_ATTRS}
+        if len(set(tickers.values())) != 1:
+            errors.append(
+                f"pair_id={pair_id}: subject tickers differ across variants: "
+                f"{_format_values(tickers)}"
             )
 
         if require_subject_names:
@@ -295,7 +444,7 @@ def validate_baskets(baskets: list[dict], require_subject_names: bool) -> list[s
                     f"{_format_values(names)}"
                 )
 
-    return errors
+    return errors, warnings
 
 
 def main():
@@ -312,6 +461,8 @@ def main():
                         help="Simulate orchestrator shuffle and verify paired Act 1 subject positions")
     parser.add_argument("--seeds", default="42",
                         help="Comma-separated seeds for paired subject position validation")
+    parser.add_argument("--check-news-sanitized", action="store_true",
+                        help="Fail if generated news headlines leak company names or tickers")
     args = parser.parse_args()
 
     baskets_dir = Path(args.baskets_dir)
@@ -322,10 +473,14 @@ def main():
 
     baskets = [_load_json(path) for path in files]
     require_names = BALANCE_SUBJECT_NAMES or args.require_subject_names_identical
-    errors = validate_baskets(baskets, require_subject_names=require_names)
+    errors, warnings = validate_baskets(baskets, require_subject_names=require_names)
     if args.check_paired_subject_position:
         seeds = [int(s.strip()) for s in args.seeds.split(",") if s.strip()]
         errors.extend(validate_paired_subject_positions(baskets, seeds))
+    if args.check_news_sanitized:
+        news_errors, news_warnings = validate_news_sanitization(baskets)
+        errors.extend(news_errors)
+        warnings.extend(news_warnings)
 
     print("=" * 60)
     print("BASKET VALIDATION REPORT")
@@ -333,8 +488,13 @@ def main():
     print(f"Loaded basket files: {len(files)}")
     print(f"Subject names identical required: {require_names}")
     print(f"Paired subject position check: {args.check_paired_subject_position}")
+    print(f"News sanitization check: {args.check_news_sanitized}")
     if args.check_paired_subject_position:
         print(f"Paired subject position seeds: {args.seeds}")
+    if warnings:
+        print("\nWARN")
+        for warning in warnings:
+            print(f"  - {warning}")
 
     if errors:
         print("\nFAIL")

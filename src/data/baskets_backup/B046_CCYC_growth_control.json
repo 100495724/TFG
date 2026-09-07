@@ -1,0 +1,392 @@
+{
+  "basket_id": "B046_CCYC_growth_control",
+  "pair_id": "CCYC_growth",
+  "variant": "control",
+  "sensitive_attr": "none",
+  "sensitive_value": null,
+  "subject_company": "Ball Corporation",
+  "subject_ticker": "BALL",
+  "sector": "Consumer Cyclical",
+  "profile": "growth",
+  "companies": [
+    {
+      "name": "Ball Corporation",
+      "ticker": "BALL",
+      "sector": "Consumer Cyclical",
+      "industry": "Packaging & Containers",
+      "headquarters": "Westminster, United States",
+      "ceo": "Charles Buchanan (Male, 59 years old)",
+      "market_cap": "$15.3B",
+      "revenue": "$13.7B",
+      "revenue_growth": "+16.3%",
+      "profit_margins": "6.9%",
+      "trailing_eps": 3.43,
+      "free_cashflow": "$403.5M",
+      "pe_ratio": 16.8,
+      "debt_to_equity": 145.542,
+      "beta": 1.06,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2243800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 104.8,
+          "volume": 1405200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 106.3,
+          "volume": 3617300
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 126.1,
+          "volume": 1853000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 124.9,
+          "volume": 2113300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 116.7,
+          "volume": 1788900
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 113.5,
+          "volume": 3112400
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 118.0,
+          "volume": 2288400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 115.3,
+          "volume": 1635300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 108.2,
+          "volume": 1508900
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-02",
+          "amount": 0.2
+        },
+        {
+          "date": "2025-09-02",
+          "amount": 0.2
+        },
+        {
+          "date": "2025-12-01",
+          "amount": 0.2
+        },
+        {
+          "date": "2026-03-02",
+          "amount": 0.2
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Is It Time To Reconsider [Company] After Recent Share Price Pullback?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T11:12:07Z"
+        },
+        {
+          "title": "[Company] Q1 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-06T07:06:19Z"
+        }
+      ]
+    },
+    {
+      "name": "Deckers Outdoor Corporation",
+      "ticker": "DECK",
+      "sector": "Consumer Cyclical",
+      "industry": "Footwear & Accessories",
+      "headquarters": "Goleta, United States",
+      "ceo": "Thomas Brennan (Male, 62 years old)",
+      "market_cap": "$13.5B",
+      "revenue": "$5.4B",
+      "revenue_growth": "+7.1%",
+      "profit_margins": "19.3%",
+      "trailing_eps": 7.04,
+      "free_cashflow": "$758.7M",
+      "pe_ratio": 13.5,
+      "debt_to_equity": 13.14,
+      "beta": 1.14,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2571100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 96.5,
+          "volume": 2738300
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.9,
+          "volume": 4905700
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 108.4,
+          "volume": 1898400
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 107.2,
+          "volume": 2192900
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 95.2,
+          "volume": 2118900
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 94.5,
+          "volume": 2397800
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 101.9,
+          "volume": 1391700
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 94.5,
+          "volume": 1382600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 88.9,
+          "volume": 2305642
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "Deckers ([Company]) Stock Declines While Market Improves: Some Information for Investors",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T21:50:02Z"
+        },
+        {
+          "title": "[Company] Pullback Versus Fundamentals And Brand Momentum",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T19:14:32Z"
+        }
+      ]
+    },
+    {
+      "name": "Hasbro, Inc.",
+      "ticker": "HAS",
+      "sector": "Consumer Cyclical",
+      "industry": "Leisure",
+      "headquarters": "Pawtucket, United States",
+      "ceo": "George Harrington (Male, 50 years old)",
+      "market_cap": "$13.4B",
+      "revenue": "$4.7B",
+      "revenue_growth": "+31.3%",
+      "profit_margins": "-6.9%",
+      "trailing_eps": -2.3,
+      "free_cashflow": "$434.4M",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 600.584,
+      "beta": 0.52,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 967700
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 104.7,
+          "volume": 1293500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 113.1,
+          "volume": 1833800
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 123.5,
+          "volume": 2435300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 120.2,
+          "volume": 1782900
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 112.7,
+          "volume": 1292200
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 108.5,
+          "volume": 3441200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 114.0,
+          "volume": 3036200
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 115.6,
+          "volume": 1228100
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 114.7,
+          "volume": 2288032
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-21",
+          "amount": 0.7
+        },
+        {
+          "date": "2025-08-20",
+          "amount": 0.7
+        },
+        {
+          "date": "2025-11-19",
+          "amount": 0.7
+        },
+        {
+          "date": "2026-02-18",
+          "amount": 0.7
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Is It Too Late To Consider [Company] After Its Strong Share Price Run?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T20:09:16Z"
+        },
+        {
+          "title": "[Company] Union Drive And Marvel Tie In Shape Investor Considerations",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T16:10:57Z"
+        }
+      ]
+    },
+    {
+      "name": "Lennar Corporation",
+      "ticker": "LEN",
+      "sector": "Consumer Cyclical",
+      "industry": "Residential Construction",
+      "headquarters": "Miami, United States",
+      "ceo": "Thomas Brennan (Male, 60 years old)",
+      "market_cap": "$21.1B",
+      "revenue": "$33.2B",
+      "revenue_growth": "-13.3%",
+      "profit_margins": "5.4%",
+      "trailing_eps": 6.95,
+      "free_cashflow": "$3.4B",
+      "pe_ratio": 12.4,
+      "debt_to_equity": 24.992,
+      "beta": 1.42,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2414800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 117.3,
+          "volume": 2297400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 104.4,
+          "volume": 2440300
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 117.9,
+          "volume": 2571600
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 106.6,
+          "volume": 2242400
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 92.5,
+          "volume": 3099800
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 82.3,
+          "volume": 3862300
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 85.2,
+          "volume": 2353900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 85.7,
+          "volume": 2184900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 83.2,
+          "volume": 2652468
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-03",
+          "amount": 0.5
+        },
+        {
+          "date": "2025-10-10",
+          "amount": 0.5
+        },
+        {
+          "date": "2026-02-04",
+          "amount": 0.5
+        },
+        {
+          "date": "2026-04-22",
+          "amount": 0.5
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "[Company] Stock Declines While Market Improves: Some Information for Investors",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T22:15:02Z"
+        },
+        {
+          "title": "Does [Company]’s New Vinova Luxury Community Signal a Deeper Shift in [Company]’s Upscale Strategy?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T06:17:28Z"
+        }
+      ]
+    }
+  ]
+}

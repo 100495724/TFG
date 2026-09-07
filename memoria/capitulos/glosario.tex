@@ -1,0 +1,142 @@
+
+% !TeX root = ../main.tex
+
+\chapter*{Lista de acrónimos y siglas}
+
+\begin{description}
+	
+	\item[API] \textit{Application Programming Interface}. Interfaz mediante la
+	que se accede a un modelo alojado por un proveedor externo, sin acceso a sus
+	parámetros.
+	
+	\item[BH] Benjamini--Hochberg. Procedimiento de control de la tasa de falsos
+	descubrimientos en contrastes múltiples.
+	
+	\item[CEO] \textit{Chief Executive Officer}. Máximo responsable ejecutivo de
+	una empresa.
+	
+	\item[EPS] \textit{Earnings Per Share}. Beneficio por acción.
+	
+	\item[FDR] \textit{False Discovery Rate}. Proporción esperada de falsos
+	positivos entre los contrastes declarados significativos.
+	
+	\item[ICC] Coeficiente de correlación intraclase. En este trabajo se emplea
+	la forma ICC(1,1), de efectos aleatorios de una vía y medida individual.
+	
+	\item[LLM] \textit{Large Language Model}. Modelo de lenguaje de gran tamaño.
+	
+	\item[MAS] \textit{Multi-Agent System}. Sistema multiagente.
+	
+	\item[MDE] Efecto mínimo detectable. Magnitud mínima que un diseño puede
+	detectar con la potencia estadística disponible.
+	
+	\item[P/E] \textit{Price-to-Earnings ratio}. Relación entre el precio de la
+	acción y el beneficio por acción.
+	
+	\item[vLLM] Motor de inferencia para modelos de lenguaje, empleado para
+	servir los modelos abiertos de la campaña experimental.
+	
+\end{description}
+
+\chapter*{Glosario de términos}
+
+\begin{description}
+	\item[Agente ciego] Agente del comité cuyo \textit{prompt} omite el atributo
+	sensible, de modo que su entrada es idéntica en las variantes de una misma
+	pareja. Actúa como \textit{null} interno del diseño.
+	
+	\item[Alias] Identificador neutro (\textit{Company 1} a \textit{Company 4})
+	con el que se presentan las empresas a los agentes, en sustitución de su
+	nombre real y su \textit{ticker}, que se conservan únicamente en el registro
+	experimental.
+	
+	\item[\textit{Arbitrariedad}] Propiedad de un sistema cuyas decisiones no son
+	reproducibles entre ejecuciones equivalentes. Se distingue del sesgo
+	direccional en que no implica un desplazamiento sostenido a favor o en contra
+	de ningún grupo, y puede coexistir con métricas agregadas favorables.
+	
+	\item[Arquetipo] Combinación de un sector económico y un perfil financiero
+	que define una empresa sujeto y su cesta asociada. El diseño emplea 21
+	arquetipos.
+	
+	\item[Atributo sensible] Característica de la empresa sujeto que se manipula
+	en el contrafactual sin alterar la información relevante para la decisión.
+	Este trabajo estudia dos: el género de la persona que ocupa el puesto de CEO
+	y la localización de la sede.
+	
+	\item[Cesta] Conjunto de cuatro empresas del mismo sector que se presenta al
+	comité en una ejecución: una empresa sujeto y tres empresas de contexto.
+	
+	\item[Composición] Combinación de modelos de lenguaje asignada a los tres
+	agentes del comité. Es homogénea cuando los tres comparten el mismo modelo y
+	heterogénea cuando pertenecen a familias distintas.
+	
+	\item[Contrafactual pareado] Comparación entre dos evaluaciones de una misma
+	empresa que solo difieren en el valor del atributo sensible, manteniendo
+	constante toda la información relevante para la decisión. Constituye el
+	principio de comparación sobre el que se construye el diseño experimental.
+	
+	\item[Empresa de contexto] Cada una de las tres empresas que acompañan a la
+	empresa sujeto dentro de una cesta y que se mantienen constantes entre las
+	variantes de una pareja.
+	
+	\item[Empresa sujeto] Empresa de la cesta sobre la que se aplica la
+	manipulación contrafactual y sobre la que se mide el \textit{gap} de
+	asignación.
+	
+	\item[\textit{Fairness}] Criterio normativo sobre qué propiedades de una
+	asignación deben permanecer invariantes entre individuos o grupos. No existe
+	una formulación única; este trabajo adopta la perspectiva contrafactual.
+	
+	\item[\textit{Gap}] Diferencia entre la cantidad asignada a la empresa sujeto
+	en una variante y la asignada en su condición de control, expresada en euros.
+	Un valor negativo indica una penalización de la variante.
+	
+	\item[Génesis] Turno inicial de la ejecución ($t=0$), en el que cada agente
+	decide de forma independiente antes de observar las respuestas del resto del
+	comité.
+	
+	\item[Nivel de instrucción] Grado de especificación del rol asignado a los
+	agentes. El diseño define tres niveles: genérico
+	(\textit{level\_0\_neutral}), profesional (\textit{level\_1\_professional})
+	e identitario (\textit{level\_2\_identity}).
+	
+	\item[\textit{Null} externo] Referencia empírica del ruido del sistema
+	obtenida de la condición placebo.
+	
+	\item[\textit{Null} interno] Referencia empírica del ruido del sistema
+	obtenida del agente ciego, que opera sobre las mismas cestas y las mismas
+	parejas que el brazo contrafactual.
+	
+	\item[Pareja] Conjunto de variantes generadas a partir de un mismo arquetipo,
+	que comparten identificador y orden de presentación de las empresas.
+	
+	\item[Perfil financiero] Situación financiera empleada para estratificar la
+	muestra de empresas sujeto: \textit{growth}, \textit{value} o
+	\textit{distressed}.
+	
+	\item[Placebo] Condición de control formada por parejas de cestas gemelas
+	idénticas (\textit{placebo\_a} y \textit{placebo\_b}), sin manipulación de
+	ningún atributo sensible.
+	
+	\item[\textit{Prompt}] Texto de entrada que recibe un modelo de lenguaje. En
+	este diseño incluye el rol del agente, la información de la cesta, el formato
+	de salida y, en la campaña de mitigación, la instrucción de neutralización.
+	
+	\item[Ratio de varianzas] Cociente entre la varianza del \textit{gap} de los
+	agentes visibles y la del agente ciego en génesis. Constituye el desenlace
+	principal del análisis.
+	
+	\item[Repetición] Cada una de las tres ejecuciones de una misma condición
+	experimental, identificadas mediante las semillas 42, 123 y 456.
+	
+	\item[\textit{Snapshot}] Descarga única y congelada de la información
+	financiera empleada, obtenida el 12 de mayo de 2026, sobre la que se ejecutan
+	de forma determinista todos los experimentos.
+	
+	\item[Vacuna] Instrucción de mitigación añadida al \textit{prompt} de sistema
+	con el objetivo de reducir el efecto del atributo sensible sobre la decisión.
+	
+	\item[Variante] Cada una de las condiciones generadas sobre una misma empresa
+	sujeto: control, variante de género y variante geográfica.
+\end{description}

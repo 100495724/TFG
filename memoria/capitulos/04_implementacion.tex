@@ -1,0 +1,336 @@
+% !TeX root = ../main.tex
+
+\chapter{Implementación del sistema}
+\label{chap:implementacion}
+
+Si el capítulo anterior explicaba por qué se han usado determinadas decisiones de medida, este describe cómo está construido el sistema que las desarrollan. La distinción no es solo organizativa: buena parte de las decisiones de implementación tienen consecuencias sobre los datos (qué se registra cuando un modelo devuelve una respuesta mal formada, qué información recibe exactamente cada agente en cada turno o qué transformaciones se aplican antes de que una decisión llegue al análisis) y esas consecuencias solo pueden valorarse conociendo el funcionamiento del sistema.
+
+El capítulo describe la arquitectura del comité y su protocolo de interacción, la forma en que los niveles de instrucción se traducen en \textit{prompts} concretos, la infraestructura utilizada para ejecutar los modelos, la conversión de sus respuestas en datos estructurados y verificables, y el proceso seguido para transformar los datos brutos en las tablas presentadas en la memoria. Las comprobaciones que permiten verificar que el sistema mide lo que se pretende analizar se presentan en el Capítulo~\ref{chap:validacion}.
+
+\section{Arquitectura del comité y protocolo de deliberación}
+\label{sec:arquitectura_comite}
+
+La implementación del sistema multiagente se reparte entre los siguientes tres módulos: \texttt{experiment\_runner.py} construye cada condición experimental y crea los agentes correspondientes; \texttt{agents.py} define el comportamiento individual de cada agente y la construcción de sus mensajes; y \texttt{orchestrator.py} coordina la interacción y procesa las respuestas. Esta separación mantiene separadas la configuración experimental, la lógica de cada agente y la dinámica de comunicación del comité.
+
+\paragraph{Construcción del comité.}
+Cada comité está formado por tres instancias de la clase \texttt{Agent}, identificadas mediante las posiciones lógicas \texttt{agent\_1}, \texttt{agent\_2} y \texttt{agent\_3}. La función \texttt{initialize\_agents()} recibe la composición, el nivel de instrucción, el protocolo, la semilla y, cuando corresponde, la instrucción de mitigación, y a partir de ellos selecciona el modelo y el \textit{prompt} de rol asociados a cada posición y construye las tres instancias.
+
+Cada objeto \texttt{Agent} reúne cinco elementos: el modelo de lenguaje empleado, el \textit{prompt} correspondiente a su rol, el protocolo de comunicación, la instrucción de mitigación opcional y un parámetro que indica si actúa como agente ciego. Esa última propiedad permanece asociada a \texttt{agent\_1} en todas las condiciones experimentales independientemente del rol concreto que ocupe. Los roles asignados a cada posición dependen del nivel de instrucción y se detallan en la Sección~\ref{sec:roles_prompts}.
+
+Antes de iniciar la interacción, el orquestador construye dos representaciones textuales de una misma cesta ya ordenada, su estructura se puede consultar en el Anexo~\ref{anexo:formato_resultados}. La versión completa se proporciona a \texttt{agent\_2} y \texttt{agent\_3}; \texttt{agent\_1} recibe la versión ciega, que omite la sede, la identidad del CEO y las noticias recientes. Ambas comparten el resto de la información y el mismo orden de las cuatro empresas.
+
+\paragraph{Génesis.}
+La ejecución del comité se realiza mediante la función \texttt{run\_debate()}. Su primera fase corresponde a la génesis ($t=0$), siguiendo la separación entre decisión inicial e interacción iterativa empleada por Nguyen \textit{et al.}~\cite{nguyen2025social}. Cada uno de los tres agentes realiza una llamada independiente a su modelo mediante el método \texttt{genesis()}, cuyo mensaje contiene únicamente la cesta que le corresponde y las instrucciones de su rol, sin ninguna respuesta de los otros miembros del comité.
+
+Las tres respuestas se almacenan asociadas al identificador de cada agente y se utilizan como contexto al comenzar el primer turno de deliberación. Aunque las llamadas se realizan de forma secuencial, ninguna de ellas accede a esa estructura, por lo que las decisiones de génesis son
+independientes entre sí.
+
+\paragraph{Rondas de deliberación.}
+Tras la génesis se ejecutan cuatro turnos ($t=1,\ldots,4$). En cada uno, el orquestador compone para cada agente un contexto con la respuesta más reciente de los otros dos miembros del comité, que incluye para cada empresa la recomendación (\texttt{BUY}, \texttt{HOLD} o \texttt{SELL}), la asignación monetaria y el razonamiento asociado.
+
+La actualización de cada turno es síncrona. Las tres respuestas nuevas se acumulan en una estructura separada y no sustituyen al estado anterior hasta que los tres agentes han respondido. Los tres reciben así información correspondiente al mismo instante $t-1$, sea cual sea el orden en que el programa procese sus llamadas, y ningún agente situado al final del bucle puede observar una respuesta del turno $t$ que no estuviera disponible para los anteriores.
+
+El contexto de deliberación no conserva el historial completo de la conversación. En cada turno se proporciona la cesta junto con las respuestas de los otros dos agentes en $t-1$, pero no la respuesta anterior del propio agente ni ninguna ronda previa a esa. Cada turno constituye, por tanto, una revisión completa de la decisión a partir de la cesta y del último estado ajeno observable, y no la continuación de una conversación acumulada. Se conserva de este modo la estructura de génesis e interacción iterativa propuesta por Nguyen \textit{et al.}~\cite{nguyen2025social}, pero no su función de actualización completa, que condiciona la respuesta también al estado previo del propio agente. La Figura~\ref{fig:protocolo_deliberacion} resume esta secuencia de interacción.
+
+\input{figuras/protocolo_deliberacion}
+
+\FloatBarrier
+
+\paragraph{Protocolo de debate.}
+El protocolo de comunicación es un parámetro configurable del sistema, aunque toda la campaña experimental se desarrolla con un protocolo \texttt{debate}, según se justificó en la Sección~\ref{subsec:repeticiones}. El \textit{prompt} de sistema instruye a cada agente a evaluar críticamente los argumentos recibidos, señalar errores concretos cuando haya desacuerdo y modificar su decisión solo si considera que el razonamiento ajeno aporta. No se impone ningún mecanismo de consenso ni regla de parada anticipad, ejecutándose las cuatro rondas completas. El texto exacto utilizado en los \textit{prompts} para el protocolo de debate se adjunta en el Anexo~\ref{anexo:prompt_debate}.
+
+\paragraph{Contrato de salida.}
+Cada llamada solicita al modelo una decisión para las cuatro empresas de la cesta. La respuesta debe ajustarse a un objeto JSON que contiene una lista de decisiones con tres campos por empresa: la recomendación categórica, la asignación monetaria y una justificación breve. Las indicaciones que se incluyen en el \textit{prompt} para que los agentes produzcan respuestas correctas se encuentran en el Anexo~\ref{anexo:prompt_estructura}. Las cuatro asignaciones deben sumar el presupuesto fijo de 100.000~€. Cada decisión presenta la siguiente estructura:
+
+\begin{verbatim}
+	{
+		"company_name": "Company 1",
+		"action": "BUY",
+		"allocation": 40000,
+		"reasoning": "..."
+	}
+\end{verbatim}
+
+Cuando una respuesta no puede interpretarse como JSON válido, el método \texttt{respond()} reintenta la llamada hasta tres veces, añadiendo al mensaje el error detectado y una instrucción de formato más estricta. Una misma decisión puede corresponder, por tanto, a más de una invocación del modelo, con mensajes ligeramente distintos entre intentos. Los mecanismos de validación, reparación y normalización se describen en la Sección~\ref{sec:parseo_trazabilidad}.
+
+El resultado de una ejecución completa es una secuencia de cinco estados por agente: una decisión independiente en génesis y cuatro decisiones posteriores condicionadas por el último estado observable de los otros miembros del comité. Cada estado se registra por separado, lo que permite reconstruir la trayectoria de las asignaciones y relacionar turnos consecutivos sin recurrir al texto bruto generado por los modelos.
+
+
+
+\section{Roles de los agentes y diseño de \textit{prompts}}
+\label{sec:roles_prompts}
+
+El comportamiento de cada agente se configura mediante un \textit{prompt} de sistema construido de forma modular. La información específica de cada nivel de instrucción se define en \texttt{config.py}, mientras que la clase \texttt{Agent} combina esos elementos con las instrucciones comunes a todo el experimento. Esta separación permite modificar el rol de los agentes sin alterar el contrato de salida, el protocolo de comunicación ni la lógica de ejecución.
+
+El \textit{prompt} de sistema se compone de cinco bloques en un orden fijo:
+
+\begin{equation}
+	P_i =
+	P_i^{\mathrm{rol}}
+	\oplus
+	P^{\mathrm{independencia}}
+	\oplus
+	P^{\mathrm{salida}}
+	\oplus
+	P^{\mathrm{protocolo}}
+	\oplus
+	P^{\mathrm{mitigacion}},
+	\label{eq:system_prompt}
+\end{equation}
+
+donde $P_i$ es el \textit{prompt} de sistema del agente $i$, $P_i^{\mathrm{rol}}$ el bloque correspondiente a su rol dentro del nivel de instrucción, $P^{\mathrm{independencia}}$ el requisito de independencia analítica, $P^{\mathrm{salida}}$ el contrato de formato de respuesta, $P^{\mathrm{protocolo}}$ la instrucción asociada al protocolo de comunicación y $P^{\mathrm{mitigacion}}$ el bloque opcional de la fase de mitigación. El operador $\oplus$ representa la concatenación de bloques separados por una línea en blanco, omitiendo los que estén vacíos. El único bloque específico de cada agente es $P_i^{\mathrm{rol}}$; los cuatro restantes son idénticos para los tres miembros del comité dentro de una misma condición experimental.
+
+El orden de los bloques es fijo en todas las condiciones experimentales, la instrucción de mitigación ocupa siempre la última posición, después del protocolo. El resultado de la composición se almacena como \textit{prompt} de sistema de la instancia y permanece constante durante los cinco turnos de una misma ejecución.
+
+\paragraph{Nivel neutral.}
+En \texttt{level\_0\_neutral} los tres agentes reciben una instrucción de rol literalmente idéntica: actuar como analista financiero, evaluar las empresas y distribuir el presupuesto a partir de su análisis. La única diferencia estructural entre las posiciones es que \texttt{agent\_1} conserva la condición \texttt{blind=True}, mientras que en \texttt{agent\_2} y \texttt{agent\_3} es \texttt{False}. En las composiciones homogéneas los tres comparten además el mismo modelo, por lo que este nivel constituye la implementación más controlada de la diferencia entre información visible e información ciega.
+
+\paragraph{Nivel profesional.}
+En \texttt{level\_1\_professional} las tres posiciones tienen distintas funciones. A \texttt{agent\_1} se le configura como analista fundamental y se le instruye a evaluar la salud financiera mediante métricas cuantitativas: crecimiento de ingresos, ratio P/E, deuda sobre patrimonio, márgenes de beneficio y flujo de caja libre. \texttt{agent\_2} actúa como analista de sentimiento y dirige su atención hacia la percepción de mercado, el sentimiento de las noticias, las tendencias sectoriales, el riesgo reputacional y la narrativa de crecimiento. \texttt{agent\_3} desempeña la función de gestor de riesgos y atiende a la volatilidad, la sostenibilidad de la deuda, la estabilidad de los beneficios y el riesgo de liquidez y operacional.
+
+La posición del agente ciego no cambia: \texttt{agent\_1} mantiene \texttt{blind=True} en todas las condiciones. La especialización profesional modifica el criterio de análisis de cada agente, pero no determina cuál de ellos actúa como agente ciego.
+
+\paragraph{Nivel con identidad.}
+El nivel \texttt{level\_2\_identity} conserva las tres especializaciones anteriores y añade a cada agente una breve descripción biográfica. Al analista fundamental se le sitúa en Nueva York y se le atribuyen veinte años de experiencia en mercados norteamericanos y europeos; el analista de sentimiento se describe como criado en Londres y especializado en medios y narrativas de mercado occidentales; y el gestor de riesgos se caracteriza como socio sénior de una entidad conservadora de banca privada suiza.
+
+Estas descripciones se insertan entre la declaración de rol y la de función, de modo que \texttt{level\_2} no consiste en añadir texto al final del bloque sino en reescribirlo. El resto de componentes del \textit{prompt} de sistema (independencia, contrato de salida y protocolo) es idéntico al de \texttt{level\_1}, y la condición de agente ciego continúa asociada a \texttt{agent\_1}. La Tabla~\ref{tab:roles_instruccion} resume la configuración de los tres niveles.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Implementación de los niveles de instrucción por posición del agente.}
+	\label{tab:roles_instruccion}
+	\small
+	\begin{tabular}{p{3.1cm} p{3.1cm} p{3.1cm} p{3.1cm}}
+		\hline
+		\textbf{Nivel} &
+		\textbf{\texttt{agent\_1} (ciego)} &
+		\textbf{\texttt{agent\_2}} &
+		\textbf{\texttt{agent\_3}} \\
+		\hline
+		
+		\textit{level\_0\_neutral}
+		& Analista financiero genérico
+		& Analista financiero genérico
+		& Analista financiero genérico \\
+		
+		\textit{level\_1\_professional}
+		& Analista fundamental
+		& Analista de sentimiento
+		& Gestor de riesgos \\
+		
+		\textit{level\_2\_identity}
+		& Analista fundamental, con sede en Nueva York
+		& Analista de sentimiento, criado en Londres
+		& Gestor de riesgos, banca privada suiza \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+\FloatBarrier
+
+\paragraph{Independencia analítica.}
+Los tres niveles incluyen una instrucción adicional para preservar la independencia de criterio de los agentes durante la deliberación. Esta exige que cada agente elabore su propio análisis, evita que reproduzca las asignaciones o los razonamientos de los demás y establece que cualquier cambio de posición debe justificarse mediante información relevante para su función.
+
+La instrucción distingue explícitamente entre las dos fases. En génesis exige una evaluación independiente basada únicamente en la cesta y en el rol asignado; en los turnos posteriores permite considerar las respuestas ajenas, pero debe evaluarlas de forma crítica y no modificar su decisión únicamente para alcanzar un consenso. El bloque es idéntico para todos los agentes y permanece constante entre composiciones y niveles.
+
+\paragraph{Separación entre instrucciones y contexto de la tarea.}
+La implementación distingue el \textit{prompt} de sistema del mensaje de usuario. El primero contiene las instrucciones persistentes descritas hasta aquí y se construye una sola vez al instanciar el agente y el segundo se genera para cada cesta y turno. En génesis se solicita analizar la cesta y producir una asignación, y durante la deliberación se añaden las respuestas más recientes de los otros dos agentes.
+
+La información sensible no se retira mediante una instrucción textual dirigida al agente ciego, sino construyendo para él una representación distinta de la cesta. En lugar de pedir al modelo que ignore datos que puede observar, la condición de entrada se implementa controlando la información de entrada para que el modelo no observe dichos datos.
+
+\paragraph{Instrucciones de mitigación.}
+La infraestructura admite un quinto bloque opcional mediante el parámetro \texttt{vaccine}. En las ejecuciones de detección su valor es \texttt{none} y no se añade ningún texto. En la fase de mitigación puede tomar los valores \texttt{passive} o \texttt{active} ya descritos en la sección~\ref{subsec:mitigacion_instruccion}. Ambas se concatenan al final del \textit{prompt} de sistema sin modificar los bloques anteriores.
+
+Esta construcción modular del \textit{prompt} permite variar de forma independiente el nivel de instrucción, la composición del comité y la presencia de una intervención de mitigación, manteniendo comunes el protocolo, el contrato de salida y las restricciones de independencia. Los \textit{prompts} literales empleados en la campaña experimental se recogen en el Anexo~\ref{anexo:prompts}; esta sección documenta únicamente su estructura y las diferencias entre condiciones.
+
+\section{Modelos e infraestructura}
+\label{sec:modelos_infraestructura}
+
+La infraestructura combina modelos desplegados mediante vLLM, un sistema de \textit{serving} para LLM basado en \textit{PagedAttention} propuesto por Kwon \textit{et al.}~\cite{kwon2023efficient}, con modelos accesibles a través de APIs comerciales. Ambos tipos de modelos se utilizan mediante una interfaz común definida en \texttt{models.py}. De este modo, los agentes y el orquestador pueden ejecutar cualquier modelo sin tener que conocer si está desplegado localmente o se consulta mediante una API. La Tabla~\ref{tab:modelos_backend} resume los modelos implementados y el \textit{backend} que emplea cada uno.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Modelos implementados y mecanismo de inferencia.}
+	\label{tab:modelos_backend}
+	\small
+	\begin{tabular}{p{4.8cm} p{2.2cm} p{2.6cm} p{2.4cm}}
+		\hline
+		\textbf{Modelo} & \textbf{\textit{Backend}} & \textbf{Alojamiento} &
+		\textbf{Campaña final} \\
+		\hline
+		
+		\texttt{Llama-3.1-8B-Instruct}   & vLLM      & RunPod & Sí \\
+		\texttt{Qwen2.5-7B-Instruct}     & vLLM      & RunPod & Sí \\
+		\texttt{Mistral-7B-Instruct-v0.3}& vLLM      & RunPod & Sí \\
+		\texttt{gpt-4o-mini}             & OpenAI    & API    & Sí \\
+		\texttt{claude-haiku-4-5}        & Anthropic & API    & No \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\FloatBarrier
+
+Los tres modelos abiertos se despliegan en servidores vLLM alojados en RunPod y se consultan mediante su interfaz HTTP, mientras que el modelo de OpenAI, \texttt{gpt-4o-mini}, se consulta mediante su API de chat. La infraestructura conserva además soporte para \texttt{claude-haiku-4-5} mediante la API de Anthropic, pero las composiciones que lo incorporaban quedaron fuera de la campaña de detección por las razones expuestas en la Sección~\ref{subsec:composicion}. 
+
+La clase abstracta \texttt{BaseLLM} define una única operación de inferencia, \texttt{generate()}, que recibe un \textit{prompt} de sistema y un mensaje de usuario y devuelve la respuesta textual del modelo. Sobre ella se implementan tres adaptadores: \texttt{VLLMModel}, \texttt{OpenAIModel} y \texttt{AnthropicModel}. La factoría \texttt{create\_model()} selecciona el que corresponde a partir de la configuración, de modo que la clase \texttt{Agent} mantiene solo una referencia a un objeto \texttt{BaseLLM} e invoca cualquier modelo con la misma llamada, se ejecute en un servidor propio o tras una API externa.
+
+Los tres adaptadores construyen sus peticiones con la librería \texttt{requests}. vLLM y OpenAI comparten el formato de mensajes con roles \texttt{system} y \texttt{user}; Anthropic envía el \textit{prompt} de sistema en un campo propio y solo el mensaje de la tarea dentro de la lista de mensajes. Esa adaptación queda confinada en \texttt{models.py}, para el resto del sistema ambos componentes siguen siendo \texttt{system\_prompt} y \texttt{user\_message}, y la respuesta se reduce a una cadena de texto antes de devolverse al agente, que se ocupa después de su parseo y validación. Los adaptadores registran también el motivo de finalización comunicado por el servicio. OpenAI y vLLM lo exponen como \texttt{finish\_reason} y Anthropic como \texttt{stop\_reason}; ambos se normalizan bajo un mismo atributo para incorporarlos a las trazas experimentales.
+
+Los parámetros de generación se centralizan en \texttt{config.py} y son comunes a todos, temperatura de 0,3, \textit{top-p} de 0,95 y un máximo de 4096 tokens por respuesta. Corresponden a los parámetros controlados descritos en la Sección~\ref{subsec:repeticiones}. La configuración incluye una semilla por defecto que \texttt{experiment\_runner.py} sustituye antes de cada ejecución, copiando los parámetros de inferencia y fijando la semilla de la repetición correspondiente. Las tres semillas se propagan así hasta la creación de los modelos sin alterar la configuración global. El control de la semilla depende del sistema utilizado para ejecutar cada modelo. Cuando la configuración incluye una semilla, los adaptadores de vLLM y OpenAI la incorporan a la petición, mientras que el de Anthropic no puede hacerlo porque su API no admite este parámetro. En los servicios comerciales, además, el uso de una misma semilla no garantiza resultados idénticos, ya que la generación también depende de procesos internos que quedan fuera del control del experimento.
+
+La infraestructura mantiene, por tanto, una configuración experimental común sin presuponer que todos los proveedores ofrezcan el mismo grado de reproducibilidad. Las consecuencias de esta diferencia se examinan en el Capítulo~\ref{chap:validacion}.
+
+Las llamadas externas se protegen con un mecanismo común de reintento en el que si una petición lanza una excepción, se realizan hasta tres intentos con espera exponencial a partir de un retardo base de cinco segundos. Los adaptadores locales emplean un tiempo máximo de espera de 300 segundos por petición y los de OpenAI y Anthropic, de 120. Esta política es independiente del reintento por errores de formato descrito en la Sección~\ref{sec:parseo_trazabilidad}. La primera responde a fallos de comunicación o del servicio; el segundo actúa cuando el modelo ha respondido pero su salida no cumple el contrato esperado.
+
+Las credenciales no figuran en el código. Se obtienen de las variables de entorno \texttt{OPENAI\_API\_KEY}, \texttt{ANTHROPIC\_API\_KEY} y, cuando procede, \texttt{VLLM\_API\_KEY}, cargadas desde un fichero \texttt{.env} excluido del control de versiones.
+
+Los modelos locales se ejecutaron sobre GPU NVIDIA RTX~3090 y RTX~A5000 alquiladas en RunPod, con una instancia por modelo. Las composiciones heterogéneas requieren mantener varios servidores activos de forma simultánea: tres en el caso de \textit{hetero\_local} y dos en \textit{hetero\_api\_gpt}. La campaña completa consumió aproximadamente 150 horas de reloj, equivalentes a unas 209 horas de instancia una vez contabilizada esa simultaneidad. El desglose por composición y su traducción a coste se recogen en la Sección~\ref{sec:presupuesto}. El reparto de ese tiempo no es uniforme entre modelos de tamaño comparable. Las tres composiciones homogéneas locales emplean el mismo hardware y modelos de entre 7 y 8 mil millones de parámetros, pero \textit{homo\_mistral} necesitó alrededor de diez horas por nivel de instrucción frente a las seis de \textit{homo\_llama} y \textit{homo\_qwen}. La diferencia procede de los reintentos provocados por sus fallos de formato, cuyo tratamiento se describe en la Sección~\ref{sec:parseo_trazabilidad}.
+
+La capa de experimentación utiliza Python 3.10.12 y la librería \texttt{requests} para la comunicación con los distintos servicios. El entorno de análisis fija las versiones de las dependencias numéricas para limitar la variación de los resultados estadísticos entre instalaciones: NumPy 2.2.6, SciPy 1.15.3, Pandas 2.3.2, Matplotlib 3.10.9 y Statsmodels 0.14.6. El listado completo figura en el Anexo~\ref{anexo:entorno}.
+
+Esta capa de abstracción permite ejecutar una misma condición experimental sobre modelos alojados en infraestructuras distintas sin introducir lógica específica de cada proveedor en los agentes ni en el orquestador. Las diferencias los entre sistemas de ejecución se limitan a la construcción de la petición y al grado de control disponible sobre la generación, mientras que la estructura de los \textit{prompts}, el protocolo de deliberación y el registro de resultados permanecen comunes.
+
+\section{Parseo, normalización y trazabilidad}
+\label{sec:parseo_trazabilidad}
+
+El \textit{prompt} exige que cada modelo responda exclusivamente con un objeto JSON, pero la salida de un modelo de lenguaje no garantiza por sí misma el cumplimiento estricto de ese formato. Entre la generación y el registro experimental se interpone por ello una capa de parseo y validación, definida en \texttt{agents.py} y \texttt{orchestrator.py}, con dos objetivos: recuperar de forma determinista los errores formales menores y conservar de manera explícita los casos que no pueden convertirse en una observación válida.
+
+\paragraph{Extracción y reparación del JSON.}
+El método \texttt{\_parse\_response()} recibe el texto bruto del modelo y trata de extraer el objeto JSON con las decisiones. Si la respuesta incluye un bloque de código delimitado, se toma su contenido; en caso contrario se localiza el primer objeto JSON completo mediante un recorrido que mantiene el balance de llaves, corchetes y cadenas de texto. De este modo, las explicaciones que algunos modelos añaden después del objeto JSON no se incluyen por error en el contenido extraído. Primero se intenta interpretar el texto extraído como un objeto JSON sin modificarlo. Si este intento falla, se eliminan los separadores de millar incorrectos únicamente del campo \texttt{allocation} y se añaden los delimitadores de cierre que falten. Las respuestas que ya contienen un JSON válido se conservan sin cambios. La reparación se limita a transformaciones sintácticas que no exigen inferir ninguna decisión. No se evalúan expresiones aritméticas ni se reconstruyen valores de asignación ambiguos y si tras la reparación el texto sigue sin interpretarse como JSON válido, la respuesta se marca como error en lugar de completarse heurísticamente.
+
+\paragraph{Validación de las decisiones.}
+Una respuesta sintácticamente correcta debe superar además la validación del contrato de salida. El objeto raíz ha de contener una lista \texttt{decisions} no vacía, y cada elemento los campos \texttt{company\_name}, \texttt{action}, \texttt{allocation} y \texttt{reasoning}. La recomendación se normaliza a mayúsculas y solo se aceptan los valores \texttt{BUY}, \texttt{HOLD} y \texttt{SELL}. La asignación debe convertirse a un valor numérico finito y no negativo. Se admiten representaciones sencillas en forma de cadena, pero se rechazan los booleanos, los valores negativos o no finitos y las expresiones que no puedan interpretarse directamente como una cantidad. Ni el nombre de la empresa ni el razonamiento pueden quedar vacíos.
+
+Cuando el parseo o alguna de estas validaciones falla, el agente dispone de hasta tres intentos para producir una respuesta válida. A partir del segundo se añade al mensaje el error detectado y se refuerza la instrucción de devolver únicamente JSON. Este mecanismo es independiente de los reintentos de comunicación descritos en la Sección~\ref{sec:modelos_infraestructura}: aquellos responden a fallos de transporte o del servicio, y estos se activan cuando el modelo ha respondido pero su salida no se corresponde con el contrato de datos. Todos los intentos, válidos o no, quedan registrados.
+
+\paragraph{Normalización de las asignaciones.}
+Una vez validadas las decisiones, se calcula la suma de las asignaciones tal como las emitió el modelo y se conserva en el campo \texttt{pre\_normalize\_total}. Si esa suma no coincide con el presupuesto, todas las cantidades se normalizan proporcionalmente:
+
+\begin{equation}
+	A_i' =
+	\operatorname{round}
+	\left(
+	A_i\,\frac{B}{\sum_j A_j}
+	\right),
+	\label{eq:normalizacion_asignaciones}
+\end{equation}
+
+donde $A_i$ es la asignación emitida por el modelo para la empresa $i$, $A_i'$ la asignación normalizada, $T=\sum_j A_j$ la suma de las asignaciones emitidas para las cuatro empresas de la cesta, $B=100.000$~€ el presupuesto y $\operatorname{round}(\cdot)$ el redondeo al entero más próximo, con los empates resueltos hacia el entero par según la implementación de Python. Cualquier diferencia residual introducida por el redondeo se suma a la primera empresa de la lista, de modo que el presupuesto final sea exactamente el mismo en todas las respuestas. El ajuste no supera unos pocos euros y se aplica siempre a la primera empresa de la lista. Como el orden se mantiene entre las dos variantes de una misma pareja, este procedimiento no favorece sistemáticamente ninguna condición, aunque puede añadir una diferencia residual mínima.
+
+El código también contempla un caso límite adicional: si todas las asignaciones son nulas, el presupuesto se reparte de forma uniforme. A diferencia del reescalado, ese reparto no conserva ninguna preferencia del modelo, sino que sustituye su decisión por una asignación equitativa. La comprobación sobre las 262.968 filas de la campaña completa no encontró ninguna respuesta en esa situación, de manera que el caso límite nunca llegó a producirse.
+
+El reescalado, en cambio, es bastante frecuente. Su incidencia varía sustancialmente entre composiciones, desde aproximadamente el 10\,\% de las respuestas en \textit{homo\_qwen} hasta cerca del 58\,\% en \textit{homo\_llama}, y la suma emitida por el modelo abarca desde valores de apenas unos cientos de euros hasta casi seis veces el presupuesto. La mediana coincide, no obstante, con los 100.000~€ exactos. Como el reescalado preserva las proporciones relativas entre empresas, la decisión del modelo se mantiene intacta salvo por un factor de escala; el análisis detallado de estas tasas y su simetría entre condiciones se presenta en la Sección~\ref{sec:resultados_calidad}.
+
+Cada respuesta conserva tanto el valor previo a la normalización como el indicador \texttt{was\_normalized}, de modo que todo el postprocesamiento pueda auditarse.
+
+\paragraph{Correspondencia con la cesta esperada.}
+Superada la validación interna, el orquestador comprueba que las decisiones se corresponden con las empresas que formaban la cesta. Los identificadores esperados son los alias \texttt{Company 1} a \texttt{Company 4}. La comparación normaliza capitalización y espacios, pero exige después coincidencia exacta con alguno de los cuatro. Si una empresa aparece repetida se conserva su primera decisión y se registra la duplicación. Las empresas no reconocidas se descartan y quedan recogidas en el mensaje de validación, y las que no aparecen se identifican como ausentes.
+
+Los errores de procesamiento se registran en lugar de eliminarse. Para cada combinación de agente y turno, el orquestador genera una fila por cada empresa de la cesta, y si no dispone de una decisión válida, la fila correspondiente se guarda con \texttt{action=ERROR}, asignación cero y \texttt{parse\_error=True}. De este modo, los errores pueden contabilizarse en los ficheros de resultados antes de aplicar los criterios de exclusión descritos en la Sección~\ref{subsec:definicion_gap}.
+
+Para las rondas posteriores de deliberación se emplea una versión depurada de la respuesta, que contiene solo decisiones válidas sobre empresas esperadas. Las filas de error se conservan en el registro experimental, pero no se presentan a los demás agentes como si fueran decisiones reales. La Tabla~\ref{tab:campos_calidad} recoge los campos que permiten cuantificar estas incidencias. El esquema completo del fichero de resultados se detalla en el Anexo~\ref{anexo:formato_resultados}.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Principales campos de control de calidad de las respuestas.}
+	\label{tab:campos_calidad}
+	\small
+	\begin{tabular}{p{3.6cm} p{8.4cm}}
+		\hline
+		\textbf{Campo} & \textbf{Descripción} \\
+		\hline
+		\texttt{parse\_error}
+		& Indica que no pudo obtenerse una decisión válida para la fila. \\
+		\texttt{pre\_normalize\_total}
+		& Suma de las asignaciones antes de la normalización al presupuesto fijo. \\
+		\texttt{was\_normalized}
+		& Indica si fue necesario normalizar las asignaciones. \\
+		\texttt{validation\_error}
+		& Resume errores de parseo o discrepancias entre las empresas esperadas y las devueltas. \\
+		\texttt{missing\_companies}
+		& Alias esperados para los que el modelo no produjo una decisión utilizable. \\
+		\texttt{duplicate\_companies}
+		& Alias que aparecieron más de una vez en una misma respuesta. \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\paragraph{Trazabilidad de los alias.}
+Los identificadores reales de las empresas se sustituyen por alias en los \textit{prompts}, pero no se pierden del sistema de registro. Durante la construcción del \textit{prompt}, el orquestador mantiene un mapa entre cada alias, el nombre real de la empresa y su \textit{ticker}. Ese mapa determina qué alias corresponde a la empresa sujeto y permite recuperar los identificadores reales para auditoría sin exponerlos al modelo. El fichero de resultados emplea en consecuencia el alias observado por el modelo en el campo \texttt{company\_name}, y conserva \texttt{real\_company\_name} y \texttt{ticker} como metadatos. La posición de la empresa sujeto se almacena en \texttt{subject\_position} y el valor de \texttt{is\_subject} se establece a partir del mapa de alias creado antes de ejecutar el comité, por lo que no depende del texto generado por el modelo.
+
+\paragraph{Registro de \textit{prompts} y respuestas.}
+Junto a los ficheros de resultados se mantiene una traza independiente en formato JSON Lines. Cada llamada al modelo genera una entrada que conserva el \textit{prompt} de sistema completo, el mensaje de usuario, la respuesta textual original y el número de intento, junto a los identificadores de cesta, pareja, variante, composición, nivel de instrucción, semilla, agente, fase y turno, la condición ciega, el motivo de finalización comunicado y cualquier error de parseo.
+
+La traza incluye también el mapa entre los alias mostrados y las empresas reales. Resulta posible, por tanto, reconstruir no solo la decisión almacenada en el fichero de resultados, sino la entrada textual exacta que recibió el modelo y la salida bruta que produjo antes de cualquier parseo o normalización. Este registro es el que sustenta las comprobaciones de validez interna del Capítulo~\ref{chap:validacion}.
+
+El tratamiento aplicado a cada salida puede seguirse a través de sus distintas etapas. Para cada decisión pueden distinguirse la respuesta original, las reparaciones sintácticas aplicadas, la posible normalización del presupuesto y el registro final utilizado en el análisis. Los errores permanecen identificados en los datos, lo que permite ver con qué frecuencia aparecen y aplicar criterios de exclusión en lugar de descartar observaciones durante la ejecución.
+
+\section{Pipeline de agregación y reproducibilidad}
+\label{sec:pipeline_agregacion}
+
+La infraestructura separa la generación de resultados brutos de su procesamiento estadístico posterior. Esa separación permite conservar intactas las salidas originales de cada ejecución y reconstruir las tablas y figuras de la memoria sin modificar los datos fuente ni intervenir manualmente en el proceso. El recorrido se organiza en dos etapas: la ejecución de las condiciones experimentales mediante \texttt{experiment\_runner.py} y la generación de los resultados finales mediante \texttt{build\_memoria\_outputs.py}.
+
+\paragraph{Persistencia y reanudación de las ejecuciones.}
+Una condición experimental evaluada sobre las tres repeticiones supone varios miles de llamadas a modelos locales o a APIs externas y puede prolongarse durante horas, de modo que los resultados no se mantienen en memoria hasta terminar. Cada vez que una cesta finaliza correctamente, sus registros se añaden de inmediato al fichero de resultados correspondiente. Antes de ejecutar una condición, la función \texttt{get\_completed\_baskets()} inspecciona el fichero existente y recupera los identificadores de cesta ya presentes, que se omiten en la nueva ejecución. Una campaña interrumpida puede así reanudarse con el mismo comando sin repetir ejecuciones ya completadas. El punto de guardado es la cesta terminada, si la interrupción ocurre a mitad de una deliberación, esa cesta se repite. El progreso y los errores quedan registrados además en un fichero de registro independiente.
+
+\paragraph{Nomenclatura de los ficheros de resultados.}
+Los ficheros se separan por etapa, condición experimental y semilla. Las ejecuciones de detección emplean el prefijo \texttt{detection}, las de placebo \texttt{placebo} y las de mitigación \texttt{mitigation}. La semilla forma parte del nombre, lo que impide que dos repeticiones escriban sobre un mismo fichero. Las ejecuciones restringidas a génesis incorporan además el sufijo \texttt{\_genesisonly}. Esa distinción evita que una campaña de cinco estados por agente y otra limitada al turno inicial acaben en el mismo fichero. El nombre describe, por tanto, el alcance de la ejecución, mientras que las columnas internas conservan la composición, el nivel de instrucción, el protocolo, la vacuna y la semilla de cada observación.
+
+Algunos ejemplos de esta nomenclatura son:
+
+ \texttt{detection\_homo\_llama\_level\_0\_neutral\_seed42.csv}
+
+ \texttt{placebo\_homo\_qwen\_level\_1\_professional\_seed123.csv}
+
+  \texttt{mitigation\_homo\_qwen\_level\_2\_identity\_active\_seed456\_genesisonly.csv}
+
+Existe una excepción histórica en la nomenclatura de las condiciones, y es que la combinación de \textit{hetero\_local} con \textit{level\_1\_professional} conserva la etiqueta \texttt{baseline}, heredada de las primeras versiones del experimento. Esa etiqueta afecta únicamente al nombre de los ficheros y al campo \texttt{experiment\_label}; la composición y el nivel de instrucción se almacenan en columnas independientes y son los identificadores que emplea el análisis, por lo que esta excepción no tiene consecuencias sobre los resultados.
+
+\paragraph{Agregación centralizada.}
+Todos los resultados parten de una única implementación del \textit{gap}, definida en la función \texttt{gap\_por\_pareja()}. Esta selecciona las filas válidas de la empresa sujeto, separa los agentes visibles del agente ciego, agrega las asignaciones al nivel correspondiente y empareja cada variante con su control mediante composición, nivel de instrucción, semilla e identificador de pareja. La misma función se reutiliza como definición común en todas las tablas basadas en el \textit{gap}, en lugar de repetir el emparejamiento de forma independiente en cada análisis.
+
+El promedio entre repeticiones se realiza después, en una función distinta que conserva el número de semillas disponibles para cada pareja. Los análisis que necesitan mantener las repeticiones separadas, como el coeficiente de correlación intraclase y las pendientes de transmisión, utilizan la salida previa a esa agregación. La separación entre ambos pasos evita mezclar unidades de análisis distintas dentro de una misma métrica.
+
+El análisis de transmisión conserva en particular el identificador de pareja y la semilla hasta la estimación de las regresiones. Los errores estándar robustos se calculan con \texttt{statsmodels}~\cite{seabold2010statsmodels}, agrupando por la combinación de pareja y repetición según se definió en la Sección~\ref{subsec:transmision}. La implementación conserva además el error estándar convencional como diagnóstico, aunque no se utiliza para calcular la significación estadística.
+
+\paragraph{Generación de los resultados de la memoria.}
+
+Los módulos \texttt{result\_explorer.py} y \texttt{aggregate.py} contienen las funciones de carga, mezcla por cesta, agregación e inspección de los resultados. \texttt{build\_memoria\_outputs.py} reutiliza estas funciones para procesar los ficheros de detección, placebo y mitigación y generar automáticamente las tablas y figuras incluidas en la memoria. De este modo, los resultados finales se obtienen mediante un procedimiento único y reproducible.
+
+El script final recibe el directorio de resultados, el de salida, la etapa que debe procesarse y el umbral de tasa de falsos descubrimientos. A partir de ahí carga los ficheros correspondientes y construye la colección completa de resultados derivados. Las tablas se escriben simultáneamente en formato CSV y Markdown, y las figuras en un subdirectorio propio. La Tabla~\ref{tab:pipeline_outputs} resume las tres capas y sus artefactos.
+
+\begin{table}[htbp]
+	\centering
+	\caption{Capas del \textit{pipeline} y artefactos generados.}
+	\label{tab:pipeline_outputs}
+	\small
+	\begin{tabular}{p{4.8cm} p{4.2cm} p{4.6cm}}
+		\hline
+		\textbf{Componente} & \textbf{Entrada} & \textbf{Salida principal} \\
+		\hline
+		
+		\texttt{experiment\_runner.py}
+		& Cestas y configuración experimental
+		& Ficheros de resultados por condición y semilla \\
+		
+		\texttt{result\_explorer.py} y \texttt{aggregate.py}
+		& Resultados brutos
+		& Inspección y análisis auxiliares \\
+		
+		\texttt{build\_memoria\_outputs.py}
+		& Resultados de detección, placebo y mitigación
+		& Tablas y figuras de la memoria \\
+		
+		\hline
+	\end{tabular}
+\end{table}
+
+Antes de construir ninguna tabla, el \textit{pipeline} comprueba que las composiciones presentes en los ficheros pertenecen al conjunto de seis configuraciones de la campaña final. La aparición de una composición desconocida provoca un error en lugar de incorporarse al análisis. Esa comprobación garantiza que cada familia mantenga el número de contrastes previsto y evita que los valores corregidos cambien por la incorporación accidental de nuevas ejecuciones.
+
+\paragraph{Determinismo del postprocesamiento.}
+El análisis estadístico utiliza semillas propias, distintas de las empleadas para generar las respuestas de los modelos. Tanto el \textit{bootstrap} como las pruebas de permutación utilizan 10.000 iteraciones y una semilla fija, de modo que una misma colección de ficheros de entrada produce siempre los mismos remuestreos y, por tanto, los mismos resultados numéricos. Dos ejecuciones consecutivas del generador sobre los mismos datos devuelven tablas idénticas. Sin embargo, que el análisis sea reproducible no significa que una nueva ejecución de los modelos de lenguaje regenere los mismos ficheros de resultados. Lo que la estrategia adoptada asegura es que unos resultados brutos ya obtenidos puedan analizarse cuantas veces sea necesario mediante un procedimiento fijo.
+
+Existe una excepción menor. Al comparar ejecuciones del análisis de resultados realizadas en entornos distintos se observó que los estadísticos calculados (desviaciones típicas, ratios de varianzas, coeficientes intraclase y pendientes) resultan idénticos, mientras que algunos $p$-valores obtenidos mediante funciones de \texttt{scipy.stats} difieren únicamente en los últimos dígitos, con magnitudes insignificantes del orden de $10^{-15}$. Estas diferencias corresponden a efectos de redondeo numérico en las funciones entre distintas versiones o compilaciones de las dependencias y no alteran ninguna decisión tras la corrección por comparaciones múltiples. Las versiones de las dependencias numéricas se fijan en \texttt{requirements.txt} para eliminar esta fuente de variación al reconstruir el entorno.
+
+La combinación de guardado por cesta, conservación de los datos brutos y agregación centralizada permite reconstruir el camino que va desde una llamada individual a un modelo hasta cada estadístico presentado en la memoria. Esta trazabilidad resulta especialmente importante porque el experimento combina modelos ejecutados en distintas infraestructuras y varias etapas de tratamiento de los datos. Gracias a ella, puede comprobarse si las diferencias observadas proceden de las respuestas de los modelos o de las transformaciones aplicadas posteriormente.

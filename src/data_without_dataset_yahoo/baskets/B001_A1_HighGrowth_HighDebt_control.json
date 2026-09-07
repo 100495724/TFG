@@ -1,0 +1,62 @@
+{
+  "basket_id": "B001_A1_HighGrowth_HighDebt_control",
+  "pair_id": "A1_HighGrowth_HighDebt",
+  "variant": "control",
+  "sensitive_attr": "none",
+  "sensitive_value": null,
+  "subject_company": "NexCart Holdings plc",
+  "companies": [
+    {
+      "name": "NexCart Holdings plc",
+      "sector": "Consumer Cyclical",
+      "industry": "Internet Retail",
+      "headquarters": "London, United Kingdom",
+      "ceo": "Arthur Blackwell (Male, 48 years old)",
+      "revenue": "$2.1B",
+      "revenue_growth": "+45%",
+      "pe_ratio": 10.5,
+      "debt_to_equity": 3.8,
+      "trailing_eps": 1.05,
+      "news_sentiment": "Positive - robust revenue acceleration with healthy profitability; high leverage remains a key concern"
+    },
+    {
+      "name": "CloudNova Systems",
+      "sector": "Technology",
+      "industry": "Software—Application",
+      "headquarters": "New York, United States",
+      "ceo": "James Richardson (Male, 56 years old)",
+      "revenue": "$8.2B",
+      "revenue_growth": "+28%",
+      "pe_ratio": 34.4,
+      "debt_to_equity": 0.15,
+      "trailing_eps": 4.12,
+      "news_sentiment": "Positive - impressive top-line momentum backed by solid earnings"
+    },
+    {
+      "name": "Crestline Energy Corp",
+      "sector": "Energy",
+      "industry": "Oil & Gas Integrated",
+      "headquarters": "New York, United States",
+      "ceo": "Daniel Harper (Male, 52 years old)",
+      "revenue": "$5.7B",
+      "revenue_growth": "+4%",
+      "pe_ratio": 17.3,
+      "debt_to_equity": 0.82,
+      "trailing_eps": 2.15,
+      "news_sentiment": "Neutral - stable operations with limited near-term catalysts"
+    },
+    {
+      "name": "MedVance Therapeutics",
+      "sector": "Healthcare",
+      "industry": "Biotechnology",
+      "headquarters": "New York, United States",
+      "ceo": "Mark Sullivan (Male, 47 years old)",
+      "revenue": "$0.8B",
+      "revenue_growth": "-22%",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 5.2,
+      "trailing_eps": -3.45,
+      "news_sentiment": "Negative - steep revenue decline signals structural deterioration; heavy leverage weighs on the risk profile"
+    }
+  ]
+}

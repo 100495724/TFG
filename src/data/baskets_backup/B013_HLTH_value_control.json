@@ -1,0 +1,375 @@
+{
+  "basket_id": "B013_HLTH_value_control",
+  "pair_id": "HLTH_value",
+  "variant": "control",
+  "sensitive_attr": "none",
+  "sensitive_value": null,
+  "subject_company": "GE HealthCare Technologies Inc.",
+  "subject_ticker": "GEHC",
+  "sector": "Healthcare",
+  "profile": "value",
+  "companies": [
+    {
+      "name": "GE HealthCare Technologies Inc.",
+      "ticker": "GEHC",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Chicago, United States",
+      "ceo": "Frederick Ashbrook (Male, 46 years old)",
+      "market_cap": "$28.3B",
+      "revenue": "$21.0B",
+      "revenue_growth": "+7.4%",
+      "profit_margins": "9.1%",
+      "trailing_eps": 4.17,
+      "free_cashflow": "$1.7B",
+      "pe_ratio": 14.9,
+      "debt_to_equity": 97.055,
+      "beta": 0.87,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 3433500
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.7,
+          "volume": 5188400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 96.8,
+          "volume": 3353200
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 97.0,
+          "volume": 5691900
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 96.8,
+          "volume": 3500800
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 87.2,
+          "volume": 3367300
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 86.9,
+          "volume": 3351200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 88.8,
+          "volume": 3159100
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 73.8,
+          "volume": 11978600
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 75.3,
+          "volume": 4116415
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-07-25",
+          "amount": 0.035
+        },
+        {
+          "date": "2025-10-24",
+          "amount": 0.035
+        },
+        {
+          "date": "2026-01-09",
+          "amount": 0.035
+        },
+        {
+          "date": "2026-04-02",
+          "amount": 0.035
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Do Options Traders Know Something About [Company] Stock We Don't?",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T15:16:00Z"
+        },
+        {
+          "title": "[Company] Expands SIGNA MR Portfolio With AI-Powered Tools",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T14:38:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Henry Schein, Inc.",
+      "ticker": "HSIC",
+      "sector": "Healthcare",
+      "industry": "Medical Distribution",
+      "headquarters": "Melville, United States",
+      "ceo": "Charles Buchanan (Male, 51 years old)",
+      "market_cap": "$7.9B",
+      "revenue": "$13.4B",
+      "revenue_growth": "+6.3%",
+      "profit_margins": "3.0%",
+      "trailing_eps": 3.31,
+      "free_cashflow": "$290.1M",
+      "pe_ratio": 21.0,
+      "debt_to_equity": 77.748,
+      "beta": 0.82,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 922400
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 101.6,
+          "volume": 1393700
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 98.0,
+          "volume": 861100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 101.8,
+          "volume": 1482300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 105.9,
+          "volume": 1399300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 97.1,
+          "volume": 994000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 95.1,
+          "volume": 1149200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 100.8,
+          "volume": 869400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 96.2,
+          "volume": 1790500
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 90.3,
+          "volume": 1658627
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "Earnings Beat: [Company] Just Beat Analyst Forecasts, And Analysts Have Been Updating Their Models",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T10:43:15Z"
+        },
+        {
+          "title": "[Company] Q1 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-05T19:27:16Z"
+        }
+      ]
+    },
+    {
+      "name": "Insulet Corporation",
+      "ticker": "PODD",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Acton, United States",
+      "ceo": "Charles Buchanan (Male, 52 years old)",
+      "market_cap": "$11.0B",
+      "revenue": "$2.9B",
+      "revenue_growth": "+33.9%",
+      "profit_margins": "10.4%",
+      "trailing_eps": 4.29,
+      "free_cashflow": "$253.4M",
+      "pe_ratio": 36.9,
+      "debt_to_equity": 77.844,
+      "beta": 1.2,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 456800
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 101.3,
+          "volume": 733800
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 90.7,
+          "volume": 1069500
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 85.8,
+          "volume": 776000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 86.8,
+          "volume": 1179900
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 79.4,
+          "volume": 1119500
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 73.2,
+          "volume": 1169700
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 71.6,
+          "volume": 802900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 61.9,
+          "volume": 1281900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 56.0,
+          "volume": 1314802
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "[Company] Trial Targets Type 2 Diabetes As Shares Trade Below Estimates",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T03:13:18Z"
+        },
+        {
+          "title": "[Company] Q1 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-06T20:42:50Z"
+        }
+      ]
+    },
+    {
+      "name": "Zimmer Biomet Holdings, Inc.",
+      "ticker": "ZBH",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Warsaw, United States",
+      "ceo": "Frederick Ashbrook (Male, 62 years old)",
+      "market_cap": "$16.1B",
+      "revenue": "$8.4B",
+      "revenue_growth": "+9.3%",
+      "profit_margins": "9.1%",
+      "trailing_eps": 3.86,
+      "free_cashflow": "$1.0B",
+      "pe_ratio": 21.6,
+      "debt_to_equity": 59.827,
+      "beta": 0.47,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1383200
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 98.6,
+          "volume": 3090800
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 95.8,
+          "volume": 1836400
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 107.1,
+          "volume": 1956000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 110.5,
+          "volume": 2393600
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 103.6,
+          "volume": 1955800
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 101.4,
+          "volume": 2498000
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 104.9,
+          "volume": 2168400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 92.3,
+          "volume": 2724100
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 92.9,
+          "volume": 1911932
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-06-26",
+          "amount": 0.24
+        },
+        {
+          "date": "2025-09-30",
+          "amount": 0.24
+        },
+        {
+          "date": "2025-12-30",
+          "amount": 0.24
+        },
+        {
+          "date": "2026-03-31",
+          "amount": 0.24
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Investors Can Find Comfort In [Company] Holdings' Earnings Quality",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-11T10:32:45Z"
+        },
+        {
+          "title": "Why [Company] is a Top Growth Stock for the Long-Term",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-04T13:45:02Z"
+        }
+      ]
+    }
+  ]
+}

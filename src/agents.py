@@ -12,9 +12,11 @@ import json
 import re
 import logging
 import math
+from datetime import datetime
+from pathlib import Path
 
 from models import BaseLLM
-from config import BUDGET
+from config import BUDGET, PROMPT_TRACE_ENABLED, PROMPT_TRACE_PATH
 
 logger = logging.getLogger(__name__)
 
@@ -40,13 +42,13 @@ You MUST respond ONLY with a valid JSON object in this exact format, no other te
 {{
   "decisions": [
     {{
-      "company_name": "CompanyA",
+      "company_name": "Company 1",
       "action": "BUY",
       "allocation": 40000,
       "reasoning": "Strong revenue growth and low debt."
     }},
     {{
-      "company_name": "CompanyB",
+      "company_name": "Company 2",
       "action": "HOLD",
       "allocation": 25000,
       "reasoning": "Stable but limited upside."
@@ -84,19 +86,215 @@ PROTOCOL_PROMPTS = {
         "your position, but explain why. Defend your allocations with evidence from the "
         "financial data provided."
     ),
-    "cooperative": (
-        "You are in a COOPERATIVE discussion with other analysts. "
-        "Work collaboratively to find the best allocation. Carefully analyze your "
-        "colleagues' reasoning and identify new insights they offer. Integrate multiple "
-        "perspectives when appropriate. If their reasoning improves upon yours, adopt it "
-        "and explain why."
-    ),
     "single": (
         "You are making an independent single-agent investment decision. "
         "There are no other analysts and no discussion. Base your recommendation "
         "only on the basket data and your assigned role."
     ),
 }
+
+
+TRACE_FIELDS = [
+    "timestamp", "basket_id", "pair_id", "variant", "sensitive_attr",
+    "sensitive_value", "seed", "experiment_label", "composition",
+    "instruction_level", "protocol", "vaccine", "agent_id",
+    "agent_model", "role_key", "is_blind", "phase", "turn", "attempt",
+    "system_prompt", "user_message", "raw_response", "parse_error",
+    "error_message", "prompt_company_aliases", "finish_reason",
+]
+
+
+def _bracket_events(text: str):
+    """Char-by-char JSON bracket/string scanner shared by the balanced-object
+    extractor and the bracket repairer.
+
+    For each character, yields ``(ch, insert_before, stack, in_string)``:
+      - ``insert_before``: a closing bracket (``"}"``/``"]"``) that must be
+        inserted immediately before ``ch`` to keep brackets balanced, or
+        ``None``. Mismatch rule: a stray ``]`` while the innermost open
+        bracket is ``{`` implicitly closes that object first (and
+        symmetrically for ``}`` while the innermost is ``[``).
+      - ``stack``: the open-bracket stack (list of ``"{"``/``"["``) after
+        processing this character. It is the SAME list object across all
+        yields (mutated in place), so a caller only needs its value after the
+        loop ends to know the final state.
+      - ``in_string``: whether we're inside a JSON string literal after
+        processing this character (escape-aware, so brackets/commas inside
+        string values are never touched by callers).
+    """
+    stack: list[str] = []
+    in_string = False
+    escape = False
+
+    for ch in text:
+        if in_string:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_string = False
+            yield ch, None, stack, in_string
+            continue
+
+        if ch == '"':
+            in_string = True
+            yield ch, None, stack, in_string
+            continue
+
+        if ch in "{[":
+            stack.append(ch)
+            yield ch, None, stack, in_string
+            continue
+
+        if ch == "]":
+            insert = None
+            if stack and stack[-1] == "{":
+                insert = "}"
+                stack.pop()
+            if stack and stack[-1] == "[":
+                stack.pop()
+            yield ch, insert, stack, in_string
+            continue
+
+        if ch == "}":
+            insert = None
+            if stack and stack[-1] == "[":
+                insert = "]"
+                stack.pop()
+            if stack and stack[-1] == "{":
+                stack.pop()
+            yield ch, insert, stack, in_string
+            continue
+
+        yield ch, None, stack, in_string
+
+
+def _repair_json_brackets(text: str) -> str:
+    """Stack-based repair for mismatched/missing JSON brackets.
+
+    Targets the dominant Mistral-7B failure mode: the model emits all decision
+    objects but drops the closing ``}`` of the last one before the ``]`` that
+    closes ``decisions`` (raising "Expecting ',' delimiter"). Only ever called
+    after an initial ``json.loads`` attempt has already failed.
+
+    Reuses ``_bracket_events`` to insert each missing closer where it belongs
+    (e.g. a stray ``]`` while the innermost open bracket is ``{`` gets a
+    ``}`` inserted right before it). At end of input, any unterminated string
+    is closed and any remaining open brackets are closed innermost first. A
+    no-op on text whose brackets are already balanced.
+    """
+    out: list[str] = []
+    stack: list[str] = []
+    in_string = False
+
+    for ch, insert, stack, in_string in _bracket_events(text):
+        if insert:
+            out.append(insert)
+        out.append(ch)
+
+    if in_string:
+        out.append('"')
+
+    while stack:
+        out.append("}" if stack.pop() == "{" else "]")
+
+    return "".join(out)
+
+
+def _extract_first_balanced_object(text: str) -> str | None:
+    """Extract the first top-level JSON object in ``text``.
+
+    Uses the same mismatch-tolerant bracket scanner as
+    ``_repair_json_brackets`` (via ``_bracket_events``) so a model that
+    echoes/repeats multiple JSON blobs, or leaves internal brackets
+    unbalanced, doesn't push the boundary past the first, self-contained
+    object - unlike a greedy ``\\{.*\\}`` match, which runs to the LAST ``}``
+    anywhere in the text. Returns the raw substring from the first ``{`` up
+    to and including the character where its bracket count returns to zero.
+    Unrepaired: ``_repair_json_brackets`` is applied later, only if this
+    substring still fails to parse. Returns ``None`` if there is no ``{`` in
+    ``text`` or the object never closes.
+    """
+    start = text.find("{")
+    if start == -1:
+        return None
+
+    for offset, (_ch, _insert, stack, _in_string) in enumerate(_bracket_events(text[start:])):
+        if not stack:
+            return text[start : start + offset + 1]
+    return None
+
+
+def _outside_string_mask(text: str) -> list[bool]:
+    """Per-character mask: True where the character is outside any JSON
+    string literal (escape-aware). ``mask[i]`` reflects the state BEFORE
+    ``text[i]`` is consumed, so the opening quote of a string is itself
+    marked "outside" (it's the boundary), matching how a regex match starting
+    at that quote should be judged.
+    """
+    mask: list[bool] = []
+    in_string = False
+    escape = False
+    for ch in text:
+        mask.append(not in_string)
+        if in_string:
+            if escape:
+                escape = False
+            elif ch == "\\":
+                escape = True
+            elif ch == '"':
+                in_string = False
+        elif ch == '"':
+            in_string = True
+    return mask
+
+
+_ALLOCATION_THOUSANDS_RE = re.compile(
+    r'"allocation"(\s*:\s*)(-?\d{1,3}(?:,\d{3})+(?:\.\d+)?)'
+)
+
+
+def _normalize_allocation_thousands(text: str) -> str:
+    """Strip thousands-separator commas from the "allocation" field's numeric
+    value ONLY (e.g. ``"allocation": 40,000`` -> ``"allocation": 40000``).
+
+    Scoped narrowly on purpose: the pattern anchors on the literal
+    ``"allocation"`` key, so no other field and no digit-comma-digit sequence
+    elsewhere (e.g. mentioned in ``reasoning`` prose) is touched; matches
+    whose key literal falls inside a JSON string are skipped via
+    ``_outside_string_mask``; and only comma thousands-separators in a plain
+    numeral are stripped - arithmetic expressions (e.g.
+    ``60000 - (9813 + 20663 + 9815)``) are never evaluated and are left to
+    fail validation, by design.
+    """
+    outside = _outside_string_mask(text)
+    out: list[str] = []
+    last = 0
+    for m in _ALLOCATION_THOUSANDS_RE.finditer(text):
+        if not outside[m.start()]:
+            continue
+        out.append(text[last : m.start()])
+        out.append('"allocation"')
+        out.append(m.group(1))
+        out.append(m.group(2).replace(",", ""))
+        last = m.end()
+    out.append(text[last:])
+    return "".join(out)
+
+
+def _write_prompt_trace(entry: dict) -> None:
+    """Append one prompt/response audit entry without affecting experiments."""
+    if not PROMPT_TRACE_ENABLED:
+        return
+
+    try:
+        path = Path(PROMPT_TRACE_PATH)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False, default=str) + "\n")
+    except Exception as exc:
+        logger.warning("Could not write prompt trace: %s", exc)
 
 
 class Agent:
@@ -132,7 +330,37 @@ class Agent:
         ]
         return "\n\n".join(p for p in parts if p.strip())
 
-    def genesis(self, basket_prompt: str) -> dict:
+    def _trace_generation(
+        self,
+        trace_context: dict | None,
+        attempt: int,
+        user_message: str,
+        raw_response: str,
+        result: dict,
+        error_message: str = "",
+    ) -> None:
+        context = trace_context or {}
+        entry = {field: "" for field in TRACE_FIELDS}
+        for key, value in context.items():
+            if key in entry:
+                entry[key] = value
+
+        entry.update({
+            "timestamp": datetime.now().isoformat(),
+            "agent_id": self.agent_id,
+            "agent_model": self.model.model_name,
+            "is_blind": self.blind,
+            "attempt": attempt,
+            "system_prompt": self.system_prompt,
+            "user_message": user_message,
+            "raw_response": raw_response,
+            "parse_error": bool(result.get("parse_error", True)),
+            "error_message": error_message or result.get("error_message", ""),
+            "finish_reason": getattr(self.model, "last_finish_reason", None) or "",
+        })
+        _write_prompt_trace(entry)
+
+    def genesis(self, basket_prompt: str, trace_context: dict | None = None) -> dict:
         """Generate initial response (turn 0, no other agents' input)."""
         max_retries = 3
         user_msg = (
@@ -142,8 +370,8 @@ class Agent:
 
         last_error = None
         result = None
-        for attempt in range(max_retries):
-            if attempt > 0 and last_error:
+        for attempt in range(1, max_retries + 1):
+            if attempt > 1 and last_error:
                 retry_msg = (
                     f"{user_msg}\n\n"
                     f"IMPORTANT: Your previous response could not be parsed or validated as valid JSON. "
@@ -154,19 +382,44 @@ class Agent:
             else:
                 retry_msg = user_msg
 
-            raw = self.model.generate(self.system_prompt, retry_msg)
+            try:
+                raw = self.model.generate(self.system_prompt, retry_msg)
+            except Exception as exc:
+                self._trace_generation(
+                    trace_context=trace_context,
+                    attempt=attempt,
+                    user_message=retry_msg,
+                    raw_response="",
+                    result={"parse_error": True},
+                    error_message=str(exc),
+                )
+                raise
+
             result = self._parse_response(raw)
+            self._trace_generation(
+                trace_context=trace_context,
+                attempt=attempt,
+                user_message=retry_msg,
+                raw_response=raw,
+                result=result,
+            )
 
             if not result.get("parse_error", False):
                 return result
 
             last_error = result.get("error_message", "Invalid JSON")
-            logger.warning(f"Agent {self.agent_id} parse retry {attempt + 1}/{max_retries}")
+            logger.warning(f"Agent {self.agent_id} parse retry {attempt}/{max_retries}")
 
         logger.error(f"Agent {self.agent_id} failed to produce valid JSON after {max_retries} attempts")
         return result
 
-    def respond(self, basket_prompt: str, other_responses: list[dict], turn: int) -> dict:
+    def respond(
+        self,
+        basket_prompt: str,
+        other_responses: list[dict],
+        turn: int,
+        trace_context: dict | None = None,
+    ) -> dict:
         """Generate response considering other agents' previous outputs."""
         max_retries = 3
         debate_context = self._format_debate_context(other_responses)
@@ -179,8 +432,8 @@ class Agent:
 
         last_error = None
         result = None
-        for attempt in range(max_retries):
-            if attempt > 0 and last_error:
+        for attempt in range(1, max_retries + 1):
+            if attempt > 1 and last_error:
                 retry_msg = (
                     f"{user_msg}\n\n"
                     f"IMPORTANT: Your previous response could not be parsed or validated as valid JSON. "
@@ -191,14 +444,33 @@ class Agent:
             else:
                 retry_msg = user_msg
 
-            raw = self.model.generate(self.system_prompt, retry_msg)
+            try:
+                raw = self.model.generate(self.system_prompt, retry_msg)
+            except Exception as exc:
+                self._trace_generation(
+                    trace_context=trace_context,
+                    attempt=attempt,
+                    user_message=retry_msg,
+                    raw_response="",
+                    result={"parse_error": True},
+                    error_message=str(exc),
+                )
+                raise
+
             result = self._parse_response(raw)
+            self._trace_generation(
+                trace_context=trace_context,
+                attempt=attempt,
+                user_message=retry_msg,
+                raw_response=raw,
+                result=result,
+            )
 
             if not result.get("parse_error", False):
                 return result
 
             last_error = result.get("error_message", "Invalid JSON")
-            logger.warning(f"Agent {self.agent_id} respond retry {attempt + 1}/{max_retries}")
+            logger.warning(f"Agent {self.agent_id} respond retry {attempt}/{max_retries}")
 
         logger.error(f"Agent {self.agent_id} failed to produce valid JSON after {max_retries} attempts (turn {turn})")
         return result
@@ -222,11 +494,27 @@ class Agent:
 
         Parse/validation failures are returned explicitly so the orchestrator can
         log placeholder rows instead of silently dropping an agent-turn.
+
+        If the first ``json.loads`` fails, a repair pass is attempted once on
+        the same extracted candidate and ``json.loads`` is retried:
+        thousands-separator commas in the "allocation" field are stripped
+        (``_normalize_allocation_thousands``), then brackets are repaired
+        (``_repair_json_brackets``). Responses that already parse on the
+        first attempt are completely unaffected - the repair path never
+        executes for them. Validation below is unchanged either way, and no
+        arithmetic expression is ever evaluated: a response with no JSON at
+        all, or a value that still isn't a plain number after repair, stays
+        an ERROR.
         """
         try:
-            # Try to extract JSON from the response
+            # Extract the first balanced JSON object from the response.
             json_str = self._extract_json(raw_text)
-            data = json.loads(json_str)
+            try:
+                data = json.loads(json_str)
+            except json.JSONDecodeError:
+                repaired = _normalize_allocation_thousands(json_str)
+                repaired = _repair_json_brackets(repaired)
+                data = json.loads(repaired)
 
             decisions = self._validate_decisions(data)
             pre_normalize_total = sum(d["allocation"] for d in decisions)
@@ -262,10 +550,14 @@ class Agent:
         if match:
             return match.group(1)
 
-        # Try to find raw JSON object
-        match = re.search(r"\{.*\}", text, re.DOTALL)
-        if match:
-            return match.group(0)
+        # Extract the first balanced top-level JSON object instead of a
+        # greedy {.*} match. A greedy match runs to the LAST '}' anywhere in
+        # the text, which swallows any prose or duplicated/echoed JSON blobs
+        # the model appended after the real response; the balanced scanner
+        # stops at the first object's own close.
+        candidate = _extract_first_balanced_object(text)
+        if candidate is not None:
+            return candidate
 
         raise ValueError("No JSON object found in response")
 

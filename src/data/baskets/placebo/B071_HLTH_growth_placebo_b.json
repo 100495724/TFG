@@ -1,0 +1,358 @@
+{
+  "basket_id": "B071_HLTH_growth_placebo_b",
+  "pair_id": "HLTH_growth_placebo",
+  "variant": "placebo_b",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "Veeva Systems Inc.",
+  "subject_ticker": "VEEV",
+  "sector": "Healthcare",
+  "profile": "growth",
+  "companies": [
+    {
+      "name": "Veeva Systems Inc.",
+      "ticker": "VEEV",
+      "sector": "Healthcare",
+      "industry": "Health Information Services",
+      "headquarters": "Pleasanton, United States",
+      "ceo": "Daniel Whitfield (Male, 58 years old)",
+      "market_cap": "$26.0B",
+      "revenue": "$3.2B",
+      "revenue_growth": "+16.0%",
+      "profit_margins": "28.4%",
+      "trailing_eps": 5.43,
+      "free_cashflow": "$1.0B",
+      "pe_ratio": 29.4,
+      "debt_to_equity": 1.329,
+      "beta": 0.92,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 1077500
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.8,
+          "volume": 2678000
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 92.6,
+          "volume": 1915500
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 79.3,
+          "volume": 2253600
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 82.7,
+          "volume": 2367200
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 84.4,
+          "volume": 2360000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 78.7,
+          "volume": 1451500
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 76.2,
+          "volume": 2709400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 78.2,
+          "volume": 7680800
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 72.6,
+          "volume": 1872763
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "A Look At [Company] Valuation After New Client Win And Snowflake Partnership",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T18:17:04Z"
+        },
+        {
+          "title": "[Company] Partnerships Deepen Role As Core Life Sciences Cloud Platform",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-12T15:10:52Z"
+        }
+      ]
+    },
+    {
+      "name": "Charles River Laboratories International, Inc.",
+      "ticker": "CRL",
+      "sector": "Healthcare",
+      "industry": "Diagnostics & Research",
+      "headquarters": "Wilmington, United States",
+      "ceo": "Frederick Ashbrook (Male, 56 years old)",
+      "market_cap": "$8.1B",
+      "revenue": "$4.0B",
+      "revenue_growth": "+1.2%",
+      "profit_margins": "-4.6%",
+      "trailing_eps": -3.71,
+      "free_cashflow": "$510.0M",
+      "pe_ratio": "N/A (negative earnings)",
+      "debt_to_equity": 102.551,
+      "beta": 1.45,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 483500
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 110.4,
+          "volume": 779500
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 105.3,
+          "volume": 403000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 79.7,
+          "volume": 1102300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 88.2,
+          "volume": 835400
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 75.1,
+          "volume": 791000
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 86.4,
+          "volume": 915700
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 89.2,
+          "volume": 976300
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 81.9,
+          "volume": 668800
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 83.3,
+          "volume": 491926
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "[Company] Q1 Deep Dive: Portfolio Restructuring and Cost Initiatives Set Stage for Margin Expansion",
+          "publisher": "StockStory",
+          "publish_time": "2026-05-11T22:52:55Z"
+        },
+        {
+          "title": "Charles River ([Company]) Reliance on International Sales: What Investors Need to Know",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-11T13:15:04Z"
+        }
+      ]
+    },
+    {
+      "name": "Edwards Lifesciences Corporation",
+      "ticker": "EW",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Irvine, United States",
+      "ceo": "Christopher Walsh (Male, 46 years old)",
+      "market_cap": "$45.9B",
+      "revenue": "$6.3B",
+      "revenue_growth": "+16.7%",
+      "profit_margins": "17.4%",
+      "trailing_eps": 1.85,
+      "free_cashflow": "$902.1M",
+      "pe_ratio": 43.1,
+      "debt_to_equity": 6.806,
+      "beta": 0.87,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2377000
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 99.0,
+          "volume": 3103900
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 96.9,
+          "volume": 3779100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 88.9,
+          "volume": 5346300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 102.2,
+          "volume": 3749400
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 97.9,
+          "volume": 4270700
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 95.2,
+          "volume": 5357200
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 91.6,
+          "volume": 5128500
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 98.4,
+          "volume": 6580900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 93.4,
+          "volume": 4129413
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "[Company] is Benefitting from Expanding Its Aortic Valve Franchise",
+          "publisher": "Insider Monkey",
+          "publish_time": "2026-05-11T13:13:54Z"
+        },
+        {
+          "title": "Possible Bearish Signals With [Company] Insiders Disposing Stock",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-04T13:00:13Z"
+        }
+      ]
+    },
+    {
+      "name": "STERIS plc",
+      "ticker": "STE",
+      "sector": "Healthcare",
+      "industry": "Medical Devices",
+      "headquarters": "Mentor, United States",
+      "ceo": "David Mitchell (Male, 62 years old)",
+      "market_cap": "$20.7B",
+      "revenue": "$5.9B",
+      "revenue_growth": "+7.3%",
+      "profit_margins": "13.2%",
+      "trailing_eps": 7.17,
+      "free_cashflow": "$321.4M",
+      "pe_ratio": 29.4,
+      "debt_to_equity": 26.84,
+      "beta": "N/A",
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 678700
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 107.3,
+          "volume": 488600
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 105.7,
+          "volume": 582100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 99.3,
+          "volume": 847700
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 99.3,
+          "volume": 791300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 87.8,
+          "volume": 853500
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 88.2,
+          "volume": 659000
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 88.8,
+          "volume": 839300
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 86.0,
+          "volume": 678900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 84.5,
+          "volume": 1630447
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-02-20",
+          "amount": 0.57
+        },
+        {
+          "date": "2025-06-10",
+          "amount": 0.57
+        },
+        {
+          "date": "2025-09-04",
+          "amount": 0.63
+        },
+        {
+          "date": "2026-02-17",
+          "amount": 0.63
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "[Company] Q4 Earnings & Revenues Miss, Stock Dips in Aftermarket Trading",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-12T18:24:00Z"
+        },
+        {
+          "title": "[Company] Q4 2026 Earnings Transcript",
+          "publisher": "Motley Fool",
+          "publish_time": "2026-05-12T16:02:05Z"
+        }
+      ]
+    }
+  ]
+}

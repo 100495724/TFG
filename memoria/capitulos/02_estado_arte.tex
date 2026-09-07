@@ -1,0 +1,301 @@
+% !TeX root = ../main.tex
+
+\chapter{Estado del arte}
+\label{chap:estado_arte}
+
+Este capítulo revisa los antecedentes sobre los que se apoya el trabajo. La revisión es selectiva, porque la literatura sobre sesgo en modelos de lenguaje es extensa y crece con rapidez, de modo que un recorrido exhaustivo resultaría poco informativo aquí. Se ha reunido en cambio aquello que sostiene alguna decisión concreta del diseño experimental, y cada sección cierra indicando cuál.
+
+El recorrido avanza desde las propiedades del instrumento hasta la formulación del problema. Las dos primeras secciones establecen qué características de los modelos de lenguaje condicionan la medida y qué se entiende aquí por sesgo, dado que la unidad que recibe la decisión es una empresa y no una persona. La tercera examina los paradigmas disponibles para medirlo y descarta los que exigen una respuesta correcta conocida; es también donde se introduce la distinción entre el desplazamiento medio de las decisiones y su estabilidad. Las secciones cuarta y quinta se ocupan de los sistemas multiagente, primero como mecanismo deliberativo y después como escenario en el que el sesgo puede modificarse durante la interacción. Las dos siguientes cubren las aplicaciones financieras de estos modelos y las estrategias de mitigación aplicables en tiempo de inferencia. La última reúne las limitaciones observadas y sitúa el trabajo frente a ellas. El diseño experimental que se deriva de todo lo anterior se desarrolla en el Capítulo~\ref{chap:metodologia}.
+
+\section{Fundamentos de los modelos de lenguaje}
+\label{sec:fundamentos_llm}
+
+Los modelos de lenguaje utilizados en este estudio pertenecen a la familia de modelos basados en la arquitectura \textit{Transformer}, introducida por Vaswani \textit{et al.}~\cite{vaswani2017attention}. Esta arquitectura prescinde de las redes recurrentes y utiliza mecanismos de atención para relacionar cada elemento con el resto de la secuencia, incluso cuando se encuentran alejados entre sí. Sobre esta base se han desarrollado los modelos de lenguaje autorregresivos modernos, que generan una respuesta estimando sucesivamente la distribución de probabilidad del siguiente token condicionada por el contexto precedente~\cite{brown2020language}.
+
+Esta naturaleza probabilística resulta especialmente relevante para el diseño experimental del presente trabajo. Cuando la generación emplea estrategias de muestreo, una misma entrada no determina necesariamente una única continuación, ya que la respuesta se obtiene seleccionando tokens de una distribución cuya forma depende tanto del modelo como de los parámetros de decodificación. Parámetros como la temperatura y el \textit{top-p} controlan este proceso; este último, conocido también como \textit{nucleus sampling}, restringe el muestreo al conjunto de tokens que concentra una determinada masa de probabilidad~\cite{holtzman2019curious}. Estas variables deben mantenerse constantes cuando se comparan distintas condiciones experimentales. Pese a ello, dos ejecuciones con una entrada idéntica pueden producir respuestas distintas, de modo que cualquier diferencia observada entre condiciones debe interpretarse frente a esa variabilidad propia del sistema y no frente a un cero teórico. Esta propiedad motiva las referencias de ruido empleadas en el diseño experimental, implementadas mediante la condición placebo y el agente ciego.
+
+Otra propiedad central es la capacidad de los modelos de adaptar su comportamiento a la información proporcionada en el contexto. Brown \textit{et al.}~\cite{brown2020language} mostraron que un modelo puede realizar nuevas tareas a partir de instrucciones y ejemplos incluidos directamente en la entrada, sin necesidad de actualizar sus parámetros. El condicionamiento contextual permite utilizar el \textit{prompt} no solo para describir la tarea, sino también para asignar funciones, proporcionar información específica o establecer restricciones sobre el comportamiento esperado. Además, se ha observado que los modelos pueden ser sensibles incluso a modificaciones del diseño del \textit{prompt} que preservan esencialmente su contenido semántico~\cite{sclar2024quantifying}. En este trabajo, esta capacidad de modificar el comportamiento mediante la información incluida en el \textit{prompt} es la base tanto de los distintos niveles de instrucción asignados a los agentes como de las intervenciones de mitigación evaluadas posteriormente.
+
+A esta característica se suma el desarrollo de modelos específicamente ajustados para seguir instrucciones. Procedimientos de ajuste supervisado y aprendizaje a partir de preferencias humanas han mostrado que el comportamiento de un modelo preentrenado puede orientarse hacia un mejor seguimiento de las intenciones expresadas por el usuario~\cite{ouyang2022training}. El resultado de este ajuste depende de los ejemplos, preferencias y criterios utilizados, por lo que no debe suponerse que todos los tipos de comportamiento o contenido hayan recibido una cobertura equivalente.
+
+\section{Sesgo y \textit{fairness} en modelos de lenguaje}
+\label{sec:sesgo_fairness}
+
+El término \textit{sesgo} se utiliza en el ámbito del aprendizaje automático para describir fenómenos distintos y no necesariamente equivalentes. En el caso del procesamiento del lenguaje natural puede referirse, entre otros comportamientos, a la reproducción de estereotipos, a diferencias en el tratamiento de grupos sociales o a decisiones que favorecen sistemáticamente a unas categorías frente a otras. Por ello, no puede determinarse la presencia de sesgo sin especificar la tarea y el daño que se pretende estudiar. Blodgett \textit{et al.}~\cite{blodgett2020language} señalan precisamente que una parte de la literatura sobre sesgo en procesamiento del lenguaje emplea el término sin concretar suficientemente qué comportamiento se considera perjudicial, para quién y bajo qué criterio.
+
+Esta necesidad de concretar el objeto de análisis cobra especial importancia en los modelos de lenguaje de propósito general. Estos sistemas pueden manifestar asociaciones sociales tanto en el texto generado como en tareas en las que la salida constituye una valoración, recomendación o decisión. Gallegos \textit{et al.}~\cite{gallegos2024bias} distinguen diferentes formas de operacionalizar el sesgo en LLM y muestran que su evaluación puede realizarse sobre representaciones internas, probabilidades del modelo o directamente sobre las respuestas generadas. En consecuencia, detectar una asociación estereotipada en el lenguaje y detectar un tratamiento diferencial en una tarea de decisión son problemas relacionados, pero no equivalentes.
+
+En este trabajo interesa principalmente el segundo caso, el tratamiento diferencial en una tarea de asignación. La salida de cada agente no se evalúa por la presencia de una determinada expresión lingüística, sino por la asignación monetaria que realiza sobre un conjunto de empresas. El comportamiento de interés aparece cuando una modificación de información que debería permanecer ajena a los fundamentos financieros se asocia con un cambio en esa asignación. Esta definición traslada el estudio desde las asociaciones presentes en el lenguaje hacia sus posibles consecuencias en una tarea de asignación de recursos.
+
+Hablar de \textit{fairness} o equidad algorítmica exige definir qué diferencias entre las asignaciones se consideran aceptables. No existe un criterio único que sea válido para todos los sistemas, ya que cada definición establece qué aspectos del resultado no deberían depender del individuo o grupo afectado~\cite{gallegos2024bias}. En este trabajo se toma como referencia la perspectiva contrafactual.
+
+Un contrafactual es un escenario hipotético que plantea qué habría ocurrido con el mismo individuo o entidad si una característica determinada hubiera sido distinta. A partir de esta idea, Kusner \textit{et al.}~\cite{kusner2017counterfactual} definen una decisión como contrafactualmente justa cuando su resultado para un individuo no cambiaría en un escenario en el que su atributo sensible fuera diferente. Su propuesta utiliza un modelo causal estructural para construir y comparar esos escenarios. Este trabajo no reproduce esa formalización causal completa, sino que traslada su principio de comparación a un experimento controlado en el que se modifica directamente el atributo estudiado y se mantiene constante el resto de la información presentada a los agentes. A partir de este punto, se denomina pareja contrafactual a la formada por una cesta de control y una variante que modifica únicamente el atributo estudiado.
+
+El sujeto de la decisión también difiere. Los enfoques de \textit{fairness} contrafactual se plantean habitualmente sobre decisiones que afectan a un individuo perteneciente a un grupo protegido, mientras que aquí la unidad que recibe la asignación es una empresa y los atributos estudiados son características asociadas a ella. Por ello, el posible efecto adverso no se materializa como una decisión desfavorable sobre un individuo concreto, sino como un patrón de asignación de capital que favorezca o penalice sistemáticamente a empresas asociadas a determinadas características. Este tratamiento diferencial por asociación es el comportamiento que el diseño experimental pretende detectar.
+
+Sobre esta base se construyen las parejas contrafactuales utilizadas posteriormente. Dos versiones de una misma empresa mantienen constantes sus fundamentos financieros y modifican únicamente el atributo objeto de estudio. Si las decisiones fueran invariantes respecto a esa modificación, ambas
+versiones deberían producir comportamientos comparables, salvo por la variabilidad propia del proceso de generación descrita en la Sección~\ref{sec:fundamentos_llm}. La comparación contrafactual debe realizarse, en consecuencia, respecto a esa variabilidad propia del sistema y no exigir igualdad exacta entre dos ejecuciones concretas.
+
+Esto delimita el alcance del término \textit{sesgo} en el resto de la memoria. El objetivo es estudiar las diferencias que aparecen en una tarea de inversión controlada cuando se mantienen los mismos datos financieros y solo se modifica la información sobre el género de la dirección ejecutiva o la localización de la sede. La forma de cuantificar esas diferencias y las limitaciones de los distintos métodos de medición se desarrollan en la sección siguiente.
+
+\section{Medición del sesgo}
+\label{sec:medicion_sesgo}
+
+\subsection{Métodos de evaluación}
+\label{subsec:paradigmas_medicion}
+
+La forma de medir el sesgo depende del nivel del sistema en el que se sitúe la evaluación. Una primera familia de métodos opera sobre propiedades internas del modelo, como las asociaciones presentes en sus representaciones vectoriales. Estas métricas permiten detectar relaciones entre conceptos y grupos sociales sin necesidad de ejecutar una tarea aplicada, pero su capacidad para anticipar el comportamiento posterior del sistema es limitada. Goldfarb-Tarrant \textit{et al.}~\cite{goldfarb2021intrinsic}, tras comparar métricas intrínsecas y extrínsecas en distintos modelos, tareas y lenguas, no encuentran una correlación fiable entre ambas categorías. De este modo, para estudiar las consecuencias del sesgo en una decisión concreta resulta más informativo observar directamente el comportamiento producido en esa tarea.
+
+Una segunda forma utiliza bancos de pruebas construidos específicamente para provocar o detectar asociaciones estereotipadas. CrowS-Pairs~\cite{nangia2020crows} compara pares de oraciones que expresan en distinto grado un estereotipo; StereoSet~\cite{nadeem2021stereoset} evalúa preferencias entre asociaciones estereotipadas y alternativas; y BBQ~\cite{parrish2022bbq} plantea preguntas en contextos informativos y ambiguos para comprobar si el modelo recurre a estereotipos sociales. Estos instrumentos proporcionan escenarios controlados y una referencia explícita con la que clasificar las respuestas, por lo que resultan adecuados para estudiar la reproducción de estereotipos mediante salidas categóricas.
+
+Su objetivo, sin embargo, es distinto del considerado en esta memoria. La decisión de inversión no contiene una respuesta categórica que pueda etiquetarse directamente como correcta, neutral o estereotipada. La salida es una cantidad monetaria cuyo posible tratamiento diferencial se puede observar al compararla con la decisión obtenida para la misma empresa bajo otra condición. La ausencia de verbalización explícita del atributo tampoco garantiza que este no haya influido sobre la decisión.
+
+Esta última diferencia ha comenzado a estudiarse mediante pruebas centradas en las decisiones de agentes basados en LLM. Li \textit{et al.}~\cite{li2025actions} muestran que algunas diferencias apenas visibles cuando se pregunta al modelo de forma directa pueden aparecer cuando debe tomar decisiones que afectan a otras personas. Para ello, comparan las respuestas del agente ante perfiles equivalentes que solo se diferencian en una característica demográfica, siguiendo la lógica de los estudios que presentan candidaturas similares y observan si reciben un trato distinto. Sin embargo, los resultados se miden a partir de la diferencia entre las tasas obtenidas por cada grupo, mediante la métrica \textit{demographic parity difference}. 
+
+Las métricas tradicionales de \textit{fairness} de grupo ofrecen otra forma de evaluación. Medidas como la paridad demográfica comparan tasas de decisión entre grupos, mientras que criterios como \textit{equalized odds} incorporan además la relación entre la decisión y un resultado observado. Estas métricas resultan apropiadas cuando existe una población dividida en grupos y una decisión que puede resumirse mediante tasas o categorías; varias de ellas requieren además una variable objetivo que actúe como referencia~\cite{gallegos2024bias}. Este supuesto difiere del escenario estudiado aquí, donde una misma empresa recibe una asignación monetaria y no existe una cantidad ``correcta'' de capital que permita determinar aciertos y errores.
+
+El método que mejor se adapta a este escenario es, en consecuencia, la comparación contrafactual pareada introducida en la Sección~\ref{sec:sesgo_fairness}. En lugar de comparar tasas agregadas entre dos poblaciones distintas, se contrastan las decisiones obtenidas para dos versiones de la misma unidad experimental, manteniendo constantes las variables que no se quieren modificar. La diferencia entre ambas asignaciones proporciona así una medida directa del efecto del atributo en la tarea.
+
+\subsection{Variabilidad, arbitrariedad y estimación del ruido}
+\label{subsec:variabilidad_medicion}
+
+Al comparar de forma pareada una cesta de control y su variante surge otra cuestión: qué aspecto de la distribución de las diferencias se debe analizar. La opción más sencilla es estudiar su media. Si una variante recibe sistemáticamente menos capital que su control, el \textit{gap} medio será negativo y mostrará una tendencia común en las asignaciones. Sin embargo, dos condiciones pueden presentar medias similares y mostrar una estabilidad muy distinta entre ejecuciones.
+
+Este problema ya se ha estudiado en la literatura sobre arbitrariedad en la predicción. Cooper \textit{et al.}~\cite{cooper2024arbitrariness} analizan distintos modelos que, aunque se obtienen mediante el mismo procedimiento y cumplen los mismos criterios de validez, pueden tomar decisiones diferentes sobre una misma persona. Denominan \textit{arbitrariedad sistemática} a los casos en los que esa falta de consistencia afecta más a unos grupos que a otros. Al tener en cuenta esta variabilidad, observan que las diferencias entre grupos se reducen en muchos de los bancos de pruebas analizados. Esto sugiere que parte de la desigualdad detectada podría deberse a una variabilidad que no se había considerado. También muestran que cumplir una métrica agregada de \textit{fairness} no garantiza que el sistema sea igual de consistente para todos los casos. Por tanto, la equidad de los resultados y la estabilidad de las decisiones deben estudiarse por separado.
+
+El origen de la arbitrariedad estudiada por Cooper \textit{et al.} y el considerado en esta memoria es distinto. En su trabajo, la variabilidad aparece entre modelos distintos que podrían haberse obtenido a partir de un mismo procedimiento de aprendizaje. Aquí se estudian ejecuciones repetidas de un mismo modelo y una misma configuración. La arbitrariedad puede aparecer, por tanto, dentro de un sistema ya fijado, sin depender de qué modelo concreto haya sido seleccionado previamente. En ambos casos, la ausencia de diferencias en los resultados agregados puede ocultar que las decisiones son menos estables en unas condiciones que en otras.
+
+En los modelos de lenguaje esta cuestión adquiere una relevancia adicional debido a la variabilidad propia de la generación. Song \textit{et al.}~\cite{song2025good} señalan que numerosas evaluaciones se basan en una única generación por ejemplo y que la variabilidad entre generaciones no suele reflejarse mediante estadísticas como la desviación típica. En esas condiciones, dos sistemas con un rendimiento medio semejante pueden presentar grados de estabilidad muy distintos sin que esa diferencia quede reflejada en la métrica principal de evaluación.
+
+Partiendo de lo anterior, el atributo puede afectar a las decisiones de dos maneras. La primera consiste en modificar la asignación en una dirección concreta: la variante recibe de forma consistente más o menos capital que el control. La segunda consiste en aumentar la variabilidad: la asignación media puede mantenerse próxima a la del control, pero las decisiones cambian más entre ejecuciones cuando el atributo está presente. Siguiendo la terminología de Cooper \textit{et al.}~\cite{cooper2024arbitrariness}, este segundo caso puede considerarse una forma de arbitrariedad sistemática cuando aparece de manera repetida en determinadas condiciones. La diferencia es que aquí se comparan una cesta de control y su variante, y no distintos grupos de personas.
+
+Como se explicó en la Sección~\ref{sec:fundamentos_llm}, dos ejecuciones con la misma entrada y configuración no tienen por qué producir exactamente la misma asignación. Por ello, ni un \textit{gap} distinto de cero en una pareja concreta ni una varianza elevada de los \textit{gaps} bastan por sí solos para atribuir las diferencias al atributo manipulado, ya que ambos pueden deberse en parte al propio proceso de generación. Los resultados deben interpretarse teniendo en cuenta la variabilidad que produce el sistema cuando las condiciones contienen la misma información. Para estimarla, el diseño incorpora dos controles complementarios: una condición placebo formada por pares idénticos, que actúa como referencia externa de ruido, y un agente ciego al atributo, que proporciona una referencia interna sobre las mismas parejas experimentales.
+
+Al evaluar varios modelos, niveles de instrucción y atributos se realizan numerosos contrastes estadísticos. Cuantos más contrastes se llevan a cabo, mayor es la probabilidad de que alguno resulte significativo por azar. Para reducir este riesgo, se aplica el procedimiento de Benjamini y Hochberg~\cite{benjamini1995controlling}, que controla la proporción esperada de falsos positivos entre los resultados considerados significativos. En los análisis posteriores, los contrastes se agrupan en familias y la corrección se aplica dentro de cada una antes de interpretar los resultados.
+
+En resumen, este trabajo compara las asignaciones obtenidas para cada cesta de control y su variante desde dos puntos de vista: la diferencia media de capital y la variabilidad de esas diferencias entre ejecuciones. Los resultados se comparan con el nivel de ruido estimado mediante los controles del experimento, y los contrastes se corrigen dentro de las familias definidas. Las métricas y pruebas estadísticas utilizadas se explican con detalle en el Capítulo~\ref{chap:metodologia}.
+
+\section{Sistemas multiagente y dinámica deliberativa}
+\label{sec:mas_deliberacion}
+
+La utilización de modelos de lenguaje como agentes permite construir sistemas en los que varias instancias reciben una tarea, mantienen estados o contextos propios y se comunican para alcanzar un resultado conjunto. A diferencia de la generación de respuestas independientes, en la que se obtienen varias respuestas sin interacción y se agregan posteriormente, un sistema multiagente introduce dependencias entre las decisiones: la respuesta producida por un agente puede convertirse en parte del contexto que condiciona las respuestas posteriores de los demás. El comportamiento del sistema depende entonces, no solo de los modelos que lo componen, sino también de cómo se definen sus
+roles y de la estructura de comunicación empleada.
+
+Una de las formas habituales de especializar estos sistemas consiste en asignar funciones mediante el propio \textit{prompt}. El marco CAMEL~\cite{li2023camel}, por ejemplo, utiliza \textit{role-playing} para condicionar a distintos agentes hacia funciones complementarias y facilitar su cooperación. Esta especialización no forma únicamente una descripción superficial del agente, las instrucciones que definen su función modifican el contexto desde el que interpreta la tarea y genera sus respuestas. En esta línea, ChatEval muestra que la diversidad de roles puede
+afectar al resultado de la deliberación y que utilizar descripciones de rol idénticas para todos los agentes puede degradar el rendimiento del sistema~\cite{chan2024chateval}. Estos trabajos justifican que en este estudio se utilicen roles con distintos niveles de detalle para los miembros del comité.
+
+La interacción entre agentes se ha estudiado especialmente mediante protocolos de debate, en los que los agentes revisan y discuten las respuestas de los demás antes de alcanzar una conclusión. Du \textit{et al.}~\cite{du2023improving} proponen generar primero respuestas individuales y permitir después que varios agentes examinen las respuestas y razonamientos de los demás durante sucesivas rondas. En sus experimentos, este procedimiento mejora el razonamiento y reduce los errores factuales respecto al uso de un solo agente. Liang \textit{et al.}~\cite{liang2024encouraging} muestran igualmente que el intercambio entre agentes puede hacer surgir alternativas que un modelo no genera cuando revisa por sí solo su propia respuesta. La deliberación permite así incorporar información procedente de distintas respuestas iniciales y revisar decisiones previas.
+
+Sin embargo, la deliberación no mejora siempre el resultado. Su efecto depende de factores como las opiniones iniciales, la composición del grupo y la forma en que los agentes revisan sus respuestas. Los trabajos recientes sobre debate multiagente muestran que un intercambio sencillo entre agentes no siempre ofrece mejores resultados que combinar sus respuestas sin deliberación. También señalan que la utilidad del debate depende, entre otros factores, de que las respuestas iniciales sean suficientemente diversas~\cite{zhu2026demystifying}. Por tanto, añadir más agentes o rondas de comunicación no mejora por sí solo el comportamiento del sistema.
+
+En este contexto, la composición del comité es otro factor que puede influir en el comportamiento del sistema. Un comité homogéneo utiliza un mismo modelo en los distintos agentes, aunque estos puedan recibir contextos o roles diferentes, mientras que un comité heterogéneo combina modelos distintos dentro del mismo proceso deliberativo. Estas dos configuraciones pueden generar grados diferentes de diversidad inicial y de dependencia entre las respuestas. La literatura sobre debate proporciona evidencia de que dicha diversidad puede modificar el resultado de la interacción~\cite{chan2024chateval,zhu2026demystifying}, aunque su efecto depende de la tarea y del protocolo empleado. Por este motivo, este estudio compara comités homogéneos y heterogéneos utilizando el mismo procedimiento de deliberación.
+
+La comunicación hace además que el sistema deba entenderse como un proceso dinámico y no únicamente por su salida final. Chuang \textit{et al.}~\cite{chuang2024simulating} muestran, en redes de agentes basados en LLM, que el intercambio iterativo puede hacer que las opiniones se acerquen o, por el contrario, que los agentes se dividan en grupos con posturas diferentes, dependiendo de cómo estén condicionados. Cada ronda modifica el contexto disponible y puede alterar tanto la posición individual como el grado de acuerdo entre los participantes. La interacción puede reducir diferencias iniciales, pero también generar dependencias entre respuestas y hacer que una posición o error previamente localizado influya sobre otros miembros del sistema.
+
+Una vez que comienza la deliberación, la información que influye en cada agente ya no procede únicamente de su entrada inicial. Un miembro del comité que no reciba directamente un dato concreto puede verse influido posteriormente si otros agentes lo han observado y lo incorporan a sus decisiones o justificaciones. La estructura de comunicación determina así no solo qué información recibe inicialmente cada agente, sino también cuál puede llegarle de forma indirecta durante la deliberación. Wu \textit{et al.}~\cite{wu2025can} muestran que la opinión de la mayoría puede dificultar que un agente detecte y corrija un error por sí solo. Además, cuando varios agentes coinciden en una respuesta equivocada, esta no siempre se corrige durante la interacción. Zhu \textit{et al.}~\cite{zhu2026demystifying} señalan igualmente que las respuestas de baja calidad pueden propagarse entre rondas en lugar de ser descartadas por el grupo.
+
+Estas posibilidades tienen dos consecuencias directas para el diseño experimental. Por una parte, mantener un agente ciego al atributo permite comparar su respuesta antes de cualquier comunicación con las que produce después de recibir las respuestas de los agentes que sí conocen esa información. De este modo, se puede detectar si las diferencias observadas en los otros miembros terminan apareciendo también en sus decisiones. Por otra parte, la comunicación puede modificar la estabilidad del sistema. Cuando las variaciones iniciales de los agentes no coinciden, el intercambio puede compensarlas y acercar sus respuestas. Si, en cambio, unos agentes adoptan o refuerzan las mismas señales de otros, sus decisiones pueden volverse más dependientes. Por ello, no basta con analizar la asignación media o la decisión final, también es necesario observar cómo cambia la variabilidad y hasta qué punto las respuestas de unos agentes influyen en las de otros.
+
+En consecuencia, el protocolo empleado en este trabajo conserva una decisión inicial obtenida antes de cualquier comunicación y registra después la respuesta de cada agente durante cuatro rondas de interacción. En cada una de ellas, los agentes ven las respuestas de los demás y deben debatirlas antes de actualizar su asignación. El número de rondas es fijo y el proceso no se detiene cuando se alcanza un consenso, de modo que todas las condiciones experimentales tengan la misma duración y puedan compararse ronda por ronda. Esta separación permite distinguir el comportamiento inicial de los cambios que aparecen durante la interacción. La sección siguiente analiza cómo este intercambio de información puede afectar al sesgo en sistemas multiagente.
+
+
+\section{Sesgo emergente en sistemas multiagente}
+\label{sec:sesgo_mas}
+
+Aunque cada agente pueda evaluarse por separado, la comunicación y la combinación de sus respuestas pueden hacer que el comité se comporte de una forma distinta a la de sus miembros aislados. En este contexto, el término \textit{sesgo emergente} puede entenderse de dos maneras. En primer lugar, el sesgo puede aparecer como resultado de la interacción entre los agentes, aunque no se observe de la misma forma al evaluarlos individualmente. En segundo lugar, puede surgir durante el propio desarrollo de la deliberación, ya que las decisiones iniciales pueden no mostrar un patrón sesgado y este puede aparecer o intensificarse después de varias rondas de comunicación.
+
+Los primeros trabajos sobre interacción social entre agentes basados en LLM ya muestran que la deliberación no elimina necesariamente las asociaciones aprendidas por los modelos. Taubenfeld \textit{et al.}~\cite{taubenfeld2024systematic}, al estudiar simulaciones de debates políticos, observan que los agentes tienden a reproducir sesgos sociales del modelo base incluso cuando se les asignan perspectivas específicas desde las que deben argumentar. El rol proporcionado mediante el \textit{prompt} no garantiza, por lo tanto, que las asociaciones del modelo dejen de influir en su comportamiento.
+
+Borah y Mihalcea~\cite{borah2024towards} estudian específicamente el sesgo implícito de género durante interacciones multiagente. Sus experimentos muestran asociaciones sesgadas en una proporción elevada de los escenarios evaluados y, además, que estas asociaciones pueden intensificarse después de la interacción entre agentes. Estos resultados muestran que no basta con estudiar el sesgo inicial de cada modelo, ya que la interacción entre agentes puede mantenerlo o reforzarlo.
+
+Nguyen \textit{et al.}~\cite{nguyen2025social} estudian cómo aparece y cambia el sesgo a lo largo de una interacción multiagente. Los autores la descomponen en una fase inicial, que denominan \textit{Genesis}, en la que cada agente genera una respuesta de forma independiente antes de recibir información de sus compañeros, y una fase posterior de comunicación iterativa. Sobre esta estructura distinguen tres fenómenos: la \textit{emergencia}, cuando aparece por primera vez una respuesta sesgada; la \textit{propagación}, cuando dicho comportamiento alcanza a otros agentes mediante la comunicación; y la \textit{amplificación}, cuando su presencia aumenta a lo largo de la interacción.
+
+Sus experimentos sobre tres bancos de pruebas de estereotipos revelan efectos considerables. Dependiendo de la configuración, la comunicación llega a provocar hasta un 70\,\% de nueva emergencia de sesgo, permite extender respuestas sesgadas a más del 80\,\% de los agentes y produce amplificaciones superiores a tres veces el nivel inicial \cite{nguyen2025social}. La emergencia, sin embargo, se concentra en las dos primeras etapas, apareciendo alrededor de la mitad de los casos durante la génesis, antes de cualquier intercambio, y casi todo el resto en el primer turno de comunicación. Las rondas posteriores apenas introducen casos nuevos de sesgo y actúan sobre todo estabilizando comportamientos ya establecidos. Por esta razón, buena parte del fenómeno se sitúa fuera del alcance de la influencia social entre agentes, lo que justifica analizar el estado inicial y la deliberación por separado.
+
+En la mayoría de las condiciones de Nguyen \textit{et al.}, los agentes reciben roles asociados a grupos sociales relacionados con el estereotipo evaluado, de modo que la identidad de grupo forma parte de la propia definición del agente. Su diseño incluye además una condición neutral o \textit{Ungrouped}, sin asignación de grupo social. Incluso en esta condición, los sistemas multiagente muestran en numerosas configuraciones una robustez inferior a la de los agentes individuales, lo que indica que la pérdida de robustez no depende exclusivamente de introducir el atributo social mediante el rol \cite{nguyen2025social}.
+
+El trabajo de Madigan \textit{et al.}~\cite{madigan2025emergent} aborda el problema desde una perspectiva diferente y más próxima al dominio financiero. Los autores construyen sistemas de tres agentes basados en distintos LLM y los evalúan en tareas de clasificación tabular relacionadas con ingreso y riesgo a la hora de conceder un crédito. El comportamiento del sistema multiagente se compara con el de sus modelos funcionando individualmente, lo que permite estudiar si las propiedades de equidad del conjunto pueden deducirse a partir de las de sus componentes.
+
+Sin embargo, los resultados muestran que esta relación no es estable. En términos agregados, la mediana del cambio resulta ligeramente favorable en la mayoría de métricas, con la diferencia de precisión como excepción, de modo que los sistemas multiagente tienden a reducir ligeramente el sesgo. Las distribuciones presentan, no obstante, colas positivas pronunciadas, y existen configuraciones en las que el sistema amplifica el sesgo hasta aproximadamente diez veces respecto a alguno de sus componentes \cite{madigan2025emergent}. Que una tendencia promedio favorable conviva con incrementos de esa magnitud obliga a evaluar el sistema completo en lugar de deducir sus propiedades desde el comportamiento aislado de los modelos que lo forman.
+
+Los trabajos de Nguyen \textit{et al.}~\cite{nguyen2025social} y Madigan \textit{et al.}~\cite{madigan2025emergent} también difieren de este estudio en la forma de medir el sesgo. Nguyen \textit{et al.} utilizan tareas de respuesta múltiple con una alternativa estereotipada y otra neutral, mientras que Madigan \textit{et al.} emplean tareas de clasificación binaria sobre personas y comparan métricas de \textit{fairness} entre grupos. Ambos análisis se basan en resultados categóricos y en diferencias agregadas, pero ninguno estudia la dispersión entre ejecuciones repetidas de una misma configuración. Como se explicó en la Sección~\ref{subsec:variabilidad_medicion}, esta medida permite detectar casos en los que la asignación media apenas cambia, pero la presencia del atributo aumenta la variabilidad de las decisiones. Este planteamiento guarda relación con las colas largas descritas por Madigan \textit{et al.}, ya que estas reflejan diferencias entre sistemas distintos, mientras que aquí se analizan diferencias entre ejecuciones de un mismo sistema. En ambos casos, los resultados agregados no bastan para describir por completo el comportamiento, aunque la variabilidad se estudia a escalas diferentes.
+
+Por ello, en esta investigación se conservan separadas la respuesta de génesis y las rondas posteriores de deliberación. Las composiciones homogéneas y heterogéneas se comparan bajo un protocolo idéntico, de manera que la diversidad de modelos no quede confundida con la presencia misma de deliberación. Y se adopta como medida principal la dispersión entre repeticiones sobre una asignación continua sin respuesta correcta, comparada contra un control de ruido interno que no accede al atributo.
+
+
+\section{Aplicaciones financieras de modelos de lenguaje}
+\label{sec:aplicaciones_financieras}
+
+El sector financiero combina información estructurada y textual en buena parte de sus decisiones, lo que lo convierte en un escenario adecuado para el uso de modelos de lenguaje. Estados financieros, indicadores de mercado y medidas de riesgo conviven con noticias, informes corporativos o comunicaciones empresariales cuya interpretación exige procesar lenguaje natural. Existen bancos de pruebas específicos como FinBen que recogen esa diversidad mediante tareas de extracción de información, análisis textual, generación, gestión de riesgos, predicción y toma de decisiones~\cite{xie2024finben}. En sus resultados se puede observar que los modelos evaluados rinden bien en extracción y análisis de texto, pero encuentran dificultades en aquellas tareas que requieren razonamiento avanzado o predicción. 
+
+Una línea de investigación ha estudiado la capacidad de estos modelos para extraer señales económicas de información textual. Lopez-Lira y Tang~\cite{lopez2026can} analizan titulares financieros posteriores al corte temporal de conocimiento de los modelos y encuentran que las valoraciones producidas por LLM avanzados contienen información predictiva sobre la reacción inicial del mercado y sobre su evolución posterior. Modelos de propósito general, que no han sido concebidos como sistemas de valoración de activos, son capaces de extraer de las noticias señales relevantes para una decisión financiera.
+
+El uso de estas herramientas se ha extendido desde el análisis de información hacia la selección de inversiones. Ko y Lee~\cite{ko2024can} recurren a ChatGPT para elegir activos de distintas clases y observan que las carteras construidas sobre esas selecciones presentan mejores propiedades de diversificación que las obtenidas por selección aleatoria. Su estudio muestra cómo el modelo puede dejar de ocupar únicamente el papel de herramienta de procesamiento textual y pasar a intervenir en la propia decisión de inversión.
+
+Que estas herramientas puedan recomendar inversiones obliga a examinar sus errores más allá de la precisión predictiva. Una recomendación financieramente razonable puede reflejar al mismo tiempo asociaciones sistemáticas que alteran qué activos reciben capital. Winder \textit{et al.}~\cite{winder2025biased} evalúan recomendaciones de inversión generadas por varios LLM y detectan mayores riesgos relacionados con la concentración geográfica y sectorial, el seguimiento de tendencias o la asignación hacia gestión activa. Los autores vinculan parte de estos patrones con sesgos presentes en los datos de entrenamiento y comprueban que distintas intervenciones de mitigación mediante instrucciones reducen los riesgos observados solo de forma parcial.
+
+Un antecedente todavía más próximo al diseño de esta memoria es el de Wang y Gu~\cite{wang2026invests}. Los autores desarrollan una auditoría de recomendaciones financieras generadas por LLM con dos vertientes: una centrada en las características del inversor y otra en las de la persona que gestiona el fondo. En la primera, la selección de fondos apenas varía entre grupos demográficos y responde a criterios financieros, mientras que las cantidades recomendadas sí son diferentes cuando el nombre del inversor señala raza o género, con edad e ingresos idénticos. En la segunda, las asignaciones de capital favorecen a gestores hombres y no negros. Los indicadores financieros del fondo permanecen constantes mientras se modifican las señales demográficas, y la variable de salida es directamente la cantidad monetaria que el sistema recomienda invertir.
+
+La forma de presentar el atributo también influye en las decisiones. Las diferencias raciales se mantienen incluso cuando la característica se indica de manera explícita, mientras que las relacionadas con el género son mayores cuando este se deduce a partir del nombre que cuando se declara directamente~\cite{wang2026invests}. Por tanto, el efecto de una característica demográfica no depende únicamente de que aparezca en la información, sino también de cómo se presenta.
+
+El trabajo de Wang y Gu comparte con el diseño de esta memoria dos elementos: una decisión monetaria continua y el control de las características financieras mientras se modifica un atributo estudiado. Las diferencias son igualmente claras. Wang y Gu evalúan recomendaciones producidas por agentes individuales y caracterizan el trato diferencial mediante cambios en la asignación media y modelos de regresión. Queda fuera de su alcance cómo evoluciona esa sensibilidad durante una deliberación entre varios agentes, y también si la presencia del atributo altera la dispersión de las decisiones entre ejecuciones repetidas de una misma configuración.
+
+La tarea de inversión utilizada en esta memoria sigue este enfoque, ya que el sesgo se evalúa a partir de las asignaciones realizadas por los agentes. Estos reciben información sobre varias empresas y reparten entre ellas un presupuesto fijo, con roles profesionales que separan perspectivas habituales del análisis de inversión: fundamentos empresariales, información reciente y sentimiento, y evaluación del riesgo. El objetivo no consiste en determinar si la cartera resultante maximiza la rentabilidad futura, sino en disponer de una decisión económica continua donde pequeñas variaciones en la información se traducen de forma directa en diferencias de capital asignado. Una asociación aprendida por el modelo puede dejar así de manifestarse únicamente como una expresión o un estereotipo y trasladarse al reparto de un recurso económico. Así, en el diseño experimental propuesto se adopta una asignación monetaria como medida, se mantienen constantes los fundamentales financieros al manipular el atributo y se extiende esta línea de auditoría a un comité deliberante, considerando junto al desplazamiento medio la dispersión de las decisiones entre repeticiones.
+
+\section{Mitigación de sesgo}
+\label{sec:estado_arte_mitigacion}
+
+Las estrategias de mitigación de sesgo en modelos de lenguaje actúan en distintos momentos del ciclo de desarrollo. Algunas modifican los datos de entrenamiento, los parámetros o las representaciones internas del modelo; otras intervienen únicamente durante la inferencia, mediante instrucciones, ejemplos o mecanismos de revisión de la respuesta~\cite{gallegos2024bias}. Esta segunda familia resulta especialmente accesible cuando se emplean modelos de terceros o servicios mediante API, ya que permite alterar el comportamiento sin acceso a los pesos ni un nuevo proceso de entrenamiento.
+
+Que los modelos instruccionales respondan a indicaciones explícitas de equidad ha provocado la aparición de distintas técnicas de mitigación mediante \textit{prompting}. Ganguli \textit{et al.}~\cite{ganguli2023capacity} estudian lo que denominan \textit{moral self-correction} y muestran que los modelos suficientemente grandes y ajustados mediante preferencias humanas reducen sus respuestas estereotipadas o discriminatorias cuando se les pide de forma explícita que no se apoyen en atributos como la raza o el género. En tareas de decisión, Tamkin \textit{et al.}~\cite{tamkin2023evaluating} muestran que modificar las instrucciones dadas al modelo puede reducir las diferencias demográficas observadas en distintas situaciones hipotéticas. De este modo, una intervención expresada solo en lenguaje natural puede alterar el tratamiento de un atributo sensible sin tocar los parámetros del modelo.
+
+Se pueden redactar instrucciones más elaboradas que la prohibición explícita de utilizar determinados atributos. Xu \textit{et al.}~\cite{xu2024walking} proponen \textit{Perspective-Taking Prompting}, una estrategia que conduce al modelo a considerar perspectivas humanas diferentes antes de responder. Esta estrategia es evaluada sobre modelos comerciales y abiertos con reducciones apreciables de toxicidad y sesgo y responde a las restricciones de acceso de los modelos comerciales, sobre los que no resulta posible aplicar intervenciones que exigen conocer sus parámetros o realizar un entrenamiento adicional. El \textit{prompt} funciona en estos casos como una capa de control aplicada durante la inferencia y no solo como una descripción de la tarea.
+
+La eficacia de este tipo de intervenciones depende de que el modelo reconozca el comportamiento que se pretende corregir, interprete correctamente la instrucción y modifique su respuesta sin introducir otros errores. La literatura sobre autocorrección muestra resultados distintos según el tipo de tarea. Donde Ganguli \textit{et al.}~\cite{ganguli2023capacity} encuentran capacidad de autocorrección en determinados problemas de sesgo y discriminación, Huang \textit{et al.}~\cite{huang2024large} muestran que en tareas de razonamiento pedir al modelo que revise su propia respuesta sin información externa fiable no produce una mejora consistente y llega a degradar el resultado. La autocorrección mediante instrucciones es una capacidad dependiente del contexto y no una garantía general.
+
+Aunque una intervención reduzca la diferencia inicial, también puede generar otra en sentido contrario. Ganguli \textit{et al.}~\cite{ganguli2023capacity} observan este comportamiento en una tarea de admisión, en la que su modelo de mayor tamaño discrimina en contra de los estudiantes negros en un 3\,\% cuando se plantea la pregunta sin más, y a favor de ellos en un 7\,\% cuando se añaden una instrucción de no discriminación y razonamiento explícito. El efecto se agranda según aumenta el ajuste mediante preferencias humanas. Los propios autores señalan que determinar si este resultado es deseable depende del contexto. Sin embargo, el experimento muestra que reducir una diferencia inicial también puede modificar las decisiones en sentido contrario. Por ello, al evaluar una medida de mitigación no basta con comprobar si disminuye el efecto que se quiere corregir; también es necesario verificar que no aparezca una nueva diferencia sistemática en la dirección opuesta.
+
+El problema adquiere una dificultad añadida en sistemas multiagente, donde una entrada problemática puede alcanzar a otros miembros mediante la comunicación. Peigné \textit{et al.}~\cite{peigne2025multi} estudian esta posibilidad en un sistema donde uno de los agentes recibe una instrucción maliciosa y puede transmitirla al resto a través de varias rondas de comunicación. Para limitar esa propagación evalúan cuatro defensas: instrucciones de seguridad pasivas, que advierten al agente de que desconfíe de los mensajes sospechosos; instrucciones activas, que le ordenan reaccionar frente al contenido malicioso; y dos variantes de \textit{memory vaccines}, que insertan en la memoria del agente el registro de una respuesta segura previa. Estas defensas reducen la propagación de las instrucciones maliciosas, pero como consecuencia, los autores observan una degradación en la capacidad de colaboración del sistema.
+
+Además de estudiar la aparición espontánea de sesgo durante la interacción descrita en la Sección~\ref{sec:sesgo_mas}, Nguyen \textit{et al.}~\cite{nguyen2025social} incorporan un experimento adversarial específico en el que uno o varios agentes reciben deliberadamente una instrucción maliciosa destinada a favorecer a un grupo social. A partir de este escenario evalúan las cuatro defensas propuestas por Peigné et al.~\cite{peigne2025multi}. Las defensas mejoran la robustez en parte de las configuraciones, con una eficacia que varía de forma considerable entre modelos y no elimina la vulnerabilidad del sistema. Los autores añaden una defensa propia, \textit{Neutral Boost}, consistente en aumentar el número de agentes sin identidad social asignada, que resulta la más robusta de las evaluadas.
+
+El escenario de esta memoria es distinto, no hay atacante ni instrucción maliciosa que introduzca el sesgo en el comité. El efecto, en el caso de existir, procede de asociaciones que el propio modelo activa al recibir información sobre la empresa evaluada. Las instrucciones de mitigación empleadas más adelante se inspiran en las defensas de Peigné \textit{et al.} reutilizadas por Nguyen \textit{et al.}, pero adaptadas a un problema de sensibilidad implícita al atributo y no a una amenaza externa. La primera pide basar la decisión únicamente en las variables financieras e ignorar los atributos demográficos o geográficos; la segunda mantiene esa restricción y añade la obligación de señalar y corregir influencias de ese tipo en el razonamiento de los demás miembros del comité.
+
+La elección de una intervención mediante instrucciones se debe también a una restricción práctica. Modificar los pesos, realizar \textit{fine-tuning} específico o intervenir sobre las activaciones internas exige un acceso y unos recursos que no están disponibles para todos los modelos, y menos aún cuando se consumen a través de servicios externos. Las instrucciones son una de las pocas formas que se pueden aplicar de forma homogénea sobre modelos locales y modelos accesibles por API. Su accesibilidad no garantiza la eficacia, pero permite evaluar una estrategia de mitigación independiente de la posibilidad de reentrenar cada modelo. Al evaluar estas instrucciones, se comprueba tanto si reducen la dispersión como si provocan un desplazamiento medio en sentido contrario. La composición del comité se analiza por separado, ya que no se planteó inicialmente como una medida de mitigación y su efecto sobre la estabilidad surge de la comparación entre las configuraciones experimentales.
+
+\section{Limitaciones de los trabajos existentes y posicionamiento}
+\label{sec:posicionamiento}
+
+Las secciones anteriores han ido señalando, una a una, las diferencias entre este trabajo y sus antecedentes más próximos. La Tabla~\ref{tab:comparativa_estado_arte} las reúne y muestra que ninguno de ellos cubre de forma conjunta las cuatro dimensiones que aquí se combinan.
+
+\begin{landscape}
+	
+	\footnotesize
+	\setlength{\tabcolsep}{10pt}
+	\renewcommand{\arraystretch}{1.15}
+	
+	\begin{longtable}{@{}
+			p{2.2cm}
+			p{4.2cm}
+			p{3.8cm}
+			p{3.2cm}
+			p{4.8cm}
+			p{2.2cm}
+			@{}}
+		
+		\caption{Comparación entre los trabajos más próximos y el presente estudio.}
+		\label{tab:comparativa_estado_arte}\\
+		
+		\hline
+		\textbf{Trabajo} &
+		\textbf{Modelos y configuración} &
+		\textbf{Datos, atributo y sujeto} &
+		\textbf{Desenlace y medida} &
+		\textbf{Resultado principal} &
+		\textbf{Objetivos relacionados} \\
+		\hline
+		\endfirsthead
+		
+		\multicolumn{6}{c}{
+			\tablename~\thetable\ (continuación)
+		}\\
+		\hline
+		\textbf{Trabajo} &
+		\textbf{Modelos y configuración} &
+		\textbf{Datos y atributo sensible} &
+		\textbf{Medida} &
+		\textbf{Resultado principal} &
+		\textbf{Objetivos relacionados} \\
+		\hline
+		\endhead
+		
+		\hline
+		\multicolumn{6}{r}{
+			\footnotesize Continúa en la página siguiente.
+		}\\
+		\endfoot
+		
+		\hline
+		\endlastfoot
+		
+		Borah y Mihalcea~\cite{borah2024towards} &
+		Modelos: GPT-4, GPT-3.5-turbo y Mistral-7B-Instruct
+		 
+		Configuración: interacciones de tres o cuatro agentes, con asignación inicial, dos rondas de discusión y asignación final &
+		Dataset: 111 escenarios sintéticos de asignación de tareas en siete dominios
+		
+		Atributo sensible: género de los personajes &
+		Puntuación de sesgo en $[-1,1]$ &
+		Las asignaciones estereotípicas aparecen en aproximadamente la mitad o más de los escenarios y aumentan tras la interacción. La autorreflexión y el ajuste supervisado reducen el efecto &
+		O2 y O4 parciales \\
+		
+		Nguyen et al.~\cite{nguyen2025social} &
+		Modelos: GPT-4o, GPT-4o-mini, GPT-4.1-mini, Llama-3.1-8B, Llama-3.1-70B y Qwen2.5-7B
+		
+		Configuración: sistemas de cuatro agentes en el experimento principal, con identidades sociales o neutrales, tres protocolos de comunicación y cuatro turnos &
+		Dataset: CrowS-Pairs, StereoSet y BBQ
+		
+		Atributo sensible: atributos sociales de personas y grupos &
+		Robustez y tasas de emergencia, propagación y amplificación &
+		La comunicación provoca hasta aproximadamente un 70\,\% de nueva emergencia, propaga el sesgo a más del 80\,\% de los agentes y puede amplificarlo más de tres veces; la emergencia y la propagación se concentran en el primer turno &
+		O2, O3 y O4 parciales \\
+		
+		Madigan et al.~\cite{madigan2025emergent} &
+		Modelos: GPT-4.1, GPT-4o, GPT-4o-mini, GPT-4.1-mini, GPT-4.1-nano, Gemini 2.5 Pro, Gemini 2.5 Flash, Mistral Nemo, Grok 4 y Claude Sonnet 4
+		
+		Configuración: sistemas heterogéneos de tres agentes mediante \textit{Memory} y \textit{Collective Refinement}, comparados con sus modelos constituyentes &
+		Dataset: Adult Income y German Credit Risk
+		
+		Atributo sensible: clasificación tabular financiera, género de las personas clasificadas &
+		Clasificación binaria; diferencias de precisión, \textit{equalized odds}, precisión positiva, F1, TPR y FPR entre grupos &
+		La mediana del cambio indica reducciones pequeñas del sesgo en la mayoría de las métricas, salvo en precisión positiva, pero las distribuciones presentan colas en las que determinadas configuraciones lo amplifican hasta aproximadamente diez veces &
+		O2 parcial \\
+		
+		Li et al.~\cite{li2025actions} &
+		Modelos: GPT-3, GPT-3.5-turbo, GPT-4-turbo, GPT-4o, Llama-3.1 y Mixtral-8x7B
+		
+		Configuración: agentes individuales con personas generadas &
+		Dataset: Cuatro escenarios binarios
+		
+		Atributo sensible: género, raza o etnia e ideología política de personas simuladas &
+		Decisión binaria; \textit{demographic parity difference} &
+		Los modelos recientes muestran poco sesgo ante preguntas explícitas, pero diferencias significativas en las decisiones; GPT-4o las presenta en once de doce casos &
+		O2 parcial \\
+		
+		Wang y Gu~\cite{wang2026invests} &
+		Modelos: GPT-4 Turbo, GPT-4.1, GPT-4o, Claude 3.5 Sonnet y Llama-3.1-8B
+		
+		Configuración: recomendaciones producidas por agentes individuales &
+		Dataset: 800 observaciones fondo-trimestre de CRSP
+		
+		Atributo sensible: raza y género del inversor o del gestor &
+		Selección de fondos y cantidad monetaria; pruebas $\chi^2$, diferencias de medias y regresiones &
+		En el análisis principal, las señales demográficas apenas alteran la selección, pero sí las cantidades. Las diferencias asociadas al gestor persisten para la raza y son mayores para el género bajo señalización mediante nombres &
+		O1 y O2 parciales \\
+		
+		\textbf{Este trabajo} &
+		Modelos: Llama-3.1-8B, Qwen2.5-7B, Mistral-7B y GPT-4o-mini
+		
+		Configuración: seis composiciones de comités de tres agentes, cuatro homogéneas y dos heterogéneas, con tres niveles de especificación de rol, un agente ciego y cuatro rondas de deliberación &
+		Dataset: Cestas de 4 empresas basadas en datos financieros reales del S\&P 500
+		
+		Atributo sensible: género de la dirección ejecutiva y localización de la sede de las empresas &
+		Asignación monetaria; \textit{gap} medio, ratio de varianzas y evolución durante la deliberación &
+		Ningún desplazamiento medio conserva significación tras la corrección múltiple; aparece exceso de dispersión en tres de cuatro composiciones homogéneas y en ninguna de las dos heterogéneas &
+		\textbf{O1--O4} \\
+		
+	\end{longtable}
+	
+	\noindent
+	\footnotesize
+	\textit{Nota:} Se indica cobertura parcial cuando el trabajo aborda una parte
+	del objetivo, pero no lo satisface por completo. Los
+	objetivos no mencionados no se abordan directamente.
+	
+\end{landscape}
+
+Una de las principales diferencias recogidas en la tabla se encuentra en la forma de analizar los resultados. Como se explicó en la Sección~\ref{subsec:variabilidad_medicion}, un \textit{gap} medio próximo a cero puede indicar que el atributo no condiciona las asignaciones de forma sistemática, pero también que provoca cambios en direcciones opuestas que se compensan al calcular la media. Los trabajos revisados miden el sesgo principalmente mediante diferencias medias o tasas agregadas y no estudian la dispersión entre ejecuciones repetidas como una propiedad del sistema. Por este motivo, en este trabajo se analizan conjuntamente el desplazamiento medio y la dispersión, utilizando la condición placebo y el agente ciego como referencias de ruido.
+
+Es importante explicar cuándo se tomó esta decisión. La dispersión no se eligió como medida principal al diseñar el estudio, sino durante su desarrollo, después de observar el comportamiento de la primera composición evaluada. El criterio y el procedimiento de análisis quedaron fijados antes de examinar las cinco composiciones restantes, que permitieron comprobar si el patrón se repetía en las mismas condiciones. El Capítulo~\ref{chap:metodologia} indica cuándo se produjo este cambio y distingue los resultados utilizados para definir el criterio de los obtenidos después de fijarlo.
+
+En conjunto, este trabajo combina cuatro elementos que los estudios anteriores abordan por separado: la comparación entre una empresa de control y su variante, la cantidad de capital asignada, la deliberación entre agentes y la variabilidad entre ejecuciones repetidas. Para analizarlos, se construye un banco de pruebas en el que comités de tres agentes reparten un presupuesto fijo entre empresas cuyos datos financieros se mantienen constantes dentro de cada pareja. La decisión inicial se registra por separado de las rondas posteriores, y las composiciones homogéneas y heterogéneas se evalúan con el mismo protocolo. Además, la condición placebo y el agente ciego sirven como referencias para estimar la variabilidad propia del sistema. El objetivo no es proponer una definición general de equidad, sino determinar si la información sobre el género de la dirección ejecutiva o la localización de la sede modifica la cantidad de capital asignada, la estabilidad de las decisiones o su evolución durante la deliberación.

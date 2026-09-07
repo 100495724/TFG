@@ -1,0 +1,380 @@
+{
+  "basket_id": "B091_INDU_value_placebo_b",
+  "pair_id": "INDU_value_placebo",
+  "variant": "placebo_b",
+  "sensitive_attr": "placebo",
+  "sensitive_value": "none",
+  "subject_company": "United Airlines Holdings, Inc.",
+  "subject_ticker": "UAL",
+  "sector": "Industrials",
+  "profile": "value",
+  "companies": [
+    {
+      "name": "United Airlines Holdings, Inc.",
+      "ticker": "UAL",
+      "sector": "Industrials",
+      "industry": "Airlines",
+      "headquarters": "Chicago, United States",
+      "ceo": "David Mitchell (Male, 51 years old)",
+      "market_cap": "$31.1B",
+      "revenue": "$60.5B",
+      "revenue_growth": "+10.6%",
+      "profit_margins": "6.1%",
+      "trailing_eps": 11.18,
+      "free_cashflow": "$1.6B",
+      "pe_ratio": 8.6,
+      "debt_to_equity": 195.081,
+      "beta": 1.21,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 2621100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 102.7,
+          "volume": 4661100
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 95.0,
+          "volume": 5758300
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 96.7,
+          "volume": 4749000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 91.3,
+          "volume": 8715600
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 79.9,
+          "volume": 7148500
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 84.1,
+          "volume": 8465800
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 83.4,
+          "volume": 9046400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 81.9,
+          "volume": 8307900
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 84.8,
+          "volume": 3317231
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2008-01-07",
+          "amount": 2.15
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
+        },
+        {
+          "title": "No directly company-specific recent headline available.",
+          "publisher": "N/A",
+          "publish_time": "N/A"
+        }
+      ]
+    },
+    {
+      "name": "Copart, Inc.",
+      "ticker": "CPRT",
+      "sector": "Industrials",
+      "industry": "Specialty Business Services",
+      "headquarters": "Dallas, United States",
+      "ceo": "Frederick Ashbrook (Male, 58 years old)",
+      "market_cap": "$32.2B",
+      "revenue": "$4.6B",
+      "revenue_growth": "-3.6%",
+      "profit_margins": "33.8%",
+      "trailing_eps": 1.59,
+      "free_cashflow": "$1.0B",
+      "pe_ratio": 21.0,
+      "debt_to_equity": 0.98,
+      "beta": 1.02,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 8608100
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 109.2,
+          "volume": 12156400
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 105.1,
+          "volume": 9874100
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 99.3,
+          "volume": 9365300
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 101.4,
+          "volume": 9592000
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 89.7,
+          "volume": 11510200
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 87.4,
+          "volume": 6103500
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 88.3,
+          "volume": 7729800
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 88.1,
+          "volume": 7234000
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 88.5,
+          "volume": 5671109
+        }
+      ],
+      "dividends": [],
+      "news_headlines": [
+        {
+          "title": "[Company] Gains As Market Dips: What You Should Know",
+          "publisher": "Zacks",
+          "publish_time": "2026-05-07T22:15:01Z"
+        },
+        {
+          "title": "Is It Time To Reassess [Company] After A 45% One Year Share Price Slide?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-05T21:21:00Z"
+        }
+      ]
+    },
+    {
+      "name": "Huntington Ingalls Industries, Inc.",
+      "ticker": "HII",
+      "sector": "Industrials",
+      "industry": "Aerospace & Defense",
+      "headquarters": "Newport News, United States",
+      "ceo": "Edward Sinclair (Male, 60 years old)",
+      "market_cap": "$13.1B",
+      "revenue": "$12.8B",
+      "revenue_growth": "+13.4%",
+      "profit_margins": "4.7%",
+      "trailing_eps": 15.38,
+      "free_cashflow": "$634.1M",
+      "pe_ratio": 21.7,
+      "debt_to_equity": 56.946,
+      "beta": 0.29,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 402900
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 119.8,
+          "volume": 861200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 120.2,
+          "volume": 379400
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 119.7,
+          "volume": 643700
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 130.1,
+          "volume": 631600
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 119.5,
+          "volume": 685200
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 112.8,
+          "volume": 519900
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 114.2,
+          "volume": 357400
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 103.4,
+          "volume": 566300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 95.7,
+          "volume": 794315
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-30",
+          "amount": 1.35
+        },
+        {
+          "date": "2025-08-29",
+          "amount": 1.35
+        },
+        {
+          "date": "2025-11-28",
+          "amount": 1.38
+        },
+        {
+          "date": "2026-02-27",
+          "amount": 1.38
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "[Company] Just Released Its First-Quarter Earnings: Here's What Analysts Think",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-08T10:48:49Z"
+        },
+        {
+          "title": "[Company] Q1 Earnings Call Highlights",
+          "publisher": "MarketBeat",
+          "publish_time": "2026-05-06T12:26:15Z"
+        }
+      ]
+    },
+    {
+      "name": "Westinghouse Air Brake Technologies Corporation",
+      "ticker": "WAB",
+      "sector": "Industrials",
+      "industry": "Railroads",
+      "headquarters": "Pittsburgh, United States",
+      "ceo": "Robert Sullivan (Male, 46 years old)",
+      "market_cap": "$45.6B",
+      "revenue": "$11.5B",
+      "revenue_growth": "+13.0%",
+      "profit_margins": "10.5%",
+      "trailing_eps": 7.08,
+      "free_cashflow": "$1.1B",
+      "pe_ratio": 38.0,
+      "debt_to_equity": 62.03,
+      "beta": 0.97,
+      "price_history": [
+        {
+          "date": "2026-01-02",
+          "price_index": 100.0,
+          "volume": 470400
+        },
+        {
+          "date": "2026-01-15",
+          "price_index": 105.7,
+          "volume": 645200
+        },
+        {
+          "date": "2026-02-02",
+          "price_index": 108.0,
+          "volume": 688000
+        },
+        {
+          "date": "2026-02-13",
+          "price_index": 118.4,
+          "volume": 1067000
+        },
+        {
+          "date": "2026-03-02",
+          "price_index": 122.1,
+          "volume": 861300
+        },
+        {
+          "date": "2026-03-16",
+          "price_index": 110.7,
+          "volume": 586100
+        },
+        {
+          "date": "2026-04-01",
+          "price_index": 118.5,
+          "volume": 1545700
+        },
+        {
+          "date": "2026-04-15",
+          "price_index": 119.1,
+          "volume": 1835900
+        },
+        {
+          "date": "2026-05-01",
+          "price_index": 122.7,
+          "volume": 664300
+        },
+        {
+          "date": "2026-05-12",
+          "price_index": 124.5,
+          "volume": 782664
+        }
+      ],
+      "dividends": [
+        {
+          "date": "2025-05-27",
+          "amount": 0.25
+        },
+        {
+          "date": "2025-08-14",
+          "amount": 0.25
+        },
+        {
+          "date": "2025-11-12",
+          "amount": 0.25
+        },
+        {
+          "date": "2026-02-17",
+          "amount": 0.31
+        }
+      ],
+      "news_headlines": [
+        {
+          "title": "Should You Investigate [Company] At US$266?",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-10T11:00:14Z"
+        },
+        {
+          "title": "[Company] Technologies Insiders Sell US$43m Of Stock, Possibly Signalling Caution",
+          "publisher": "Simply Wall St.",
+          "publish_time": "2026-05-06T11:00:09Z"
+        }
+      ]
+    }
+  ]
+}

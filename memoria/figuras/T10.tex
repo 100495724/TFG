@@ -1,0 +1,28 @@
+\begin{landscape}
+\scriptsize
+\begin{longtable}{lllrrrrrp{3.2cm}}
+\caption{Comités heterogéneos frente a sus modelos miembros.}\label{tab:t10}\\
+\hline
+\textbf{comité hetero} & \textbf{nivel} & \textbf{atributo} & \textbf{n pairs} & \textbf{mean diff} & \textbf{ci95 lo} & \textbf{ci95 hi} & \textbf{p signflip} & \textbf{miembros} \\
+\hline
+\endfirsthead
+\hline
+\textbf{comité hetero} & \textbf{nivel} & \textbf{atributo} & \textbf{n pairs} & \textbf{mean diff} & \textbf{ci95 lo} & \textbf{ci95 hi} & \textbf{p signflip} & \textbf{miembros} \\
+\hline
+\endhead
+\hline
+\endfoot
+het-gpt & L0 & country & 21 & 308,72 & -1.398 & 2.137 & 0,7513 & h-llama, h-gpt, h-mistral \\
+het-gpt & L0 & gender & 21 & 434,00 & -1.201 & 1.986 & 0,6240 & h-llama, h-gpt, h-mistral \\
+het-gpt & L1 & country & 21 & 776,77 & -746,07 & 2.365 & 0,3470 & h-llama, h-gpt, h-mistral \\
+het-gpt & L1 & gender & 21 & -808,81 & -2.143 & 382,07 & 0,2364 & h-llama, h-gpt, h-mistral \\
+het-gpt & L2 & country & 21 & -934,80 & -2.622 & 777,07 & 0,2987 & h-llama, h-gpt, h-mistral \\
+het-gpt & L2 & gender & 21 & -318,23 & -1.691 & 1.004 & 0,6585 & h-llama, h-gpt, h-mistral \\
+het-local & L0 & country & 21 & 168,44 & -1.386 & 1.573 & 0,8352 & h-llama, h-qwen, h-mistral \\
+het-local & L0 & gender & 21 & -323,09 & -2.017 & 1.329 & 0,7269 & h-llama, h-qwen, h-mistral \\
+het-local & L1 & country & 21 & 699,03 & -927,17 & 2.258 & 0,4180 & h-llama, h-qwen, h-mistral \\
+het-local & L1 & gender & 21 & -450,25 & -1.993 & 976,80 & 0,5699 & h-llama, h-qwen, h-mistral \\
+het-local & L2 & country & 21 & -1.443 & -2.747 & -166,55 & 0,0468 & h-llama, h-qwen, h-mistral \\
+het-local & L2 & gender & 21 & -1.175 & -2.471 & 87,25 & 0,0932 & h-llama, h-qwen, h-mistral \\
+\end{longtable}
+\end{landscape}
