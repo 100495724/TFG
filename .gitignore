@@ -22,7 +22,6 @@ src/data/snapshots/2026-05-12/companies
 *.synctex.gz
 *.toc
 *.xmpi
-*.md
 
 # PDF generado
 *.pdf
