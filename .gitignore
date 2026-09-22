@@ -1,4 +1,7 @@
 .env
+tests/*
+old/*
+util/*
 src/__pycache__
 src/analysis/__pycache__
 src/experiment.log
@@ -19,6 +22,7 @@ src/data/snapshots/2026-05-12/companies
 *.synctex.gz
 *.toc
 *.xmpi
+*.md
 
 # PDF generado
 *.pdf
